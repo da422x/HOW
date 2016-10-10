@@ -8,7 +8,11 @@
  * Factory in the mainAppApp.
  */
 angular.module('mainAppApp')
-  .factory('firebaseService', function () {
+  .factory('firebaseService', function ($http) {
+    $http.get('/firebaseconfig.json').then(function(resObj){
+      console.log(resObj.data)
+      alert('helo')
+    })
     var config = {
       apiKey: "AIzaSyDAPPN0KYlyWTee3tclbhWVeFfwmqNX5MI",
       authDomain: "testing-firebase-fee02.firebaseapp.com",
