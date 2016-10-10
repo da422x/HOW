@@ -29,6 +29,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/manageUsers', {
+        templateUrl: 'views/manageusers.html',
+        controller: 'ManageusersCtrl',
+        controllerAs: 'mu'
+      })
       .otherwise({
         redirectTo: '/'
       });
