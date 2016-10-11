@@ -16,7 +16,7 @@ angular.module('mainAppApp')
       auth: null
     }
 
-    srcObj.promise = $http.get('/firebaseconfig.json')
+    srcObj.promise = $http.get('../firebaseconfig.json')
     
     srcObj.promise.then(function(resObj){
       srcObj.firebaseApp = firebase.initializeApp(resObj.data);

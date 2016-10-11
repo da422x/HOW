@@ -13,26 +13,26 @@ angular.module('mainAppApp')
 
     var requestInterceptor = {
       request: function (config) {
-        var deferred = $q.defer();
-        console.log('hai')
-        var firebaseService = $injector.get('firebaseService');
-        console.log(firebaseService.promise     )
-        firebaseService.promise.success(function(){
-          console.log('thad hai')
-        }).then(function (resObj) {
-          console.log('inside firebase promise')
-          var auth = $firebaseAuth();
-          console.log('get auth', firebaseService.auth.$getAuth())
-          auth.$waitForAuth().then(function (data) {
-            console.log(data);
-            deferred.resolve(config);
+        // var deferred = $q.defer();
+        // console.log('hai')
+        // var firebaseService = $injector.get('firebaseService');
+        // console.log(firebaseService.promise     )
+        // firebaseService.promise.success(function(){
+        //   console.log('thad hai')
+        // }).then(function (resObj) {
+        //   console.log('inside firebase promise')
+        //   var auth = $firebaseAuth();
+        //   console.log('get auth', firebaseService.auth.$getAuth())
+        //   auth.$waitForAuth().then(function (data) {
+        //     console.log(data);
+        //     deferred.resolve(config);
 
-          })
+        //   })
 
-        }, function(){
-          console.log('in err')
-        })
-         console.log('hai2')
+        // }, function(){
+        //   console.log('in err')
+        // })
+        //  console.log('hai2')
         // commonServices.isLoggedIn().then(function() {
         //     // Asynchronous operation succeeded, modify config accordingly
         //     alert('i am in')
@@ -42,7 +42,7 @@ angular.module('mainAppApp')
         //     alert('i am out')
         //     deferred.resolve(config);
         // });
-        return deferred.promise.then(function(){console.log('thissy thaddy')});
+        // return deferred.promise.then(function(){console.log('thissy thaddy')});
         //console.log(config);
         // var commonServices = $injector.get('commonServices');
         // if(commonServices.isLoggedIn()){
@@ -78,16 +78,17 @@ angular.module('mainAppApp')
         //     deferred.resolve(config);
         // });
         //return config;
+        return config;
       },
       response: function (config) {
-        console.log(config);
-        var commonServices = $injector.get('commonServices');
-        if (commonServices.isLoggedIn()) {
-          alert('i am in')
-        }
-        else {
-          alert('i am out')
-        }
+        // console.log(config);
+        // var commonServices = $injector.get('commonServices');
+        // if (commonServices.isLoggedIn()) {
+        //   alert('i am in')
+        // }
+        // else {
+        //   alert('i am out')
+        // }
         return config;
         // var deferred = $q.defer();
         // someAsyncService.doAsyncOperation().then(function() {

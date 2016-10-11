@@ -36,9 +36,22 @@ this.isLoggedIn = function() {
 
 	// Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
-		firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+		firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
 			.then(function() {
-				console.log('Success : user registered');
+				var temp = firebase.auth().currentUser.uid;
+				console.log('success : user registered');
+				delete user.newpassword;
+    			delete user.repeatpassword;
+    			user.uid = temp;
+    			firebase.database().ref('/userData/').push(user)
+					.then(function(data) {
+						console.log('success : data pushed');
+					})
+					.catch(function(error) {
+						var errorCode = error.code;
+			  			var errorMessage = error.message;
+			  			console.log('ERROR: ' + error.code + ': ' + error.message);
+					});
 			})
 			.catch(function(error) {
 	  			var errorCode = error.code;
@@ -109,6 +122,18 @@ this.isLoggedIn = function() {
 		firebase.database().ref(path).set(data)
 			.then(function(data) {
 				console.log('success : data set');
+			})
+			.catch(function(error) {
+				var errorCode = error.code;
+	  			var errorMessage = error.message;
+	  			console.log('ERROR: ' + error.code + ': ' + error.message);
+			});
+	};
+
+	this.pushData = function(path, data) {
+		firebase.database().ref(path).push(data)
+			.then(function(data) {
+				console.log('success : data pushed');
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
