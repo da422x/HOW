@@ -8,11 +8,31 @@
  * Service in the mainAppApp.
  */
 angular.module('mainAppApp')
-  .service('commonServices', ['firebaseService', function (firebaseService) {
-    
+  .service('commonServices', ['firebaseService', function (firebaseService, $firebaseAuth) {
     /******************************************************
 	* 			 User Management - start                  *
 	*******************************************************/
+
+	//checks to see if user is logged in
+this.isLoggedIn = function() {
+	  var auth = $firebaseAuth();
+	//firebaseService.promise.then(function(){
+		//return firebase.auth().currentUser;
+		// console.log(firebase.auth().$getAuth())
+		// firebase.auth().onAuthStateChanged(function(user) {
+		// 	if (user) {
+		// 		// User is signed in.
+		// 		return true;
+		// 	} else {
+		// 		// No user is signed in.
+		// 		return false;
+		// 	}
+		// })
+		console.log('get auth', firebaseService.auth.$getAuth())
+		return auth.$waitForAuth();
+	//})
+	
+	};
 
 	// Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {

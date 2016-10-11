@@ -15,9 +15,12 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'firebase'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
+
+    $httpProvider.interceptors.push('logginInInterceptor');
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -33,8 +36,15 @@ angular
         templateUrl: 'views/manageusers.html',
         controller: 'ManageusersCtrl',
         controllerAs: 'mu'
+        // ,
+        // resolve:{
+        //   'firebaseService':function(firebaseService){
+        //     // firebaseService will also be injectable in your controller, if you don't want this you could create a new promise with the $q service
+        //     console.log('inside resolve', firebaseService.promise)
+        //     return firebaseService.promise;
+        // }}
       })
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
