@@ -10,6 +10,7 @@
     "angular-route": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
+    "firebase": "^3.4.1",
     "angularfire": "^2.0.2"
   },
   "devDependencies": {
