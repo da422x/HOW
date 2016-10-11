@@ -5,6 +5,14 @@ version 0.15.1.
 
 ## Build & development
 
+To get started run the following commands in your desired directory:
+  
+  * git clone https://github.com/madthad91/HOW.git
+  * git checkout common_lib
+  * npm install
+  * bower install
+  * bower install angularfire
+
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Testing
