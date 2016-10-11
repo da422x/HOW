@@ -81,3 +81,60 @@ body {
     border-bottom: 0;
   }
 }
+
+/* 
+* User Registration.
+*/
+  .ur_format {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 47.5%; 
+      float: left;
+  }
+
+  .ur_format1 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 31%; 
+      float: left;
+  }
+
+  .ur_format2 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 96%; 
+      float: left;
+  }
+
+  .ur_format3 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 63%; 
+      float: left;
+  }
+
+  .ur_format4 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 8%; 
+      float: left;
+  }
+
+  .ur_format5 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 22%; 
+      float: left;
+  }
+
+  .ur_format6 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 53%; 
+      float: left;
+  }
+
+  .ur_format_button {
+    width:95.5%;
+    margin:10px;
+  }

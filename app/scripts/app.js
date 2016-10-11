@@ -44,6 +44,11 @@ angular
         //     return firebaseService.promise;
         // }}
       })
+      .when('/user_registration', {
+        templateUrl: 'views/user_registration.html',
+        controller: 'UserRegistrationCtrl',
+        controllerAs: 'ur'
+      })
       .otherwise({
         redirectTo: '/'
       });

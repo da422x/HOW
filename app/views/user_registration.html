@@ -1,0 +1,73 @@
+<form ng-submit="ur.registerUser(ur.newUser)">
+  <div class="form-group ur_format">
+    <label for="">First name</label>
+    <input ng-model="ur.newUser.name.first" type="text" class="form-control" placeholder="First" required>
+  </div>
+  <div class="form-group ur_format">
+    <label for="">Last name</label>
+    <input ng-model="ur.newUser.name.last" type="text" class="form-control" placeholder="Last" required>
+  </div>
+  <div class="form-group ur_format2">
+    <label for="">Address line 1</label>
+    <input ng-model="ur.newUser.address.line1" type="text" class="form-control" placeholder="Line 1" required>
+  </div>
+  <div class="form-group ur_format2">
+    <label for="">Address line 2 (optional)</label>
+    <input ng-model="ur.newUser.address.line2" type="text" class="form-control" placeholder="Line 2">
+  </div>
+   <div class="form-group ur_format1">
+    <label for="">City</label>
+    <input ng-model="ur.newUser.address.city" type="text" class="form-control" placeholder="City" required>
+  </div>
+  <div class="form-group ur_format1">
+    <label for="">State</label>
+    <input ng-model="ur.newUser.address.state" type="text" class="form-control" placeholder="State" required>
+  </div>
+  <div class="form-group ur_format1">
+    <label for="">Zip</label>
+    <input ng-model="ur.newUser.address.zip" type="text" class="form-control" placeholder="Zip" required>
+  </div>
+  <div class="form-group ur_format1">
+    <label for="">Phone</label>
+    <input ng-model="ur.newUser.phone" type="tel" class="form-control" placeholder="Phone" required>
+  </div>
+  <div class="form-group ur_format3">
+    <label for="">Email</label>
+    <input ng-model="ur.newUser.email" type="email" class="form-control" placeholder="Email" required>
+  </div>
+  <div class="form-group ur_format4">
+    <label for="">Sex</label>
+    <input ng-model="ur.newUser.sex" type="text" class="form-control" placeholder="" required>
+  </div>
+  <div class="form-group ur_format5">
+    <label for="">Date of birth</label>
+    <input ng-model="ur.newUser.dob" type="date" class="form-control" placeholder="DOB" required>
+  </div>
+  <div class="form-group ur_format6">
+    <label for="">Service background</label>
+    <input ng-model="ur.newUser.branch" type="text" class="form-control" placeholder="Branch" required>
+  </div>
+  <div class="form-group ur_format4">
+    <label for="">Years</label>
+    <input ng-model="ur.newUser.years" type="number" class="form-control" placeholder="#" required>
+  </div>
+  <div class="form-group ur_format3">
+    <label for="">Emergency Contact</label>
+    <input ng-model="ur.newUser.emergency.name" type="text" class="form-control" placeholder="Full name" required>
+  </div>
+  <div class="form-group ur_format1">
+    <label for="">Phone</label>
+    <input ng-model="ur.newUser.emergency.phone" type="tel" class="form-control" placeholder="Phone" required>
+  </div>
+  <div class="form-group ur_format2">
+    <label for="">New password</label>
+    <input ng-model="ur.newUser.newpassword" pattern=".{6,}" type="text" class="form-control" placeholder="Password (6 or more characters)" required>
+  </div>
+  <div class="form-group ur_format2">
+    <label for="">Retype password</label>
+    <input ng-model="ur.newUser.repeatpassword" pattern=".{6,}" type="text" class="form-control" placeholder="Password (6 or more characters)" required>
+  </div>
+  <div>
+    <button type="Submit" class="btn btn-primary ur_format_button">Submit</button>
+  </div>
+</form>
