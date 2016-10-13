@@ -52,4 +52,36 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  }).run(function($rootScope, $firebaseAuth){
+     var config = {
+      apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+      authDomain: "herosonthewater-55a79.firebaseapp.com",
+      databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+      storageBucket: "herosonthewater-55a79.appspot.com",
+      messagingSenderId: "183234806884"
+    };
+    firebase.initializeApp(config);
+    $rootScope.authObj = $firebaseAuth();
+
+    $rootScope.authObj.$onAuthStateChanged(function(user) {
+      if (user) {
+
+        var userId = firebase.auth().currentUser.uid;
+        $rootScope.uid = userId;
+        var userRole = firebase.database().ref('/userData/' + userId).once('value')
+          .then(function(snapshot) {
+            var data = snapshot.val();
+            console.log('Logged In...');
+            console.log('UID: ' + userId);
+            console.log('Role: ' + data.role);
+            $rootScope.signedIn = true;
+            $rootScope.userData = data;
+            console.log($rootScope.userData)
+            $rootScope.$apply();
+          });
+      }else{
+        console.log('Logged Out...');
+        $rootScope.signedIn = false;
+      }
+    });
   })
