@@ -27,11 +27,6 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
       .when('/manageUsers', {
         templateUrl: 'views/manageusers.html',
         controller: 'ManageusersCtrl',
@@ -48,6 +43,11 @@ angular
         templateUrl: 'views/user_registration.html',
         controller: 'UserRegistrationCtrl',
         controllerAs: 'ur'
+      })
+      .when('/sign_in', {
+        templateUrl: 'views/sign_in.html',
+        controller: 'SignInCtrl',
+        controllerAs: 'si'
       })
       .otherwise({
         redirectTo: '/'
