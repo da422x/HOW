@@ -12,7 +12,6 @@ angular.module('mainAppApp')
     var user = this;
 
     user.newUser = {
-    	uid: '123',
     	name: {
     		first: '',
     		last: ''
@@ -35,14 +34,18 @@ angular.module('mainAppApp')
     		phone: ''
     	},
     	newpassword: '',
-    	repeatpassword: ''
+    	repeatpassword: '',
+    	role: 'Participant'
     }
+
+    user.statList = [
+
+    ];
 
     user.registerUser = function(data) {
     	if (data.newpassword === data.repeatpassword) {
-    		var p1 = {};
     		commonServices.register(data);
-    		user.newUser = {};
+    		user.newUser = {role: 'Participant'};
     	} else {
     		console.log('Passwords do not match...');
     	}

@@ -130,7 +130,7 @@ body {
   .ur_format6 {
       display: inline-block; 
       margin-left: 10px; 
-      width: 53%; 
+      width: 50%; 
       float: left;
   }
 
@@ -138,3 +138,11 @@ body {
     width:95.5%;
     margin:10px;
   }
+
+  .ur_format7 {
+      display: inline-block; 
+      margin-left: 10px; 
+      width: 11%; 
+      float: left;
+  }
+

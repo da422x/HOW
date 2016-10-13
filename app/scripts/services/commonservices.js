@@ -8,13 +8,13 @@
  * Service in the mainAppApp.
  */
 angular.module('mainAppApp')
-  .service('commonServices', ['firebaseService', function (firebaseService, $firebaseAuth) {
+  .service('commonServices', ['$rootScope', 'firebaseService', function ($rootScope, firebaseService, $firebaseAuth) {
     /******************************************************
 	* 			 User Management - start                  *
 	*******************************************************/
 
 	//checks to see if user is logged in
-this.isLoggedIn = function() {
+	this.isLoggedIn = function() {
 	  var auth = $firebaseAuth();
 	//firebaseService.promise.then(function(){
 		//return firebase.auth().currentUser;
@@ -38,14 +38,13 @@ this.isLoggedIn = function() {
     this.register = function(user) {
 		firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
 			.then(function() {
-				var temp = firebase.auth().currentUser.uid;
+				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');
 				delete user.newpassword;
     			delete user.repeatpassword;
-    			user.uid = temp;
-    			firebase.database().ref('/userData/').push(user)
+    			firebase.database().ref('/userData/' + userId).set(user)
 					.then(function(data) {
-						console.log('success : data pushed');
+						console.log('success : user data added');
 					})
 					.catch(function(error) {
 						var errorCode = error.code;
@@ -65,6 +64,7 @@ this.isLoggedIn = function() {
 		firebase.auth().signInWithEmailAndPassword(user.email, user.password)
 			.then(function(data) {
 				console.log('success : ' + firebase.auth().currentUser.email + ' signed In');
+				$rootScope.signedIn = true;
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
@@ -78,7 +78,7 @@ this.isLoggedIn = function() {
 	this.signout = function() {
 		firebase.auth().signOut()
 			.then(function(data) {
-				console.log('success : ' + firebase.auth().currentUser.email + ' Signed out');
+				console.log('success : Signed out');
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
@@ -104,6 +104,15 @@ this.isLoggedIn = function() {
 		var user = firebase.auth().currentUser
 		if (user != null) {
 			return user.email;
+		}else{
+			return '';
+		}
+	}
+
+	this.getCurrentUserUid = function() {
+		var user = firebase.auth().currentUser
+		if (user != null) {
+			return user.uid;
 		}else{
 			return '';
 		}
