@@ -45,6 +45,11 @@ angular.module('mainAppApp')
     			firebase.database().ref('/userData/' + userId).set(user)
 					.then(function(data) {
 						console.log('success : user data added');
+						firebase.database().ref('/userRoles/' + userId).set({
+							role: 'Participant',
+							name: user.name,
+							email: user.email
+						});
 					})
 					.catch(function(error) {
 						var errorCode = error.code;
@@ -79,6 +84,7 @@ angular.module('mainAppApp')
 		firebase.auth().signOut()
 			.then(function(data) {
 				console.log('success : Signed out');
+				$rootScope.userData = {};
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
