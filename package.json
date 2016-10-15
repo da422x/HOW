@@ -1,7 +1,23 @@
 {
   "name": "mainapp",
   "devDependencies": {
-    "autoprefixer-core": "^5.2.1",
+   
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "karma start test/karma.conf.js",
+    "heroku-postbuild": "grunt build",
+    "postinstall": "pwd && ls node_modules && grunt test",
+    "start": "node web.js"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "grunt-cli": "^1.2.0",
+    "gzippo": "^0.2.0",
+    "morgan": "^1.7.0",
+     "autoprefixer-core": "^5.2.1",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
     "grunt-concurrent": "^1.0.0",
@@ -33,20 +49,5 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "phantomjs-prebuilt": "^2.1.12",
     "time-grunt": "^1.0.0"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "karma start test/karma.conf.js",
-    "heroku-postbuild": "grunt build",
-    "postinstall": "pwd && ls node_modules && grunt test",
-    "start": "node web.js"
-  },
-  "dependencies": {
-    "express": "^4.14.0",
-    "grunt-cli": "^1.2.0",
-    "gzippo": "^0.2.0",
-    "morgan": "^1.7.0"
   }
 }
