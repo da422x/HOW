@@ -11,13 +11,11 @@ angular.module('mainAppApp')
   .controller('MainCtrl', ['$scope', '$rootScope', 'commonServices', function ($scope, $rootScope, commonServices) {
   
     	var main = this;
-    	main.signedIn = $rootScope.signedIn;
 
     	main.user = {
     		name: '',
     		uid: ''
     	};
-
     	main.users = {};
 
     	main.signOut = function() {
@@ -44,6 +42,4 @@ angular.module('mainAppApp')
     				$scope.$digest();
     			});
     	}
-
-        console.log($rootScope.userData);
   }]);

@@ -25,7 +25,7 @@ angular.module('mainAppApp')
     	},
     	phone: '',
     	email: '',
-    	sex: '',
+    	gender: '',
     	dob: '',
     	branch: '',
     	years: '',
@@ -34,8 +34,7 @@ angular.module('mainAppApp')
     		phone: ''
     	},
     	newpassword: '',
-    	repeatpassword: '',
-    	role: 'Participant'
+    	repeatpassword: ''
     }
 
     user.statList = [
