@@ -39,11 +39,13 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js",
-    "postinstall": "grunt build",
+    "heroku-postbuild": "grunt build",
+    "postinstall": "grunt test",
     "start": "node web.js"
   },
   "dependencies": {
     "express": "^4.14.0",
+    "grunt-cli": "^1.2.0",
     "gzippo": "^0.2.0",
     "morgan": "^1.7.0"
   }
