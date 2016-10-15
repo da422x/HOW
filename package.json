@@ -40,7 +40,7 @@
   "scripts": {
     "test": "karma start test/karma.conf.js",
     "heroku-postbuild": "grunt build",
-    "postinstall": "pwd && ls && grunt test",
+    "postinstall": "pwd && ls node_modules && grunt test",
     "start": "node web.js"
   },
   "dependencies": {
