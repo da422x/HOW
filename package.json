@@ -5,7 +5,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "karma start test/karma.conf.js",
+    "test": "karma start test/karma.conf.js --single-run",
     "heroku-postbuild": "grunt build",
     "postinstall": "bower install",
     "start": "node web.js"
