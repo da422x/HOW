@@ -18,6 +18,6 @@ describe('Controller: SignInCtrl', function () {
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
-    expect(SignInCtrl.awesomeThings.length).toBe(3);
+    expect(Object.keys(SignInCtrl.user).length).toBe(2);
   });
 });

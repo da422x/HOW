@@ -6,7 +6,36 @@ describe('Controller: UserRegistrationCtrl', function () {
   beforeEach(module('mainAppApp'));
 
   var UserRegistrationCtrl,
+    foo,
     scope;
+
+  beforeEach(function(){
+    foo = {
+    	name: {
+    		first: '',
+    		last: ''
+    	},
+    	address : {
+    		line1: '',
+    		line2: '',
+    		city: '',
+    		state: '',
+    		zip: ''
+    	},
+    	phone: '',
+    	email: '',
+    	gender: '',
+    	dob: '',
+    	branch: '',
+    	years: '',
+    	emergency: {
+    		name: '',
+    		phone: ''
+    	},
+    	newpassword: '',
+    	repeatpassword: ''
+    }
+  })
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
@@ -18,6 +47,6 @@ describe('Controller: UserRegistrationCtrl', function () {
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
-    expect(UserRegistrationCtrl.awesomeThings.length).toBe(3);
+    expect(UserRegistrationCtrl.newUser).toEqual(foo);
   });
 });
