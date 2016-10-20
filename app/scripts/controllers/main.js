@@ -16,7 +16,10 @@ angular.module('mainAppApp')
     		name: '',
     		uid: ''
     	};
-    	main.users = {};
+    	main.users = {};//hai
+
+        var tiki = new commonServices.DAO.userData({address:'thaddeus house', gender: 'M'});
+        console.log(tiki.address)
 
     	main.signOut = function() {
     		commonServices.signout();
