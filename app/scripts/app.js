@@ -52,7 +52,10 @@ angular
       storageBucket: "herosonthewater-55a79.appspot.com",
       messagingSenderId: "183234806884"
     };
-    firebase.initializeApp(config);
+    if (firebase.apps.length === 0) {
+      firebase.initializeApp(config);
+    }
+      
     $rootScope.authObj = $firebaseAuth();
 
     $rootScope.authObj.$onAuthStateChanged(function(user) {
