@@ -19,8 +19,7 @@ angular
     'firebase'
   ])
   .config(function ($routeProvider, $httpProvider) {
-
-    $httpProvider.interceptors.push('logginInInterceptor');
+    $httpProvider.interceptors.push('pageAuthInterceptor');
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -49,6 +48,11 @@ angular
         controller: 'SignInCtrl',
         controllerAs: 'si'
       })
+      .when('/user_permissions', {
+        templateUrl: 'views/user_permissions.html',
+        controller: 'UserPermissionsCtrl',
+        controllerAs: 'userPermissions'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -65,17 +69,23 @@ angular
 
     $rootScope.authObj.$onAuthStateChanged(function(user) {
       if (user) {
-      var userId = firebase.auth().currentUser.uid;
-      $rootScope.uid = userId;
-      var userRole = firebase.database().ref('/userData/' + userId).once('value')
-        .then(function(snapshot) {
-          var data = snapshot.val();
-          console.log('Logged In...');
-          console.log('UID: ' + userId);
-          $rootScope.userData = data;
-          console.log($rootScope.userData)
-          $rootScope.$apply();
-        });
+        var userId = firebase.auth().currentUser.uid;
+        $rootScope.uid = userId;
+        var tempData = firebase.database().ref('/userData/' + userId).once('value')
+          .then(function(snapshot) {
+            var userData = snapshot.val();
+            var userRole = firebase.database().ref('/userRoles/' + userId + '/role/')
+              .once('value')
+              .then(function(snapshot) {
+                console.log('Logged In...');
+                console.log('UID: ' + userId);
+                $rootScope.userData = userData;
+                $rootScope.userRole = snapshot.val();
+                console.log('Name: ', $rootScope.userData.name.first);
+                console.log('Role: ', $rootScope.userRole);
+                $rootScope.$apply();
+              });
+          });
       }else{
         console.log('Logged Out...');
       }
