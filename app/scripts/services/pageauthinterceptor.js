@@ -13,7 +13,6 @@ angular.module('mainAppApp')
     // Performs an action based on the page request.
     var requestInterceptor = {
         request: function(config) {
-            var deferred = $q.defer();
             switch(config.url) {
               case 'views/sign_in.html':
                 console.log('Sign In');
@@ -37,8 +36,7 @@ angular.module('mainAppApp')
                 console.log('Main');
                 break;
             }
-            deferred.resolve(config);
-            return deferred.promise;
+            return config;//deferred.promise;
         }
     };
     return requestInterceptor;

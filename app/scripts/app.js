@@ -26,18 +26,6 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/manageUsers', {
-        templateUrl: 'views/manageusers.html',
-        controller: 'ManageusersCtrl',
-        controllerAs: 'mu'
-        // ,
-        // resolve:{
-        //   'firebaseService':function(firebaseService){
-        //     // firebaseService will also be injectable in your controller, if you don't want this you could create a new promise with the $q service
-        //     console.log('inside resolve', firebaseService.promise)
-        //     return firebaseService.promise;
-        // }}
-      })
       .when('/user_registration', {
         templateUrl: 'views/user_registration.html',
         controller: 'UserRegistrationCtrl',
@@ -51,7 +39,7 @@ angular
       .when('/user_permissions', {
         templateUrl: 'views/user_permissions.html',
         controller: 'UserPermissionsCtrl',
-        controllerAs: 'userPermissions'
+        controllerAs: 'up'
       })
       .otherwise({
         redirectTo: '/'
