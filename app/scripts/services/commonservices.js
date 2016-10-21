@@ -8,7 +8,8 @@
  * Service in the mainAppApp.
  */
 angular.module('mainAppApp')
-  .service('commonServices', ['$rootScope', function ($rootScope, $firebaseAuth) {
+  .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO' , function ($rootScope, $firebaseAuth, DAO) {
+
     /******************************************************
 	* 			 User Management - start                  *
 	*******************************************************/
@@ -176,6 +177,14 @@ angular.module('mainAppApp')
 
 	/******************************************************
 	*                  C.R.U.D. - end                     *
+	*******************************************************/
+
+	/******************************************************
+	* 			 DAO object container - start             *
+	*******************************************************/
+	this.DAO = DAO;
+	/******************************************************
+	* 			 DAO object container - end             *
 	*******************************************************/
 
   }]);
