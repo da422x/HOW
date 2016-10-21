@@ -42,6 +42,7 @@
               <li class="active"><a href="#/">Home</a></li>
               <li><a ng-href="#/sign_in">Sign In</a></li>
               <li><a ng-href="#/user_registration">Register Account</a></li>
+              <li><a ng-href="#/user_permissions">User Permissions</a></li>
             </ul>
           </div>
         </div>
@@ -89,12 +90,11 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/services/firebaseservice.js"></script>
-        <script src="scripts/controllers/manageusers.js"></script>
         <script src="scripts/services/commonservices.js"></script>
-        <script src="scripts/services/logginininterceptor.js"></script>
         <script src="scripts/controllers/user_registration.js"></script>
         <script src="scripts/controllers/sign_in.js"></script>
+        <script src="scripts/controllers/user_permissions.js"></script>
+        <script src="scripts/services/pageauthinterceptor.js"></script>
         <!-- endbuild -->
 </body>
 </html>
