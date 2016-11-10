@@ -7,7 +7,7 @@
  * # commonServices
  * Service in the mainAppApp.
  */
-angular.module('mainAppApp')
+angular.module('ohanaApp')
   .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO' , function ($rootScope, $firebaseAuth, DAO) {
 
     /******************************************************
@@ -16,7 +16,7 @@ angular.module('mainAppApp')
 
 	// Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
-		firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
+		return firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
 			.then(function() {
 				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');
@@ -30,31 +30,35 @@ angular.module('mainAppApp')
 							name: user.name,
 							email: user.email
 						});
+						return true;
 					})
 					.catch(function(error) {
 						var errorCode = error.code;
 			  			var errorMessage = error.message;
 			  			console.log('ERROR: ' + error.code + ': ' + error.message);
+			  			return false;
 					});
 			})
 			.catch(function(error) {
 	  			var errorCode = error.code;
 	  			var errorMessage = error.message;
 	  			console.log('ERROR: ' + error.code + ': ' + error.message);
+	  			return false;
 			});
 	};
 
 	// Signs in existing user into the application, requires valid email and password.
 	this.signin = function(user) {
-		firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+		return firebase.auth().signInWithEmailAndPassword(user.email, user.password)
 			.then(function(data) {
 				console.log('success : ' + firebase.auth().currentUser.email + ' signed In');
-				$rootScope.signedIn = true;
+				return true;
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
 	  			var errorMessage = error.message;
 	  			console.log('ERROR: ' + error.code + ': ' + error.message);
+	  			return false;
 			});
 
 	};

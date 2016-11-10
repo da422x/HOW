@@ -1,17 +1,13 @@
-# main-app
+# ohana
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.15.1.
 
-## Build & development
+## Install dependencies
 
-To get started run the following commands in your desired directory:
-  
-  * git clone https://github.com/madthad91/HOW.git
-  * git checkout common_lib
-  * npm install
-  * bower install
-  * bower install angularfire
+Run `npm install` and `bower install` to install all required packages defined in `package.json` and `bower.json`
+
+## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<body style="margin: auto">
+	<div class="" style="margin: auto; max-width: 350px">
+		<h3>Login</h3>
+		<form name="loginForm" style="margin-bottom:20px width:50%" ng-controller="LoginCtrl" ng-submit="loginForm.$valid && checkLogin(logObj)" novalidate>
+			<div ng-show="loginForm.$invalid && loginForm.$submitted" class="alert alert-danger">FAIL.</div>
+			<div class="form-group well">
+				<label>Username</label>
+				<input type="text" name="email" class="form-control" ng-model="logObj.email" required/>
+				<span ng-show="logObj.email.$dirty && logObj.email.$error.required" class="help-block">Email is required</span>
+				<br>
+				<label>Password</label>
+				<input type="password" name="password" class="form-control" ng-model="logObj.password" required>
+				<span ng-show="logObj.password.$dirty && logObj.password.$error.required" class="help-block">Password is required</span>
+				<br>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">Login</button>
+					<button class="btn btn-default" ng-click="addUser()">Create Account</button><br>
+				</div>
+			</div>
+			<div id="newUserForm" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<script type="text/ng-template" id="newUserDirectoryForm.html"></script>
+						<!-- inject from newUserDirectoryForm.html -->
+					</div>
+					<!-- end modal-content -->
+				</div>
+				<!-- end modal-dialog -->
+			</div>
+			<!-- end newUserForm -->
+		</form>
+	</div>
+</body>

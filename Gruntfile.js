@@ -1,4 +1,4 @@
-// Generated on 2016-10-03 using generator-angular 0.15.1
+// Generated on 2016-06-16 using generator-angular 0.15.1
 'use strict';
 
 // # Globbing
@@ -11,6 +11,8 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  require('load-grunt-tasks')(grunt);
 
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
@@ -70,10 +72,10 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9000,
+        port: 9001, // default 9000
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
+        livereload: 35730 // default 35729
       },
       livereload: {
         options: {
@@ -82,8 +84,8 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
+                'app/bower_components',
+                connect.static('./app/bower_components')
               ),
               connect().use(
                 '/app/styles',
@@ -102,8 +104,8 @@ module.exports = function (grunt) {
               connect.static('.tmp'),
               connect.static('test'),
               connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
+                '/app/bower_components',
+                connect.static('./app/bower_components')
               ),
               connect.static(appConfig.app)
             ];
@@ -220,7 +222,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -338,7 +340,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: 'mainAppApp',
+          module: 'ohanaApp',
           htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
@@ -389,7 +391,7 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: 'bower_components/bootstrap/dist',
+          cwd: 'app/bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
         }]
@@ -426,6 +428,7 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('sass');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {

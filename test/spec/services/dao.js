@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: DAO', function () {
+describe('Service: dao', function () {
 
   // load the service's module
-  beforeEach(module('mainAppApp'));
+  beforeEach(module('ohanaApp'));
 
   // instantiate service
-  var DAO;
-  beforeEach(inject(function (_DAO_) {
-    DAO = _DAO_;
+  var dao;
+  beforeEach(inject(function (_dao_) {
+    dao = _dao_;
   }));
 
   it('should do something', function () {
-    expect(!!DAO).toBe(true);
+    expect(!!dao).toBe(true);
   });
 
 });

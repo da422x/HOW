@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<div class="container" ng-init="update()">
+	<h3>Manage Events</h3>
+	<div style="clear: left; width: 100%; overflow: auto; margin-bottom:10px" ng-show="$scope.isDetailView">
+		<div class="toolbar-left" style="float: left">
+			<button class="btn btn-primary" ng-click="add()">Add New Event</button>
+			<button class="btn btn-primary" ng-click="update()">Refresh</button>
+		</div>
+		<div class="toolbar-right" style="float: right">
+			Filter by:
+			<select class="" name="filterby" style="margin-top:10px; display:inline">
+				<option value="all">All</option>
+				<option value="upcoming">Upcoming</option>
+				<option value="past">Past</option>
+			</select>
+		</div>
+	</div>
+	<div class="row event-row" ng-hide="isDetailView">
+		<div class="col-md-4" ng-repeat="event in eventList">
+			<div class="panel panel-default">
+				<div class="panel-heading clearfix">
+					<h3 class="panel-title pull-left">{{event.name}}</h3>
+				</div>
+				<div class="list-group">
+					<div class="list-group-item">
+						<h6 class="list-group-item-text">Start Time</h6>
+						<h4 class="list-group-item-heading">{{event.start_timestamp | date:'MM-dd-yyyy HH:mm a'}}</h4>
+					</div>
+					<div class="list-group-item">
+						<h6 class="list-group-item-text">End Time</h6>
+						<h4 class="list-group-item-heading">{{event.end_timestamp | date:'MM-dd-yyyy HH:mm a'}}</h4>
+					</div>
+					<div class="list-group-item">
+						<h6 class="list-group-item-text">Location</h6>
+						<h4 class="list-group-item-heading">{{event.address}}</h4>
+					</div>
+				</div>
+				<div class="panel-footer" style="height:55px">
+					<a class="btn btn-danger pull-right" ng-click="deleteEvent($index)" style="margin-left: 8px">Delete</a>
+					<a class="btn btn-primary pull-right" ng-click="manageEvent($index)"><i class="fa fa-pencil" style="padding-right: 5px"></i>Manage Event</a>
+				</div>
+			</div>
+			<!-- end panel -->
+		</div>
+		<!-- end event list -->
+	</div>
+	<!-- end row -->
+</div>
+<!-- end container -->
+<div ui-view="" ng-show="isDetailView"></div>

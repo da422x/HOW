@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: pageAuthInterceptor', function () {
+describe('Service: pageauthinterceptor', function () {
 
   // load the service's module
-  beforeEach(module('mainAppApp'));
+  beforeEach(module('ohanaApp'));
 
   // instantiate service
-  var pageAuthInterceptor;
-  beforeEach(inject(function (_pageAuthInterceptor_) {
-    pageAuthInterceptor = _pageAuthInterceptor_;
+  var pageauthinterceptor;
+  beforeEach(inject(function (_pageauthinterceptor_) {
+    pageauthinterceptor = _pageauthinterceptor_;
   }));
 
   it('should do something', function () {
-    expect(!!pageAuthInterceptor).toBe(true);
+    expect(!!pageauthinterceptor).toBe(true);
   });
 
 });
