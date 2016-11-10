@@ -7,7 +7,7 @@
  * # pageAuthInterceptor
  * Factory in the mainAppApp.
  */
-angular.module('mainAppApp')
+angular.module('ohanaApp')
   .factory('pageAuthInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
 
     // Performs an action based on the page request.

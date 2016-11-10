@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: commonServices', function () {
+describe('Service: commonservices', function () {
 
   // load the service's module
-  beforeEach(module('mainAppApp'));
+  beforeEach(module('ohanaApp'));
 
   // instantiate service
-  var commonServices;
-  beforeEach(inject(function (_commonServices_) {
-    commonServices = _commonServices_;
+  var commonservices;
+  beforeEach(inject(function (_commonservices_) {
+    commonservices = _commonservices_;
   }));
 
   it('should do something', function () {
-    expect(!!commonServices).toBe(true);
+    expect(!!commonservices).toBe(true);
   });
 
 });

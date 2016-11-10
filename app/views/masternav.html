@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<header>
+	<div class="container-fluid" id="navbar-master">
+		<!-- logo and toggle -->
+		<div class="logo">
+			<img ui-sref="home" src="assets/images/logos/bannerlogo.png" width="240px">
+		</div>
+		<div class="mobilenavtoggle">
+			<button class="hamburger hamburger--slider" type="button">
+				<span class="hamburger-box" ng-click="toggleMenu()">
+					<span class="hamburger-inner"></span>
+				</span>
+			</button>
+		</div>
+
+		<!-- Collapsible portion -->
+		<!-- navbar left -->
+		<div class="nav navbar-left">
+			<a ng-repeat="nav in leftnav" ui-sref-opts="{reload: true}" ui-sref-active="current" ui-sref="{{nav.state}}"><h2>{{nav.text}}</h2></a>
+		</div>
+		<!-- navbar right show if sessionState is FALSE -->
+		<div class="nav navbar-right" ng-hide="sessionState">
+			<a href="http://visitor.r20.constantcontact.com/d.jsp?&#10;&#10;llr=t5yuarcab&amp;p=oi&amp;m=1102230217683&amp;sit=oimdo5qdb&amp;f=612&#10;&#10;b8958-893d-420d-99b7-0d5e512a9507" target="_blank"><button id="subscribe"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i><h2>SUBSCRIBE</h2></button></a>
+			<button ng-click="showDonate()" id="donate" style="margin-top:15px"><h2>DONATE</h2></button>
+			<a ui-sref="{{rightnav[0].state}}"><h2>{{rightnav[0].text}}</h2></a>
+		</div>
+		<!-- navbar right show if sessionState is TRUE -->
+		<div class="nav navbar-right" ng-show="sessionState">
+			<button id="subscribe"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i><h2>SUBSCRIBE</h2></button>
+			<button ng-click="showDonate()" id="donate" style="margin-top:15px"><h2>DONATE</h2></button>
+			<li class="dropdown">
+				<a class="toggle-dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#/manage/dash">
+					<span style="margin-right:5px"><i class="fa fa-user fa-lg" aria-hidden="true"></i></span>
+					<h2>{{rightnavloggedin[0].text}}</h2>
+					<span class="caret"></span>
+				</a>
+				<ul class="managelinks dropdown-menu">
+					<li><a ng-repeat="nav in chapterMngrNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li role="separator" class="divider"></li>
+					<li><a ui-sref="{{rightnavloggedin[0].state}}"><h3>Management Dashboard</h3></a></li>
+					<li><a href="#" ng-click="logout()"><h3>Sign Out</h3></a></li>
+				</ul>
+			</li>
+		</div> <!-- end navbar-right -->
+	</div> <!-- end container-fluid -->
+	<div id="menu" ng-show="menuActive" class="fadein fadeout">
+		<div class="menulinks">
+			<h1>MENU</h1>
+			<a ui-sref="home" ng-click="dismissMenu()"><h2>HOME</h2></a>
+			<a ng-repeat="nav in leftnav" ui-sref="{{nav.state}}" ng-click="dismissMenu()"><h2>{{nav.text}}</h2></a>
+			<hr />
+			<a href="http://visitor.r20.constantcontact.com/d.jsp?&#10;&#10;llr=t5yuarcab&amp;p=oi&amp;m=1102230217683&amp;sit=oimdo5qdb&amp;f=612&#10;&#10;b8958-893d-420d-99b7-0d5e512a9507" target="_blank"><h2>SUBSCRIBE</h2></a>
+			<a ng-click="showDonate()"><h2>DONATE</h2></a>
+			<hr />
+			<div class="loggedout" ng-hide="sessionState">
+				<a ui-sref="{{rightnav[0].state}}" ng-click="dismissMenu()"><h2>{{rightnav[0].text}}</h2></a>
+			</div>
+			<div class="loggedin" ng-show="sessionState">
+				<a ui-sref="dash" ng-click="dismissMenu()"><h2>{{rightnavloggedin[0].text}}</h2></a>
+				<a ng-repeat="nav in chapterMngrNavs" ui-sref="{{nav.state}}" ng-click="dismissMenu()"><h3>{{nav.text}}</h3></a>
+			</div>
+		</div>
+	</div>
+</header>

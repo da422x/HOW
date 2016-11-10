@@ -1,148 +1,164 @@
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+@font-face {
+	font-family: besom;
+	font-weight: normal;
+	src: url(/assets/fonts/BesomRegular.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: klinicslab-medium;
+	font-weight: normal;
+	src: url(/assets/fonts/KlinicSlabMedium.otf) format('opentype');
+}
+
+@font-face {
+	font-family: klinicslab-book;
+	font-weight: lighter;
+	src: url(/assets/fonts/KlinicSlabBook.otf) format('opentype');
+}
+
+@font-face {
+	font-family: montserrat-bold;
+	font-weight: bold;
+	src: url(/assets/fonts/Montserrat-Bold.otf) format('opentype');
+}
+
+@font-face {
+	font-family: montserrat-regular;
+	font-weight: normal;
+	src: url(/assets/fonts/Montserrat-Regular.otf) format('opentype');
+}
+
+h1,
+h2 {
+	font-family: montserrat-bold;
+}
+
+h3,
+h4 {
+	font-family: montserrat-regular;
+}
+
+h5 {
+	font-family: besom;
+}
+
+h6 {
+	font-family: klinicslab-medium;
+}
+
+p {
+	font-family: klinicslab-book;
+}
+
+.master {
+	background-color: white;
+}
+
+.navbar-default {
+	margin-bottom: 0;
 }
 
 body {
-  padding: 0;
+	padding-top: 0;
+	background: none;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+.container > h3 {
+	margin-bottom: 20px;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
+a,
+a:active,
+a:visited {
+	text-decoration: none;
+	color: inherit;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+
+/*
+.ng-invalid.ng-dirty {
+	border-color: #FA787E;
 }
 
-.container-narrow > hr {
-  margin: 30px 0;
+.ng-valid.ng-dirty {
+	border-color: #78FA89;
+}*/
+
+#membersTable #inventoryTable a {
+	border-bottom: none;
+	color: black;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
+
+/* EVENTS CSS */
+.tabs-left > .nav-tabs {
+  border-bottom: 0;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
 }
 
-/* 
-* User Registration.
-*/
-  .ur_format {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 47.5%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs > li {
+  float: none;
+}
 
-  .ur_format1 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 31%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
 
-  .ur_format2 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 96%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
 
-  .ur_format3 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 63%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
 
-  .ur_format4 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 8%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
 
-  .ur_format5 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 22%; 
-      float: left;
-  }
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd;
+  *border-right-color: #ffffff;
+}
 
-  .ur_format6 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 50%; 
-      float: left;
-  }
+/* event details leftside-nav spacing off of right side */
+.spacercol {
+	width: 40px !important;
+}
 
-  .ur_format_button {
-    width:95.5%;
-    margin:10px;
-  }
+/* ui-select height */
+.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+	margin-bottom: 0px;
+	height: 1em;
+}
 
-  .ur_format7 {
-      display: inline-block; 
-      margin-left: 10px; 
-      width: 11%; 
-      float: left;
-  }
+/* ui-select padding */
+.ui-select-multiple.ui-select-bootstrap {
+	padding: 6px 12px 6px 12px;
+}
 
+/* events cards field title text formatting */
+.list-group-item h6 {
+	font-size: 15px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+}

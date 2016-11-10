@@ -7,7 +7,7 @@
  * # DAO
  * Service in the mainAppApp.
  */
-angular.module('mainAppApp')
+angular.module('ohanaApp')
     .service('DAO', function () {
         // AngularJS will instantiate a singleton by calling "new" on this function
 
