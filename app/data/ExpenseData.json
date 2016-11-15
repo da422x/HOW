@@ -1,0 +1,53 @@
+{
+   "ChapterName" : "MARYLAND CHAPTER" ,
+   "ChapterBill" : [
+    {
+      "BillId" : "MD_11_10_2016_11_12_36_86" , 
+        "Amount" : "5.3",
+        "Description" : "s",
+        "Line" : [ {
+          "Amount" : "0.5",
+          "Description" : "Mileage Rate - Travel @.25/mile",
+          "ID" : "1"
+        }, {
+          "Amount" : "0.8",
+          "Description" : "Trailer Mileage Rate @.40/mile",
+          "ID" : "2"
+        }, {
+          "Amount" : "2",
+          "Description" : "2",
+          "ID" : "3"
+        }, {
+          "Amount" : "2",
+          "Description" : "2",
+          "ID" : "4"
+        } ],
+        "eventdate" : "11/14/2016"
+        },
+    {
+      "BillId" : "MD_11_10_2016_11_15_32_650" , 
+      "Amount" : "7.95",
+        "Description" : "d",
+        "Line" : [ {
+          "Amount" : "0.75",
+          "Description" : "Mileage Rate - Travel @.25/mile",
+          "ID" : "1"
+        }, {
+          "Amount" : "1.2000000000000001",
+          "Description" : "Trailer Mileage Rate @.40/mile",
+          "ID" : "2"
+        }, {
+          "Amount" : "3",
+          "Description" : "3",
+          "ID" : "3"
+        }, {
+          "Amount" : "3",
+          "Description" : "3",
+          "ID" : "4"
+        } ],
+        "eventdate" : "11/08/2016"
+      }
+
+      ]
+    
+}

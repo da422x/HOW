@@ -1,0 +1,63 @@
+<div ng-controller="ViewExpenseCtrl"  ng-init="viewexpensedata()" >
+
+  
+    <!-- | unique:'chapterlist.Chapter'   {{vex.selectedchapter}} {{undefined}} -->
+
+ 
+  <div  >
+ <div  class="  col-xs-12" >
+   <select   class="col-xs-5" ng-model="vex.selected" ng-options="list.Chapter for list in lists"  > 
+    <option  value="">All Chapters</option> 
+  </select> 
+    
+    <span style="margin-bottom: 10px; display: inline-block;">Search:
+    <input ng-model="filterPaidStatus[filterexpense]" 
+    ng-init="filterPaidStatus= {}; filterexpense='Both'" />
+</span> 
+
+      Paid <input type="radio"   ng-model="filterexpense"    value="Paid" /> 
+      UnPaid <input type="radio" ng-model="filterexpense"    value="UnPaid" />  
+      Both <input type="radio"   ng-model="filterexpense"    value="" />        
+  
+    <div>
+
+
+<div class="row" > 
+          <table class="table  table-bordered table-condensed">
+ 
+          <thead class="table_head">
+      <tr>
+        <th  >Chapter</th>
+        <th >Event Date</th>        
+        <th>Bill Amount</th>
+        <th>Description</th>       
+        <th>Payment</th>
+      </tr>
+    </thead>
+        <tbody   ng-repeat="list in lists"  ng-click="setSelected(list.BillId)" 
+        ng-class="{selected: list.BillId === idSelectedBill"  >
+               
+   
+           <tr class="hoverme"    "> 
+
+                 <td class="col-md-4 ">{{list.Chapter}}</td>
+                 <td class="col-md-2"  > <a href="#/expense_detail/{{list.BillId}}">{{list.eventdate}} </a></td>    
+                 <td class="col-md-2 " style="text-align: right">{{list.Amount | currency:'$'}} </td>
+                 <td class="col-md-4">{{list.Description}}</td>   
+                 <td class="col-md-1 " ng-class="{'color-green': list.PaymentStatus === 'paid', 'color-red': list.PaymentStatus ===  'unpaid'  }"> 
+                  <span ng-class="{'color-green': list.PaymentStatus === 'paid', 'color-red': list.PaymentStatus ===  'unpaid'  }"> {{list.PaymentStatus}}</span>
+                 </td>
+               </tr> 
+               
+            </tbody>
+          </table>
+        </div>
+        
+  
+   
+   
+    
+   </div>
+
+ </div>
+    
