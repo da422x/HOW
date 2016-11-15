@@ -16,7 +16,7 @@ angular.module('ohanaApp')
 
 	// Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
-		return firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
+		return firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
 			.then(function() {
 				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');

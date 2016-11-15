@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('NewUserDirectoryFormCtrl', function (commonServices, $scope, $uibModalInstance, Api, selectValues) {
+	.controller('NewUserDirectoryFormCtrl', function ($q, commonServices, $scope, $uibModalInstance, Api, selectValues) {
 		'use strict';
 
 		// calendar options
@@ -112,8 +112,7 @@ angular.module('ohanaApp')
 				$scope.newUserDirectory.name.last == null ||
 				$scope.newUserDirectory.email == null ||
 				$scope.newUserDirectory.password == null ||
-				$scope.newUserDirectory.phone == null ||
-				$scope.newUserDirectory.role == null ) {
+				$scope.newUserDirectory.phone == null) {
 				console.log($scope.newUserDirectory);
 				console.log('ERROR');
 				swal({
@@ -140,9 +139,10 @@ angular.module('ohanaApp')
 				$q.all([results]).then(function(data) {
 					if (data[0]) {
 						// If sign in was successful, send user to events page
-						$rootScope.$broadcast('changeSessionState', 'true');				
-						localStorageService.set('sessionState', 'true');					
-						$state.go('dash.upcomingEvents');
+						// $rootScope.$broadcast('changeSessionState', 'true');				
+						// localStorageService.set('sessionState', 'true');					
+						// $state.go('dash.upcomingEvents');
+
 					}else{
 						// Do something here when sign in unsuccessful....
 						console.log('Login failed...');
