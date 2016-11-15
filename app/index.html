@@ -9,6 +9,9 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/classic.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/classic.date.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/classic.time.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -43,6 +46,10 @@
               <li><a ng-href="#/sign_in">Sign In</a></li>
               <li><a ng-href="#/user_registration">Register Account</a></li>
               <li><a ng-href="#/user_permissions">User Permissions</a></li>
+              <li><a ng-href="#/expense_new">New Expense</a></li>
+              <li><a ng-href="#/expense_view">View Expense</a></li>
+              <li><a ng-href="#/expense">Test Page</a></li>
+                           
             </ul>
           </div>
         </div>
@@ -85,6 +92,8 @@
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <script src="bower_components/mockfirebase/browser/mockfirebase.js"></script>
+    <script src="bower_components/pickadate/lib/picker.time.js"></script>
+    <script src="bower_components/ng-pickadate/ng-pickadate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -98,5 +107,20 @@
         <script src="scripts/services/pageauthinterceptor.js"></script>
         <script src="scripts/services/dao.js"></script>
         <!-- endbuild -->
+
+        <!-- EXPENSE -->
+         <!--script src="bower_components/ng-pickadate/ng-pickadate.js"></script-->
+          <script src="bower_components/pickadate/lib/picker.js"></script>
+          <script src="bower_components/pickadate/lib/picker.date.js"></script>
+          <script src="bower_components/pickadate/lib/legacy.js"></script>
+        <script src="expense/scripts/controllers/createexpense.js"></script>
+        <script src="expense/scripts/controllers/newexpense.js"></script>
+         <script src="expense/scripts/controllers/viewexpense.js"></script>
+        <script src="expense/scripts/controllers/expense.js"></script>
+        <script src="expense/scripts/controllers/expensedetail.js"></script>
+        <script src="expense/scripts/services/expenseservice.js"></script>
+
+        <!--script src="expense/scripts/directives/date.js"></script-->
+        <link rel="stylesheet" href="expense/styles/expense.css" />
 </body>
 </html>
