@@ -15,7 +15,7 @@ angular.module('mainAppApp')
 
   this.expense = {
       BillId: "",
-      Chapter: "MARYLAND CHAPTER",
+      Chapter: "MD",
       eventdate: "",
       SubmitDate: "",
       Description: "",

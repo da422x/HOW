@@ -36,10 +36,11 @@ angular.module('mainAppApp')
                 + currentdate.getMinutes() + "_" 
                 + currentdate.getSeconds() + "_" 
                 + Math.floor((Math.random() * 1000) + 1) ;
-    $scope.exp.SubmitDae = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' +  currentdate.getFullYear();
+    $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' +  currentdate.getFullYear();
     $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * .25;
     $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * .4;
-    $scope.exp.Line.Amount =  (($scope.exp.Line[0].Quantity * .25) + ($scope.exp.Line[1].Quantity * .40) + $scope.exp.Line[2].Amount + $scope.exp.Line[3].Amount)                
+    $scope.exp.Amount =  (($scope.exp.Line[0].Quantity * .25) + ($scope.exp.Line[1].Quantity * .40) + $scope.exp.Line[2].Amount + $scope.exp.Line[3].Amount)
+                
       // var jsonString= ' { "BillId" : "'   + UniqueBillId+ '" , '
       //     + '"Chapter" : "' + this.exp.chaptername + '" , '
       //     + ' "eventdate"' + ': "' + this.exp.eventdate + '" , '
