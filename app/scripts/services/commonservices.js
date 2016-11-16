@@ -178,16 +178,16 @@ angular.module('mainAppApp')
 	};
 
 	this.getPublicEvents = function() {
-		var email = 'public@test.com';
-		var password = '123456';
+		// var email = 'public@test.com';
+		// var password = '123456';
 
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		  var errorCode = error.code;
-		  var errorMessage = error.message;
-		  console.log('ERROR: ' + error.code + ': ' + error.message);
-		});
+		// firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+		//   var errorCode = error.code;
+		//   var errorMessage = error.message;
+		//   console.log('ERROR: ' + error.code + ': ' + error.message);
+		// });
 
-		return firebase.database().ref('events')
+		return firebase.database().ref('/events')
 			.once('value')
 			.then(function(snapshot) {
 				console.log('Data received');
