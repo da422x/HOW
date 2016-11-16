@@ -33,7 +33,7 @@ angular.module('mainAppApp')
     		name: '',
     		phone: ''
     	},
-    	newpassword: '',
+    	password: '',
     	repeatpassword: ''
     }
 
@@ -42,7 +42,7 @@ angular.module('mainAppApp')
     ];
 
     user.registerUser = function(data) {
-    	if (data.newpassword === data.repeatpassword) {
+    	if (data.password === data.repeatpassword) {
     		commonServices.register(data);
     		user.newUser = {role: 'Participant'};
     	} else {
