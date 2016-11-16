@@ -6,8 +6,13 @@
  
   <div  >
  <div  class="  col-xs-12" >
-   <select   class="col-xs-5" ng-model="vex.selected" ng-options="list.Chapter for list in lists"  > 
+   <!--<select   class="col-xs-5" ng-model="vex.selected" ng-options="list.Chapter as chapter for list in lists | unique:list.Chapter"  > 
     <option  value="">All Chapters</option> 
+  </select> -->
+
+   <select  class="col-xs-5" ng-model="listS" ng-change="filterTable(ch)"> 
+    <option value="">All Chapters</option> 
+    <option ng-repeat="chapter in chapters" value="{{chapter}}">{{chapter}}</option>
   </select> 
     
     <span style="margin-bottom: 10px; display: inline-block;">Search:
@@ -35,10 +40,10 @@
       </tr>
     </thead>
         <tbody   ng-repeat="list in lists"  ng-click="setSelected(list.BillId)" 
-        ng-class="{selected: list.BillId === idSelectedBill"  >
+        ng-class="{selected: list.BillId === idSelectedBill}"  >
                
    
-           <tr class="hoverme"    "> 
+           <tr class="hoverme"> 
 
                  <td class="col-md-4 ">{{list.Chapter}}</td>
                  <td class="col-md-2"  > <a href="#/expense_detail/{{list.BillId}}">{{list.eventdate}} </a></td>    
