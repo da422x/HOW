@@ -12,8 +12,12 @@ angular.module('mainAppApp')
 		'use strict';
 
 
-        $scope.eventList = commonServices.getPublicEvents();
 
+        var e = commonServices.getPublicEvents()
+        	.then(function(data){
+        		$scope.eventList = data;
+        		console.log(data);
+        	});
 		// $scope.isDetailView = false;
 		// $scope.howEvent = {
 		// 	currentEvent: null
