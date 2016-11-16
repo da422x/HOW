@@ -62,6 +62,11 @@ angular
        templateUrl: "expense/views/detailexpense.html",
         controller: "ExpenseDetailsCtrl"        ,
         controllerAs: 'dex'
+      })
+      .when('/events',{
+        templateUrl: "views/events.html",
+        controller: "EventsCtrl",
+        controllerAs: "evnt"
       })      
       .otherwise({
         redirectTo: '/'
