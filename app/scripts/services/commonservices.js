@@ -20,8 +20,6 @@ angular.module('ohanaApp')
 			.then(function() {
 				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');
-				delete user.newpassword;
-    			delete user.repeatpassword;
     			firebase.database().ref('/userData/' + userId).set(user)
 					.then(function(data) {
 						console.log('success : user data added');
@@ -130,6 +128,7 @@ angular.module('ohanaApp')
 			});
 	};
 
+	// Adds a key and sets the data to the key based on where the path is.
 	this.pushData = function(path, data) {
 		firebase.database().ref(path).push(data)
 			.then(function(data) {
@@ -141,6 +140,11 @@ angular.module('ohanaApp')
 	  			console.log('ERROR: ' + error.code + ': ' + error.message);
 			});
 	};
+
+	// Adds a key to the designated path, then returns the key. 
+	this.getNewKey = function(path) {
+		return firebase.database().ref(path).push().key
+	}
 
 	// Updates data at given path.
 	this.updateData = function(path, data) {
