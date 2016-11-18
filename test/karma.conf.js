@@ -37,6 +37,7 @@ module.exports = function(config) {
       'bower_components/pickadate/lib/picker.date.js',
       'bower_components/pickadate/lib/picker.time.js',
       'bower_components/ng-pickadate/ng-pickadate.js',
+      'bower_components/jquery-validation/dist/jquery.validate.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

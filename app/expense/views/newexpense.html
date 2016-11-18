@@ -1,9 +1,15 @@
 <!-- form ng-submit="exp.newExpense(exp.newExpense)"-->
 <div ng-controller="NewExpenseCtrl">
+<<<<<<< HEAD
  <h3>Create New Expense </h3>   <h4>by {{exp.email}}</h4>
     <form id="newExpenseform" ng-submit="createnewexpense()" name="newExpenseform" method="post" class="form-horizontal" novalidate>
         <!--div>{{newExpenseform | json}}</div>
         <div>{{exp | json}}</div-->
+=======
+    <form id="newExpenseform" ng-submit="createnewexpense()" name="newExpenseform" method="post" class="form-horizontal" novalidate>
+        <div>{{newExpenseform | json}}</div>
+        <div>{{exp | json}}</div>
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
         <div class="form-group col-xs-4 ">
             <label for="">Event Date</label>
             <div>
@@ -15,7 +21,10 @@
             <div>
                 <input ng-model="exp.Chapter" name="Chapter"  type="text" placeholder="MARYLAND CHAPTER" disabled="true" value="MARYLAND CHAPTER" style="font-size: 8px; background: white" class="form-control" />
                 <input type="text" id=BillId name=BillId ng-model="exp.BillId" value=120 hidden="true" />
+<<<<<<< HEAD
                 <input type="text" id=PaymentStatus name=PaymentStatus ng-model="exp.PaymentStatus" value=120 hidden="true" />
+=======
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
             </div>
         </div>
         <div class="form-group col-xs-4 " style="float: right">
@@ -131,4 +140,7 @@
     });
     </script>
 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9

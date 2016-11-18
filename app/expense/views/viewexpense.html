@@ -8,6 +8,7 @@
  
   <div  >
  <div  class="  col-xs-12" >
+<<<<<<< HEAD
  
  
 
@@ -36,6 +37,25 @@
              title="HOW Expense Report">
  
 
+=======
+   <!--<select   class="col-xs-5" ng-model="vex.selected" ng-options="list.Chapter as chapter for list in lists | unique:list.Chapter"  > 
+    <option  value="">All Chapters</option> 
+  </select> -->
+
+   <select  class="col-xs-5" ng-model="listS" ng-change="filterTable(ch)"> 
+    <option value="">All Chapters</option> 
+    <option ng-repeat="chapter in chapters" value="{{chapter}}">{{chapter}}</option>
+  </select> 
+    
+    <span style="margin-bottom: 10px; display: inline-block;">Search:
+    <input ng-model="filterPaidStatus[filterexpense]" 
+    ng-init="filterPaidStatus= {}; filterexpense='Both'" />
+</span> 
+
+      Paid <input type="radio"   ng-model="filterexpense"    value="Paid" /> 
+      UnPaid <input type="radio" ng-model="filterexpense"    value="UnPaid" />  
+      Both <input type="radio"   ng-model="filterexpense"    value="" />        
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
   
             </div>
         </div>
@@ -77,7 +97,7 @@
         ng-class="{selected: list.BillId === idSelectedBill}"  >
                
    
-           <tr class="hoverme"    "> 
+           <tr class="hoverme"> 
 
                  <td class="col-md-4 ">{{list.Chapter}}</td>
                  <td class="col-md-2"  > {{list.SubmitDate}} </td>    

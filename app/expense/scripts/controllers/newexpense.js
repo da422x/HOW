@@ -15,6 +15,7 @@ angular.module('mainAppApp')
   var user = this;
    $scope.exp = expenseServices.expense;
 
+<<<<<<< HEAD
    //  /////////
 var user = firebase.auth().currentUser;
   firebase.auth().onAuthStateChanged(function(user) {
@@ -33,6 +34,11 @@ var user = firebase.auth().currentUser;
   ///////////////
   $scope.createnewexpense = function()
   {
+=======
+      
+ 	$scope.createnewexpense = function()
+ 	{
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
     $scope.exp.chaptername = "MARYLAND CHAPTER";
     var Line = [];
     var ImageFile = [];
@@ -44,7 +50,10 @@ var user = firebase.auth().currentUser;
     var input = document.getElementById('files');
 
     $scope.exp.Chapter = "MD";
+<<<<<<< HEAD
     $scope.exp.PaymentStatus = "unpaid";
+=======
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
     var currentdate = new Date(); 
     $scope.exp.BillId = $scope.exp.Chapter   + "_"
                 + (currentdate.getMonth()+1)  + "_" 
@@ -57,7 +66,12 @@ var user = firebase.auth().currentUser;
     $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' +  currentdate.getFullYear();
     $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * .25;
     $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * .4;
+<<<<<<< HEAD
     $scope.exp.Amount =  (($scope.exp.Line[0].Quantity * .25) + ($scope.exp.Line[1].Quantity * .40) + $scope.exp.Line[2].Amount + $scope.exp.Line[3].Amount)                
+=======
+    $scope.exp.Amount =  (($scope.exp.Line[0].Quantity * .25) + ($scope.exp.Line[1].Quantity * .40) + $scope.exp.Line[2].Amount + $scope.exp.Line[3].Amount)
+                
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
       // var jsonString= ' { "BillId" : "'   + UniqueBillId+ '" , '
       //     + '"Chapter" : "' + this.exp.chaptername + '" , '
       //     + ' "eventdate"' + ': "' + this.exp.eventdate + '" , '
@@ -117,7 +131,11 @@ var user = firebase.auth().currentUser;
  // alert(jsonString);
       var datalocation = 'expense/' ;  
       
+<<<<<<< HEAD
       firebase.database().ref(datalocation).push($scope.exp)//JSON.parse(jsonString))
+=======
+    	firebase.database().ref(datalocation).push($scope.exp)//JSON.parse(jsonString))
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
       .then(function(jsonString) {
           
         console.log('success : data pushed');  
