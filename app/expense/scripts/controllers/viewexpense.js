@@ -8,7 +8,6 @@
  * Controller of the mainAppApp
  */
 angular.module('mainAppApp')
-<<<<<<< HEAD
   .controller('ViewExpenseCtrl',  function($scope, $filter) {
     //['$scope' , '$filter', function($scope, $filter) {
 //function($scope, $filter) {
@@ -284,45 +283,16 @@ $scope.filterPaidStatus = function() {
 	console.log('Paid Status filter');
   };
  
-=======
-  .controller('ViewExpenseCtrl', function ($scope, $filter) {
 
-    var originalList = [];
-    $scope.listS = "";
-    $scope.lists = {};
 
-    $scope.filterChapters = function (input) {
-      var res = [];
-      if (Object.keys(input).length !== 0) {
+$scope.idSelectedBill = null;
+$scope.setSelected = function (idSelectedBill) {
+  $scope.idSelectedBill = idSelectedBill;
+  	//alert($scope.idSelectedBill); 
+};
 
-        Object.keys(input).forEach(function (ele, idx, arr) {
-          if (res.indexOf(input[ele].Chapter) == -1) {
-            res.push(input[ele].Chapter)
-          }
-        })
-        console.log(res);
-        return res;
-      }
-    }
+  
 
-    $scope.filterTable = function () {
-      if ($scope.listS) {
-        var temp = {};
-        Object.keys(originalList).forEach(function (ele) {
->>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
-
-          if (originalList[ele].Chapter == $scope.listS)
-            temp[ele] = originalList[ele];
-        })
-
-        $scope.lists = temp;
-      }
-      else
-        $scope.lists = originalList;
-
-    }
-
-<<<<<<< HEAD
 
 } );
  
@@ -365,33 +335,3 @@ $scope.filterPaidStatus = function() {
 //     }
 
     
-=======
-    $scope.viewexpensedata = function () {
-
-      var ref = firebase.database().ref('/expense').on('value', function (snapshot) {
-
-        $scope.lists = originalList = snapshot.val();
-        console.log("sample", originalList);
-        $scope.chapters = $scope.filterChapters(snapshot.val())
-        $scope.$applyAsync();  //added to avoid lag in ng-repeat update on load
-      })
-    }
-
-
-    $scope.filterPaidStatus = function () {
-      //$scope.counter++;
-      console.log('Paid Status filter');
-    };
-
-
-
-    $scope.idSelectedBill = null;
-    $scope.setSelected = function (idSelectedBill) {
-      $scope.idSelectedBill = idSelectedBill;
-      //alert($scope.idSelectedBill); 
-    };
-
-
-
-  });
->>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
