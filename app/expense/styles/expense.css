@@ -90,6 +90,12 @@ background-color:green;
     margin:10px;
   }
 
+.format_button_small {
+    width:20%;
+    margin:10px;
+  }
+
+
 .format_button_med {
     width:40%;
     margin:10px;

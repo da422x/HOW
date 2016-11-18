@@ -17,13 +17,20 @@ angular.module('mainAppApp')
   var ref = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
   //alert($routeParams.BillId);   
   $scope.vimageurl=[];
-
+ $scope.isdisabled = false;
    ref.on('value', function(snapshot) { 
    //	$scope.$apply(function(){
      $scope.expense =snapshot.val();
+
        $scope.$applyAsync();
       var imageList = [];
     angular.forEach($scope.expense, function(item){
+         if(item.PaymentStatus == 'paid')
+          {
+            $scope.isdisabled = true;
+            $scope.paymentstatusbtn.value = "Expense Paid";
+             
+          };
          $scope.vimageurl = item.ImageURL; 
             //alert(item.ImageURL[0].FileName);
             // alert(item.ImageURL.length);
@@ -116,62 +123,44 @@ angular.module('mainAppApp')
    $scope.updateexpense = function(billid)
   {
 
- 
-      //failed-1
-      // var updateref = firebase.database().ref('expense').child(BillId(billid));
-      //   updateref.set({ BillId: billid, Description: this.dexedit.Description });
-
-      var updateref = firebase.database().ref('expense').orderByChild("BillId").equalTo(billid);
-     updateref.set({ BillId: billid, Description: this.dexedit.Description });
-
-      // updateref.ref().child("Description").update(this.dexedit.Description);
-alert(billid); 
-   
-   //failed-3
-    /*var updateref = firebase.database().ref('expense').orderByChild("BillId").equalTo(billid);
-    var updateObject = { 'Description' : this.dexedit.Description  };
-     updateref.ref().update(updateObject);
-     alert(updateObject ); 
-     updateref.ref().child('Description').update('updateObject');*/
-
-
-   /*  alert(this.dexedit.Description);
-    var vdesc = this.dexedit.Description;
-    var updateObject = { };
-    updateObject = { 'Description' : this.dexedit.Description  };
-        alert("update done");
-
-     var updates = {};
+    
+    var self = this;
      firebase.database().ref('expense').orderByChild("BillId").equalTo(billid)
      .on("child_added", function(snapshot) {
-      alert(snapshot.key);
-            updates["expense/"+snapshot.key+"/Description"] = "update done finally";
-      });
-      snapshot.ref().update(updates);
-  
+      // snapshot = metdata + object (val)    
+      // snapshot.Description = self.dexedit.Description
+      //  console.log("log  log  22 ", snapshot, snapshot.val(), snapshot.key);
+      var temp = snapshot.val();
+      temp["Description"] = self.dexedit.Description;         
 
-    // updateref.put("Description", "COMPLETED"); ref.on('value',
-     updateref.on('value', function(snapshot) { 
-        alert(snapshot.Description.length);
-        alert(snapshot.val());
-      alert("update done entry ");
-        snapshot.update({ 'Description' : vdesc  }).catch(function(error) {
-              alert("ERROR: " + error);
-              });
-        alert("update done last ");
-      }).catch(function(error) {
-        alert("ERROR 2: " + error);
-    });
- */
-     //update(updateObject);
-      //{ 'Description' : vdesc  }); 
-     alert("update donewww ");
+      firebase.database().ref('expense/'+snapshot.key).update(temp);
+      //.set(temp);
+       
+      });
+  
+     alert("Expense Successfully Updated ");
 
   }
 
    $scope.UpdatePaymentStatus = function(billid)
   {
     alert(billid);
+
+    var self = this;
+     firebase.database().ref('expense').orderByChild("BillId").equalTo(billid)
+     .on("child_added", function(snapshot) {
+      // snapshot = metdata + object (val)    
+      // snapshot.Description = self.dexedit.Description
+      //  console.log("log  log  22 ", snapshot, snapshot.val(), snapshot.key);
+      var temp = snapshot.val();
+      temp["PaymentStatus"] = 'paid';         
+
+      firebase.database().ref('expense/'+snapshot.key).update(temp);
+      //.set(temp);
+       
+      });
+  
+     alert("Payment Status Updated ");
 
   }
 
