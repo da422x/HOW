@@ -11,6 +11,18 @@
   }
  
 
+.ng-valid       {  }
+.form-control.ng-invalid.ng-touched     { border:1px solid #ff0000 }
+.ng-pristine    {  }
+.ng-dirty       {  }
+.ng-touched     {  }
+.balance.ng-invalid{border:1px solid red}
+
+/* really specific css rules applied by angular */
+.ng-invalid-required        {  }
+.ng-invalid-minlength       {  }
+.ng-valid-max-length        {  }
+
 
 /* 
 * Expense Creation form fields

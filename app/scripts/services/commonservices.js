@@ -16,12 +16,10 @@ angular.module('mainAppApp')
 
 	// Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
-		firebase.auth().createUserWithEmailAndPassword(user.email, user.newpassword)
+		return firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
 			.then(function() {
 				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');
-				delete user.newpassword;
-    			delete user.repeatpassword;
     			firebase.database().ref('/userData/' + userId).set(user)
 					.then(function(data) {
 						console.log('success : user data added');
@@ -30,31 +28,35 @@ angular.module('mainAppApp')
 							name: user.name,
 							email: user.email
 						});
+						return true;
 					})
 					.catch(function(error) {
 						var errorCode = error.code;
 			  			var errorMessage = error.message;
 			  			console.log('ERROR: ' + error.code + ': ' + error.message);
+			  			return false;
 					});
 			})
 			.catch(function(error) {
 	  			var errorCode = error.code;
 	  			var errorMessage = error.message;
 	  			console.log('ERROR: ' + error.code + ': ' + error.message);
+	  			return false;
 			});
 	};
 
 	// Signs in existing user into the application, requires valid email and password.
 	this.signin = function(user) {
-		firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+		return firebase.auth().signInWithEmailAndPassword(user.email, user.password)
 			.then(function(data) {
 				console.log('success : ' + firebase.auth().currentUser.email + ' signed In');
-				$rootScope.signedIn = true;
+				return true;
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
 	  			var errorMessage = error.message;
 	  			console.log('ERROR: ' + error.code + ': ' + error.message);
+	  			return false;
 			});
 
 	};
@@ -172,6 +174,31 @@ angular.module('mainAppApp')
 			.once('value')
 			.then(function(snapshot) {
 				return snapshot.val();
+			});
+	};
+
+	this.getPublicEvents = function() {
+		// var email = 'public@test.com';
+		// var password = '123456';
+
+		// firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+		//   var errorCode = error.code;
+		//   var errorMessage = error.message;
+		//   console.log('ERROR: ' + error.code + ': ' + error.message);
+		// });
+
+		return firebase.database().ref('/events')
+			.once('value')
+			.then(function(snapshot) {
+				console.log('Data received');
+				return snapshot.val();
+			})
+			.catch(function(error){
+				console.log('uh oh');
+
+				var errorCode = error.code;
+	  			var errorMessage = error.message;
+				console.log('ERROR: ' + error.code + ': ' + error.message);
 			});
 	};
 

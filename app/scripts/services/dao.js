@@ -54,6 +54,7 @@ angular.module('mainAppApp')
             //for events, we should implement a set of hardcoded color css classes so we 
             //can visually show how soon the event is.
             //images is an array of objects with a name and url for the location of the image
+            this.isNational = false; // setting default to false for most chapters aren't national, but this'll enable national to "move" to a different chapter location
             this.users = null;
             this.location = {
                 address: null,
@@ -63,6 +64,11 @@ angular.module('mainAppApp')
                 zip: null
             };
             this.staff = {};
+
+            //for events, we should implement a set of hardcoded color css classes so we 
+            //can visually show how soon the event is.
+            //images is an array of objects with a name and url for the location of the image
+            //eventSpecialists are mostly LTMs, but could be how national staff. 
             this.events = {
                 title: null,
                 allDay: null,
@@ -72,9 +78,11 @@ angular.module('mainAppApp')
                 name: null,
                 data: null,
                 images: {},
-                participants: null,
-                volunteers: null,
-                LTMs: null,
+                event_participants: null,
+                event_volunteers: null,
+                event_staff: null,
+                registration_open_date: null,
+                registration_close_date: null,
                 location: {
                     address: null,
                     address2: null,
@@ -84,6 +92,7 @@ angular.module('mainAppApp')
                 }
             };
             this.reports = {};//list of reports that are under a chapter. report types may vary
+            this.donation = {}//array of donations i.e. { id: {dateAdded:, dateCompleted, uid, status}} status is for inProgress, completed
 
 
             if (arguments.length == 1) {

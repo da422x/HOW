@@ -58,17 +58,27 @@ angular
        templateUrl: "expense/views/detailexpense.html",
         controller: "ExpenseDetailsCtrl"        ,
         controllerAs: 'dex'
+      })
+      .when('/events',{
+        templateUrl: "views/events.html",
+        controller: "EventsCtrl",
+        controllerAs: "evnt"
       })      
       .otherwise({
         redirectTo: '/expense_view'
       });
   }).run(function($rootScope, $firebaseAuth){
+<<<<<<< HEAD
    /*  var config = {
+=======
+    var config = {
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
       apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
       authDomain: "herosonthewater-55a79.firebaseapp.com",
       databaseURL: "https://herosonthewater-55a79.firebaseio.com",
       storageBucket: "herosonthewater-55a79.appspot.com",
       messagingSenderId: "183234806884"
+<<<<<<< HEAD
     }; */
  
       var config = {
@@ -78,6 +88,17 @@ angular
     storageBucket: "lawpublicpolicy-4c61a.appspot.com",
    messagingSenderId: "509725809794"  
   };  
+=======
+    };
+ 
+  //    var config = {
+  //   apiKey: "AIzaSyDZuVC4DCb428-7_t09Y5WuoL6U4LDQdsk",
+  //   authDomain: "lawpublicpolicy-4c61a.firebaseapp.com",
+  //   databaseURL: "https://lawpublicpolicy-4c61a.firebaseio.com",
+  //   storageBucket: "lawpublicpolicy-4c61a.appspot.com",
+  //  messagingSenderId: "509725809794"  
+  // };
+>>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
   
     if (firebase.apps.length === 0) {
       firebase.initializeApp(config);
