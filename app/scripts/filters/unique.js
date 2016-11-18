@@ -10,10 +10,6 @@
  */
 angular.module('mainAppApp')
   .filter('unique', function () {
-<<<<<<< HEAD
-    return function (input) {
-      return 'unique filter: ' + input;
-=======
     var res = [];
     return function (input, a) {
       if (Object.keys(input).length !== 0) {
@@ -29,6 +25,5 @@ angular.module('mainAppApp')
       else
         return false;
 
->>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
     };
   });
