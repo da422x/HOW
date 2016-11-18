@@ -1,0 +1,103 @@
+<div ng-controller="ViewExpenseCtrl"  ng-init="viewexpensedata()"  >
+<form id="viewExpenseform"  name="viewExpenseform" method="post" class="form-horizontal" novalidate>
+<h2>View Expense </h2>
+  
+    <!-- | unique:'chapterlist.Chapter'   {{vex.selectedchapter}} {{undefined}} 
+    ng-init="viewexpensedata()" -->
+ 
+ 
+  <div  >
+ <div  class="  col-xs-12" >
+ 
+ 
+
+<div class="form-group col-xs-12 ">
+     <div class="form-group col-xs-5 ">
+                       
+            <select  class="form-control" ng-model="listS" ng-change="filterTable(ch)"> 
+                 <option ng-repeat="chapter in chapters" value="{{chapter}}">{{chapter}}</option>
+                  <option value="" selected="true">All Chapters</option> 
+             </select>  
+             
+     </div>
+            <div class="form-group col-xs-3">
+                <label for="">Search From</label>                
+             
+                    <input ng-model="vex.startdate" type="text" class="form-control" name="startdate" id="startdate" ng-required="true" style="background: white"/>
+             
+            </div>
+            <div class="form-group col-xs-3 ">
+                <label for="">TO</label>
+             <input ng-model="vex.enddate" type="text" class="form-control" name="enddate" id="enddate" ng-required="true" style="background: white"/>
+            </div>
+
+          <div class="form-group col-xs-3 ">
+             <img src="expense/images/pdf.png"  width="40%" height="40%" ng-click="CreateExpenseReport()">
+ 
+
+  
+            </div>
+        </div>
+
+ 
+        
+  <script>
+    $(document).ready(function() {
+        $('#startdate').pickadate({
+            format: 'mm/dd/yyyy',
+            formatSubmit: 'mm/dd/yyyy',
+            hiddenName: true
+        });
+         $('#enddate').pickadate({
+            format: 'mm/dd/yyyy',
+            formatSubmit: 'mm/dd/yyyy',
+            hiddenName: true
+        });
+
+          });
+        </script>    
+
+</form>
+
+<div class="row" > 
+          <table class="table  table-bordered table-condensed">
+ 
+          <thead class="table_head">
+      <tr>
+        <th  >Chapter</th>
+         <th >Submit Date</th>  
+        <th >Event Date</th>        
+        <th>Bill Amount</th>
+        <th>Description</th>       
+        <th>Payment</th>
+      </tr>
+    </thead>
+        <tbody   ng-repeat="list in lists"  ng-click="setSelected(list.BillId)" 
+        ng-class="{selected: list.BillId === idSelectedBill}"  >
+               
+   
+           <tr class="hoverme"    "> 
+
+                 <td class="col-md-4 ">{{list.Chapter}}</td>
+                 <td class="col-md-2"  > {{list.SubmitDate}} </td>    
+                 
+                 <td class="col-md-2"  > <a href="#/expense_detail/{{list.BillId}}">{{list.eventdate}} </a></td>    
+                 <td class="col-md-2 " style="text-align: right">{{list.Amount | currency:'$'}} </td>
+                 <td class="col-md-4">{{list.Description}}</td>   
+                 <td class="col-md-1 " ng-class="{'color-green': list.PaymentStatus === 'paid', 'color-red': list.PaymentStatus ===  'unpaid'  }"> 
+                  <span ng-class="{'color-green': list.PaymentStatus === 'paid', 'color-red': list.PaymentStatus ===  'unpaid'  }"> {{list.PaymentStatus}}</span>
+                 </td>
+               </tr> 
+               
+            </tbody>
+          </table>
+        </div>
+        
+  
+   
+   
+    
+   </div>
+
+ </div>
+    

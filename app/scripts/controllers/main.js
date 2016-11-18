@@ -16,7 +16,7 @@ angular.module('mainAppApp')
     		name: '',
     		uid: ''
     	};
-    	main.users = {};//hai
+    	main.users = {};//hai test2
 
         var tiki = new commonServices.DAO.userData({address:'thaddeus house', gender: 'M'});
         console.log(tiki.address)
