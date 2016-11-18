@@ -14,20 +14,12 @@ angular.module('mainAppApp')
 
   this.expense = {
       BillId: "",
-<<<<<<< HEAD
       Chapter: "MARYLAND CHAPTER",       
       eventdate: "",
       email:"",
       SubmitDate: "",
       Description: "",
       PaymentStatus: "unpaid",
-=======
-      Chapter: "MD",
-      eventdate: "",
-      SubmitDate: "",
-      Description: "",
-      PaymentStatus: "",
->>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
       Amount: 0,
       ImageURL:[],
       Line: [{
@@ -78,13 +70,10 @@ this.addNewList = function(line){
       BillId: _billid
     })[0];
   };
-<<<<<<< HEAD
 
 
  this.getExpenseChapterList = function () {
   return Chapterlist;
  }
 
-=======
->>>>>>> 9947ddccd66b04338b4d5a83c6a773c554d479d9
 })

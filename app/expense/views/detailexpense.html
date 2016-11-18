@@ -1,5 +1,5 @@
 <div ng-controller="ExpenseDetailsCtrl" ng-init="loadexpensedata()">
-<h1>Expense Detail</h1>
+
 <a ng-href="#/expense_view" class="btn btn-primary format_button_sm">Go Back to Expense List</a>
   <form id="ExpenseDetailUpdate" method="post" class="form-horizontal" > 
  
@@ -162,8 +162,7 @@
      <a ng-href='#here' class="btn btn-primary format_button_sm"  ng-click='updateexpense(dexedit.BillId)' >Save Expense</a>
      <a ng-href='#here' class="btn btn-primary format_button_small"  ng-click='getselecteddate(dexedit.newExpense)' >Cancel</a>
  
-    <input id=paymentstatusbtn name=paymentstatusbtn type=button ng-click='UpdatePaymentStatus(dexedit.BillId)' 
-    ng-disabled="isdisabled"
+    <input id=paymentstatusbtn name=paymentstatusbtn type=button ng-click='UpdatePaymentStatus(dexedit.BillId)' ng-disabled="isdisabled"
     class="btn btn-primary format_button_med" value="Verified and Payment Approved" />
       
 
