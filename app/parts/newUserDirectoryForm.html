@@ -50,7 +50,7 @@
 			<div class="form-group"> 
 			    <label for="" class="col-md-4 control-label">State*</label> 
 			    <div class="col-md-7"> 
-				    <select ng-options="state as state.name for state in states" class="form-control input-md" ng-model="selected"></select> 
+				    <select ng-options="state as state.name for state in states" class="form-control input-md" ng-model="newUserDirectory.address.state"></select> 
 				</div> 
 			</div>
 
@@ -105,24 +105,21 @@
 			</div>
 
 			<!-- Select - Region -->
-			<!-- <div class="form-group">
+			<div class="form-group">
 				<label class="col-md-4 control-label" for="region">Region*</label>
 				<div class="col-md-7">
-					<select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
-						<option value=""></option>
+					<select id="region" name="region" class="form-control" ng-options="region as region.name for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
 					</select>
 				</div>
 			</div>
 
-			Dropdown - Chapter
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="chapter">Chapter*</label>
 				<div class="col-md-7">
-					<select id="chapter" name="chapter" class="form-control" ng-model="newUserDirectory.chaptertemp" ng-options="chapter as chapter.value for chapter in chapters">
-						<option value=""></option>
+					<select id="chapter" name="chapter" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters">
 					</select>
 				</div>
-			</div> -->
+			</div>
 
 			<!-- Text - Service background -->
 			<div class="form-group">
