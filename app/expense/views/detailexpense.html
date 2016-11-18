@@ -1,6 +1,6 @@
 <div ng-controller="ExpenseDetailsCtrl" ng-init="loadexpensedata()">
-
-<a ng-href="#/expense_view" class="btn btn-primary format_button_med">Go Back to Expense List</a>
+<h1>Expense Detail</h1>
+<a ng-href="#/expense_view" class="btn btn-primary format_button_sm">Go Back to Expense List</a>
   <form id="ExpenseDetailUpdate" method="post" class="form-horizontal" > 
  
 <div  ng-repeat="dexedit in expense">
@@ -18,8 +18,8 @@
   <div  class="form-group col-xs-4 " style="float: middle">
    <label for="">Chapter Name</label>       
          <div>
-        <input type="text"   ng-value="MARYLAND CHAPTER"   placeholder="MARYLAND CHAPTER" 
-            disabled="true" value="MARYLAND CHAPTER"  style="font-size: 8px; background: white" 
+        <input type="text"   ng-value=""   placeholder="" 
+            disabled="true" value=""  style=" background: white" 
             class="form-control"  ng-model="dexedit.Chapter" />
             <input type="text"   ng-model="dexedit.BillId" value=120 hidden="true" /> 
              
@@ -118,7 +118,7 @@
 
         <div id="selectedFiles"></div>
 
-        <input type="submit"   ">
+        <input type="submit"  hidden>
   </div>
 
  <div id="imagedisplay" class="form-group col-xs-12 " >
@@ -158,11 +158,16 @@
 
        </div>
     </div>
-
+<div  class="form-group col-xs-12 ">
      <a ng-href='#here' class="btn btn-primary format_button_sm"  ng-click='updateexpense(dexedit.BillId)' >Save Expense</a>
-    <a ng-href='#here' class="btn btn-primary format_button_sm"  ng-click='getselecteddate(dexedit.newExpense)' >Cancel</a>
+     <a ng-href='#here' class="btn btn-primary format_button_small"  ng-click='getselecteddate(dexedit.newExpense)' >Cancel</a>
  
-      <a ng-href='#here' class="btn btn-primary format_button_med"  ng-click='UpdatePaymentStatus(dexedit.BillId)' >Verified and Payment Approved</a>
+    <input id=paymentstatusbtn name=paymentstatusbtn type=button ng-click='UpdatePaymentStatus(dexedit.BillId)' 
+    ng-disabled="isdisabled"
+    class="btn btn-primary format_button_med" value="Verified and Payment Approved" />
+      
+
+    </div>
 </form>
  <script src="expense/scripts/FileLoad.js"></script>
  

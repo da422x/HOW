@@ -41,11 +41,7 @@ angular
         controller: 'UserPermissionsCtrl',
         controllerAs: 'up'
       })
-      .when('/expense', {
-        templateUrl: 'expense/views/expense.html',
-        controller: 'ExpenseCtrl',
-        controllerAs: 'vexp'
-      })
+       
        
         .when('/expense_new', {
         templateUrl: 'expense/views/newexpense.html',
@@ -64,24 +60,24 @@ angular
         controllerAs: 'dex'
       })      
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/expense_view'
       });
   }).run(function($rootScope, $firebaseAuth){
-    /*  var config = {
+   /*  var config = {
       apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
       authDomain: "herosonthewater-55a79.firebaseapp.com",
       databaseURL: "https://herosonthewater-55a79.firebaseio.com",
       storageBucket: "herosonthewater-55a79.appspot.com",
       messagingSenderId: "183234806884"
-    };*/
+    }; */
  
-     var config = {
+      var config = {
     apiKey: "AIzaSyDZuVC4DCb428-7_t09Y5WuoL6U4LDQdsk",
     authDomain: "lawpublicpolicy-4c61a.firebaseapp.com",
     databaseURL: "https://lawpublicpolicy-4c61a.firebaseio.com",
     storageBucket: "lawpublicpolicy-4c61a.appspot.com",
    messagingSenderId: "509725809794"  
-  };
+  };  
   
     if (firebase.apps.length === 0) {
       firebase.initializeApp(config);
