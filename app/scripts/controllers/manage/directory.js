@@ -13,11 +13,11 @@ angular.module('ohanaApp')
 		'use strict';
 
 		$scope.buildTable = function (results) {
-			console.log(results);
 			var i;
 			var packet;
 			var dataSet = dataGridUtil.buildMembersTableData(results);
 			$scope.currId = ""; // holds value of the current row's member Id for CRUD ops
+			$scope.checkedBoxes = [];
 
 			console.log(dataSet);
 
@@ -39,8 +39,8 @@ angular.module('ohanaApp')
 					columns: [
 						{},
 						{
-							title: "ID",
-							data	: "key"
+							title: "KEY",
+							data: "key"
 						},
 						{
 							title: "First Name",
@@ -96,8 +96,8 @@ angular.module('ohanaApp')
 							searchable: false,
 							orderable: false,
 							className: 'dt-body-center',
-							render: function (data) {
-								return '<input type="checkbox" id="membersTable-select" value="' + $('<div/>').text(data).html() + '">';
+							render: function () {
+								return '<input type="checkbox" id="membersTable-select">';
 							}
 						}, {
 							targets: 3,
@@ -112,16 +112,17 @@ angular.module('ohanaApp')
 						$(thead).find('th').eq(0).html('<input type="checkbox" id="membersTable-select-all">');
 					},
 					rowCallback: function (row, data, index) {
+						$(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
 						$(row).children().eq(1).addClass('tdFname');
 						$(row).children().eq(2).addClass('tdLname');
 						$(row).children().eq(3).addClass('tdDob');
 						$(row).children().eq(4).addClass('tdEmail'); // email checking disabled
 						$(row).children().eq(5).addClass('tdTelly'); // phone # checking disabled
 						$(row).children().eq(6).addClass('tdSelectRole');
-//						$(row).children().eq(7).addClass('tdSelectRegion');
-						$(row).children().eq(7).addClass('tdSelectChapter');
-						$(row).children().eq(8).addClass('tdMil');
-						$(row).children().eq(9).addClass('tdNotes');
+						$(row).children().eq(7).addClass('tdSelectRegion');
+						$(row).children().eq(8).addClass('tdSelectChapter');
+						$(row).children().eq(9).addClass('tdMil');
+						$(row).children().eq(10).addClass('tdNotes');
 						for (i = 1; i < 10; i++) {
 							$(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
 						}
@@ -130,9 +131,20 @@ angular.module('ohanaApp')
 					drawCallback: function (settings) {
 						// set currentId to user being edited
 						$('#membersTable').on('click', 'tr', function () {
-							$scope.currId = $scope.membersTable.row(this).id();
-//							console.log($scope.currId);
-//							console.log($scope.membersTable.row(this));
+							$scope.currId = $(this).find('input[type="checkbox"]').val();
+							console.log($scope.currId);
+
+							if ($(this).find('input[type="checkbox"]').is(':checked')) {
+								$scope.checkedBoxes.push($scope.currId);
+							}else{
+								for (var i = 0; i < $scope.checkedBoxes.length; i++) {
+									if ($scope.checkedBoxes[i] === $scope.currId) {
+										$scope.checkedBoxes.splice(i, 1);
+									}
+								}
+							}
+
+							console.log($scope.checkedBoxes);
 						});
 						// editable field definitions and CRUD ops
 						$('#membersTable .tdFname a').editable({
@@ -291,52 +303,52 @@ angular.module('ohanaApp')
 								}
 							]
 						});
-//						$('#membersTable .tdSelectRegion a').editable({
-//							type: "select",
-//							name: "region",
-//							placement: "bottom",
-//							emptytext: "null",
-//							showbuttons: false,
-//							url: function (params) {
-//								var packet = {
-//									member_id: $scope.currId,
-//									region: params.value
-//								};
-//								Api.member.update(packet,
-//									function (successMsg) {
-//										console.log('heyo');
-//									},
-//									function (errorMsg) {
-//										console.log('error');
-//									});
-//							},
-//							source: [
-//								{
-//									value: 'northeast',
-//									text: 'Northeast'
-//								},
-//								{
-//									value: 'midatlantic',
-//									text: 'Mid-Atlantic'
-//								},
-//								{
-//									value: 'midwest',
-//									text: 'Midwest'
-//								},
-//								{
-//									value: 'southeast',
-//									text: 'Southeast'
-//								},
-//								{
-//									value: 'southwest',
-//									text: 'Southwest'
-//								},
-//								{
-//									value: 'west',
-//									text: 'West'
-//								}
-//							]
-//						});
+						$('#membersTable .tdSelectRegion a').editable({
+							type: "select",
+							name: "region",
+							placement: "bottom",
+							emptytext: "null",
+							showbuttons: false,
+							url: function (params) {
+								var packet = {
+									member_id: $scope.currId,
+									region: params.value
+								};
+								Api.member.update(packet,
+									function (successMsg) {
+										console.log('heyo');
+									},
+									function (errorMsg) {
+										console.log('error');
+									});
+							},
+							source: [
+								{
+									value: 'northeast',
+									text: 'Northeast'
+								},
+								{
+									value: 'midatlantic',
+									text: 'Mid-Atlantic'
+								},
+								{
+									value: 'midwest',
+									text: 'Midwest'
+								},
+								{
+									value: 'southeast',
+									text: 'Southeast'
+								},
+								{
+									value: 'southwest',
+									text: 'Southwest'
+								},
+								{
+									value: 'west',
+									text: 'West'
+								}
+							]
+						});
 						$('#membersTable .tdSelectChapter a').editable({
 							type: "select",
 							name: "chapter",
@@ -433,7 +445,7 @@ angular.module('ohanaApp')
 				var users = [];
 				var roles = [];
 				var i = 0;
-				
+
 				_.each(userData[1], function(value) {
 					roles.push(value.role);
 				});
@@ -461,20 +473,11 @@ angular.module('ohanaApp')
 		}; // end $scope.add
 
 		$scope.remove = function () {
-			var j, k;
-			var rows = $scope.membersTable.rows({
-					'search': 'applied'
-				}).nodes(),
-				checkedRows = [];
-			for (j = 0; j < rows.length; j++) {
-				// console.log($('input[type="checkbox"]', rows[i]).prop('checked'));
-				if ($('input[type="checkbox"]', rows[j]).prop('checked')) {
-					checkedRows.push($scope.dataStack[j]);
-				}
-			}
-			// console.log(checkedRows.length);
+					
+			console.log($scope.checkedBoxes.length);
+			console.log($scope.checkedBoxes);
 
-			if (checkedRows.length === 0) {
+			if ($scope.checkedBoxes.length === 0) {
 				swal('', 'No records selected!', 'warning');
 			} else {
 				swal({
@@ -486,16 +489,17 @@ angular.module('ohanaApp')
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes, delete it!'
 				}).then(function () {
-					for (k = 0; k < checkedRows.length; k++) {
+					for (k = 0; k < $scope.checkedBoxes; k++) {
 						// var d = Api.member.get({id: checkedRows[i].id}, function() {
 						//   d.$delete(function() {
 						//	 console.log('deleting user id ' + checkedRows[i].id);
 						//   });
 						// });
 						// console.log(Api.member.$delete(checkedRows[i].id.$delete());
-						console.log(Api.member.remove({
-							member_id: checkedRows[k].id
-						}));
+						// console.log(Api.member.remove({
+						// 	member_id: checkedRows[k].id
+						// }));
+						console.log($scope.checkedBoxes[k]);
 					}
 					swal('Deleted!', 'Your file has been deleted.', 'success');
 
