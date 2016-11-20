@@ -18,8 +18,6 @@ angular.module('ohanaApp')
 			var resultsLen = results.length;
 			var gridData = [];
 
-			console.log(results);
-
 			// build members data table from http response
 			for (var i = 0; i < resultsLen; i++) {
 				var arr = {};
