@@ -148,10 +148,12 @@ angular.module('ohanaApp')
 					branch: $scope.newUserDirectory.branch,
 					email: $scope.newUserDirectory.email,
 					gender: $scope.newUserDirectory.gender,
+					DOB: $scope.newUserDirectory.DOB,
 					phone: $scope.newUserDirectory.phone,
 					years: $scope.newUserDirectory.years,
 					Region: $scope.newUserDirectory.region.name,
-					Chapter: $scope.newUserDirectory.chapter
+					Chapter: $scope.newUserDirectory.chapter,
+					password: $scope.newUserDirectory.password
 				};
 
 				console.log(packet);

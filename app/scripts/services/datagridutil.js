@@ -21,9 +21,9 @@ angular.module('ohanaApp')
 			// build members data table from http response
 			for (var i = 0; i < resultsLen; i++) {
 				var arr = {};
-				arr.DT_RowId = results[i].id;
-				arr.first_name = results[i].first_name;
-				arr.last_name = results[i].last_name;
+				arr.key = results[i].key;
+				arr.first = results[i].name.first;
+				arr.last = results[i].name.last;
 				var dobparse = new Date(results[i].DOB);
 				var endob = dobparse.toLocaleDateString('en-US', {
 					year: 'numeric',
@@ -32,14 +32,14 @@ angular.module('ohanaApp')
 				});
 				arr.dob = endob;
 				arr.email = results[i].email;
-				arr.mobile_number = results[i].mobile_number;
+				arr.phone = results[i].phone;
 				arr.role = results[i].role;
-//				arr.region = results[i].region;
-				arr.chapter = results[i].chapter.name;
-				if (results[i].military_affiliation) {
-					arr.military_affiliation = results[i].military_affiliation;
+				arr.region = results[i].Region;
+				arr.chapter = results[i].Chapter;
+				if (results[i].branch) {
+					arr.branch = results[i].branch;
 				} else {
-					arr.military_affiliation = "";
+					arr.branch = "";
 				}
 				if (results[i].notes) {
 					arr.notes = results[i].notes;

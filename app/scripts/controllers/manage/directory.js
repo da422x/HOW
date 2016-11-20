@@ -9,15 +9,17 @@
  * Controller of management console - directory
  */
 angular.module('ohanaApp')
-	.controller('DirectoryCtrl', function ($scope, $uibModal, Api, dataGridUtil, selectValues) {
+	.controller('DirectoryCtrl', function ($q, commonServices, $scope, $uibModal, Api, dataGridUtil, selectValues) {
 		'use strict';
 
 		$scope.buildTable = function (results) {
-			// console.log(results);
+			console.log(results);
 			var i;
 			var packet;
 			var dataSet = dataGridUtil.buildMembersTableData(results);
 			$scope.currId = ""; // holds value of the current row's member Id for CRUD ops
+
+			console.log(dataSet);
 
 			angular.element(document).ready(function () {
 				//toggle `popup` / `inline` mode
@@ -38,15 +40,15 @@ angular.module('ohanaApp')
 						{},
 						{
 							title: "ID",
-							data	: "DT_RowId"
+							data	: "key"
 						},
 						{
 							title: "First Name",
-							data: "first_name"
+							data: "first"
 						},
 						{
 							title: "Last Name",
-							data: "last_name"
+							data: "last"
 						},
 						{
 							title: "DOB",
@@ -59,24 +61,24 @@ angular.module('ohanaApp')
 						},
 						{
 							title: "Mobile #",
-							data: "mobile_number",
+							data: "phone",
 							orderable: false
 						},
 						{
 							title: "Role",
 							data: "role"
 						},
-//						{
-//							title: "Region",
-//							data: "region"
-//						},
+						{
+							title: "Region",
+							data: "region"
+						},
 						{
 							title: "Chapter",
 							data: "chapter"
 						},
 						{
 							title: "Mil. Affil.",
-							data: "military_affiliation",
+							data: "branch",
 							orderable: false
 						},
 						{
@@ -425,18 +427,25 @@ angular.module('ohanaApp')
 		}; // end $scope.buildTable
 
 		$scope.update = function () {
-			Api.member.query().$promise.then(function (data) {
-				$scope.buildTable(data);
-				$scope.dataStack = data;
-			}, function (data) {
-				// console.log(data);
-				$scope.buildTable(data);
-				$scope.dataStack = data;
-				swal({
-					text: "Connection failed. Could not " + data.config.method + " from " + data.config.url,
-					type: 'warning',
-					timer: 2500
+			var newDataSet = commonServices.getData('/userData/');
+			var newRoleData = commonServices.getData('/userRoles/');
+			$q.all([newDataSet, newRoleData]).then(function(userData) {
+				var users = [];
+				var roles = [];
+				var i = 0;
+				
+				_.each(userData[1], function(value) {
+					roles.push(value.role);
 				});
+
+				_.each(userData[0], function(value, key) {
+					value.key = key;
+					value.role = roles[i];
+					users.push(value);
+					i++;
+				});
+
+				$scope.buildTable(users);
 			});
 		}; // end $scope.update
 
