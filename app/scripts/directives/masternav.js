@@ -14,7 +14,7 @@ angular.module('ohanaApp')
 			templateUrl: 'views/masternav.html',
 			restrict: 'E',
 
-			controller: function ($scope, $uibModal, localStorageService) {
+			controller: function (commonServices, $scope, $uibModal, localStorageService) {
 				$scope.sessionState = localStorageService.get('sessionState');
 				$scope.$on('changeSessionState', function (event, arg) {
 					$scope.sessionState = arg;
@@ -50,7 +50,8 @@ angular.module('ohanaApp')
 				$scope.logout = function () {
 					$scope.sessionState = false;
 //					$rootScope.$broadcast('changeSessionState', 'false');
-					localStorageService.set('sessionState', false);
+					// localStorageService.set('sessionState', false);
+					commonServices.signout();
 				};
 				
 				// all nav setups
