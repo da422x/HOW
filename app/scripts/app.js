@@ -23,7 +23,8 @@ angular.module('ohanaApp', [
 		'summernote',
 		'ui.timepicker',
 		'LocalStorageModule',
-		'uiGmapgoogle-maps',
+		'ngMap',
+		// 'uiGmapgoogle-maps',
 		'firebase'
 	])
 	.config(function ($stateProvider, $urlRouterProvider) {

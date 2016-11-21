@@ -9,15 +9,20 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.config(function(uiGmapGoogleMapApiProvider) {
+	// .config(function(uiGmapGoogleMapApiProvider) {
+	// 	'use strict';
+	// 	uiGmapGoogleMapApiProvider.configure({
+	// 		key: 'AIzaSyChntY-POe8wZ6pqvz8WXi1pkAyt6B7gtE',
+	// 		libraries: ''
+	// 	});
+	// })
+	.controller('ChaptersCtrl', function ($scope, $http, $filter, $location, NgMap) {
 		'use strict';
-		uiGmapGoogleMapApiProvider.configure({
-			key: 'AIzaSyChntY-POe8wZ6pqvz8WXi1pkAyt6B7gtE',
-			libraries: ''
-		});
-	})
-	.controller('ChaptersCtrl', function ($scope, $http, $filter, $location, uiGmapGoogleMapApi) {
-		'use strict';
+		 NgMap.getMap().then(function(map) {
+    console.log(map.getCenter());
+    console.log('markers', map.markers);
+    console.log('shapes', map.shapes);
+  });
 		$scope.map = { center: { latitude: 38.294322, longitude: -94.0136068 }, zoom: 4 };
 
 		$scope.onClick = function(marker, eventName, model) {
@@ -71,7 +76,7 @@ angular.module('ohanaApp')
 			});
 		});
 
-		uiGmapGoogleMapApi.then(function(maps) {
+		// uiGmapGoogleMapApi.then(function(maps) {
 
-		});
+		// });
 	});

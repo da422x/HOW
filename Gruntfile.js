@@ -1,4 +1,4 @@
-// Generated on 2016-06-16 using generator-angular 0.15.1
+// Generated on 2016-10-03 using generator-angular 0.15.1
 'use strict';
 
 // # Globbing
@@ -11,8 +11,6 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-
-  require('load-grunt-tasks')(grunt);
 
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
@@ -72,10 +70,10 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9001, // default 9000
+        port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35730 // default 35729
+        livereload: 35729
       },
       livereload: {
         options: {
@@ -84,8 +82,8 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect().use(
-                'app/bower_components',
-                connect.static('./app/bower_components')
+                '/bower_components',
+                connect.static('./bower_components')
               ),
               connect().use(
                 '/app/styles',
@@ -104,8 +102,8 @@ module.exports = function (grunt) {
               connect.static('.tmp'),
               connect.static('test'),
               connect().use(
-                '/app/bower_components',
-                connect.static('./app/bower_components')
+                '/bower_components',
+                connect.static('./bower_components')
               ),
               connect.static(appConfig.app)
             ];
@@ -171,6 +169,21 @@ module.exports = function (grunt) {
       },
       server: '.tmp'
     },
+    injector: {
+      options: {
+        template: 'app/index.html'
+        // Task-specific options go here.
+      },
+      local_dependencies: {
+        files: {
+          'index.html': ['extensions/bootstrap-editable/js/bootstrap-editable.js', 
+          'styles/**/*.css',
+          'assets/**/*.*',
+          'extensions/bootstrap-editable/css/bootstrap-editable.css',
+          'extensions/hamburgers.min.css'],
+        }
+      }
+    },
 
     // Add vendor prefixed styles
     postcss: {
@@ -222,7 +235,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    },
+    }, 
 
     // Renames files for browser caching purposes
     filerev: {
@@ -263,6 +276,7 @@ module.exports = function (grunt) {
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
+          '<%= yeoman.dist %>/assets',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles'
         ],
@@ -391,7 +405,7 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: 'app/bower_components/bootstrap/dist',
+          cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
         }]
@@ -428,7 +442,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('sass');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -460,6 +473,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'injector',
     'clean:dist',
     'wiredep',
     'useminPrepare',
