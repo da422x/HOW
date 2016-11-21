@@ -13,13 +13,11 @@ angular.module('ohanaApp')
 		'use strict';
 
 		$scope.buildTable = function (results) {
-			console.log(results);
 			var i;
 			var packet;
 			var dataSet = dataGridUtil.buildMembersTableData(results);
 			$scope.currId = ""; // holds value of the current row's member Id for CRUD ops
-
-			console.log(dataSet);
+			$scope.checkedBoxes = [];
 
 			angular.element(document).ready(function () {
 				//toggle `popup` / `inline` mode
@@ -39,8 +37,8 @@ angular.module('ohanaApp')
 					columns: [
 						{},
 						{
-							title: "ID",
-							data	: "key"
+							title: "KEY",
+							data: "key"
 						},
 						{
 							title: "First Name",
@@ -96,8 +94,8 @@ angular.module('ohanaApp')
 							searchable: false,
 							orderable: false,
 							className: 'dt-body-center',
-							render: function (data) {
-								return '<input type="checkbox" id="membersTable-select" value="' + $('<div/>').text(data).html() + '">';
+							render: function () {
+								return '<input type="checkbox" id="membersTable-select">';
 							}
 						}, {
 							targets: 3,
@@ -112,16 +110,17 @@ angular.module('ohanaApp')
 						$(thead).find('th').eq(0).html('<input type="checkbox" id="membersTable-select-all">');
 					},
 					rowCallback: function (row, data, index) {
+						$(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
 						$(row).children().eq(1).addClass('tdFname');
 						$(row).children().eq(2).addClass('tdLname');
 						$(row).children().eq(3).addClass('tdDob');
 						$(row).children().eq(4).addClass('tdEmail'); // email checking disabled
 						$(row).children().eq(5).addClass('tdTelly'); // phone # checking disabled
 						$(row).children().eq(6).addClass('tdSelectRole');
-//						$(row).children().eq(7).addClass('tdSelectRegion');
-						$(row).children().eq(7).addClass('tdSelectChapter');
-						$(row).children().eq(8).addClass('tdMil');
-						$(row).children().eq(9).addClass('tdNotes');
+						$(row).children().eq(7).addClass('tdSelectRegion');
+						$(row).children().eq(8).addClass('tdSelectChapter');
+						$(row).children().eq(9).addClass('tdMil');
+						$(row).children().eq(10).addClass('tdNotes');
 						for (i = 1; i < 10; i++) {
 							$(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
 						}
@@ -130,48 +129,41 @@ angular.module('ohanaApp')
 					drawCallback: function (settings) {
 						// set currentId to user being edited
 						$('#membersTable').on('click', 'tr', function () {
-							$scope.currId = $scope.membersTable.row(this).id();
-//							console.log($scope.currId);
-//							console.log($scope.membersTable.row(this));
+							$scope.currId = $(this).find('input[type="checkbox"]').val();
+
+							if ($(this).find('input[type="checkbox"]').is(':checked')) {
+								$scope.checkedBoxes.push($scope.currId);
+							}else{
+								for (var i = 0; i < $scope.checkedBoxes.length; i++) {
+									if ($scope.checkedBoxes[i] === $scope.currId) {
+										$scope.checkedBoxes.splice(i, 1);
+									}
+								}
+							}
+
+							console.log($scope.checkedBoxes);
 						});
 						// editable field definitions and CRUD ops
 						$('#membersTable .tdFname a').editable({
 							type: "text",
-							name: "first_name",
+							name: "first",
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								var packet = {
-									member_id: $scope.currId,
-									first_name: params.value
-								};
-								Api.chapterCreateMember
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value;
+								var path = '/userData/' +  $scope.currId + '/name/first/';
+								commonServices.updateData(path, packet);
 							}
 						});
 						$('#membersTable .tdLname a').editable({
 							type: "text",
-							name: "last_name",
+							name: "last",
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								var packet = {
-									member_id: $scope.currId,
-									last_name: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value
+								var path = '/userData/' +  $scope.currId + '/name/last/';
+								commonServices.updateData(path, packet);
 							}
 						});
 						$('#membersTable .tdDob a').editable({
@@ -188,17 +180,9 @@ angular.module('ohanaApp')
 								maxYear: 2020
 							},
 							url: function (params) {
-								var packet = {
-									member_id: $scope.currId,
-									DOB: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value;
+								var path = '/userData/' +  $scope.currId + '/DOB/';
+								commonServices.updateData(path, packet);
 							}
 						});
 						$('#membersTable .tdEmail a').editable({
@@ -207,17 +191,9 @@ angular.module('ohanaApp')
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								packet = {
-									member_id: $scope.currId,
-									email: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value
+								var path = '/userData/' +  $scope.currId + '/email/';
+								commonServices.updateData(path, packet);
 							}
 							// TODO email throws error Uncaught InvalidStateError: Failed to
 							//execute 'setSelectionRange' on 'HTMLInputElement': The input
@@ -226,21 +202,13 @@ angular.module('ohanaApp')
 						});
 						$('#membersTable .tdTelly a').editable({
 							type: "text",
-							name: "mobile_number",
+							name: "phone",
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								packet = {
-									member_id: $scope.currId,
-									mobile_number: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value
+								var path = '/userData/' +  $scope.currId + '/phone/';
+								commonServices.updateData(path, packet);
 							}
 							// TODO fix pattern masking for phone #s
 							// pattern: "\d{3}\-\d{3}\-\d{4}"
@@ -253,8 +221,48 @@ angular.module('ohanaApp')
 							showbuttons: false,
 							url: function (params) {
 								var packet = {
-									member_id: $scope.currId,
 									role: params.value
+								}
+
+								var path = '/userRoles/' + $scope.currId;
+								console.log(path);
+
+								commonServices.updateData(path, packet);
+								
+							},
+							source: [
+								{
+									value: 'Participant',
+									text: 'Participant'
+								},
+								{
+									value: 'Volunteer',
+									text: 'Volunteer'
+								},
+								{
+									value: 'Leadership Team Member',
+									text: 'Leadership Team Member'
+								},
+								{
+									value: 'HOW National Team/Staff',
+									text: 'HOW National Team/Staff'
+								},
+								{
+									value: 'admin',
+									text: 'admin'
+								}
+							]
+						});
+						$('#membersTable .tdSelectRegion a').editable({
+							type: "select",
+							name: "region",
+							placement: "bottom",
+							emptytext: "null",
+							showbuttons: false,
+							url: function (params) {
+								var packet = {
+									member_id: $scope.currId,
+									region: params.value
 								};
 								Api.member.update(packet,
 									function (successMsg) {
@@ -266,77 +274,31 @@ angular.module('ohanaApp')
 							},
 							source: [
 								{
-									value: 0,
-									text: 'admin'
+									value: 'northeast',
+									text: 'Northeast'
 								},
 								{
-									value: 1,
-									text: 'region_manager'
+									value: 'midatlantic',
+									text: 'Mid-Atlantic'
 								},
 								{
-									value: 2,
-									text: 'chapter_manager'
+									value: 'midwest',
+									text: 'Midwest'
 								},
 								{
-									value: 3,
-									text: 'event_manager'
+									value: 'southeast',
+									text: 'Southeast'
 								},
 								{
-									value: 4,
-									text: 'member'
+									value: 'southwest',
+									text: 'Southwest'
 								},
 								{
-									value: 5,
-									text: 'volunteer'
+									value: 'west',
+									text: 'West'
 								}
 							]
 						});
-//						$('#membersTable .tdSelectRegion a').editable({
-//							type: "select",
-//							name: "region",
-//							placement: "bottom",
-//							emptytext: "null",
-//							showbuttons: false,
-//							url: function (params) {
-//								var packet = {
-//									member_id: $scope.currId,
-//									region: params.value
-//								};
-//								Api.member.update(packet,
-//									function (successMsg) {
-//										console.log('heyo');
-//									},
-//									function (errorMsg) {
-//										console.log('error');
-//									});
-//							},
-//							source: [
-//								{
-//									value: 'northeast',
-//									text: 'Northeast'
-//								},
-//								{
-//									value: 'midatlantic',
-//									text: 'Mid-Atlantic'
-//								},
-//								{
-//									value: 'midwest',
-//									text: 'Midwest'
-//								},
-//								{
-//									value: 'southeast',
-//									text: 'Southeast'
-//								},
-//								{
-//									value: 'southwest',
-//									text: 'Southwest'
-//								},
-//								{
-//									value: 'west',
-//									text: 'West'
-//								}
-//							]
-//						});
 						$('#membersTable .tdSelectChapter a').editable({
 							type: "select",
 							name: "chapter",
@@ -360,21 +322,13 @@ angular.module('ohanaApp')
 						});
 						$('#membersTable .tdMil a').editable({
 							type: "text",
-							name: "military_affiliation",
+							name: "branch",
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								var packet = {
-									member_id: $scope.currId,
-									military_affiliation: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								var packet = params.value
+								var path = '/userData/' +  $scope.currId + '/branch/';
+								commonServices.updateData(path, packet);
 							}
 						});
 						$('#membersTable .tdNotes a').editable({
@@ -433,7 +387,7 @@ angular.module('ohanaApp')
 				var users = [];
 				var roles = [];
 				var i = 0;
-				
+
 				_.each(userData[1], function(value) {
 					roles.push(value.role);
 				});
@@ -461,20 +415,11 @@ angular.module('ohanaApp')
 		}; // end $scope.add
 
 		$scope.remove = function () {
-			var j, k;
-			var rows = $scope.membersTable.rows({
-					'search': 'applied'
-				}).nodes(),
-				checkedRows = [];
-			for (j = 0; j < rows.length; j++) {
-				// console.log($('input[type="checkbox"]', rows[i]).prop('checked'));
-				if ($('input[type="checkbox"]', rows[j]).prop('checked')) {
-					checkedRows.push($scope.dataStack[j]);
-				}
-			}
-			// console.log(checkedRows.length);
+					
+			console.log($scope.checkedBoxes.length);
+			console.log($scope.checkedBoxes);
 
-			if (checkedRows.length === 0) {
+			if ($scope.checkedBoxes.length === 0) {
 				swal('', 'No records selected!', 'warning');
 			} else {
 				swal({
@@ -486,21 +431,11 @@ angular.module('ohanaApp')
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes, delete it!'
 				}).then(function () {
-					for (k = 0; k < checkedRows.length; k++) {
-						// var d = Api.member.get({id: checkedRows[i].id}, function() {
-						//   d.$delete(function() {
-						//	 console.log('deleting user id ' + checkedRows[i].id);
-						//   });
-						// });
-						// console.log(Api.member.$delete(checkedRows[i].id.$delete());
-						console.log(Api.member.remove({
-							member_id: checkedRows[k].id
-						}));
-					}
+					_.each($scope.checkedBoxes, function(userKey) {
+						commonServices.removeData('/userData/' + userKey);
+						commonServices.removeData('/userRole/' + userKey);
+					});
 					swal('Deleted!', 'Your file has been deleted.', 'success');
-
-					$('#membersTable-select-all').prop('checked', false);
-					$('input[type="checkbox"]', rows).prop('checked', false);
 				});
 			} // end else
 
