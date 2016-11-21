@@ -1,6 +1,13 @@
 // Generated on 2016-10-03 using generator-angular 0.15.1
 'use strict';
 
+//notes from nov 20th thad
+//moved grunt file back to original, borrowed from common_lib branch or basically whatever yeoman/angular first produces
+//added grunt injector to inject css and js files into the usemin pipeline 
+//.bowerrc file's directory was moved back to just bower_components instead of app/bower_components
+//updated ngtemplates's module to match the angular app name
+//added a new copy for copy assets who's references in code never were updated by standard build
+
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -276,7 +283,6 @@ module.exports = function (grunt) {
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
-          '<%= yeoman.dist %>/assets',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles'
         ],
@@ -410,6 +416,22 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }]
       },
+      //patch by thad
+      dist_remainder:{
+        files:[{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            'extensions/bootstrap-editable/js/bootstrap-editable.js', 
+          'styles/**/*.css',
+          'assets/**/*.*',
+          'extensions/bootstrap-editable/css/bootstrap-editable.css',
+          'extensions/hamburgers.min.css'
+          ]
+        }]
+      },
       styles: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
@@ -488,7 +510,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'copy:dist_remainder'
   ]);
 
   grunt.registerTask('default', [
