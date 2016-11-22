@@ -196,20 +196,14 @@ angular.module('ohanaApp')
 							type: 'success',
 							timer: 2500
 						});
-						$uibModalInstance.close();
-						$rootScope.$broadcast('changeSessionState', 'true');				
-						localStorageService.set('sessionState', 'true');					
-						$state.go('dash.upcomingEvents');
-
+						$uibModalInstance.close();								
 					}else{
 						// Do something here when sign in unsuccessful....
-						console.log('Login failed...');
-						// swal({
-						// 	text: "Error submitting data. Please try again",
-						// 	type: 'error',
-						// 	timer: 2500
-						// });
-						$uibModalInstance.close();
+						swal({
+							text: "Error submitting data. Please try again",
+							type: 'error',
+							timer: 2500
+						});
 					}
 				});
 			}
