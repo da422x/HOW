@@ -188,36 +188,30 @@ angular.module('ohanaApp')
 				var results = commonServices.register(packet);
 
 				$q.all([results]).then(function(data) {
+					console.log(data[0]);
 					if (data[0]) {
 						// If sign in was successful, send user to events page
-						// $rootScope.$broadcast('changeSessionState', 'true');				
-						// localStorageService.set('sessionState', 'true');					
-						// $state.go('dash.upcomingEvents');
+						swal({
+							text: "User added!",
+							type: 'success',
+							timer: 2500
+						});
+						$uibModalInstance.close();
+						$rootScope.$broadcast('changeSessionState', 'true');				
+						localStorageService.set('sessionState', 'true');					
+						$state.go('dash.upcomingEvents');
 
 					}else{
 						// Do something here when sign in unsuccessful....
 						console.log('Login failed...');
+						// swal({
+						// 	text: "Error submitting data. Please try again",
+						// 	type: 'error',
+						// 	timer: 2500
+						// });
+						$uibModalInstance.close();
 					}
 				});
-
-				// Api.chapterCreateMember.save(packet).$promise.then(
-				// 	function (val) {
-				// 		swal({
-				// 			text: "User added!",
-				// 			type: 'success',
-				// 			timer: 2500
-				// 		});
-				// 		$uibModalInstance.close();
-				// 	},
-				// 	function (error) {
-				// 		swal({
-				// 			text: "Error submitting data. Please try again",
-				// 			type: 'error',
-				// 			timer: 2500
-				// 		});
-				// 	}
-				// );
-
 			}
 
 		};

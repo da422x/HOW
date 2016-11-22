@@ -433,7 +433,7 @@ angular.module('ohanaApp')
 				}).then(function () {
 					_.each($scope.checkedBoxes, function(userKey) {
 						commonServices.removeData('/userData/' + userKey);
-						commonServices.removeData('/userRole/' + userKey);
+						commonServices.removeData('/userRoles/' + userKey);
 					});
 					swal('Deleted!', 'Your file has been deleted.', 'success');
 				});
