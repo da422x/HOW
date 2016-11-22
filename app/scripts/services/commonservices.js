@@ -20,7 +20,7 @@ angular.module('ohanaApp')
 			.then(function() {
 				var userId = firebase.auth().currentUser.uid;
 				console.log('success : user registered');
-    			firebase.database().ref('/userData/' + userId).set(user)
+    			return firebase.database().ref('/userData/' + userId).set(user)
 					.then(function(data) {
 						console.log('success : user data added');
 						firebase.database().ref('/userRoles/' + userId).set({
