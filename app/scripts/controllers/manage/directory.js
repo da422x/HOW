@@ -128,6 +128,7 @@ angular.module('ohanaApp')
 					},
 					drawCallback: function (settings) {
 						// set currentId to user being edited
+						$('#membersTable').off('click', 'tr');
 						$('#membersTable').on('click', 'tr', function () {
 							$scope.currId = $(this).find('input[type="checkbox"]').val();
 
@@ -140,8 +141,6 @@ angular.module('ohanaApp')
 									}
 								}
 							}
-
-							console.log($scope.checkedBoxes);
 						});
 						// editable field definitions and CRUD ops
 						$('#membersTable .tdFname a').editable({
@@ -224,7 +223,6 @@ angular.module('ohanaApp')
 									role: params.value
 								}
 								var path = '/userRoles/' + $scope.currId;
-								console.log(path);
 								commonServices.updateData(path, packet);
 							},
 							source: [
@@ -301,7 +299,6 @@ angular.module('ohanaApp')
 							},
 							source: function () {
 								var regionText = $(this).parent().parent().find('.tdSelectRegion').text();
-								console.log(regionText);
 								switch (regionText) {
 									case 'Midwest Chapters': 
 										return [
@@ -410,21 +407,11 @@ angular.module('ohanaApp')
 							placement: "bottom",
 							emptytext: "null",
 							url: function (params) {
-								var packet = {
-									member_id: $scope.currId,
-									notes: params.value
-								};
-								Api.member.update(packet,
-									function (successMsg) {
-										console.log('heyo');
-									},
-									function (errorMsg) {
-										console.log('error');
-									});
+								// TO-DO: Set up notes functionality
 							}
 						});
 					}
-				}); //.columns.adjust().draw();
+				});
 
 				// Handle click on "Select all" control
 				$('#membersTable-select-all').on('click', function () {
@@ -449,7 +436,6 @@ angular.module('ohanaApp')
 						}
 					}
 				});
-
 			}); // end document ready
 		}; // end $scope.buildTable
 
@@ -471,7 +457,6 @@ angular.module('ohanaApp')
 					users.push(value);
 					i++;
 				});
-
 				$scope.buildTable(users);
 			});
 		}; // end $scope.update
@@ -480,18 +465,10 @@ angular.module('ohanaApp')
 			var modalInstance = $uibModal.open({
 				templateUrl: '/parts/newUserDirectoryForm.html',
 				controller: 'NewUserDirectoryFormCtrl'
-			});
-//			if (!modalInstance) {
-//				$scope.update();
-//			}
-//			$scope.update();
+			});		
 		}; // end $scope.add
 
 		$scope.remove = function () {
-					
-			console.log($scope.checkedBoxes.length);
-			console.log($scope.checkedBoxes);
-
 			if ($scope.checkedBoxes.length === 0) {
 				swal('', 'No records selected!', 'warning');
 			} else {
@@ -509,6 +486,7 @@ angular.module('ohanaApp')
 						commonServices.removeData('/userRoles/' + userKey);
 					});
 					swal('Deleted!', 'Your file has been deleted.', 'success');
+					$scope.update();
 				});
 			} // end else
 
