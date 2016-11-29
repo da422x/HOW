@@ -1,4 +1,54 @@
 <!DOCTYPE html>
-<div class="container">
-	<h3>My Profile</h3>
+<div class="container" ng-init="update()">
+	<div class="panel panel-default">
+		<div class="panel-heading clearfix">
+			<h3 class="panel-title pull-left">My Profile</h3>
+		</div>
+		<div class="list-group">
+			<div class="list-group-item">
+				<h6 class="list-group-item-text">User: </h6>
+				<h4 class="list-group-item-heading">Name - {{profileData.name.first}} {{profileData.name.last}}</h4>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_dob">DOB - {{profileData.DOB | date:'MM/dd/yyyy'}}</a>
+				</h4>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_gender">Gender - {{profileData.gender}}</a>
+				</h4>
+				<h4 class="list-group-item-heading">Role - {{profileData.role}}</h4>
+			</div>
+			<div class="list-group-item">
+				<h6 class="list-group-item-text">Address: </h6>
+				<h4 class="list-group-item-heading">Line 1 - {{profileData.address.line1}}</h4>
+				<h4 class="list-group-item-heading">Line 2 - {{profileData.address.line2}}</h4>
+				<h4 class="list-group-item-heading">City/State/Zip - {{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
+			</div>
+			<div class="list-group-item">
+				<h6 class="list-group-item-text">Contact: </h6>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_phone">Phone - {{profileData.phone}}</a>
+				</h4>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_email">Email - {{profileData.email}}</a>
+				</h4>
+			</div>
+			<div class="list-group-item">
+				<h6 class="list-group-item-text">Orginization Data: </h6>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_region">Region - {{profileData.Region}}</a>
+				</h4>
+				<h4 class="list-group-item-heading">
+					<a href="#" id="user_chapter">Chapter - {{profileData.Chapter}}</a>
+				</h4>
+			</div>
+			<div class="list-group-item">
+				<h6 class="list-group-item-text">Military Data: </h6>
+				<h4 class="list-group-item-heading">Branch - {{profileData.branch}}</h4>
+				<h4 class="list-group-item-heading">Years served - {{profileData.years}}</h4>
+			</div>
+		</div>
+		<div class="panel-footer" style="height:55px">
+			<a class="btn btn-primary pull-right" ng-click="edit()"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
+		</div>
+	</div>
+	<!-- end panel -->
 </div>

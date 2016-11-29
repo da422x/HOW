@@ -170,7 +170,7 @@ angular.module('ohanaApp')
 							name: "DOB",
 							placement: "bottom",
 							emptytext: "null",
-							format: 'YYYY-MM-DD',
+							format: 'MM/DD/YYYY',
 							viewformat: 'MM/DD/YYYY',
 							template: 'MMM / DD / YYYY',
 							combodate: {
@@ -226,26 +226,11 @@ angular.module('ohanaApp')
 								commonServices.updateData(path, packet);
 							},
 							source: [
-								{
-									value: 'Participant',
-									text: 'Participant'
-								},
-								{
-									value: 'Volunteer',
-									text: 'Volunteer'
-								},
-								{
-									value: 'Leadership Team Member',
-									text: 'Leadership Team Member'
-								},
-								{
-									value: 'HOW National Team/Staff',
-									text: 'HOW National Team/Staff'
-								},
-								{
-									value: 'admin',
-									text: 'admin'
-								}
+								{ value: 'Participant', text: 'Participant' },
+								{ value: 'Volunteer', text: 'Volunteer' },
+								{ value: 'Leadership Team Member', text: 'Leadership Team Member' },
+								{ value: 'HOW National Team/Staff', text: 'HOW National Team/Staff' },
+								{ value: 'admin', text: 'admin' }
 							]
 						});
 						$('#membersTable .tdSelectRegion a').editable({
@@ -260,30 +245,12 @@ angular.module('ohanaApp')
 								commonServices.updateData(path, packet);
 							},
 							source: [
-								{
-									value: 'Midwest Chapters',
-									text: 'Midwest Chapters'
-								},
-								{
-									value: 'Northeast Chapters',
-									text: 'Northeast Chapters'
-								},
-								{
-									value: 'Pacific Chapters',
-									text: 'Pacific Chapters'
-								},
-								{
-									value: 'Rocky Mountain Chapters',
-									text: 'Rocky Mountain Chapters'
-								},
-								{
-									value: 'Southeast Chapters',
-									text: 'Southeast Chapters'
-								},
-								{
-									value: 'Southwest Region',
-									text: 'Southwest Region'
-								}
+								{ value: 'Midwest Chapters', text: 'Midwest Chapters' },
+								{ value: 'Northeast Chapters', text: 'Northeast Chapters' },
+								{ value: 'Pacific Chapters', text: 'Pacific Chapters' },
+								{ value: 'Rocky Mountain Chapters', text: 'Rocky Mountain Chapters' },
+								{ value: 'Southeast Chapters', text: 'Southeast Chapters' },
+								{ value: 'Southwest Region', text: 'Southwest Region' }
 							]
 						});
 						$('#membersTable .tdSelectChapter a').editable({
