@@ -13,12 +13,14 @@ angular.module('ohanaApp')
 		'use strict';
 
 		$scope.newQuery = {};
+		$scope.SearchPlaceHolder = "Enter your query";
 		var allEvents = [];
+
 
 		var loadAll = function(){
 			var path = '/events/';
 			var getEvents = commonServices.getData(path);
-
+			allEvents = [];
 			$q.all([getEvents]).then(function(data) {
 					if (data[0]) {
 						console.log(data[0]);
@@ -36,7 +38,29 @@ angular.module('ohanaApp')
 
 		$scope.search = function(){
 			console.log($scope.newQuery.search);
-			//need to implement a search here
+			if(allEvents.length>0){
+				if($scope.newQuery.search == '*'){
+					loadAll();
+				}
+				else{
+					var eventsFound = [];
+					_.each(allEvents, function(event){
+						_.each(event, function(attribute){
+							if(_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())){
+								eventsFound.push(event);
+								return false;
+							}
+						});				
+					});
+					if(eventsFound.length == 0){
+						console.log('no results');
+						$scope.newQuery.search = null;
+						$scope.SearchPlaceHolder = 'No results for \'' +$scope.newQuery.search +  '\' found';
+					}
+					$scope.eventList = eventsFound;
+				}
+			}
+				
 		};
 
 		$scope.update = function () {
