@@ -72,7 +72,7 @@ angular.module('ohanaApp')
 				}];
 
 				$scope.rightnav = [
-					{ state: "login", text: "LOGIN" }
+					{ state: "login", text: "LOGIN" },
 				];
 
 				$scope.rightnavloggedin = [
@@ -81,12 +81,14 @@ angular.module('ohanaApp')
 				];
 
 				$scope.participantNav = [
-					{ state: "events", text: "Events" }
+					{ state: "events", text: "Events" },
+					{ state: "profile", text: "My Profile"}
 				];
 
 				$scope.volunteerNav = [
 					{ state: "events", text: "Events" }, 
-					{ state: "training", text: "My Training" }
+					{ state: "training", text: "My Training" },
+					{ state: "profile", text: "My Profile"}
 				];
 
 				$scope.ltmNav = [
@@ -94,6 +96,7 @@ angular.module('ohanaApp')
 					{ state: "broadcasts", text: "Broadcasts" }, 
 					{ state: "inventory", text: "Inventory" }, 
 					{ state: "training", text: "My Training" },
+					{ state: "profile", text: "My Profile"}
 				];
 
 				$scope.nationalNav = [
@@ -103,7 +106,8 @@ angular.module('ohanaApp')
 					{ state: "training", text: "My Training" },
 					{ state: "directory", text: "Member Directory" },
 					{ state: "donors", text: "Donor Management" }, 
-					{ state: "superAdmin", text: "Administration" }
+					{ state: "superAdmin", text: "Administration" },
+					{ state: "profile", text: "My Profile"}
 				];
 
 				$scope.adminNav = [
@@ -113,7 +117,8 @@ angular.module('ohanaApp')
 					{ state: "training", text: "My Training" },
 					{ state: "directory", text: "Member Directory" },
 					{ state: "donors", text: "Donor Management" }, 
-					{ state: "superAdmin", text: "Administration" }
+					{ state: "superAdmin", text: "Administration" },
+					{ state: "profile", text: "My Profile"}
 				];
 
 				$scope.showDonate = function () {

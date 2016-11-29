@@ -139,6 +139,11 @@ angular.module('ohanaApp', [
 				templateUrl: 'views/manage/directory.html',
 				controller: 'DirectoryCtrl as directory'
 			})
+			.state('profile', {
+				url: '/manage/profile',
+				templateUrl: 'views/manage/profile.html',
+				controller: 'ProfileCtrl as profile'
+			})
 			.state('chAdmin', {
 				url: '/manage/chAdmin',
 				templateUrl: 'views/manage/chadmin.html',
