@@ -143,8 +143,6 @@ angular.module('ohanaApp')
 				var DOBday = newDOB.substring(8, 10);
 				var DOByear = newDOB.substring(11, 15);
 
-
-
 				switch(DOBmonth) {
 					case 'Jan': DOBmonth = '01'; break;
 					case 'Feb': DOBmonth = '02'; break;
@@ -182,8 +180,6 @@ angular.module('ohanaApp')
 					Chapter: $scope.newUserDirectory.chapter,
 					password: $scope.newUserDirectory.password
 				};
-
-				console.log(packet);
 
 				var results = commonServices.register(packet);
 

@@ -34,13 +34,13 @@
 					<h2>{{rightnavloggedin[0].text}}</h2>
 					<span class="caret"></span>
 				</a>
-				<ul ng-switch="root.userRole" class="managelinks dropdown-menu">
-					<li ng-switch-when="admin"><a ng-repeat="nav in volunteerNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
-					<li ng-switch-when="HOW National Team/Staff"><a ng-repeat="nav in volunteerNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
-					<li ng-switch-when="Leadership Team Member"><a ng-repeat="nav in volunteerNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
-					<li ng-switch-when="Volunteer"><a ng-repeat="nav in volunteerNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
-					<li ng-switch-when="Participant"><a ng-repeat="nav in volunteerNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
-					<li ng-switch-default><a ng-repeat="nav in adminNavs" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+				<ul ng-switch="sessionUserRole" class="managelinks dropdown-menu">
+					<li ng-switch-when="admin"><a ng-repeat="nav in adminNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li ng-switch-when="HOW National Team/Staff"><a ng-repeat="nav in nationalNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li ng-switch-when="Leadership Team Member"><a ng-repeat="nav in ltmNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li ng-switch-when="Volunteer"><a ng-repeat="nav in volunteerNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li ng-switch-when="Participant"><a ng-repeat="nav in participantNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
+					<li ng-switch-default><a ng-repeat="nav in participantNav" ui-sref-opts="{reload: true}" ui-sref="{{nav.state}}"><h3>{{nav.text}}</h3></a></li>
 					<li role="separator" class="divider"></li>
 					<li><a ui-sref="{{rightnavloggedin[0].state}}"><h3>Management Dashboard</h3></a></li>
 					<li><a href="#" ng-click="logout()"><h3>Sign Out</h3></a></li>
