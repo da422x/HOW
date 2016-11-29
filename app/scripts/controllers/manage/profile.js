@@ -9,7 +9,7 @@
  * 
  */
 angular.module('ohanaApp')
-	.controller('ProfileCtrl', function ($scope, $rootScope, $q, commonServices, localStorageService) {
+	.controller('ProfileCtrl', function ($scope, $rootScope, $q, commonServices, localStorageService, $uibModal) {
 		'use strict';
 		
 		$scope.update = function () {
@@ -27,11 +27,22 @@ angular.module('ohanaApp')
 
 		};
 
+		$scope.roleChangeRequest = function () {
+			console.log('role change');
+			var modalInstance = $uibModal.open({
+				templateUrl: '/parts/rolerequestchangeform.html',
+				controller: 'RoleRequestChangeFormCtrl as rrcf'
+			});
+			if (!modalInstance) {
+				$scope.update();
+			}
+		};
+
 		$('#user_dob').editable({
-			type: "combodate",
-			name: "DOB",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'combodate',
+			name: 'DOB',
+			placement: 'bottom',
+			emptytext: 'null',
 			format: 'YYYY-MM-DD',
 			viewformat: 'MM/DD/YYYY',
 			template: 'MMM / DD / YYYY',
@@ -48,10 +59,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_gender').editable({
-			type: "select",
-			name: "gender",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'gender',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;
@@ -66,12 +77,12 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_phone').editable({
-			type: "number",
-			name: "phone",
-			placement: "bottom",
-			emptytext: "null",
-			min: "1000000000",
-			max: "9999999999",
+			type: 'number',
+			name: 'phone',
+			placement: 'bottom',
+			emptytext: 'null',
+			min: '1000000000',
+			max: '9999999999',
 			showbuttons: true,
 			url: function (params) {
 				var packet = params.value;
@@ -81,10 +92,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_region').editable({
-			type: "select",
-			name: "region",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'region',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;
@@ -102,10 +113,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_chapter').editable({
-			type: "select",
-			name: "chapter",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'chapter',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;
