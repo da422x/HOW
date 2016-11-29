@@ -197,6 +197,7 @@ angular.module('ohanaApp', [
 					console.log('Role: ' + userRole);
 					localStorageService.set('sessionUserRole', userRole);
 					localStorageService.set('sessionUserData', userData);
+					localStorageService.set('sessionUserUID', currentUserId);
 					localStorageService.set('sessionState', true);
 					$rootScope.$broadcast('changeSessionUserRole', userRole);
 					$rootScope.$broadcast('changeSessionState', true);
@@ -205,6 +206,7 @@ angular.module('ohanaApp', [
 	        console.log('Logged Out...');
 	        localStorageService.set('sessionUserRole', false);
 			localStorageService.set('sessionUserData', false);
+			localStorageService.set('sessionUserUID', false);
 			localStorageService.set('sessionState', false);
         }
     });
