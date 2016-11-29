@@ -29,9 +29,7 @@ angular.module('ohanaApp')
 			var results = commonServices.signin(user);
 			$q.all([results]).then(function(data) {
 				if (data[0]) {
-					// If sign in was successful, send user to events page
-					$rootScope.$broadcast('changeSessionState', 'true');				
-					localStorageService.set('sessionState', 'true');					
+					// If sign in was successful, send user to events page									
 					$state.go('dash.upcomingEvents');
 				}else{
 					// Do something here when sign in unsuccessful....

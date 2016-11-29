@@ -14,11 +14,17 @@ angular.module('ohanaApp')
 			templateUrl: 'views/masternav.html',
 			restrict: 'E',
 
-			controller: function (commonServices, $scope, $uibModal, localStorageService) {
+			controller: function ($state, $rootScope, commonServices, $scope, $uibModal, localStorageService) {
 				$scope.sessionState = localStorageService.get('sessionState');
+				$scope.sessionUserRole = localStorageService.get('sessionUserRole');
+				console.log($scope.sessionUserRole);
 				$scope.$on('changeSessionState', function (event, arg) {
 					$scope.sessionState = arg;
 				});
+				$scope.$on('changeSessionUserRole', function (event, arg) {
+					$scope.sessionUserRole = arg;
+				});
+
 
 
 				// toggle mobile menu
@@ -49,8 +55,7 @@ angular.module('ohanaApp')
 				// logout function
 				$scope.logout = function () {
 					$scope.sessionState = false;
-//					$rootScope.$broadcast('changeSessionState', 'false');
-					// localStorageService.set('sessionState', false);
+					localStorageService.set('sessionState', false);
 					commonServices.signout();
 				};
 				
@@ -66,109 +71,50 @@ angular.module('ohanaApp')
 					text: "EVENTS"
 				}];
 
-				$scope.rightnav = [{
-					state: "login",
-					text: "LOGIN"
-				}];
+				$scope.rightnav = [
+					{ state: "login", text: "LOGIN" }
+				];
 
-				$scope.rightnavloggedin = [{
-					state: "dash",
-					text: "MANAGE"
-				}, {
-				}];
+				$scope.rightnavloggedin = [
+					{ state: "dash", text: "MANAGE" },
+					{}
+				];
 
-				$scope.volunteerNavs = [{
-					state: "events",
-					text: "My Opportunities"
-				}, {
-					state: "hours",
-					text: "My Hours"
-				}, {
-					state: "training",
-					text: "My Training"
-				}];
+				$scope.participantNav = [
+					{ state: "events", text: "Events" }
+				];
 
-				$scope.eventMngrNavs = [{
-					state: "events",
-					text: "Events"
-				}, {
-					state: "broadcasts",
-					text: "Broadcasts"
-				}, {
-					state: "inventory",
-					text: "Inventory"
-				}, {
-					state: "training",
-					text: "My Training"
-				}];
+				$scope.volunteerNav = [
+					{ state: "events", text: "Events" }, 
+					{ state: "training", text: "My Training" }
+				];
 
-				$scope.chapterMngrNavs = [{
-					state: "dash.upcomingEvents",
-					text: "Dashboard"
-				},
-				{
-					state: "events",
-					text: "Events"
-				}, {
-					state: "broadcasts",
-					text: "Broadcasts"
-				}, {
-					state: "inventory",
-					text: "Inventory"
-				}, {
-					state: "training",
-					text: "My Training"
-				}, {
-					state: "directory",
-					text: "Member Directory"
-				}, {
-					state: "chAdmin",
-					text: "Chapter Administration"
-				}];
+				$scope.ltmNav = [
+					{ state: "events", text: "Events" }, 
+					{ state: "broadcasts", text: "Broadcasts" }, 
+					{ state: "inventory", text: "Inventory" }, 
+					{ state: "training", text: "My Training" },
+				];
 
-				$scope.regionMngrNavs = [{
-					state: "events",
-					text: "Events"
-				}, {
-					state: "broadcasts",
-					text: "Broadcasts"
-				}, {
-					state: "inventory",
-					text: "Inventory"
-				}, {
-					state: "training",
-					text: "My Training"
-				}, {
-					state: "directory",
-					text: "Member Directory"
-				}, {
-					state: "regAdmin",
-					text: "Region Administration"
-				}];
+				$scope.nationalNav = [
+					{ state: "events", text: "Events" }, 
+					{ state: "broadcasts", text: "Broadcasts" }, 
+					{ state: "inventory", text: "Inventory" }, 
+					{ state: "training", text: "My Training" },
+					{ state: "directory", text: "Member Directory" },
+					{ state: "donors", text: "Donor Management" }, 
+					{ state: "superAdmin", text: "Administration" }
+				];
 
-				$scope.adminNavs = [{
-
-					state: "events",
-					text: "Events"
-				}, {
-					state: "broadcasts",
-					text: "Broadcasts"
-				}, {
-					state: "inventory",
-					text: "Inventory"
-				}, {
-					state: "training",
-					text: "My Training"
-				}, {
-					state: "directory",
-					text: "Member Directory"
-				}, {
-					state: "donors",
-					text: "Donor Management"
-				}, {
-					state: "superAdmin",
-					text: "Administration"
-				}];
+				$scope.adminNav = [
+					{ state: "events", text: "Events" }, 
+					{ state: "broadcasts", text: "Broadcasts" }, 
+					{ state: "inventory", text: "Inventory" }, 
+					{ state: "training", text: "My Training" },
+					{ state: "directory", text: "Member Directory" },
+					{ state: "donors", text: "Donor Management" }, 
+					{ state: "superAdmin", text: "Administration" }
+				];
 
 				$scope.showDonate = function () {
 					$uibModal.open({
