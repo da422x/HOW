@@ -183,11 +183,11 @@ module.exports = function (grunt) {
       },
       local_dependencies: {
         files: {
-          'index.html': ['extensions/bootstrap-editable/js/bootstrap-editable.js', 
-          'styles/**/*.css',
-          'assets/**/*.*',
-          'extensions/bootstrap-editable/css/bootstrap-editable.css',
-          'extensions/hamburgers.min.css'],
+          'index.html': ['extensions/bootstrap-editable/js/bootstrap-editable.js',
+            'styles/**/*.css',
+            'assets/**/*.*',
+            'extensions/bootstrap-editable/css/bootstrap-editable.css',
+            'extensions/hamburgers.min.css'],
         }
       }
     },
@@ -196,7 +196,7 @@ module.exports = function (grunt) {
     postcss: {
       options: {
         processors: [
-          require('autoprefixer-core')({browsers: ['last 1 version']})
+          require('autoprefixer-core')({ browsers: ['last 1 version'] })
         ]
       },
       server: {
@@ -208,6 +208,16 @@ module.exports = function (grunt) {
           cwd: '.tmp/styles/',
           src: '{,*/}*.css',
           dest: '.tmp/styles/'
+        }, {
+          expand: true,
+          cwd: '.tmp/extensions/',
+          src: '{,*/}*.css',
+          dest: '.tmp/extensions/'
+        }, {
+          expand: true,
+          cwd: '.tmp/assets/',
+          src: '{,*/}*.css',
+          dest: '.tmp/assets/'
         }]
       },
       dist: {
@@ -216,6 +226,16 @@ module.exports = function (grunt) {
           cwd: '.tmp/styles/',
           src: '{,*/}*.css',
           dest: '.tmp/styles/'
+        }, {
+          expand: true,
+          cwd: '.tmp/extensions/',
+          src: '{,*/}*.css',
+          dest: '.tmp/extensions/'
+        }, {
+          expand: true,
+          cwd: '.tmp/assets/',
+          src: '{,*/}*.css',
+          dest: '.tmp/assets/'
         }]
       }
     },
@@ -224,25 +244,25 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
       test: {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',
-        ignorePath:  /\.\.\//,
-        fileTypes:{
+        ignorePath: /\.\.\//,
+        fileTypes: {
           js: {
             block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
-              detect: {
-                js: /'(.*\.js)'/gi
-              },
-              replace: {
-                js: '\'{{filePath}}\','
-              }
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
             }
           }
+        }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -250,6 +270,8 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
+          '<%= yeoman.dist %>/extensions/{,*/}*.css',
+          '<%= yeoman.dist %>/assets/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
@@ -278,13 +300,17 @@ module.exports = function (grunt) {
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      css: ['<%= yeoman.dist %>/styles/{,*/}*.css',
+        '<%= yeoman.dist %>/extensions/{,*/}*.css',
+        '<%= yeoman.dist %>/assets/{,*/}*.css'],
       js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
-          '<%= yeoman.dist %>/styles'
+          '<%= yeoman.dist %>/styles',
+          '<%= yeoman.dist %>/extensions',
+          '<%= yeoman.dist %>/assets'
         ],
         patterns: {
           js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
@@ -417,26 +443,50 @@ module.exports = function (grunt) {
         }]
       },
       //patch by thad
-      dist_remainder:{
-        files:[{
+      dist_remainder: {
+        files: [{
           expand: true,
           dot: true,
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            'extensions/bootstrap-editable/js/bootstrap-editable.js', 
-          'styles/**/*.css',
-          'assets/**/*.*',
-          'extensions/bootstrap-editable/css/bootstrap-editable.css',
-          'extensions/hamburgers.min.css'
+            'extensions/bootstrap-editable/js/bootstrap-editable.js',
+            'styles/**/*.css',
+            'assets/**/*.*',
+            'extensions/bootstrap-editable/css/bootstrap-editable.css',
+            'extensions/hamburgers.min.css'
+          ]
+        },{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>/assets/fonts/font-awesome',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            'fonts/**/*.*'
           ]
         }]
       },
       styles: {
-        expand: true,
-        cwd: '<%= yeoman.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        // expand: true,
+        // cwd: '<%= yeoman.app %>/styles',
+        // dest: '.tmp/styles/',
+        // src: '{,*/}*.css'
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/styles',
+          dest: '.tmp/styles/',
+          src: '{,*/}*.css'
+        },
+        {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '.tmp/',
+          src: [
+            'extensions/**/*.css',
+            'assets/**/*.css'
+          ]
+        }]
       }
     },
 
