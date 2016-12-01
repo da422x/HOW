@@ -9,7 +9,7 @@
  * Controller of public login
  */
 angular.module('ohanaApp')
-	.controller('LoginCtrl', function ($q, commonServices, $state, $scope, $rootScope, $uibModal, localStorageService) {
+	.controller('LoginCtrl', function ($q, commonServices, $state, $scope, $rootScope, $uibModal, localStorageService, $location) {
 		'use strict';
 
 		$scope.logObj = {};
@@ -30,7 +30,8 @@ angular.module('ohanaApp')
 			$q.all([results]).then(function(data) {
 				if (data[0]) {
 					// If sign in was successful, send user to events page									
-					$state.go('dash.upcomingEvents');
+					$location.url('#/dash/upcoming-events');
+
 				}else{
 					// Do something here when sign in unsuccessful....
 					console.log('Login failed...');
