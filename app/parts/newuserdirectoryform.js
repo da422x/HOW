@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('NewUserDirectoryFormCtrl', function ($q, commonServices, $scope, $uibModalInstance, Api, selectValues) {
+	.controller('NewUserDirectoryFormCtrl', function ($q, commonServices, $scope, $uibModalInstance) {
 		'use strict';
 
 		// calendar options

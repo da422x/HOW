@@ -143,8 +143,8 @@ angular.module('ohanaApp')
 
 	// Adds a key to the designated path, then returns the key. 
 	this.getNewKey = function(path) {
-		return firebase.database().ref(path).push().key
-	}
+		return firebase.database().ref(path).push().key;
+	};
 
 	// Updates data at given path.
 	this.updateData = function(path, data) {
