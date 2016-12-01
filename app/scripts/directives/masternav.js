@@ -61,64 +61,64 @@ angular.module('ohanaApp')
 				
 				// all nav setups
 				$scope.leftnav = [{
-					state: "whoweare",
+					state: "#/whoweare",
 					text: "WHO WE ARE"
 				}, {
-					state: "getinvolved",
+					state: "#/getinvolved",
 					text: "GET INVOLVED"
 				}, {
-					state: "publicEvents",
+					state: "#/publicEvents",
 					text: "EVENTS"
 				}];
 
 				$scope.rightnav = [
-					{ state: "login", text: "LOGIN" },
+					{ state: "#/login", text: "LOGIN" },
 				];
 
 				$scope.rightnavloggedin = [
-					{ state: "dash", text: "MANAGE" },
+					{ state: "#/manage/dash", text: "MANAGE" },
 					{}
 				];
 
 				$scope.participantNav = [
-					{ state: "events", text: "Events" },
-					{ state: "profile", text: "My Profile"}
+					{ state: "#/manage/events", text: "Events" },
+					{ state: "#/manage/profile", text: "My Profile"}
 				];
 
 				$scope.volunteerNav = [
-					{ state: "events", text: "Events" }, 
-					{ state: "training", text: "My Training" },
-					{ state: "profile", text: "My Profile"}
+					{ state: "#/manage/events", text: "Events" }, 
+					{ state: "#/manage/training", text: "My Training" },
+					{ state: "#/manage/profile", text: "My Profile"}
 				];
 
 				$scope.ltmNav = [
-					{ state: "events", text: "Events" }, 
-					{ state: "broadcasts", text: "Broadcasts" }, 
-					{ state: "inventory", text: "Inventory" }, 
-					{ state: "training", text: "My Training" },
-					{ state: "profile", text: "My Profile"}
+					{ state: "#/manage/events", text: "Events" }, 
+					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
+					{ state: "#/inventory", text: "Inventory" }, 
+					{ state: "#/manage/training", text: "My Training" },
+					{ state: "#/manage/profile", text: "My Profile"}
 				];
 
 				$scope.nationalNav = [
-					{ state: "events", text: "Events" }, 
-					{ state: "broadcasts", text: "Broadcasts" }, 
-					{ state: "inventory", text: "Inventory" }, 
-					{ state: "training", text: "My Training" },
-					{ state: "directory", text: "Member Directory" },
+					{ state: "#/manage/events", text: "Events" }, 
+					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
+					{ state: "#/inventory", text: "Inventory" }, 
+					{ state: "#/manage/training", text: "My Training" },
+					{ state: "#/manage/directory", text: "Member Directory" },
 					{ state: "donors", text: "Donor Management" }, 
-					{ state: "superAdmin", text: "Administration" },
-					{ state: "profile", text: "My Profile"}
+					{ state: "#/superAdmin", text: "Administration" },
+					{ state: "#/manage/profile", text: "My Profile"}
 				];
 
 				$scope.adminNav = [
-					{ state: "events", text: "Events" }, 
-					{ state: "broadcasts", text: "Broadcasts" }, 
-					{ state: "inventory", text: "Inventory" }, 
-					{ state: "training", text: "My Training" },
-					{ state: "directory", text: "Member Directory" },
+					{ state: "#/manage/events", text: "Events" }, 
+					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
+					{ state: "#/inventory", text: "Inventory" }, 
+					{ state: "#/manage/training", text: "My Training" },
+					{ state: "#/manage/directory", text: "Member Directory" },
 					{ state: "donors", text: "Donor Management" }, 
-					{ state: "superAdmin", text: "Administration" },
-					{ state: "profile", text: "My Profile"}
+					{ state: "#/superAdmin", text: "Administration" },
+					{ state: "#/manage/profile", text: "My Profile"}
 				];
 
 				$scope.showDonate = function () {

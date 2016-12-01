@@ -14,11 +14,12 @@
 		<div class="col-md-1">
 			<div class="tabbable tabs-left">
 				<ul class="nav nav-tabs">
-					<li class="active"><a ui-sref="events.eventDetail.description" ui-sref-active="active" data-toggle="tab">Description</a></li>
-					<li><a ui-sref="events.eventDetail.volunteers" ui-sref-active="active" data-toggle="tab">Volunteers</a></li>
-					<li><a ui-sref="events.eventDetail.participants" ui-sref-active="active" data-toggle="tab">Participants</a></li>
-					<li><a ui-sref="events.eventDetail.equipment" ui-sref-active="active" data-toggle="tab">Inventory</a></li>
-					<li><a ui-sref="events.eventDetail.notifications" ui-sref-active="active" data-toggle="tab">Notifications</a></li>
+					<!--thad: active was removed until proper actions are taken ui-sref-active="active"-->
+					<li class="active"><a ng-href="#/description" data-toggle="tab">Description</a></li>
+					<li><a ng-href="#/volunteers" data-toggle="tab">Volunteers</a></li>
+					<li><a ng-href="#/participants" data-toggle="tab">Participants</a></li>
+					<li><a ng-href="#/inventory" data-toggle="tab">Inventory</a></li>
+					<li><a ng-href="#/notifications" data-toggle="tab">Notifications</a></li>
 				</ul>
 			</div>
 		</div>
