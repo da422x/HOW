@@ -3,8 +3,5 @@
 /dist
 /.tmp
 /.sass-cache
-**/firebaseconfig.json
-.vscode/
-**/.DS_Store
 /app/bower_components
 /app/data/env
