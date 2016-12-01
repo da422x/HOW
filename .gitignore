@@ -6,3 +6,4 @@
 **/firebaseconfig.json
 .vscode/
 /app/bower_components
+**/.DS_Store
