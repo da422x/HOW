@@ -6,6 +6,7 @@ version 0.15.1.
 ## Install dependencies
 
 Run `npm install` and `bower install` to install all required packages defined in `package.json` and `bower.json`
+npm install --only=dev if you are missing necessary dev dependencies
 
 ## Build & development
 
