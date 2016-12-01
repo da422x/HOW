@@ -2,6 +2,7 @@
   "name": "ohana",
   "private": true,
   "scripts": {
+    "preinstall": "npm install -g npm",
     "build": "grunt build",
     "postbuild": "surge -p dist"
   },
