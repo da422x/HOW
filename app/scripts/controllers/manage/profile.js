@@ -17,21 +17,36 @@ angular.module('ohanaApp')
 			var userUID = localStorageService.get('sessionUserUID');
 			var userData = commonServices.getData('/userData/' + userUID);
 			var userRole = localStorageService.get('sessionUserRole');
+			var userRquests = commonServices.getData('/roleChangeRequests/');
 
-			$q.all([userData]).then(function(data) {
+			$q.all([userData, userRquests]).then(function(data) {
 				$scope.profileData = data[0];
 				$scope.profileData.role = userRole;
 				$scope.userUID = userUID;
-				console.log($scope.profileData);
+				$scope.requests = [];
+				_.each(data[1], function(value, key) {
+					if (value.uid === $scope.userUID) {
+						value.key = key;
+						$scope.requests.push(value);
+					}
+				});
+				console.log($scope.requests);
 			});
 
 		};
 
 		$scope.roleChangeRequest = function () {
-			console.log('role change');
 			var modalInstance = $uibModal.open({
 				templateUrl: '/parts/rolerequestchangeform.html',
-				controller: 'RoleRequestChangeFormCtrl as rrcf'
+				controller: 'RoleRequestChangeFormCtrl as rrcf',
+				resolve: {
+					userInfo: function() {
+						return {
+							uid: $scope.userUID,
+							data: $scope.profileData
+						}
+					}
+				}
 			});
 			if (!modalInstance) {
 				$scope.update();
