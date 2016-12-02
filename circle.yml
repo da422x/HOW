@@ -2,8 +2,12 @@ test:
   override:
     - grunt test --force
 
+dependencies:
+  pre:
+    - npm install -g npm
+
 deployment:
   production:
     branch: master
     commands:
-      - surge --project ./docs
+      - ./node_modules/surge/lib/cli.js --project ./docs
