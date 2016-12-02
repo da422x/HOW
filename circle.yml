@@ -1,3 +1,9 @@
 test:
   override:
     - grunt test --force
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - surge --project ./dist
