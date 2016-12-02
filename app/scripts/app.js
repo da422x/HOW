@@ -136,9 +136,8 @@ angular.module('ohanaApp', [
 				templateUrl: 'views/public.events.html',
 				controller: 'PublicEventsCtrl',
 				controllerAs: 'public.events'
-
 			})
-			.when('/expense/expensedetail/:id', {
+			.when('/expense/expensedetail/:BillId', {
 			  templateUrl: 'views/expense/expensedetail.html',
 			  controller: 'ExpenseDetailsCtrl',
 			  controllerAs: 'expensedetail'
