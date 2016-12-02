@@ -9,7 +9,7 @@
  * 
  */
 angular.module('ohanaApp')
-	.controller('ProfileCtrl', function ($scope, $rootScope, $q, commonServices, localStorageService) {
+	.controller('ProfileCtrl', function ($scope, $rootScope, $q, commonServices, localStorageService, $uibModal) {
 		'use strict';
 		
 		$scope.update = function () {
@@ -17,21 +17,47 @@ angular.module('ohanaApp')
 			var userUID = localStorageService.get('sessionUserUID');
 			var userData = commonServices.getData('/userData/' + userUID);
 			var userRole = localStorageService.get('sessionUserRole');
+			var userRquests = commonServices.getData('/roleChangeRequests/');
 
-			$q.all([userData]).then(function(data) {
+			$q.all([userData, userRquests]).then(function(data) {
 				$scope.profileData = data[0];
 				$scope.profileData.role = userRole;
 				$scope.userUID = userUID;
-				console.log($scope.profileData);
+				$scope.requests = [];
+				_.each(data[1], function(value, key) {
+					if (value.uid === $scope.userUID) {
+						value.key = key;
+						$scope.requests.push(value);
+					}
+				});
+				console.log($scope.requests);
 			});
 
 		};
 
+		$scope.roleChangeRequest = function () {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/parts/rolerequestchangeform.html',
+				controller: 'RoleRequestChangeFormCtrl as rrcf',
+				resolve: {
+					userInfo: function() {
+						return {
+							uid: $scope.userUID,
+							data: $scope.profileData
+						}
+					}
+				}
+			});
+			if (!modalInstance) {
+				$scope.update();
+			}
+		};
+
 		$('#user_dob').editable({
-			type: "combodate",
-			name: "DOB",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'combodate',
+			name: 'DOB',
+			placement: 'bottom',
+			emptytext: 'null',
 			format: 'YYYY-MM-DD',
 			viewformat: 'MM/DD/YYYY',
 			template: 'MMM / DD / YYYY',
@@ -48,10 +74,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_gender').editable({
-			type: "select",
-			name: "gender",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'gender',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;
@@ -66,12 +92,12 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_phone').editable({
-			type: "number",
-			name: "phone",
-			placement: "bottom",
-			emptytext: "null",
-			min: "1000000000",
-			max: "9999999999",
+			type: 'number',
+			name: 'phone',
+			placement: 'bottom',
+			emptytext: 'null',
+			min: '1000000000',
+			max: '9999999999',
 			showbuttons: true,
 			url: function (params) {
 				var packet = params.value;
@@ -81,10 +107,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_region').editable({
-			type: "select",
-			name: "region",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'region',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;
@@ -102,10 +128,10 @@ angular.module('ohanaApp')
 		});
 
 		$('#user_chapter').editable({
-			type: "select",
-			name: "chapter",
-			placement: "bottom",
-			emptytext: "null",
+			type: 'select',
+			name: 'chapter',
+			placement: 'bottom',
+			emptytext: 'null',
 			showbuttons: false,
 			url: function (params) {
 				var packet = params.value;

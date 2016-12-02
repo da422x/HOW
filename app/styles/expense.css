@@ -1,0 +1,106 @@
+ /* Added for DATE PICKER */
+ 
+ .full button span {
+     background-color: limegreen;
+     border-radius: 32px;
+     color: black;
+ }
+ 
+ .partially button span {
+     background-color: orange;
+     border-radius: 32px;
+     color: black;
+ }
+ /* 
+* Expense Creation form fields
+*/
+ 
+ .exp_format {
+     display: inline-block;
+     margin-left: 10px;
+     max-width: 180px;
+     width: 65%;
+     float: left;
+ }
+ 
+ .exp_format1 {
+     display: inline-block;
+     margin-left: 10px;
+     min-width: 200px;
+     max-width: 700px;
+     width: 75%;
+     float: left;
+ }
+ 
+ .exp_format2 {
+     display: inline-block;
+     margin-left: 10px;
+     max-width: 120px;
+     width: 66%;
+     float: left;
+ }
+ 
+ .exp_num {
+     display: inline-block;
+     margin-left: 10px;
+     max-width: 40px;
+     width: 63%;
+     float: left;
+ }
+ 
+ .table_head {
+    background: #2980b9;
+    font-size: 14px !important;
+ }
+ 
+ .table_head {
+     background: #fafafa;
+     font-size: 14px;
+ }
+ 
+ .color-green {
+     color: green;
+     font-size: 16px;
+ }
+ 
+ .color-blue {
+     color: blue;
+ }
+ 
+ .color-red {
+     color: red;
+     font-size: 16px;
+ }
+ 
+ .color-orange {
+     color: orange;
+     font-size: 16px;
+ }
+ 
+ .hoverme:hover {
+     background-color: yellow;
+ }
+ 
+ .clicked {
+     background-color: green;
+ }
+ 
+ .format_button_sm {
+     width: 25%;
+     margin: 10px;
+ }
+ 
+ .format_button_small {
+     width: 20%;
+     margin: 10px;
+ }
+ 
+ .format_button_med {
+     width: 40%;
+     margin: 10px;
+ }
+ 
+ .format_button_mm {
+     width: 55%;
+     margin: 10px;
+ }

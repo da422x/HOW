@@ -136,7 +136,21 @@ angular.module('ohanaApp', [
 				templateUrl: 'views/public.events.html',
 				controller: 'PublicEventsCtrl',
 				controllerAs: 'public.events'
-
+			})
+			.when('/expense/expensedetail/:BillId', {
+			  templateUrl: 'views/expense/expensedetail.html',
+			  controller: 'ExpenseDetailsCtrl',
+			  controllerAs: 'expensedetail'
+			})
+			.when('/expense/newexpense', {
+			  templateUrl: 'views/expense/newexpense.html',
+			  controller: 'NewExpenseCtrl',
+			  controllerAs: 'newexpense'
+			})
+			.when('/expense/viewexpense', {
+			  templateUrl: 'views/expense/viewexpense.html',
+			  controller: 'ViewExpenseController',
+			  controllerAs: 'expense/viewexpense'
 			})
 			.otherwise({
 				redirectTo: '/home'
@@ -185,7 +199,87 @@ angular.module('ohanaApp', [
 				localStorageService.set('sessionState', false);
 			}
 		});
-	});
+	})
+
+.filter('unique', function() {
+
+        // Take in the collection and which field
+        //   should be unique
+        // We assume an array of objects here
+        // NOTE: We are skipping any object which
+        //   contains a duplicated value for that
+        //   particular key.  Make sure this is what
+        //   you want!
+        return function(arr, targetField) {
+
+            var values = [],
+                i, v,
+                unique,
+                l = arr.length,
+                results = [],
+                obj;
+            //    console.log("unique", arr, targetField);
+            // Iterate over all objects in the array
+            // and collect all unique values
+            for (i = 0; i < arr.length; i++) {
+
+                obj = arr[i];
+
+                // check for uniqueness
+                unique = true;
+                for (v = 0; v < values.length; v++) {
+                    //        console.log("unique Array data", values[v]);
+                    if (obj[targetField] == values[v]) {
+                        unique = false;
+                    }
+                }
+
+                // If this is indeed unique, add its
+                //   value to our values and push
+                //   it onto the returned array
+                if (unique) {
+
+                    values.push(obj[targetField]);
+                    results.push(obj);
+                    //      console.log("Unique Chapter data", results);
+                }
+
+            }
+            return results;
+        };
+    })
+    .filter('dateRange', function() {
+        return function(input, startdate, enddate) {
+
+            var retArray = [];
+            if (input != null && startdate != null && enddate != null) {
+
+                var tstart = startdate.split("/");
+                var tend = enddate.split("/");
+
+
+                angular.forEach(input, function(obj) {
+
+                    var receivedDate = obj.SubmitDate;
+                    var rDate = receivedDate.split("/");
+
+                    if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
+                        retArray.push(obj);
+                        console.log("Date ", Date.parse(receivedDate), receivedDate);
+                    }
+
+                    // if ((Date(rDate[2], rDate[1] - 1, rDate[0]) >= Date(tstart[2], tstart[1] - 1, tstart[0])) &&
+                    //     (Date(rDate[2], rDate[1] - 1, rDate[0]) <= Date(tend[2], tend[1] - 1, tend[0]))) {
+                    //     console.log("Date", rDate, rDate[2], (rDate[1]), rDate[0], Date(rDate[2], rDate[0], rDate[1]), tstart, tend, obj);
+                    //     console.log("Date", Date(startdate), Date(rDate[2], rDate[1], rDate[0]), Date(tstart[2], tstart[1], tstart[0]), Date(tend[2], tend[1], tend[0]));
+                    //     retArray.push(obj);
+                    // }
+                });
+
+                return retArray;
+            };
+        };
+    });
 
 
 

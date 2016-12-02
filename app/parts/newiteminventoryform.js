@@ -22,6 +22,7 @@ angular.module('ohanaApp')
 			startingDay: 0,
 			showWeeks: false
 		};
+		
 		$scope.open = function () {
 			$scope.popup.opened = true;
 		};
