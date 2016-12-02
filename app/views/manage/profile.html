@@ -51,4 +51,29 @@
 		</div>
 	</div>
 	<!-- end panel -->
+
+	<div class="panel panel-default">
+		<div class="panel-heading clearfix">
+			<h3 class="panel-title pull-left">Role Change Status</h3>
+		</div>
+		<div class="list-group">
+			<div class="row list-group-item" ng-repeat="request in requests">
+				<div class="col-md-1">
+					{{request.name}}
+				</div>
+				<div class="col-md-2">
+					{{request.email}}
+				</div>
+				<div class="col-md-1">
+					{{request.current_role}}
+				</div>
+				<div class="col-md-1">
+					{{request.request_role}}
+				</div>
+				<div class="col-md-1">
+					{{request.status}}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
