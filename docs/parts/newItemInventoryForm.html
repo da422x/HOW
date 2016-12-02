@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<div class="modal-header">
+	<button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Add New Item</h4>
+</div>
+<!-- end modal-header -->
+<div class="modal-body">
+	<form class="form-horizontal">
+		<fieldset>
+			<!-- Text - Item Name -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="name_of_item">Item Name*</label>
+				<div class="col-md-7">
+					<input id="name_of_item" name="name_of_item" type="text" placeholder="Red Kayak" class="form-control input-md" ng-model="newItem.name_of_item" ng-required="true">
+				</div>
+			</div>
+			<!-- Dropdown - Category -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="category">Category*</label>
+				<div class="col-md-7">
+					<select id="category" name="category" class="form-control" ng-options="category as category.displayName for category in categories" ng-model="newItem.category">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			<!-- Dropdown - Condition -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="condition">Condition*</label>
+				<div class="col-md-7">
+					<select id="condition" name="condition" class="form-control" ng-options="condition as condition.displayName for condition in conditions" ng-model="newItem.condition">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			<!-- Datepicker - Purchase Date -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="purchase_date">Purchase Date</label>
+				<div class="col-md-7">
+					<p class="input-group">
+						<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newItem.purchase_date" is-open="popup.opened" datepicker-options="dateOptions" ng-required="false" close-text="Close" alt-input-formats="altInputFormats" />
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+					</p>
+				</div>
+			</div>
+			<!-- Dropdown - Chapter -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="chapter">Owned By*</label>
+				<div class="col-md-7">
+					<!-- <p>chapter dropdown will go here soon</p> -->
+					<select id="chapter" name="chapter" class="form-control">
+						<option value="abc">test-option</option>
+					</select>
+					<!--  ng-disabled="$scope.newUserDirectory.region == null" -->
+				</div>
+			</div>
+			<!-- Textarea - Notes -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="notes">Additional Notes</label>
+				<div class="col-md-7">
+					<textarea class="form-control" id="notes" name="notes" ng-model="newItem.notes"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-4"></div>
+				<p class="col-md-7">* indicates required field.</p>
+			</div>
+			<!-- Button - Submit -->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="submit"></label>
+				<div class="col-md-7">
+					<button id="submit" name="submit" class="btn btn-primary" ng-click="postItem()">Submit</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<!-- end modal body -->
