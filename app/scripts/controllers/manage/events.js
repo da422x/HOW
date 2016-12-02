@@ -13,17 +13,15 @@ angular.module('ohanaApp')
 		'use strict';
 
 		$scope.newQuery = {};
-		$scope.SearchPlaceHolder = "Enter your query";
 		var allEvents = [];
 
-
+		
 		var loadAll = function(){
 			var path = '/events/';
 			var getEvents = commonServices.getData(path);
 			allEvents = [];
 			$q.all([getEvents]).then(function(data) {
 					if (data[0]) {
-						console.log(data[0]);
 						_.each(data[0], function(event) {
 							allEvents.push(event);
 						});
@@ -37,9 +35,10 @@ angular.module('ohanaApp')
 		loadAll();
 
 		$scope.search = function(){
-			console.log($scope.newQuery.search);
 			if(allEvents.length>0){
-				if($scope.newQuery.search == '*'){
+				$scope.empty = false;
+
+				if($scope.newQuery.search == '*' ||!($scope.newQuery.search)){
 					loadAll();
 				}
 				else{
@@ -54,8 +53,8 @@ angular.module('ohanaApp')
 					});
 					if(eventsFound.length == 0){
 						console.log('no results');
-						$scope.newQuery.search = null;
-						$scope.SearchPlaceHolder = 'No results for \'' +$scope.newQuery.search +  '\' found';
+						$scope.empty = true;
+						$scope.noEventsFound = "No results for " + $scope.newQuery.search + " found.";
 					}
 					$scope.eventList = eventsFound;
 				}
@@ -98,7 +97,17 @@ angular.module('ohanaApp')
 				controller: 'NewEventFormCtrl'
 			});
 			if (!modalInstance) {
-				$scope.update();
+				loadAll();
 			}
 		};
+
+		$scope.manageEvent = function(index){
+			console.log('Index is: '+ index);
+		}
+
+		$scope.formatTime = function(time){
+			var d = new Date(time);
+			return d.toUTCString();
+		}
 	});
+
