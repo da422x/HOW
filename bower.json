@@ -27,6 +27,7 @@
     "summernote": "^0.8.1",
     "angular-summernote": "^0.8.1",
     "sweetalert2": "^4.0.8",
+    "jquery":">=1.8.3",
     "jquery.maskedinput": "^1.4.1",
     "jt.timepicker": "jquery-timepicker-jt#^1.11.1",
     "angular-jquery-timepicker": "^0.11.0",
@@ -36,7 +37,8 @@
     "angularfire": "^2.1.0",
     "mockfirebase": "^0.11.0",
     "ngmap": "^1.17.8",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "ng-pickadate": "^0.3.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
