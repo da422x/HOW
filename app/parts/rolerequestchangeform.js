@@ -40,7 +40,7 @@ angular.module('ohanaApp')
 
 				$q.all([newKey]).then(function(data) {
 
-					console.log(data[0]);
+					var newTS = Date.now();
 					var packet = {
 						uid: $scope.userData.uid,
 						name: ($scope.userData.data.name.first + ' ' + $scope.userData.data.name.last),
@@ -49,7 +49,10 @@ angular.module('ohanaApp')
 						request_role: $scope.formData.role.value,
 						user_comment: $scope.formData.comment,
 						admin_comment: '',
-						request_status: 'pending'
+						request_status: 'pending',
+						request_created: newTS,
+						request_updated: newTS,
+						request_closed: ''
 					};
 
 					commonServices.updateData('/roleChangeRequests/' + data[0], packet);

@@ -57,12 +57,12 @@
 			<h3 class="panel-title pull-left">Role Change Status</h3>
 		</div>
 		<div class="list-group">
-			<div class="row list-group-item" ng-repeat="request in requests">
-				<div class="col-md-1">
-					{{request.name}}
+			<div class="row list-group-item" ng-repeat="request in requests" id="{{request.key}}">
+				<div class="col-md-2">
+					{{request.request_created | date:'MM/dd/yyyy @ h:mma'}}
 				</div>
 				<div class="col-md-2">
-					{{request.email}}
+					{{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
 				</div>
 				<div class="col-md-1">
 					{{request.current_role}}
@@ -71,7 +71,13 @@
 					{{request.request_role}}
 				</div>
 				<div class="col-md-1">
-					{{request.status}}
+					{{request.request_status}}
+				</div>
+				<div class="col-md-2">
+					{{request.user_comment}}
+				</div>
+				<div class="col-md-3">
+					{{request.admin_comment}}
 				</div>
 			</div>
 		</div>
