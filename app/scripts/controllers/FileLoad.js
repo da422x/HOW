@@ -1,6 +1,6 @@
     var selDiv = "";
     var storedFiles = [];
-    jQuery.noConflict()(function($) {
+
         $(document).ready(function() {
             $("#files").on("change", handleFileSelect);
 
@@ -9,7 +9,6 @@
 
             $("body").on("click", ".selFile", removeFile);
         });
-    });
 
     function handleFileSelect(e) {
         var files = e.target.files;
