@@ -13,7 +13,6 @@ angular.module('ohanaApp')
 		'use strict';
 		
 		$scope.update = function () {
-
 			var userUID = localStorageService.get('sessionUserUID');
 			var userData = commonServices.getData('/userData/' + userUID);
 			var userRole = localStorageService.get('sessionUserRole');
@@ -35,6 +34,10 @@ angular.module('ohanaApp')
 
 		};
 
+		$scope.$on('modalClosing', function() {
+			$scope.update();
+		});
+
 		$scope.roleChangeRequest = function () {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/parts/rolerequestchangeform.html',
@@ -51,6 +54,28 @@ angular.module('ohanaApp')
 			if (!modalInstance) {
 				$scope.update();
 			}
+		};
+
+		$scope.deleteRequest = function (key) {
+			console.log(key);
+			swal({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then(function () {
+			  swal(
+			    'Deleted!',
+			    'Your file has been deleted.',
+			    'success'
+			  ).then(function() {
+			  	commonServices.removeData('/roleChangeRequests/' + key);
+			  	$scope.update();
+			  });
+			});
 		};
 
 		$('#user_dob').editable({

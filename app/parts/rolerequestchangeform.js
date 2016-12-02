@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('RoleRequestChangeFormCtrl', function ($q, commonServices, $scope, $uibModalInstance, userInfo) {
+	.controller('RoleRequestChangeFormCtrl', function ($rootScope, $q, commonServices, $scope, $uibModalInstance, userInfo) {
 		'use strict';
 
 		$scope.userData = userInfo;
@@ -56,6 +56,7 @@ angular.module('ohanaApp')
 					};
 
 					commonServices.updateData('/roleChangeRequests/' + data[0], packet);
+       				$rootScope.$broadcast('modalClosing');
 					$uibModalInstance.dismiss('cancel');
 				});
 				
