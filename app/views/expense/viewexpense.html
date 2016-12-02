@@ -107,8 +107,8 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="list in lists.viewExpenseList |   orderBy:sortBy:sortDescending| filter: {Chapter: listS} | filter: {PaymentStatus: PayStatus} | dateRange: startdate : enddate" ng-click="setSelected(list.BillId)" ng-class="{selected: list.BillId === idSelectedBill}">
-                        <tr class="hoverme" "> 
-  <td class="col-md-2 "  > {{list.SubmitDate}} </td>  
+                        <tr class="hoverme"> 
+                <td class="col-md-2 "  > {{list.SubmitDate}} </td>  
                    <td class="col-md-4 "  > {{list.Chapter}}</td>
                   
                   
@@ -129,9 +129,10 @@
             <div class="form-group col-xs-12 ">
             <div class="form-group col-xs-5 "  >
                     <!-- <label for=" ">Co-ordinator Name</label> -->
-                    <select class="form-control " required=" " ng-model="userlist " id=selectedcoordinator name=selectedcoordinator title="Select Coordinator Name ">
+                    <select class="form-control " required=" " ng-model="userlist " id="selectedcoordinator" name="selectedcoordinator" title="Select Coordinator Name ">
                         <option value=" " selected="true ">All Coordinator</option>
-                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {Chapter: userinfo.viewuserdata[0].Chapter} " value="{{coord.SubmitBy}} ">{{coord.SubmitBy}}</option>
+                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {Chapter: userinfo.viewuserdata[0].Chapter} " value="{{coord.SubmitBy}} ">{{coord.SubmitBy}}
+                        </option>
                     </select>
                 </div>
                 
