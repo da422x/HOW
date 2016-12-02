@@ -118,7 +118,8 @@ angular.module('ohanaApp')
 					{ state: "#/manage/directory", text: "Member Directory" },
 					{ state: "donors", text: "Donor Management" }, 
 					{ state: "#/superAdmin", text: "Administration" },
-					{ state: "#/manage/profile", text: "My Profile"}
+					{ state: "#/manage/profile", text: "My Profile"},
+					{ state: "#/expense/viewexpense", text: "Expense"}
 				];
 
 				$scope.showDonate = function () {
