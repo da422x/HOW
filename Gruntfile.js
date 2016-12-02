@@ -29,7 +29,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'docs'
+    dist: 'docs',
+    base_href: '/HOW/'
   };
 
   // Define the configuration for all the tasks
@@ -512,6 +513,21 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+        replace: {
+      dist: {
+        options: {
+          patterns: [
+            {
+              match: /<!-- base_href -->/g,
+              replacement: '<base href="<%= yeoman.base_href %>">'
+            }
+          ]
+        },
+        files: [
+          {expand: true, flatten: true, src: ['<%= yeoman.dist %>/index.html'], dest: '<%= yeoman.dist %>'}
+        ]
+      }
     }
   });
 
@@ -562,7 +578,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'copy:dist_remainder'
+    'copy:dist_remainder',
+    'replace'
   ]);
 
   grunt.registerTask('default', [
