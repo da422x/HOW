@@ -157,6 +157,7 @@ angular.module('ohanaApp', [
 			});
 
 	}).run(function ($q, commonServices, localStorageService, $rootScope, $firebaseAuth) {
+		$rootScope.path ="thad";
 		var config = {
 			apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
 			authDomain: "herosonthewater-55a79.firebaseapp.com",
