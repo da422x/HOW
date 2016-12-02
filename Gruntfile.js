@@ -391,7 +391,7 @@ module.exports = function (grunt) {
           usemin: 'scripts/scripts.js'
         },
         cwd: '<%= yeoman.app %>',
-        src: 'views/{,*/}*.html',
+        src: ['views/{,*/}*.html','parts/{,*/}*.html'],
         dest: '.tmp/templateCache.js'
       }
     },
@@ -454,7 +454,8 @@ module.exports = function (grunt) {
             'styles/**/*.css',
             'assets/**/*.*',
             'extensions/bootstrap-editable/css/bootstrap-editable.css',
-            'extensions/hamburgers.min.css'
+            'extensions/hamburgers.min.css',
+            'parts/**/*.*'
           ]
         },{
           expand: true,
