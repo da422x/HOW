@@ -8,7 +8,7 @@
  * Service in the mainAppApp.
  */
 angular.module('ohanaApp')
-  .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO' , function ($rootScope, $firebaseAuth, DAO) {
+  .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function ($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray) {
 
     /******************************************************
 	* 			 User Management - start                  *
@@ -218,5 +218,28 @@ angular.module('ohanaApp')
 	/******************************************************
 	* 			 DAO object container - end             *
 	*******************************************************/
+
+	 /******************************************************
+     *           Expense Service object container - start             *
+     *******************************************************/
+    this.expenseservice = expenseservice;
+
+    // Gets user chapter and address information 
+    this.getUserChapter = function() {
+            var expemail = this.getCurrentUserEmail();
+            // alert(expemail);
+
+            var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
+            var viewuserdata = $firebaseArray(ref);
+
+            console.log("Get User Data", viewuserdata);
+            return {
+                viewuserdata: viewuserdata,
+            }
+
+    }
+    /******************************************************
+     *           DAO object container - end             *
+     *******************************************************/
 
   }]);
