@@ -16,5 +16,17 @@ Run `grunt` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
+## Surge hosting for sharing with others
+
+Go here for info: https://surge.sh/
+
+Steps:
+cd to project root
+npm install -g surge
+grunt build
+surge -p docs
+Go to [URL], e.g. http://legal-afternoon.surge.sh/#/home
+
 hello Ganesh
 hello Thad
+hello Keith
