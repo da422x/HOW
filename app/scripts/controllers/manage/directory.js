@@ -428,12 +428,13 @@ angular.module('ohanaApp')
 			});
 		}; // end $scope.update
 
-		$scope.add = function () {
+		$scope.roleChangeRequests = function () {
+			console.log();
 			var modalInstance = $uibModal.open({
-				templateUrl: '/parts/newUserDirectoryForm.html',
-				controller: 'NewUserDirectoryFormCtrl'
+				templateUrl: '/parts/managerolechangerequest.html',
+				controller: 'ManageRoleChangeRequestCtrl'
 			});		
-		}; // end $scope.add
+		}; 
 
 		$scope.remove = function () {
 			if ($scope.checkedBoxes.length === 0) {

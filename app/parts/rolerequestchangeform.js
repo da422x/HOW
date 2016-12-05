@@ -14,8 +14,6 @@ angular.module('ohanaApp')
 
 		$scope.userData = userInfo;
 
-		console.log($scope.userData)
-
 		$scope.formData = {
 			role: '',
 			comment: '' 
