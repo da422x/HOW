@@ -57,47 +57,51 @@
 			<h3 class="panel-title pull-left">Role Change Status</h3>
 		</div>
 		<div class="list-group">
-			<div class="row list-group-item">
-				<div class="col-md-2">
-					Last Updated
-				</div>
-				<div class="col-md-1">
-					Current Role
-				</div>
-				<div class="col-md-1">
-					Requested Role
-				</div>
-				<div class="col-md-1">
-					Status
-				</div>
-				<div class="col-md-2">
-					User Comment
-				</div>
-				<div class="col-md-2">
-					Reviewers Comment
+			<div class="list-group-item">
+				<div class="row">
+					<div class="col-md-2">
+						<h4>Last Updated</h4>
+					</div>
+					<div class="col-md-1">
+						<h4>Current Role</h4>
+					</div>
+					<div class="col-md-2">
+						<h4>Requested Role</h4>
+					</div>
+					<div class="col-md-1">
+						<h4>Status</h4>
+					</div>
+					<div class="col-md-2">
+						<h4>User Comment</h4>
+					</div>
+					<div class="col-md-3">
+						<h4>Reviewers Comment</h4>
+					</div>
 				</div>
 			</div>
-			<div class="row list-group-item" ng-repeat="request in requests" id="{{request.key}}">
-				<div class="col-md-2">
-					{{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
-				</div>
-				<div class="col-md-1">
-					{{request.current_role}}
-				</div>
-				<div class="col-md-1">
-					{{request.request_role}}
-				</div>
-				<div class="col-md-1">
-					{{request.request_status}}
-				</div>
-				<div class="col-md-2">
-					{{request.user_comment}}
-				</div>
-				<div class="col-md-2">
-					{{request.admin_comment}}
-				</div>
-				<div class="col-md-2">
-					<button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
+			<div class="list-group-item" ng-repeat="request in requests" id="{{request.key}}">
+				<div class="row">
+					<div class="col-md-2">
+						{{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
+					</div>
+					<div class="col-md-1">
+						{{request.current_role}}
+					</div>
+					<div class="col-md-2">
+						{{request.request_role}}
+					</div>
+					<div class="col-md-1">
+						{{request.request_status}}
+					</div>
+					<div class="col-md-2">
+						{{request.user_comment}}
+					</div>
+					<div class="col-md-3">
+						{{request.admin_comment}}
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
+					</div>
 				</div>
 			</div>
 		</div>
