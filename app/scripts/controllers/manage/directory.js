@@ -12,6 +12,10 @@ angular.module('ohanaApp')
 	.controller('DirectoryCtrl', function ($q, commonServices, $scope, $uibModal, Api, dataGridUtil, selectValues) {
 		'use strict';
 
+		$scope.$on('modalClosing', function() {
+			$scope.update();
+		});
+
 		$scope.buildTable = function (results) {
 			var i;
 			var packet;

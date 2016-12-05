@@ -11,8 +11,8 @@
 			<h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
 			<h3 class="panel-title pull-left">{{request.request_role}}</h3>
 			<i ng-click="showForm = !showForm" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
-			<i ng-click="declined(request.key)" class="fa fa-times pull-right" aria-hidden="true"></i>
-			<i ng-click="approved(request.key)" class="fa fa-check pull-right" aria-hidden="true"></i>
+			<i ng-click="declined(request.key, request)" class="fa fa-times pull-right" aria-hidden="true"></i>
+			<i ng-click="approved(request.key, request)" class="fa fa-check pull-right" aria-hidden="true"></i>
 		</div>
 		<div ng-show="showForm">
 			<div>Email: {{request.email}}</div>

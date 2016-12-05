@@ -17,6 +17,7 @@ angular.module('ohanaApp')
 		$scope.update = function () {
 			var allRequests = commonServices.getData('/roleChangeRequests/');
 			$q.all([allRequests]).then(function (data) {
+				$scope.requests = [];
 				_.each(data[0], function(value, key) {
 					value.key = key;
 					$scope.requests.push(value);
@@ -25,18 +26,30 @@ angular.module('ohanaApp')
 			});
 		}
 
-		$scope.declined = function (key) {
-			console.log('Declined');
-			console.log(key);
+		$scope.declined = function (key, request) {
+			var ts = Date.now();
+			delete request.key
+			delete request.$$hashKey;
+			request.request_update = ts;
+			request.request_status = 'Declined';
+			commonServices.updateData('/roleChangeRequests/' + key, request);
+			$scope.update();
 		};
 
-		$scope.approved = function (key) {
-			console.log('Approved');
-			console.log(key);
+		$scope.approved = function (key, request) {
+			var ts = Date.now();
+			delete request.key
+			delete request.$$hashKey;
+			request.request_update = ts;
+			request.request_status = 'Approved';
+			commonServices.updateData('/roleChangeRequests/' + key, request);
+			commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
+			$scope.update();
 		};
 
 		$scope.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
+			$rootScope.$broadcast('modalClosing');
 		};
 
 
