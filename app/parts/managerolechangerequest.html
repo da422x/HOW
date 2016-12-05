@@ -6,8 +6,11 @@
 <!-- end modal-header -->
 <div class="modal-body">
 	<div ng-repeat="request in requests">
-		<div class="panel panel-default">
-			<div class="panel-heading clearfix">
+		<div class="panel panel-default" >
+			<div class="panel-heading clearfix" 
+				ng-style="request.request_status === 'Declined' && {'background-color':'#ff6666'} || 
+						  request.request_status === 'Approved' && {'background-color':'#70db70'} ||
+						  request.request_status === 'pending' && {'background-color':'#ffff66'}">
 			<h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
 			<h3 class="panel-title pull-left">{{request.request_role}}</h3>
 			<i ng-click="showForm = !showForm" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
