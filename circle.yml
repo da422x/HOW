@@ -6,7 +6,7 @@ test:
   override:
     - grunt test --force
 
-dependencies:
+# dependencies:
   # pre:
   #   - npm install -g npm
   # post:
