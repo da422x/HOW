@@ -2,7 +2,9 @@
   "name": "ohana",
   "private": true,
   "scripts": {
-    "ready": "grunt build && git add ."
+    "ready": "grunt build && git add .",
+    "surge_test": "./node_modules/surge/lib/cli.js -p dist -d howtest.surge.sh",
+    "surge_prod": "./node_modules/surge/lib/cli.js -p dist -d howprod.surge.sh"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",

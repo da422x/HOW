@@ -61,29 +61,41 @@ angular.module('ohanaApp')
 
                 var storageRefPic = '';
                 var storageloc = '';
+
                 angular.forEach($scope.expense, function(item) {
                     storageloc = '';
 
-                    if (item.ImageURL) {
+                    if (angular.isDefined(item.ImageURL)) {
+                        // alert(parseInt(item.ImageURL.length));
 
+                        // imageList[i] = item.ImageURL[i].FileName;
 
-                        imageList[i] = item.ImageURL[i].FileName;
+                        for (var i = 0; i < parseInt(item.ImageURL.length); i++) {
+                            // while (i < parseInt(item.ImageURL.length)) {
+                            // console.log("Hello Image ", item.ImageURL[i].FileName, item.ImageURL.length, i);
+                            if (parseInt(i) === parseInt(item.ImageURL.length)) {
+                                alert("hello");
+                                throw BreakException;
+                            }
+                            if (angular.isDefined(item.ImageURL[i].FileName)) {
 
-                        // for (var i = 0; i < item.ImageURL.length; i++) {
-                        while (i < item.ImageURL.length) {
-                            console.log("Hello Image ", item.ImageURL[i].FileName, item.ImageURL.length, i);
-                            storageloc = '';
-                            if (item.ImageURL[i].FileName) {
 
                                 storageloc = item.ImageURL[i].FileName;
-                                console.log("Expense Image Load  - ", i, storageloc);
+                                // console.log("Expense Image Load  - ", i, storageloc);
 
 
+                                // alert(item.ImageURL.length);
+                                alert(item.ImageURL[i].FileName);
+                                console.log("Expense image ENTER - ", i, storageloc);
 
-                                if ((i == 0) && (i != item.ImageURL.length)) {
+                                if (i === 0) {
+
+                                    alert("first");
                                     storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                        console.log("Expense Image Load  - 1 - ", i, storageloc, url);
                                         document.getElementById("image0").src = url;
                                         document.getElementById("image0").hidden = false;
+                                        console.log("Expense Image Load  - ", i, storageloc, url);
 
                                     }).catch(function(error) {
                                         // Handle any errors
@@ -91,30 +103,32 @@ angular.module('ohanaApp')
                                     });
                                 };
 
-                                if ((i == 1) && (i != item.ImageURL.length)) {
+                                if (i === 1) {
+
 
                                     storageRef.child(storageloc).getDownloadURL().then(function(url) {
                                         document.getElementById("image1").src = url;
                                         document.getElementById("image1").hidden = false;
-
+                                        console.log("1Expense Image Load  - ", i, storageloc, url);
                                     }).catch(function(error) {
                                         // Handle any errors
-                                        console.log("Expense Image Load error - ", i, storageloc);
+                                        console.log("1Expense Image Load error - ", i);
                                     });
                                 };
 
-                                if ((i == 2) && (i != item.ImageURL.length)) {
+                                if (i === 2) {
+
                                     storageRef.child(storageloc).getDownloadURL().then(function(url) {
                                         document.getElementById("image2").src = url;
                                         document.getElementById("image2").hidden = false;
-
+                                        console.log("2Expense Image Load  - ", i, storageloc, url);
                                     }).catch(function(error) {
                                         // Handle any errors
-                                        console.log("Expense Image Load error - ", i, storageloc);
+                                        console.log("2Expense Image Load error - ", i, storageloc);
                                     });
                                 };
 
-                                if (i == 3) {
+                                if (i === 3) {
                                     storageRef.child(storageloc).getDownloadURL().then(function(url) {
                                         document.getElementById("image3").src = url;
                                         document.getElementById("image3").hidden = false;
@@ -124,7 +138,7 @@ angular.module('ohanaApp')
                                     });
                                 };
 
-                                if (i == 4) {
+                                if (i === 4) {
                                     storageRef.child(storageloc).getDownloadURL().then(function(url) {
                                         document.getElementById("image4").src = url;
                                         document.getElementById("image4").hidden = false;
@@ -185,11 +199,17 @@ angular.module('ohanaApp')
                                 };
 
 
-                                i++;
+
 
                             }
                         }
+
+                        // alert(i);
+                        // i = i + 1;
+                        // throw BreakException;
+
                     }
+
 
                 })
 
