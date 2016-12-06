@@ -8,7 +8,6 @@ test:
 
 dependencies:
   post:
-    - npm install --save-dev surge
     - bower install
 
 general:
@@ -22,9 +21,9 @@ deployment:
     branch: master
     commands:
       - grunt build
-      - npm run surge
+      - npm run surge_prod
   nightly:
     branch: nitenite
     commands:
       - grunt build
-      - npm run surge
+      - npm run surge_test
