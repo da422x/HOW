@@ -5,7 +5,7 @@
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-	<form class="form-horizontal">
+	<form name="eventForm" ng-submit= "postEvent()" class="form-horizontal" novalidate>
 		<fieldset>
 			<!-- Text - Event Name -->
 			<div class="form-group">
@@ -101,7 +101,7 @@
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="submit"></label>
 				<div class="col-md-7">
-					<button id="submit" name="submit" class="btn btn-primary" ng-click="postEvent()">Submit</button>
+					<button id="submit" name="submit" class="btn btn-primary" ng-disabled="eventForm.$invalid">Submit</button>
 				</div>
 			</div>
 		</fieldset>

@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('NewEventFormCtrl', function ($scope, $uibModalInstance, commonServices) {
+	.controller('NewEventFormCtrl', function ($q,$scope, $uibModalInstance, commonServices) {
 		'use strict';
 
 		// calendar options
@@ -90,40 +90,31 @@ angular.module('ohanaApp')
 
 		$scope.postEvent = function () {
 			// submit form
-			//$scope.newEvent.region = $("input[name='region']:selected").val();
-			//$scope.newEvent.chapter = $("chapter[name]='chapter']:selected").val();
-			//$scope.newEvent.status = $("input[name='status']:selected").val();
-//			$scope.newEvent.region = $scope.newEvent.region.value;
-//			$scope.newEvent.chapter = $scope.newEvent.chapter.value;
-//			$scope.newEvent.status = $scope.newEvent.status.value;
 			$scope.newEvent.startTime = $scope.st.getTime();
 			$scope.newEvent.endTime = $scope.et.getTime();
-			// check required fields if blank
-			if ($scope.newEvent.name == null ||
-				$scope.newEvent.eventManager == null ||
-				$scope.newEvent.startTime == null ||
-				$scope.newEvent.endTime == null ||
-				$scope.newEvent.email == null ||
-				$scope.newEvent.mobileNumber == null ||
-				$scope.newEvent.location == null)
-				{
-				console.log($scope.newEvent);
-				console.log('ERROR');
-				swal({
-					text: "Form incomplete!",
-					type: 'warning',
-					timer: 2500
-				});
-			} else {
-				commonServices.pushData('/events/',$scope.newEvent);
-				$uibModalInstance.close();
 
-				swal({
-					text: "Adding Event",
-					type: 'success',
-					timer: 2500
-				});
-			}
+			var result = commonServices.pushData('/events/',$scope.newEvent);
+
+			$q.all([result]).then(function(data) {
+				if (data[0]) {
+					console.log(data[0]);
+					$uibModalInstance.close();
+					swal({
+						text: "Adding Event",
+						type: 'success',
+						timer: 2500
+					});
+				}
+				else{
+					swal({
+						text: "Something happened....",
+						type: 'error',
+						timer: 2500
+					});
+				}
+			});
+
+			
 
 		};
 

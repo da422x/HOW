@@ -17,8 +17,7 @@ angular.module('ohanaApp')
 
 		
 		var loadAll = function(){
-			var path = '/events/';
-			var getEvents = commonServices.getData(path);
+			var getEvents = commonServices.getPublicEvents();
 			allEvents = [];
 			$q.all([getEvents]).then(function(data) {
 					if (data[0]) {
@@ -96,9 +95,10 @@ angular.module('ohanaApp')
 				templateUrl: '/parts/newEventForm.html',
 				controller: 'NewEventFormCtrl'
 			});
-			if (!modalInstance) {
+			modalInstance.result.then(function() {
+				console.log("Reloading...");
 				loadAll();
-			}
+			});
 		};
 
 		$scope.manageEvent = function(index){
