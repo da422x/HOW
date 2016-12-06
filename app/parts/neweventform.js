@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('NewEventFormCtrl', function ($scope, $uibModalInstance, Api) {
+	.controller('NewEventFormCtrl', function ($q,$scope, $uibModalInstance, commonServices) {
 		'use strict';
 
 		// calendar options
@@ -90,51 +90,31 @@ angular.module('ohanaApp')
 
 		$scope.postEvent = function () {
 			// submit form
-			$scope.newEvent.region = $("input[name='region']:selected").val();
-			$scope.newEvent.chapter = $("chapter[name]='chapter']:selected").val();
-			$scope.newEvent.status = $("input[name='status']:selected").val();
-//			$scope.newEvent.region = $scope.newEvent.region.value;
-//			$scope.newEvent.chapter = $scope.newEvent.chapter.value;
-//			$scope.newEvent.status = $scope.newEvent.status.value;
-			$scope.newEvent.start_time = $scope.st;
-			$scope.newEvent.end_time = $scope.et;
-			// check required fields if blank
-			if ($scope.newEvent.event_name == null ||
-				$scope.newEvent.event_manager == null ||
-				$scope.newEvent.start_time == null ||
-				$scope.newEvent.end_time == null ||
-				$scope.newEvent.email == null ||
-				$scope.newEvent.mobile_number == null ||
-				$scope.newEvent.chapter == null) {
-				console.log($scope.newEvent);
-				console.log('ERROR');
-				swal({
-					text: "Form incomplete!",
-					type: 'warning',
-					timer: 2500
-				});
-			} else {
-				console.log($scope.newEvent);
-				console.log('SUCCESS');
-				Api.member.save($scope.newEvent).$promise.then(
-					function (val) {
-						swal({
-							text: "Event added!",
-							type: 'success',
-							timer: 2500
-						});
-						$uibModalInstance.close();
-					},
-					function (error) {
-						swal({
-							text: "Error submitting data. Please try again",
-							type: 'error',
-							timer: 2500
-						});
-					}
-				);
+			$scope.newEvent.startTime = $scope.st.getTime();
+			$scope.newEvent.endTime = $scope.et.getTime();
 
-			}
+			var result = commonServices.pushData('/events/',$scope.newEvent);
+
+			$q.all([result]).then(function(data) {
+				if (data[0]) {
+					console.log(data[0]);
+					$uibModalInstance.close();
+					swal({
+						text: "Adding Event",
+						type: 'success',
+						timer: 2500
+					});
+				}
+				else{
+					swal({
+						text: "Something happened....",
+						type: 'error',
+						timer: 2500
+					});
+				}
+			});
+
+			
 
 		};
 
