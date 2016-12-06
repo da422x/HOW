@@ -130,9 +130,11 @@ angular.module('ohanaApp')
 
 	// Adds a key and sets the data to the key based on where the path is.
 	this.pushData = function(path, data) {
-		firebase.database().ref(path).push(data)
-			.then(function(data) {
+		return firebase.database().ref(path).push(data)
+			.once('value')
+			.then(function(snapshot) {
 				console.log('success : data pushed');
+				return snapshot.val();
 			})
 			.catch(function(error) {
 				var errorCode = error.code;
@@ -184,15 +186,6 @@ angular.module('ohanaApp')
 	};
 	
 	this.getPublicEvents = function() {
-		var email = 'public@test.com';
-		var password = '123456';
-
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		  var errorCode = error.code;
-		  var errorMessage = error.message;
-		  console.log('ERROR: ' + error.code + ': ' + error.message);
-		});
-
 		return firebase.database().ref('events')
 			.once('value')
 			.then(function(snapshot) {
@@ -200,8 +193,6 @@ angular.module('ohanaApp')
 				return snapshot.val();
 			})
 			.catch(function(error){
-				console.log('uh oh');
-
 				var errorCode = error.code;
 	  			var errorMessage = error.message;
 				console.log('ERROR: ' + error.code + ': ' + error.message);
