@@ -6,11 +6,9 @@ test:
   override:
     - grunt test --force
 
-# dependencies:
-  # pre:
-  #   - npm install -g npm
-  # post:
-  #   - grunt build
+dependencies:
+  post:
+    - bower install
 
 general:
   branches:
