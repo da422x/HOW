@@ -13,7 +13,10 @@ dependencies:
   #   - grunt build
 
 general:
-  only: ['master', 'nitenite']
+  branches:
+    only: 
+      - master
+      - nitenite
 
 deployment:
   production:
