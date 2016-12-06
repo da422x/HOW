@@ -10,21 +10,21 @@
             <div style="display: block">{{userinfo.viewuserdata[0].address.line2}} </div>
             <div style="display: block">{{userinfo.viewuserdata[0].address.city}} , {{userinfo.viewuserdata[0].address.state}}, {{userinfo.viewuserdata[0].address.zip}}</div>
         </div>
-        <form id="newExpenseform" ng-submit="createnewexpense()" name="newExpenseform" method="post" class="form-horizontal" novalidate>
+        <form id="newExpenseform" ng-submit="createnewexpense()" name="newExpenseform" method="post" class="form-inline" novalidate>
             <!--div>{{newExpenseform | json}}</div>
         <div>{{exp | json}}</div-->
             <div class="form-group col-xs-4 ">
                 <label>Event Date</label>
                 <div>
-                    <input ng-model="exp.eventdate" type="text" class="form-control" name="eventdate" id="eventdate" ng-required="true" style="background: white" >
+                    <input ng-model="exp.eventdate" type="text" class="form-control" name="eventdate" id="eventdate" ng-required="true" style="background: white">
                 </div>
             </div>
             <div class="form-group col-xs-4 " style="float: middle">
                 <label>Chapter Name</label>
                 <div>
                     <input ng-model="exp.Chapter" name="Chapter" type="text" placeholder={{userinfo.viewuserdata[0].Chapter}} value={{userinfo.viewuserdata[0].chapter}} disabled="true" style="font-size: 8px; background: white" class="form-control" />
-                    <input type="text" id="BillId" name="BillId" ng-model="exp.BillId" value=120 hidden="true" >
-                    <input type="text" id="PaymentStatus" name="PaymentStatus" ng-model="exp.PaymentStatus" value=120 hidden="true" >
+                    <input type="text" id="BillId" name="BillId" ng-model="exp.BillId" value=120 hidden="true">
+                    <input type="text" id="PaymentStatus" name="PaymentStatus" ng-model="exp.PaymentStatus" value=120 hidden="true">
                 </div>
             </div>
             <div class="form-group col-xs-4 " style="float: right">
@@ -95,8 +95,8 @@
                 </div>
             </div>
             <div class="form-group col-xs-12">
-                <label title="Load supporting documents (images only) including paid bills, receipts, deposit slips">Load supporting documents (images only)</label>
-                <input type="file" id="files" name="files" multiple accept="image/*">
+                <label class="custom-file" title="Load supporting documents (images only) including paid bills, receipts, deposit slips">Load supporting documents (images only)</label>
+                <input type="file" id="files" name="files" class="custom-file-input" multiple accept="image/*">
                 <!--input type="file" id="files" name="files" multiple   onchange="LoadImageData(this)"   accept="image/*" -->
                 <br />
                 <div id="selectedFiles"></div>
@@ -106,7 +106,7 @@
             <!--<a ng-href='#here' class="btn btn-primary ur_format_button " ng-click="createnewexpense(exp.newExpense) ">Add New Expense</a>-->
         </form>
         <!--<script src="scripts/controllers/FileLoad.js "></script>-->
-        <!--<script>
+        <script>
         var currentdate = new Date();
         jQuery.noConflict()(function($) {
             $(document).ready(function() {
@@ -121,6 +121,6 @@
             });
 
         });
-        </script>-->
+        </script>
     </div>
 </div>

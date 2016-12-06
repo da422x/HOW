@@ -8,14 +8,19 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-  .controller('ViewExpenseController', function ($scope, $filter, commonServices, expenseservice) {
-   
+    .controller('ViewExpenseController', function($scope, $filter, commonServices, expenseservice) {
+
         var self = this;
         var originalList = [];
         $scope.listS = "";
         $scope.lists = {};
         $scope.PayStatus = "Pending";
         $scope.userlist = "";
+        var currentdate = new Date();
+        var firstday = new Date(currentdate.getFullYear(), 0, 1);
+        $scope.startdate = firstday;
+        // $scope.enddate = currentdate;
+
 
 
         $scope.orderByField = 'SubmitDate';
@@ -269,4 +274,3 @@ function numberWithCommas(x) {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
 }
-
