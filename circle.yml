@@ -8,6 +8,7 @@ test:
 
 dependencies:
   post:
+    - npm install --save-dev surge
     - bower install
 
 general:
