@@ -9,6 +9,9 @@ a:hover {
 	text-decoration: none;
 }
 
+.cursorPointer {
+	cursor: pointer;
+}
 
 /* youtube video overlay */
 
