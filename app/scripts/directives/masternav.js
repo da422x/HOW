@@ -123,11 +123,7 @@ angular.module('ohanaApp')
 				];
 
 				$scope.showDonate = function () {
-					$uibModal.open({
-						templateUrl: '/parts/donors.html',
-						controller: 'DonorsCtrl'
-					});
-
+					window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5WAD6PF3BUHPE");
 				}; // end $scope.showDonate
 
 			}
