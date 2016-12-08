@@ -190,7 +190,6 @@
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
                 <!--                 <div class="input-group col-xs-12 ">
                     <label for=" " title="Load supporting documents (images only) including paid bills, receipts, deposit slips ">Load supporting documents (images only)</label>
                     <input type="file " id="files " name="files " multiple accept="image/* ">
@@ -212,11 +211,15 @@
                     <img id="image7 " style="width:300px;height:200px; " hidden="true " onmouseover="image7.width='700' ;image7.height='450' ; " onmouseout="image7.width='250' ;image7.height='200' ; " />
                     <img id="image8 " style="width:300px;height:200px; " hidden="true " onmouseover="image8.width='700' ;image8.height='450' ; " onmouseout="image8.width='250' ;image8.height='200' ; " />
                     <img id="image9 " style="width:300px;height:200px; " hidden="true " onmouseover="image9.width='700' ;image9.height='450' ; " onmouseout="image9.width='250' ;image9.height='200' ; " />
-=======
+                </div>
                 <div ng-show="userinfo.viewuserdata[0].role=='coordinator' " class="form-group col-xs-12 " style="padding-top: 6px; ">
                     <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click="updateexpense(dexedit.BillId) ">Save Expense</a>
                     <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click=" ">Cancel</a>
->>>>>>> Fixed Alignment Issues, Added missing PDFMake lib
+                </div>
+                <div ng-show="userinfo.viewuserdata[0].role=='coordinator' " class="form-group col-xs-12 " style="padding-top: 6px; ">
+                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click="updateexpense(dexedit.BillId) ">Save Expense</a>
+                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click=" ">Cancel</a>
+
                 </div>
                 <div class="panel panel-default form-group col-xs-12 " style="align-content: right;padding-top: 6px; ">
                     <div ng-show="userinfo.viewuserdata[0].role!='coordinator' " class="form-group col-xs-12 ">

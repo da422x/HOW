@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css" />
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css" />
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
-    <link rel="stylesheet" href="bower_components/datatables.net-dt/css/jquery.dataTables.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -49,22 +48,20 @@
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-	<!-- Add your site or application content here -->
-	<master-navigation></master-navigation>
-	<div class="master">
-		 <div ng-view=""></div>
-		<!--<div ui-view=""></div>-->
-	</div>
-
-	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-	<script>
-		! function(A, n, g, u, l, a, r) {
-			A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
-					(A[l].q = A[l].q || []).push(arguments)
-				}, A[l].l = +new Date, a = n.createElement(g),
-				r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
-		}(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    <!-- Add your site or application content here -->
+    <master-navigation></master-navigation>
+    <div class="master">
+        <div ng-view=""></div>
+        <!--<div ui-view=""></div>-->
+    </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+    ! function(A, n, g, u, l, a, r) {
+        A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+                (A[l].q = A[l].q || []).push(arguments)
+            }, A[l].l = +new Date, a = n.createElement(g),
+            r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
@@ -129,12 +126,9 @@
     <script src="bower_components/pickadate/lib/picker.date.js"></script>
     <script src="bower_components/pickadate/lib/picker.time.js"></script>
     <script src="bower_components/ng-pickadate/ng-pickadate.js"></script>
-<<<<<<< HEAD
-=======
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
     <script src="bower_components/pdfmake/build/pdfmake.js"></script>
     <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
->>>>>>> Fixed Alignment Issues, Added missing PDFMake lib
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->

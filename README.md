@@ -28,5 +28,5 @@ surge -p docs
 Go to [URL], e.g. http://legal-afternoon.surge.sh/#/home
 
 hello Ganesh
-hello Thaddeus test
+hello Thaddeus
 hello Keith
