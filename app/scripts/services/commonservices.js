@@ -226,9 +226,9 @@ angular.module('ohanaApp')
 	* 			 DAO object container - end             *
 	*******************************************************/
 
-	 /******************************************************
-     *           Expense Service object container - start             *
-     *******************************************************/
+	/******************************************************
+   *      Expense Service object container - start      *
+   *******************************************************/
     this.expenseservice = expenseservice;
 
     // Gets user chapter and address information 
@@ -245,8 +245,8 @@ angular.module('ohanaApp')
         }
 
     }
-    /******************************************************
-     *           DAO object container - end             *
-     *******************************************************/
+  /******************************************************
+   *   Expense Service object container - start         *
+    ******************************************************/
 
   }]);
