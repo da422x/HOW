@@ -44,7 +44,13 @@ angular.module('ohanaApp')
 					var eventsFound = [];
 					_.each(allEvents, function(event){
 						_.each(event, function(attribute){
-							if(_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())){
+							if(angular.isString(attribute) && angular.isString($scope.newQuery.search)){
+								if(_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())){
+									eventsFound.push(event);
+									return false;
+								}
+							}
+							else if(_.includes(attribute, $scope.newQuery.search)){
 								eventsFound.push(event);
 								return false;
 							}
@@ -61,35 +67,6 @@ angular.module('ohanaApp')
 				
 		};
 
-		$scope.update = function () {
-			
-			// Api.events.query().$promise.then(
-			// 	function (response) { // on success
-			// 		$scope.eventList = response;
-			// 		if (response.length === 0) {
-			// 			swal({
-			// 				text: "No events exist.",
-			// 				type: 'warning',
-			// 				timer: 2500
-			// 			});
-			// 		}
-			// 		$scope.manageEvent = function (index) {
-			// 			$scope.isDetailView = !$scope.isDetailView;
-			// 			$scope.howEvent.currentEvent = $scope.eventList[index];
-			// 			localStorageService.set('currentEvent', $scope.howEvent.currentEvent.id);
-			// 			$location.path('/manage/events/details/description');
-			// 		};
-			// 	},
-			// 	function (response) { // on error
-			// 		swal({
-			// 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
-			// 			type: 'warning',
-			// 			timer: 2500
-			// 		});
-			// 	}
-			// );
-		};
-
 		$scope.add = function () {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/parts/newEventForm.html',
@@ -102,12 +79,21 @@ angular.module('ohanaApp')
 		};
 
 		$scope.manageEvent = function(index){
+			var selected = allEvents[index];
 			console.log('Index is: '+ index);
-		}
+			var getEvents = commonServices.getEvent(selected);
 
-		$scope.formatTime = function(time){
-			var d = new Date(time);
-			return d.toUTCString();
-		}
+			$q.all([getEvents]).then(function(data) {
+				if(data[0]){
+					_.each(data[0], function(event){
+						if(selected.email === event.email){
+							console.log('Event: ' + event.name);
+							selected = event;
+						}
+					});
+				}
+				
+			});
+		};
 	});
 

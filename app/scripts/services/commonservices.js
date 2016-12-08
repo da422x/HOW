@@ -206,6 +206,22 @@ angular.module('ohanaApp')
 	* 			 DAO object container - start             *
 	*******************************************************/
 	this.DAO = DAO;
+
+	this.getEvent = function(event){
+        return firebase.database().ref('/events').orderByChild("name").equalTo(event.name)
+		    .once('value')
+			.then(function(snapshot) {
+				console.log('Data received');
+				return snapshot.val();
+			})
+			.catch(function(error){
+				var errorCode = error.code;
+					var errorMessage = error.message;
+				console.log('ERROR: ' + error.code + ': ' + error.message);
+			});
+	}
+
+
 	/******************************************************
 	* 			 DAO object container - end             *
 	*******************************************************/
@@ -217,16 +233,16 @@ angular.module('ohanaApp')
 
     // Gets user chapter and address information 
     this.getUserChapter = function() {
-            var expemail = this.getCurrentUserEmail();
-            // alert(expemail);
+        var expemail = this.getCurrentUserEmail();
+        // alert(expemail);
 
-            var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
-            var viewuserdata = $firebaseArray(ref);
+        var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
+        var viewuserdata = $firebaseArray(ref);
 
-            console.log("Get User Data", viewuserdata);
-            return {
-                viewuserdata: viewuserdata,
-            }
+        console.log("Get User Data", viewuserdata);
+        return {
+            viewuserdata: viewuserdata,
+        }
 
     }
     /******************************************************
