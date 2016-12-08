@@ -44,21 +44,48 @@ angular.module('ohanaApp')
         //$scope.$applyAsync();
         function loadexpensedata() {
 
+
             var ref = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
             //alert($routeParams.BillId);   
-            // $scope.vimageurl = [];
+            $scope.vimageurl = [];
             $scope.isdisabled = false;
             ref.on('value', function(snapshot) {
                 //  $scope.$apply(function(){
                 $scope.expense = snapshot.val();
                 console.log("Expense Detail Loaded", $scope.expense);
-                // $scope.$applyAsync();
-                var imageList = [];
-                var i = 0;
-                var img = document.createElement('img');
-                var storage = firebase.storage();
-                var storageRef = firebase.storage().ref();
+                $scope.$applyAsync();
+                // var imageList = [];
+                angular.forEach($scope.expense, function(item) {
+                    // if (item.PaymentStatus == 'Approved') {
+                    //     $scope.isdisabled = true;
+                    //     //$scope.paymentstatusbtn.value = "Expense Approved";
 
+                    // };
+                    var img = document.createElement('img');
+                    var storage = firebase.storage();
+                    var storageRef = firebase.storage().ref();
+
+                    var storageRefPic = '';
+                    $scope.vimageurl = item.ImageURL;
+                    //alert(item.ImageURL[0].FileName);
+
+                    if (item.ImageURL) {
+
+                        for (var i = 0; i < item.ImageURL.length; i++) {
+                            console.log("Hello Image ", item.ImageURL[i].FileName);
+                            var storageloc = '';
+
+                            // imageList[i] = item.ImageURL[i].FileName;
+                            storageloc = item.ImageURL[i].FileName;
+
+
+                            if (i == 0) {
+
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image0").src = url;
+                                    document.getElementById("image0").hidden = false;
+
+<<<<<<< HEAD
                 var storageRefPic = '';
                 var storageloc = '';
                 angular.forEach($scope.expense, function(item) {
@@ -191,6 +218,110 @@ angular.module('ohanaApp')
                         }
                     }
 
+=======
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 1) {
+
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image1").src = url;
+                                    document.getElementById("image1").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 2) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image2").src = url;
+                                    document.getElementById("image2").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 3) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image3").src = url;
+                                    document.getElementById("image3").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 4) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image4").src = url;
+                                    document.getElementById("image4").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 5) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image5").src = url;
+                                    document.getElementById("image5").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 6) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image6").src = url;
+                                    document.getElementById("image6").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 7) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image7").src = url;
+                                    document.getElementById("image7").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 8) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image8").src = url;
+                                    document.getElementById("image8").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 9) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image9").src = url;
+                                    document.getElementById("image9").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+
+
+
+                        }
+                    }
+
+>>>>>>> Fixed Alignment Issues, Added missing PDFMake lib
                 })
 
 
@@ -198,6 +329,7 @@ angular.module('ohanaApp')
             })
 
         }
+
 
         $scope.updateexpense = function(billid) {
 
@@ -239,16 +371,18 @@ angular.module('ohanaApp')
                 // alert("Expense Successfully Updated ");
                 swal('Expense Updated Successfully!', '', 'success');
 
+
             });
 
-            var currentimagecount = 0;
-            angular.forEach($scope.expense, function(item) {
-                if (item.ImageURL) {
-                    currentimagecount = item.ImageURL.length;
-                }
-            });
+            // var currentimagecount = 0;
+            // angular.forEach($scope.expense, function(item) {
+            //     if (item.ImageURL) {
+            //         currentimagecount = item.ImageURL.length;
+            //     }
+            // });
 
             $location.path("expense/viewexpense");
+
             //Need to work on this code to load new images part of update expense
             // logic need to be checked
 
@@ -299,20 +433,12 @@ angular.module('ohanaApp')
             var self = this;
             firebase.database().ref('expense').orderByChild("BillId").equalTo(billid)
                 .on("child_added", function(snapshot) {
-                    // snapshot = metdata + object (val)    
-                    // snapshot.Description = self.dexedit.Description
-                    //  console.log("log  log  22 ", snapshot, snapshot.val(), snapshot.key);
-                    //var temp = snapshot.val();
-                    //temp["PaymentStatus"] = paymentstat;
-                    //'Approved';
 
                     firebase.database().ref('expense/' + snapshot.key).update(paymentstatupdate);
                     //.set(temp);
                     swal('Payment Status Updated!', '', 'success');
 
                 });
-
-            // alert("Payment Status Updated ");
 
             $location.path("expense/viewexpense");
 

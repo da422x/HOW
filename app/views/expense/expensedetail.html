@@ -1,112 +1,196 @@
-<div class="container" ng-controller="ExpenseDetailsCtrl">
+<div class="container" ng-controller="ExpenseDetailsCtrl" ng-init="loadexpensedata()">
     <form id="ExpenseDetailUpdate" method="post" class="form-inline">
-        <div class="input-group">
+        <div class="form-group">
             <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_mm">Go Back to Expense List</a>
             <br/>
         </div>
-        <div class="panel panel-default" ng-repeat="dexedit in expense">
+        <div class="panel panel-default  " ng-repeat="dexedit in expense">
             <div class="panel-heading clearfix">
-                <h3 class="panel-title pull-left">Edit Expense</h3>
+                <h3 class="panel-title pull-left">Expense Detail</h3>
             </div>
-            <div class="input-group" style="padding-top: 6px;  padding-bottom:  6px;">
-                <div class="input-group col-xs-2 ">
-                    <label for=" ">Event Date</label>
-                    <div>
-                        <label class=" form-control exp_format2 " placeholder="0 " ng-value=0 ng-model="dexedit.eventdate ">
+            <div class="form-group form-inline" style="padding-top: 6px;  padding-bottom:  6px;">
+                <div class="form-group row">
+                    <label for="leventdate" class="col-xs-6 col-form-label">Event Date</label>
+                    <div class="col-xs-10">
+                        <label id=leventdate class=" form-control   " placeholder="0 " ng-model="dexedit.eventdate ">
                             {{dexedit.eventdate}}</label>
                     </div>
                 </div>
-                <div class="input-group ">
-                    <label for=" ">Chapter Name </label>
-                    <div>
-                        <label class=" form-control col-xs-7 " ng-model="dexedit.Chapter ">
+                <div class="form-group row">
+                    <label for="lchapter " class="col-xs-6 col-form-label">Chapter Name </label>
+                    <div class="col-xs-10">
+                        <label id=lchapter class=" form-control   " ng-model="dexedit.Chapter ">
                             {{dexedit.Chapter}}</label>
-                        <!-- <input type="text " ng-model="dexedit.BillId " value=120 hidden="true " /> -->
                     </div>
                 </div>
-                <div class="input-group ">
-                    <label for=" ">Total Expense</label>
-                    <label class=" form-control exp_format2 " placeholder="0 " ng-value=0 ng-model="dexedit.totalcost ">
-                        {{ ((dexedit.Line[0].Quantity * dexedit.Line[0].Rate) + (dexedit.Line[1].Quantity * dexedit.Line[1].Rate) + (dexedit.Line[2].Amount ) + (dexedit.Line[3].Amount ) ) | currency}}</label>
-                </div>
-                <div class="input-group ">
-                    <!-- <div class="panel panel-default form-group " style="align-content: right "> -->
-                    <label for=" ">Expense Information</label>
-                    <div style="display: block "> Created By: <b>{{dexedit.SubmitBy}}  on {{dexedit.SubmitDate}} </b></div>
-                    <div style="display: block ">{{dexedit.SubmitAddress}} </div>
-                    <div> <b>Payment Status:
-                          <span style=" font-size: 16px " ng-class="{ 'color-green': dexedit.PaymentStatus==='Approved' , 'color-red': dexedit.PaymentStatus==='Pending' , 'color-orange': dexedit.PaymentStatus==='Need Info' } "> {{dexedit.PaymentStatus}}</span></b>
-                    </div>
-                    <div ng-show="dexedit.PaymentStatus!='Pending' "> <b> 
-                          <span style=" font-size: 16px " ng-class="{ 'color-green': dexedit.PaymentStatus==='Approved' , 'color-red': dexedit.PaymentStatus==='Pending' , 'color-orange': dexedit.PaymentStatus==='Need Info' } "> {{dexedit.PaymentStatusBy}} on {{dexedit.PaymentStatusDate}} </span></b>
-                    </div>
-                    <!-- </div> -->
-                    <br>
-                </div>
-                <div class="input-group " style="padding-top: 6px; ">
-                    <label for=" " class="exp_label ">Business purpose, Origin and Destination</label>
-                    <input ng-model="dexedit.Description " type="text " class="form-control " title="Business purpose, Origin & Destination " placeholder="Business purpose, Origin & Destination " required>
-                </div>
-                <br>
-                <div class="input-group col-xs-12 " style="padding-top: 6px; ">
-                    <label class="control-label ">Mileage for Travel</label>
-                </div>
-                <div class="input-group col-xs-12 ">
-                    <div class="input-group col-xs-6 ">
-                        <span class="input-group-addon ">Miles Driven</span>
-                        <input ng-model="dexedit.Line[0].Quantity " name="miles " class="form-control " placeholder="0 " type="number " min="1 " pattern="\d+ ">
-                    </div>
-                    <div class="input-group col-xs-6 ">
-                        <span class="input-group-addon ">Mile Rate</span>
-                        <input ng-model="dexedit.Line[0].Rate " name="milerate " class="form-control " placeholder="0.25 " type="number " step="0.01 " pattern="\d+.\d+ ">
-                    </div>
-                    <div class="input-group col-xs-5 ">
-                        <span class="input-group-addon ">Amount</span>
-                        <label class="form-control " placeholder="0 " ng-model="exp.Line[0].Amount " name="Amount1 ">{{ (dexedit.Line[0].Quantity * dexedit.Line[0].Rate) | currency}}</label>
+                <div class="form-group row">
+                    <label for="ltotalcost " class="col-xs-6  col-form-label">Total Expense</label>
+                    <div class="col-xs-10">
+                        <label id=ltotalcost class=" form-control    " ng-model="dexedit.totalcost ">
+                            {{ ((dexedit.Line[0].Quantity * dexedit.Line[0].Rate) + (dexedit.Line[1].Quantity * dexedit.Line[1].Rate) + (dexedit.Line[2].Amount * 1) + (dexedit.Line[3].Amount * 1 ) ) | currency}}</label>
                     </div>
                 </div>
-                <div class="input-group col-xs-12 " style="padding-top: 6px; ">
-                    <label class="control-label ">Mileage for Trailer Hauling</label>
-                </div>
-                <div class="input-group col-xs-12 ">
-                    <div class="input-group col-xs-6 ">
-                        <span class="input-group-addon ">Trailer Miles</span>
-                        <input ng-model="dexedit.Line[1].Quantity " name="trailermiles " class="form-control " placeholder="0 " type="number " min="1 " pattern="\d+ ">
-                    </div>
-                    <div class="input-group col-xs-6 ">
-                        <span class="input-group-addon ">Mile Rate</span>
-                        <input ng-model="dexedit.Line[1].Rate " name="milerate " class="form-control " placeholder="0.4 " type="number " step="0.01 " pattern="\d+.\d+ ">
-                    </div>
-                    <div class="input-group col-xs-5 ">
-                        <span class="input-group-addon ">Amount</span>
-                        <label class="form-control " placeholder="0 " ng-model="exp.Line[1].Amount " name="Amount2 ">{{ (dexedit.Line[1].Quantity * dexedit.Line[1].Rate) | currency}}</label>
+                <div class="form-group row">
+                    <label for="lsubmitby" class="col-xs-6 col-form-label">Created By</label>
+                    <div class="col-xs-10">
+                        <label id=lsubmitby class=" form-control   " ng-model="dexedit.SubmitBy ">
+                            {{dexedit.SubmitBy}}</label>
                     </div>
                 </div>
-                <div class="input-group col-xs-12 " style="padding-top: 6px; ">
-                    <label class="control-label ">Other Expenses</label>
-                </div>
-                <div class="input-group col-xs-12 ">
-                    <label class=" exp_num "> (1)</label>
-                    <div class="input-group col-xs-9 ">
-                        <span class="input-group-addon ">Explanation</span>
-                        <input ng-model="dexedit.Line[2].Description " type="text " class="form-control " placeholder="Explanation of Other expenses " title="Explanation of Other expenses ">
-                    </div>
-                    <div class="input-group " style="padding-left: 50px; ">
-                        <span class=" input-group-addon ">Amount</span>
-                        <input ng-model="dexedit.Line[2].Amount " name="line1amt " class="form-control " placeholder="0.0 " type="number " step="0.01 " pattern="\d+.\d+ ">
+                <div class="form-group row">
+                    <label for="lsubmitdate" class="col-xs-6 col-form-label">Created On</label>
+                    <div class="col-xs-10">
+                        <label id=lsubmitdate class=" form-control   " ng-model="dexedit.SubmitDate ">
+                            {{dexedit.SubmitDate}}</label>
                     </div>
                 </div>
-                <div class="input-group col-xs-12 " style="padding-top: 6px; ">
-                    <label class=" exp_num "> (2)</label>
-                    <div class="input-group col-xs-9 ">
-                        <span class="input-group-addon ">Explanation</span>
-                        <input ng-model="dexedit.Line[3].Description " type="text " class="form-control " placeholder="Explanation of Other expenses " title="Explanation of Other expenses ">
-                    </div>
-                    <div class="input-group " style="padding-left: 50px; ">
-                        <span class=" input-group-addon ">Amount</span>
-                        <input ng-model="dexedit.Line[3].Amount " name="line2amt " class="form-control " placeholder="0.0 " type="number " step="0.01 " pattern="\d+.\d+ ">
+                <div class="form-group row">
+                    <label for="lsubmitaddress" class="col-xs-6 col-form-label">Address</label>
+                    <div class="col-xs-12">
+                        <label id=lsubmitaddress class=" form-control   " ng-model="dexedit.SubmitAddress " style=" word-wrap: break-word">
+                            {{dexedit.SubmitAddress}}</label>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="lPaymentStatus" class="col-xs-8 col-form-label">Payment Status</label>
+                    <div class="col-xs-10" ng-class="{ 'color-green': dexedit.PaymentStatus==='Approved' , 'color-red': dexedit.PaymentStatus==='Pending' , 'color-orange': dexedit.PaymentStatus==='Need Info' } ">
+                        <label id=lPaymentStatus class=" form-control   " ng-model="dexedit.PaymentStatus ">
+                            {{dexedit.PaymentStatus}}</label>
+                    </div>
+                </div>
+                <div ng-show="dexedit.PaymentStatusBy!='' ">
+                    <div class="form-group row">
+                        <label for="lPaymentStatusBy" class="col-xs-7 col-form-label">Payment Status Changed By</label>
+                        <div class="col-xs-10">
+                            <label id=lsubmitdate class=" form-control   " ng-model="dexedit.PaymentStatusBy ">
+                                {{dexedit.PaymentStatusBy}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lPaymentStatusDate" class="col-xs-8 col-form-label">Payment Status Changed On</label>
+                        <div class="col-xs-10">
+                            <label id=lsubmitaddress class=" form-control   " ng-model="dexedit.PaymentStatusDate ">
+                                {{dexedit.PaymentStatusDate}}</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- <fieldset ng-disabled="myBooleanValue"> -->
+                <div class="form-group row" style="padding-bottom:  6px; ">
+                    <label for="lDescription" class="col-xs-12 col-form-label">Business purpose, Origin and Destination</label>
+                    <div class="col-md-8">
+                        <input id=lDescription ng-model="dexedit.Description " type="text " class="form-control " title="Business purpose, Origin & Destination " placeholder="Business purpose, Origin & Destination " required>
+                    </div>
+                </div>
+                <!-- </fieldset> -->
+                <div class="form-group   panel panel-default   ">
+                    <div class="panel-heading"><b>Mileage for Travel</b></div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label for="lquantity1" class="col-xs-6 col-form-label">Miles Driven</label>
+                            <div class="col-xs-10">
+                                <input id=lquantity1 ng-model="dexedit.Line[0].Quantity " name="miles " class="form-control " placeholder="0 " type="number " min="1 " pattern="\d+ ">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lrate1" class="col-xs-6 col-form-label">Mile Rate</label>
+                            <div class="col-xs-10">
+                                <input id=lrate1 ng-model="dexedit.Line[0].Rate " name="miles " class="form-control " placeholder="0.25 " type="number " step="0.01 " pattern="\d+.\d+ ">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lamount1" class="col-xs-6 col-form-label">Amount</label>
+                            <div class="col-xs-10">
+                                <label id=lamount1 class="form-control " placeholder="0 " ng-model="exp.Line[0].Amount " name="Amount1 ">{{ (dexedit.Line[0].Quantity * dexedit.Line[0].Rate) | currency}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group   panel panel-default   ">
+                    <div class="panel-heading"><b>Mileage for Trailer Hauling</b></div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label for="lquantity2" class="col-xs-6 col-form-label">Trailer Miles</label>
+                            <div class="col-xs-10">
+                                <input id=lquantity2 ng-model="dexedit.Line[1].Quantity " name="trailermiles " class="form-control " placeholder="0 " type="number " min="1 " pattern="\d+ ">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lrate2" class="col-xs-6 col-form-label">Mile Rate</label>
+                            <div class="col-xs-10">
+                                <input id=lrate2 ng-model="dexedit.Line[0].Rate " name="milerate  " class="form-control " placeholder="0.4 " type="number " step="0.01 " pattern="\d+.\d+ ">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lamount2" class="col-xs-6 col-form-label">Amount</label>
+                            <div class="col-xs-10">
+                                <label id=lamount2 class="form-control " placeholder="0 " ng-model="exp.Line[1].Amount " name="Amount2 ">{{ (dexedit.Line[1].Quantity * dexedit.Line[1].Rate) | currency}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group   panel panel-default   ">
+                    <div class="panel-heading"><b>Other Expenses</b></div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label for="" class="col-xs-8 col-form-label">Line #</label>
+                            <div class="col-xs-12">
+                                <label class=" exp_num"> (1)</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lDescription1" class="col-xs-10 col-form-label">Explanation</label>
+                            <div class="col-md-12">
+                                <input id=lDescription1 ng-model="dexedit.Line[2].Description " type="text " class="form-control " placeholder="Explanation of Other expenses " title="Explanation of Other expenses " style=" word-wrap: break-word">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lamount3" class="col-xs-6 col-form-label">Amount</label>
+                            <div class="col-xs-10">
+                                <input id=lamount3 ng-model="dexedit.Line[2].Amount" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label for="" class="col-xs-8 col-form-label">Line #</label>
+                            <div class="col-xs-12">
+                                <label class=" exp_num"> (2)</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lDescription2" class="col-xs-10 col-form-label">Explanation</label>
+                            <div class="col-md-12">
+                                <input id=lDescription2 ng-model="dexedit.Line[3].Description " type="text " class="form-control " placeholder="Explanation of Other expenses " title="Explanation of Other expenses " style=" word-wrap: break-word">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lamount4" class="col-xs-6 col-form-label">Amount</label>
+                            <div class="col-xs-10">
+                                <input id=lamount4 ng-model="dexedit.Line[3].Amount" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default  ">
+                    <div class="panel-heading clearfix">
+                        <h3 class="panel-title pull-left">Bill Receipts</h3>
+                    </div>
+                    <div id="imagedisplay" class="form-group col-xs-12 ">
+                        <div class="content panel-body">
+                            <img id="image0" width="40%" height="40%" hidden="true" style="padding: 20px" onmouseover="image0.width='700';image0.height='450';" onmouseout="image0.width='250';image0.height='200';" />
+                            <img id="image1" width="40%" height="40%" hidden="true" style="padding: 20px" onmouseover="image1.width='700';image1.height='450';" onmouseout="image1.width='250';image1.height='200';" />
+                            <img id="image2" style="width:300px;height:200px;" hidden="true" onmouseover="image2.width='700';image2.height='450';" onmouseout="image2.width='250';image2.height='200';" />
+                            <img id="image3" style="width:300px;height:200px;" hidden="true" onmouseover="image3.width='700';image3.height='450';" onmouseout="image3.width='250';image3.height='200';" />
+                            <img id="image4" style="width:300px;height:200px;" hidden="true" onmouseover="image4.width='700';image4.height='450';" onmouseout="image4.width='250';image4.height='200';" />
+                            <img id="image5" style="width:300px;height:200px;" hidden="true" onmouseover="image5.width='700';image5.height='450';" onmouseout="image5.width='250';image5.height='200';" />
+                            <img id="image6" style="width:300px;height:200px;" hidden="true" onmouseover="image6.width='700';image6.height='450';" onmouseout="image6.width='250';image6.height='200';" />
+                            <img id="image7" style="width:300px;height:200px;" hidden="true" onmouseover="image7.width='700';image7.height='450';" onmouseout="image7.width='250';image7.height='200';" />
+                            <img id="image8" style="width:300px;height:200px;" hidden="true" onmouseover="image8.width='700';image8.height='450';" onmouseout="image8.width='250';image8.height='200';" />
+                            <img id="image9" style="width:300px;height:200px;" hidden="true" onmouseover="image9.width='700';image9.height='450';" onmouseout="image9.width='250';image9.height='200';" />
+                        </div>
+                    </div>
+                </div>
+<<<<<<< HEAD
                 <!--                 <div class="input-group col-xs-12 ">
                     <label for=" " title="Load supporting documents (images only) including paid bills, receipts, deposit slips ">Load supporting documents (images only)</label>
                     <input type="file " id="files " name="files " multiple accept="image/* ">
@@ -128,32 +212,32 @@
                     <img id="image7 " style="width:300px;height:200px; " hidden="true " onmouseover="image7.width='700' ;image7.height='450' ; " onmouseout="image7.width='250' ;image7.height='200' ; " />
                     <img id="image8 " style="width:300px;height:200px; " hidden="true " onmouseover="image8.width='700' ;image8.height='450' ; " onmouseout="image8.width='250' ;image8.height='200' ; " />
                     <img id="image9 " style="width:300px;height:200px; " hidden="true " onmouseover="image9.width='700' ;image9.height='450' ; " onmouseout="image9.width='250' ;image9.height='200' ; " />
+=======
+                <div ng-show="userinfo.viewuserdata[0].role=='coordinator' " class="form-group col-xs-12 " style="padding-top: 6px; ">
+                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click="updateexpense(dexedit.BillId) ">Save Expense</a>
+                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm " ng-click=" ">Cancel</a>
+>>>>>>> Fixed Alignment Issues, Added missing PDFMake lib
                 </div>
-            </div>
-            <div ng-show="userinfo.viewuserdata[0].role=='coordinator' " class="form-group col-xs-12 " style="padding-top: 6px; ">
-                <a ng-href="#here " class="btn btn-primary format_button_sm " ng-click="updateexpense(dexedit.BillId) ">Save Expense</a>
-                <a ng-href="#here " class="btn btn-primary format_button_small " ng-click=" ">Cancel</a>
-            </div>
-            <div class="panel panel-default form-group col-xs-12 " style="align-content: right;padding-top: 6px; ">
-                <div ng-show="userinfo.viewuserdata[0].role!='coordinator' " class="form-group col-xs-12 ">
-                    <!--  div ng-show=" dexedit.PaymentStatus=='Pending' -->
-                    <div style="font-size: 14px; font-style: bold; padding-top: 6px;">
-                        <label class="btn">
-                            <input type="radio" ng-model="dexedit.PaymentStatus" value="Approved">
-                            <span style=" font-size: 20px">Approved</span>
-                        </label>
-                        <label class="btn">
-                            <input type="radio" ng-model="dexedit.PaymentStatus" value="Need Info"> <span style=" font-size: 20px">Need Info</span>
-                        </label>
-                        <label class="btn">
-                            <input type="radio" ng-model="dexedit.PaymentStatus" value="Pending"> <span style=" font-size: 20px">Pending</span>
-                        </label>
+                <div class="panel panel-default form-group col-xs-12 " style="align-content: right;padding-top: 6px; ">
+                    <div ng-show="userinfo.viewuserdata[0].role!='coordinator' " class="form-group col-xs-12 ">
+                        <!--  div ng-show=" dexedit.PaymentStatus=='Pending' -->
+                        <div style="font-size: 14px; font-style: bold; padding-top: 6px;">
+                            <label class="btn">
+                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Approved">
+                                <span style=" font-size: 20px">Approved</span>
+                            </label>
+                            <label class="btn">
+                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Need Info"> <span style=" font-size: 20px">Need Info</span>
+                            </label>
+                            <label class="btn">
+                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Pending"> <span style=" font-size: 20px">Pending</span>
+                            </label>
+                        </div>
+                        <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus)" class="btn btn-primary format_button_med" value="Payment Status Update" />
+                        <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_small" ng-click="">Cancel</a>
                     </div>
-                    <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus)" class="btn btn-primary format_button_med" value="Payment Status Update" />
-                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_small" ng-click="">Cancel</a>
                 </div>
             </div>
         </div>
-</div>
-</form>
+    </form>
 </div>
