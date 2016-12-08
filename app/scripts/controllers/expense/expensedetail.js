@@ -44,172 +44,148 @@ angular.module('ohanaApp')
         //$scope.$applyAsync();
         function loadexpensedata() {
 
+
             var ref = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
             //alert($routeParams.BillId);   
-            // $scope.vimageurl = [];
+            $scope.vimageurl = [];
             $scope.isdisabled = false;
             ref.on('value', function(snapshot) {
                 //  $scope.$apply(function(){
                 $scope.expense = snapshot.val();
                 console.log("Expense Detail Loaded", $scope.expense);
-                // $scope.$applyAsync();
-                var imageList = [];
-                var i = 0;
-                var img = document.createElement('img');
-                var storage = firebase.storage();
-                var storageRef = firebase.storage().ref();
-
-                var storageRefPic = '';
-                var storageloc = '';
-
+                $scope.$applyAsync();
+                // var imageList = [];
                 angular.forEach($scope.expense, function(item) {
-                    storageloc = '';
+                    // if (item.PaymentStatus == 'Approved') {
+                    //     $scope.isdisabled = true;
+                    //     //$scope.paymentstatusbtn.value = "Expense Approved";
 
-                    if (angular.isDefined(item.ImageURL)) {
-                        // alert(parseInt(item.ImageURL.length));
+                    // };
+                    var img = document.createElement('img');
+                    var storage = firebase.storage();
+                    var storageRef = firebase.storage().ref();
 
-                        // imageList[i] = item.ImageURL[i].FileName;
+                    var storageRefPic = '';
+                    $scope.vimageurl = item.ImageURL;
+                    //alert(item.ImageURL[0].FileName);
 
-                        for (var i = 0; i < parseInt(item.ImageURL.length); i++) {
-                            // while (i < parseInt(item.ImageURL.length)) {
-                            // console.log("Hello Image ", item.ImageURL[i].FileName, item.ImageURL.length, i);
-                            if (parseInt(i) === parseInt(item.ImageURL.length)) {
-                                alert("hello");
-                                throw BreakException;
-                            }
-                            if (angular.isDefined(item.ImageURL[i].FileName)) {
+                    if (item.ImageURL) {
 
+                        for (var i = 0; i < item.ImageURL.length; i++) {
+                            console.log("Hello Image ", item.ImageURL[i].FileName);
+                            var storageloc = '';
 
-                                storageloc = item.ImageURL[i].FileName;
-                                // console.log("Expense Image Load  - ", i, storageloc);
-
-
-                                // alert(item.ImageURL.length);
-                                alert(item.ImageURL[i].FileName);
-                                console.log("Expense image ENTER - ", i, storageloc);
-
-                                if (i === 0) {
-
-                                    alert("first");
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        console.log("Expense Image Load  - 1 - ", i, storageloc, url);
-                                        document.getElementById("image0").src = url;
-                                        document.getElementById("image0").hidden = false;
-                                        console.log("Expense Image Load  - ", i, storageloc, url);
-
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                        console.log("Expense Image Load error - ", i);
-                                    });
-                                };
-
-                                if (i === 1) {
+                            // imageList[i] = item.ImageURL[i].FileName;
+                            storageloc = item.ImageURL[i].FileName;
 
 
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image1").src = url;
-                                        document.getElementById("image1").hidden = false;
-                                        console.log("1Expense Image Load  - ", i, storageloc, url);
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                        console.log("1Expense Image Load error - ", i);
-                                    });
-                                };
+                            if (i == 0) {
 
-                                if (i === 2) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image0").src = url;
+                                    document.getElementById("image0").hidden = false;
 
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image2").src = url;
-                                        document.getElementById("image2").hidden = false;
-                                        console.log("2Expense Image Load  - ", i, storageloc, url);
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                        console.log("2Expense Image Load error - ", i, storageloc);
-                                    });
-                                };
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                if (i === 3) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image3").src = url;
-                                        document.getElementById("image3").hidden = false;
+                            if (i == 1) {
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image1").src = url;
+                                    document.getElementById("image1").hidden = false;
 
-                                if (i === 4) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image4").src = url;
-                                        document.getElementById("image4").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 2) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image2").src = url;
+                                    document.getElementById("image2").hidden = false;
 
-                                if (i == 5) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image5").src = url;
-                                        document.getElementById("image5").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 3) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image3").src = url;
+                                    document.getElementById("image3").hidden = false;
 
-                                if (i == 6) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image6").src = url;
-                                        document.getElementById("image6").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 4) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image4").src = url;
+                                    document.getElementById("image4").hidden = false;
 
-                                if (i == 7) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image7").src = url;
-                                        document.getElementById("image7").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 5) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image5").src = url;
+                                    document.getElementById("image5").hidden = false;
 
-                                if (i == 8) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image8").src = url;
-                                        document.getElementById("image8").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 6) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image6").src = url;
+                                    document.getElementById("image6").hidden = false;
 
-                                if (i == 9) {
-                                    storageRef.child(storageloc).getDownloadURL().then(function(url) {
-                                        document.getElementById("image9").src = url;
-                                        document.getElementById("image9").hidden = false;
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
-                                    }).catch(function(error) {
-                                        // Handle any errors
-                                    });
-                                };
+                            if (i == 7) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image7").src = url;
+                                    document.getElementById("image7").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 8) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image8").src = url;
+                                    document.getElementById("image8").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
+
+                            if (i == 9) {
+                                storageRef.child(storageloc).getDownloadURL().then(function(url) {
+                                    document.getElementById("image9").src = url;
+                                    document.getElementById("image9").hidden = false;
+
+                                }).catch(function(error) {
+                                    // Handle any errors
+                                });
+                            };
 
 
 
 
-                            }
                         }
-
-                        // alert(i);
-                        // i = i + 1;
-                        // throw BreakException;
-
                     }
-
 
                 })
 
@@ -218,6 +194,7 @@ angular.module('ohanaApp')
             })
 
         }
+
 
         $scope.updateexpense = function(billid) {
 
@@ -259,16 +236,18 @@ angular.module('ohanaApp')
                 // alert("Expense Successfully Updated ");
                 swal('Expense Updated Successfully!', '', 'success');
 
+
             });
 
-            var currentimagecount = 0;
-            angular.forEach($scope.expense, function(item) {
-                if (item.ImageURL) {
-                    currentimagecount = item.ImageURL.length;
-                }
-            });
+            // var currentimagecount = 0;
+            // angular.forEach($scope.expense, function(item) {
+            //     if (item.ImageURL) {
+            //         currentimagecount = item.ImageURL.length;
+            //     }
+            // });
 
             $location.path("expense/viewexpense");
+
             //Need to work on this code to load new images part of update expense
             // logic need to be checked
 
@@ -319,20 +298,12 @@ angular.module('ohanaApp')
             var self = this;
             firebase.database().ref('expense').orderByChild("BillId").equalTo(billid)
                 .on("child_added", function(snapshot) {
-                    // snapshot = metdata + object (val)    
-                    // snapshot.Description = self.dexedit.Description
-                    //  console.log("log  log  22 ", snapshot, snapshot.val(), snapshot.key);
-                    //var temp = snapshot.val();
-                    //temp["PaymentStatus"] = paymentstat;
-                    //'Approved';
 
                     firebase.database().ref('expense/' + snapshot.key).update(paymentstatupdate);
                     //.set(temp);
                     swal('Payment Status Updated!', '', 'success');
 
                 });
-
-            // alert("Payment Status Updated ");
 
             $location.path("expense/viewexpense");
 

@@ -35,7 +35,7 @@ angular.module('ohanaApp', [
             })
             .when('/whoweare', {
                 templateUrl: 'views/whoweare.html',
-                //				controller: 'WhoweareCtrl as whoweare'
+                //              controller: 'WhoweareCtrl as whoweare'
             })
             .when('/getinvolved', {
                 templateUrl: 'views/getinvolved.html',
@@ -76,9 +76,9 @@ angular.module('ohanaApp', [
             .when("/description", {
                 templateUrl: 'views/manage/event.details.description.html',
                 controller: 'EventdetaildescriptionCtrl as eventDescription',
-                //				params: {
-                //					event_id: id
-                //				},
+                //              params: {
+                //                  event_id: id
+                //              },
             })
             .when("/volunteers", {
                 templateUrl: 'views/manage/event.details.volunteers.html',
@@ -106,11 +106,11 @@ angular.module('ohanaApp', [
             })
             .when('/manage/training', {
                 templateUrl: 'views/manage/training.html',
-                //				controller: 'TrainingCtrl as training'
+                //              controller: 'TrainingCtrl as training'
             })
             .when('/manage/hours', {
                 templateUrl: 'views/manage/hours.html',
-                //				controller: 'HoursCtrl as hours'
+                //              controller: 'HoursCtrl as hours'
             })
             .when('/manage/directory', {
                 templateUrl: 'views/manage/directory.html',
@@ -122,15 +122,15 @@ angular.module('ohanaApp', [
             })
             .when('/manage/chAdmin', {
                 templateUrl: 'views/manage/chadmin.html',
-                //				controller: 'ChadminCtrl as chadmin'
+                //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
-                //				controller: 'RegadminCtrl as regadmin'
+                //              controller: 'RegadminCtrl as regadmin'
             })
             .when('/superAdmin', {
                 templateUrl: 'views/manage/superadmin.html',
-                //				controller: 'SuperadminCtrl as superadmin'
+                //              controller: 'SuperadminCtrl as superadmin'
             })
             .when('/publicEvents', {
                 templateUrl: 'views/public.events.html',
@@ -219,7 +219,7 @@ angular.module('ohanaApp', [
                 l = arr.length,
                 results = [],
                 obj;
-            //    console.log("unique", arr, targetField);
+            // console.log("unique", arr, targetField);
             // Iterate over all objects in the array
             // and collect all unique values
             for (i = 0; i < arr.length; i++) {
@@ -229,7 +229,7 @@ angular.module('ohanaApp', [
                 // check for uniqueness
                 unique = true;
                 for (v = 0; v < values.length; v++) {
-                    //        console.log("unique Array data", values[v]);
+                    // console.log("unique Array data", values[v]);
                     if (obj[targetField] == values[v]) {
                         unique = false;
                     }
@@ -242,7 +242,7 @@ angular.module('ohanaApp', [
 
                     values.push(obj[targetField]);
                     results.push(obj);
-                    //      console.log("Unique Chapter data", results);
+                    // console.log("Unique Chapter data", results);
                 }
 
             }
