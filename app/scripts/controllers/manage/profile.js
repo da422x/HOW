@@ -29,7 +29,6 @@ angular.module('ohanaApp')
 						$scope.requests.push(value);
 					}
 				});
-				console.log($scope.requests);
 			});
 
 		};
@@ -37,6 +36,18 @@ angular.module('ohanaApp')
 		$scope.$on('modalClosing', function() {
 			$scope.update();
 		});
+
+		$scope.rcs_status = false;
+
+		$scope.rcs_show = function () {
+			if ($scope.rcs_status) {
+				$scope.rcs_status = false;
+				$scope.update();
+			}else{
+				$scope.rcs_status = true;
+				$scope.update();
+			}
+		};
 
 		$scope.roleChangeRequest = function () {
 			var modalInstance = $uibModal.open({
