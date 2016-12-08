@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <div class="container">
 	<h3>Events</h3>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label" for="fname">Search:</label>
+			<div>
+				<input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
+			</div>
+		</div>
+	</form>
 	<div class="row event-row">
 		<div class="col-md-4" ng-repeat="event in eventList">
 			<div class="panel panel-default">
@@ -13,15 +21,15 @@
 				<div class="list-group">
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">Start Time</h6>
-						<h4 class="list-group-item-heading">{{event.start_timestamp | date:'MM-dd-yyyy HH:mm a'}}</h4>
+						<h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
 					</div>
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">End Time</h6>
-						<h4 class="list-group-item-heading">{{event.end_timestamp | date:'MM-dd-yyyy HH:mm a'}}</h4>
+						<h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
 					</div>
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">Location</h6>
-						<h4 class="list-group-item-heading">{{event.address}}</h4>
+						<h4 class="list-group-item-heading">{{event.location}}</h4>
 					</div>
 				</div>
 				<div class="panel-footer" style="height:55px">

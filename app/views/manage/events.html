@@ -4,7 +4,6 @@
 	<div style="clear: left; width: 100%; overflow: auto; margin-bottom:10px">
 		<div class="toolbar-left" style="float: left">
 			<button class="btn btn-primary" ng-click="add()">Add New Event</button>
-			<button class="btn btn-primary" ng-click="update()">Refresh</button>
 		</div>
 		<div class="toolbar-right" style="float: right">
 			Filter by:
@@ -18,16 +17,9 @@
 	</div>
 	<form class="form-horizontal">
 		<div class="form-group">
-			<label class="col-md-4 control-label" for="fname">Search:</label>
-			<div class="col-md-7">
-				<input id="fname" name="fname" type="text" placeholder="{{SearchPlaceHolder}}" class="form-control input-md" ng-model="newQuery.search" ng-required="true">
-			</div>
-		</div>
-		<!-- Button - Submit -->
-		<div class="form-group">
-			<label class="col-md-4 control-label" for="submit"></label>
-			<div class="col-md-7">
-				<button id="submit" name="submit" class="btn btn-primary" ng-click="search()">Search</button>
+			<label class="control-label" for="fname">Search:</label>
+			<div>
+				<input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
 			</div>
 		</div>
 	</form>
@@ -41,11 +33,11 @@
 				<div class="list-group">
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">Start Time</h6>
-						<h4 class="list-group-item-heading">{{formatTime(event.startTime)}}</h4>
+						<h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
 					</div>
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">End Time</h6>
-						<h4 class="list-group-item-heading">{{formatTime(event.endTime)}}</h4>
+						<h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
 					</div>
 					<div class="list-group-item">
 						<h6 class="list-group-item-text">Location</h6>
