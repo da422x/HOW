@@ -1,105 +1,110 @@
 <!DOCTYPE html>
 <div class="container" ng-init="update()">
-	<div class="panel panel-default">
-		<div class="panel-heading clearfix">
-			<h3 class="panel-title pull-left">My Profile</h3>
-		</div>
-		<div class="list-group">
-			<div class="list-group-item">
-				<h6 class="list-group-item-text">User: </h6>
-				<h4 class="list-group-item-heading">Name - {{profileData.name.first}} {{profileData.name.last}}</h4>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_dob">DOB - {{profileData.DOB | date:'MM/dd/yyyy'}}</a>
-				</h4>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_gender">Gender - {{profileData.gender}}</a>
-				</h4>
-				<h4 class="list-group-item-heading">Role - {{profileData.role}}</h4>
-			</div>
-			<div class="list-group-item">
-				<h6 class="list-group-item-text">Address: </h6>
-				<h4 class="list-group-item-heading">Line 1 - {{profileData.address.line1}}</h4>
-				<h4 class="list-group-item-heading">Line 2 - {{profileData.address.line2}}</h4>
-				<h4 class="list-group-item-heading">City/State/Zip - {{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
-			</div>
-			<div class="list-group-item">
-				<h6 class="list-group-item-text">Contact: </h6>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_phone">Phone - {{profileData.phone}}</a>
-				</h4>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_email">Email - {{profileData.email}}</a>
-				</h4>
-			</div>
-			<div class="list-group-item">
-				<h6 class="list-group-item-text">Orginization Data: </h6>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_region">Region - {{profileData.Region}}</a>
-				</h4>
-				<h4 class="list-group-item-heading">
-					<a href="#" id="user_chapter">Chapter - {{profileData.Chapter}}</a>
-				</h4>
-			</div>
-			<div class="list-group-item">
-				<h6 class="list-group-item-text">Military Data: </h6>
-				<h4 class="list-group-item-heading">Branch - {{profileData.branch}}</h4>
-				<h4 class="list-group-item-heading">Years served - {{profileData.years}}</h4>
-			</div>
-		</div>
-		<div class="panel-footer" style="height:55px">
-			<a class="btn btn-primary pull-right" ng-click="roleChangeRequest()"><i class="fa fa-pencil" style="padding-right: 5px"></i>Request Role Change</a>
-		</div>
-	</div>
-	<!-- end panel -->
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">My Profile</h3>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                <h6 class="list-group-item-text">User: </h6>
+                <h4 class="list-group-item-heading">Name - {{profileData.name.first}} {{profileData.name.last}}</h4>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_dob">DOB - {{profileData.DOB | date:'MM/dd/yyyy'}}</a>
+                </h4>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_gender">Gender - {{profileData.gender}}</a>
+                </h4>
+                <h4 class="list-group-item-heading">Role - {{profileData.role}}</h4>
+            </div>
+            <div class="list-group-item">
+                <h6 class="list-group-item-text">Address: </h6>
+                <h4 class="list-group-item-heading">Line 1 - {{profileData.address.line1}}</h4>
+                <h4 class="list-group-item-heading">Line 2 - {{profileData.address.line2}}</h4>
+                <h4 class="list-group-item-heading">City/State/Zip - {{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
+            </div>
+            <div class="list-group-item">
+                <h6 class="list-group-item-text">Contact: </h6>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_phone">Phone - {{profileData.phone}}</a>
+                </h4>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_email">Email - {{profileData.email}}</a>
+                </h4>
+            </div>
+            <div class="list-group-item">
+                <h6 class="list-group-item-text">Orginization Data: </h6>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_region">Region - {{profileData.Region}}</a>
+                </h4>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_chapter">Chapter - {{profileData.Chapter}}</a>
+                </h4>
+            </div>
+            <div class="list-group-item">
+                <h6 class="list-group-item-text">Military Data: </h6>
+                <h4 class="list-group-item-heading">Branch - {{profileData.branch}}</h4>
+                <h4 class="list-group-item-heading">Years served - {{profileData.years}}</h4>
+            </div>
+        </div>
+        <div class="panel-footer" style="height:55px">
+            <a class="btn btn-primary pull-right" ng-click="roleChangeRequest()"><i class="fa fa-pencil" style="padding-right: 5px"></i>Request Role Change</a>
+        </div>
+    </div>
+    <!-- end panel -->
 
-	<div class="panel panel-default">
-		<div class="panel-heading clearfix">
-			<h3 class="panel-title pull-left">Role Change Status</h3>
-		</div>
-		<div class="list-group">
-			<div class="row list-group-item">
-				<div class="col-md-2">
-					Last Updated
-				</div>
-				<div class="col-md-1">
-					Current Role
-				</div>
-				<div class="col-md-1">
-					Requested Role
-				</div>
-				<div class="col-md-1">
-					Status
-				</div>
-				<div class="col-md-2">
-					User Comment
-				</div>
-				<div class="col-md-2">
-					Reviewers Comment
-				</div>
-			</div>
-			<div class="row list-group-item" ng-repeat="request in requests" id="{{request.key}}">
-				<div class="col-md-2">
-					{{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
-				</div>
-				<div class="col-md-1">
-					{{request.current_role}}
-				</div>
-				<div class="col-md-1">
-					{{request.request_role}}
-				</div>
-				<div class="col-md-1">
-					{{request.request_status}}
-				</div>
-				<div class="col-md-2">
-					{{request.user_comment}}
-				</div>
-				<div class="col-md-2">
-					{{request.admin_comment}}
-				</div>
-				<div class="col-md-2">
-					<button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Role Change Status</h3>
+            <a class="btn btn-primary pull-right" ng-click="rcs_show()"><i style="padding-right: 5px"></i>Show</a>
+        </div>
+        <div class="list-group" ng-show="rcs_status">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Last Updated</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4>Current Role</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Requested Role</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4>Status</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>User Comment</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4>Reviewers Comment</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item" ng-repeat="request in requests" id="{{request.key}}">
+                <div class="row">
+                    <div class="col-md-2">
+                        {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
+                    </div>
+                    <div class="col-md-1">
+                        {{request.current_role}}
+                    </div>
+                    <div class="col-md-2">
+                        {{request.request_role}}
+                    </div>
+                    <div class="col-md-1">
+                        {{request.request_status}}
+                    </div>
+                    <div class="col-md-2">
+                        {{request.user_comment}}
+                    </div>
+                    <div class="col-md-3">
+                        {{request.admin_comment}}
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

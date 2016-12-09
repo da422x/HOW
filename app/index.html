@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
     <!-- endbower -->
     <!-- endbuild -->
+
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- injector:css -->
@@ -39,7 +40,6 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="extensions/bootstrap-editable/css/bootstrap-editable.css">
     <link rel="stylesheet" href="extensions/hamburgers.min.css">
-    <link rel="stylesheet" href="styles/expense.css">
     <!-- endinjector -->
     <!-- endbuild -->
 </head>
@@ -54,17 +54,18 @@
         <div ng-view=""></div>
         <!--<div ui-view=""></div>-->
     </div>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
-    ! function(A, n, g, u, l, a, r) {
-        A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
-                (A[l].q = A[l].q || []).push(arguments)
-            }, A[l].l = +new Date, a = n.createElement(g),
-            r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
-    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ! function(A, n, g, u, l, a, r) {
+            A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+                    (A[l].q = A[l].q || []).push(arguments)
+                }, A[l].l = +new Date, a = n.createElement(g),
+                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+        }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
     </script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <!-- build:js(.) scripts/vendor.js -->
@@ -97,7 +98,7 @@
     <script src="bower_components/datatables.net/js/jquery.dataTables.js"></script>
     <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.js"></script>
     <script src="bower_components/datatables.net-autofill/js/dataTables.autoFill.js"></script>
-    <script src="bower_components/datatables-autofill-bootstrap/js/dataTables.autoFill.js"></script>
+    <script src="bower_components/datatables-autofill-bootstrap/js/autoFill.bootstrap.js"></script>
     <script src="bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
     <script src="bower_components/datatables.net-buttons/js/buttons.colVis.js"></script>
     <script src="bower_components/datatables.net-buttons/js/buttons.flash.js"></script>
@@ -127,10 +128,9 @@
     <script src="bower_components/pickadate/lib/picker.time.js"></script>
     <script src="bower_components/ng-pickadate/ng-pickadate.js"></script>
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
-    <script src="bower_components/pdfmake/build/pdfmake.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/services/api.js"></script>
@@ -168,6 +168,7 @@
     <script src="parts/newuserdirectoryform.js"></script>
     <script src="parts/newiteminventoryform.js"></script>
     <script src="parts/rolerequestchangeform.js"></script>
+    <script src="parts/managerolechangerequest.js"></script>
     <script src="parts/donors.js"></script>
     <script src="parts/public.events.description.js"></script>
     <script src="parts/events.add.participants.js"></script>
@@ -185,6 +186,7 @@
     <script src="scripts/directives/directive.js"></script>
     <script src="scripts/services/expenseservice.js"></script>
     <!-- endbuild -->
+
 </body>
 
 </html>

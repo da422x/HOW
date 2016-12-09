@@ -21,8 +21,6 @@ angular.module('ohanaApp')
         $scope.startdate = firstday;
         // $scope.enddate = currentdate;
 
-
-
         $scope.orderByField = 'SubmitDate';
         $scope.reverseSort = false;
 

@@ -29,7 +29,7 @@
                 <div class="form-group row">
                     <label for="Chapter" class="col-xs-12 col-form-label">Chapter Name</label>
                     <div class="col-xs-12">
-                        <label id=Chapter class=" form-control   " ng-model="exp.Chapter" name="Chapter">
+                        <label id="Chapter" class="form-control classname2" ng-model="exp.Chapter" name="Chapter">
                             {{userinfo.viewuserdata[0].Chapter}}</label>
                     </div>
                 </div>
@@ -151,8 +151,7 @@
         </div>
     </form>
     <script>
-    var currentdate = new Date();
-    jQuery.noConflict()(function($) {
+        var currentdate = new Date();
         $(document).ready(function() {
             $('#eventdate').pickadate({
                 format: 'mm/dd/yyyy',
@@ -170,7 +169,5 @@
 
             $("body").on("click", ".selFile", removeFile);
         });
-
-    });
     </script>
 </div>

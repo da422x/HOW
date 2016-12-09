@@ -1,77 +1,87 @@
 <!DOCTYPE html>
 
 <div class="hero">
-	<img id="heroimg" src="/assets/images/home/home-splash.png" alt="Home Hero">
-	<div id="herotext">
-		<h2>HELP SOMEBODY WHO FOUGHT FOR PEACE, FIND IT.</h2>
-		<button ng-click="videoToggle()" class="button-border"><i class="fa fa-play" style="margin-right:12px"></i>PLAY VIDEO</button>
-	</div>
-	<div id="overlay" ng-show="vidtoggle" class="fadein fadeout">
-		<iframe id="videoplayer" src="https://www.youtube.com/embed/iZQFKPaVNMQ?wmode=opaque&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-		<button id="videoclose" ng-click="videoToggle()"><i class="fa fa-times fa-2x" aria-hidden="true"></i></button>
-	</div>
+    <img id="heroimg" src="/assets/images/home/home-splash.png" alt="Home Hero">
+    <div id="herotext">
+        <h2>HELP SOMEBODY WHO FOUGHT FOR PEACE, FIND IT.</h2>
+        <button ng-click="videoToggle()" class="button-border"><i class="fa fa-play" style="margin-right:12px"></i>PLAY VIDEO</button>
+    </div>
+    <div id="overlay" ng-show="vidtoggle" class="fadein fadeout">
+        <iframe id="videoplayer" src="https://www.youtube.com/embed/iZQFKPaVNMQ?wmode=opaque&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+        <button id="videoclose" ng-click="videoToggle()"><i class="fa fa-times fa-2x" aria-hidden="true"></i></button>
+    </div>
 </div>
 <!-- end hero -->
 <div class="missionstats">
-	<div class="mission">
-		<img id="paint" src="/assets/images/home/paint.png" alt="paint">
-		<img id="paint2" src="/assets/images/home/paint2.png" alt="paint2">
-		<div class="h3">
-			<h3>Our mission is to help warriors relax, rehabilitate, and reintegrate through kayak fishing and the outdoors.</h3></div>
-	</div>
-	<!-- end mission -->
-	<div class="stats">
-		<div class="ring">
-			<img id="ring1" src="/assets/images/home/ring.png" alt="ring">
-			<div class="h5" style="padding-left: 20px;">
-				<h5>62%</h5></div>
-			<h6>Reduction in Hypervigilance</h6>
-		</div>
-		<div class="ring">
-			<img id="ring2" src="/assets/images/home/ring.png" alt="ring">
-			<div class="h5" style="">
-				<h5>23,832</h5></div>
-			<h6>Warriors &amp; Family Members Served</h6>
-		</div>
-		<div class="ring">
-			<img id="ring3" src="/assets/images/home/ring.png" alt="ring">
-			<div class="h5" style="padding-left: 20px;">
-				<h5>63%</h5></div>
-			<h6>Reduction in Avoidance Behavior</h6>
-		</div>
-	</div>
-	<!-- end stats -->
+    <div class="mission">
+        <img id="paint" src="/assets/images/home/paint.png" alt="paint">
+        <img id="paint2" src="/assets/images/home/paint2.png" alt="paint2">
+        <div class="h3">
+            <h3>Our mission is to help warriors relax, rehabilitate, and reintegrate through kayak fishing and the outdoors.</h3>
+        </div>
+    </div>
+    <!-- end mission -->
+    <div class="stats">
+        <div class="ring">
+            <img id="ring1" src="/assets/images/home/ring.png" alt="ring">
+            <div class="h5" style="padding-left: 20px;">
+                <h5>62%</h5>
+            </div>
+            <h6>Reduction in Hypervigilance</h6>
+        </div>
+        <div class="ring">
+            <img id="ring2" src="/assets/images/home/ring.png" alt="ring">
+            <div class="h5" style="">
+                <h5>23,832</h5>
+            </div>
+            <h6>Warriors &amp; Family Members Served</h6>
+        </div>
+        <div class="ring">
+            <img id="ring3" src="/assets/images/home/ring.png" alt="ring">
+            <div class="h5" style="padding-left: 20px;">
+                <h5>63%</h5>
+            </div>
+            <h6>Reduction in Avoidance Behavior</h6>
+        </div>
+    </div>
+    <!-- end stats -->
 </div>
 <!-- end missionstats -->
 <div class="jumpbar">
-	<div class="column col1">
-		<img id="purpose-icon" src="/assets/images/home/purpose-icon.png" alt="purpose-icon">
-		<h6>Learn more about the HOW kayak fishing program for warriors and veterans.</h6>
-		<a ng-href="#/whoweare"><h2>OUR PURPOSE<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2></a>
-	</div>
-	<div class="column col2">
-		<img id="donate-icon" src="/assets/images/home/donate-icon.png" alt="donate-icon">
-		<h6>Your gift provides our program to warriors at no charge to them or their families.</h6>
-		<a ng-click=showDonate()><h2>DONATE<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2></a>
-	</div>
-	<div class="column col3">
-		<img id="events-icon" src="/assets/images/home/events-icon.png" alt="events-icon">
-		<h6>Check out all the fun happenings through our various chapters.</h6>
-		<a ng-href="#/publicEvents"><h2>EVENTS<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2></a>
-	</div>
+    <div class="column col1">
+        <img id="purpose-icon" src="/assets/images/home/purpose-icon.png" alt="purpose-icon">
+        <h6>Learn more about the HOW kayak fishing program for warriors and veterans.</h6>
+        <a ng-href="#/whoweare">
+            <h2>OUR PURPOSE<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2>
+        </a>
+    </div>
+    <div class="column col2">
+        <img id="donate-icon" src="/assets/images/home/donate-icon.png" alt="donate-icon">
+        <h6>Your gift provides our program to warriors at no charge to them or their families.</h6>
+        <a class="cursorPointer" ng-click=showDonate()>
+            <h2>DONATE<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2>
+        </a>
+    </div>
+    <div class="column col3">
+        <img id="events-icon" src="/assets/images/home/events-icon.png" alt="events-icon">
+        <h6>Check out all the fun happenings through our various chapters.</h6>
+        <a ng-href="#/publicEvents">
+            <h2>EVENTS<i class="fa fa-arrow-circle-o-right fa-lg" style="margin-left: 10px;" aria-hidden="true"></i></h2>
+        </a>
+    </div>
 </div>
 <!-- end jumpbar -->
 <div class="chaptersearch">
-	<div class="desc">
-		<h2>Over 55 chapters. Find one near you.</h2>
-	</div>
-	<div class="searchform">
-		<form name="searchForm" ng-submit="chapterSearch()" novalidate>
-			<input type="text" name="chapter-name" placeholder="zip code" ng-model="zipCode"/>
-			<button type="submit"><h4>SUBMIT</h4></button>
-		</form>
-	</div>
-	<img id="worldmap" src="/assets/images/home/worldmap.png" alt="worldmap">
+    <div class="desc">
+        <h2>Over 55 chapters. Find one near you.</h2>
+    </div>
+    <div class="searchform">
+        <form name="searchForm" ng-submit="chapterSearch()" novalidate>
+            <input type="text" name="chapter-name" placeholder="zip code" ng-model="zipCode" />
+            <button type="submit"><h4>SUBMIT</h4></button>
+        </form>
+    </div>
+    <img id="worldmap" src="/assets/images/home/worldmap.png" alt="worldmap">
 </div>
 <!-- end chaptersearch -->
 <master-footer></master-footer>

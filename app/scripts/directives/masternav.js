@@ -8,129 +8,125 @@
  * # masternavigation
  */
 angular.module('ohanaApp')
-	.directive('masterNavigation', function () {
-		'use strict';
-		return {
-			templateUrl: 'views/masternav.html',
-			restrict: 'E',
+    .directive('masterNavigation', function() {
+        'use strict';
+        return {
+            templateUrl: 'views/masternav.html',
+            restrict: 'E',
 
-			controller: function ($state, $rootScope, commonServices, $scope, $uibModal, localStorageService) {
-				$scope.sessionState = localStorageService.get('sessionState');
-				$scope.sessionUserRole = localStorageService.get('sessionUserRole');
-				console.log($scope.sessionUserRole);
-				$scope.$on('changeSessionState', function (event, arg) {
-					$scope.sessionState = arg;
-				});
-				$scope.$on('changeSessionUserRole', function (event, arg) {
-					$scope.sessionUserRole = arg;
-				});
+            controller: function($state, $rootScope, commonServices, $scope, $uibModal, localStorageService) {
+                $scope.sessionState = localStorageService.get('sessionState');
+                $scope.sessionUserRole = localStorageService.get('sessionUserRole');
+                console.log($scope.sessionUserRole);
+                $scope.$on('changeSessionState', function(event, arg) {
+                    $scope.sessionState = arg;
+                });
+                $scope.$on('changeSessionUserRole', function(event, arg) {
+                    $scope.sessionUserRole = arg;
+                });
 
 
 
-				// toggle mobile menu
-				$scope.menuActive = false;
-				$scope.toggleMenu = function () {
-					if ($scope.menuActive === false) {
-						$('.hamburger--slider').addClass('is-active');
-						$('.mobilenavtoggle button').css('position', 'fixed');
-						$('.mobilenavtoggle button').css('margin-right', '8px');
-						$scope.menuActive = true;
-					} else if ($scope.menuActive === true) {
-						$('.hamburger--slider').removeClass('is-active');
-						$('.mobilenavtoggle button').css('position', 'absolute');
-						$('.mobilenavtoggle button').css('margin-right', '0px');
-						$scope.menuActive = false;
-					}
-				};
+                // toggle mobile menu
+                $scope.menuActive = false;
+                $scope.toggleMenu = function() {
+                    if ($scope.menuActive === false) {
+                        $('.hamburger--slider').addClass('is-active');
+                        $('.mobilenavtoggle button').css('position', 'fixed');
+                        $('.mobilenavtoggle button').css('margin-right', '8px');
+                        $scope.menuActive = true;
+                    } else if ($scope.menuActive === true) {
+                        $('.hamburger--slider').removeClass('is-active');
+                        $('.mobilenavtoggle button').css('position', 'absolute');
+                        $('.mobilenavtoggle button').css('margin-right', '0px');
+                        $scope.menuActive = false;
+                    }
+                };
 
-				// close menu on mobile menu select
-				$scope.dismissMenu = function () {
-					$scope.menuActive = false;
-					$('.hamburger--slider').removeClass('is-active');
-					$('.mobilenavtoggle button').css('position', 'absolute');
-					$('.mobilenavtoggle button').css('margin-right', '0px');
-					$scope.menuActive = false;
-				};
-				
-				// logout function
-				$scope.logout = function () {
-					$scope.sessionState = false;
-					localStorageService.set('sessionState', false);
-					commonServices.signout();
-				};
-				
-				// all nav setups
-				$scope.leftnav = [{
-					state: "#/whoweare",
-					text: "WHO WE ARE"
-				}, {
-					state: "#/getinvolved",
-					text: "GET INVOLVED"
-				}, {
-					state: "#/publicEvents",
-					text: "EVENTS"
-				}];
+                // close menu on mobile menu select
+                $scope.dismissMenu = function() {
+                    $scope.menuActive = false;
+                    $('.hamburger--slider').removeClass('is-active');
+                    $('.mobilenavtoggle button').css('position', 'absolute');
+                    $('.mobilenavtoggle button').css('margin-right', '0px');
+                    $scope.menuActive = false;
+                };
 
-				$scope.rightnav = [
-					{ state: "#/login", text: "LOGIN" },
-				];
+                // logout function
+                $scope.logout = function() {
+                    $scope.sessionState = false;
+                    localStorageService.set('sessionState', false);
+                    commonServices.signout();
+                };
 
-				$scope.rightnavloggedin = [
-					{ state: "#/manage/dash", text: "MANAGE" },
-					{}
-				];
+                // all nav setups
+                $scope.leftnav = [{
+                    state: "#/whoweare",
+                    text: "WHO WE ARE"
+                }, {
+                    state: "#/getinvolved",
+                    text: "GET INVOLVED"
+                }, {
+                    state: "#/publicEvents",
+                    text: "EVENTS"
+                }];
 
-				$scope.participantNav = [
-					{ state: "#/manage/events", text: "Events" },
-					{ state: "#/manage/profile", text: "My Profile"}
-				];
+                $scope.rightnav = [
+                    { state: "#/login", text: "LOGIN" },
+                ];
 
-				$scope.volunteerNav = [
-					{ state: "#/manage/events", text: "Events" }, 
-					{ state: "#/manage/training", text: "My Training" },
-					{ state: "#/manage/profile", text: "My Profile"}
-				];
+                $scope.rightnavloggedin = [
+                    { state: "#/manage/dash", text: "MANAGE" },
+                    {}
+                ];
 
-				$scope.ltmNav = [
-					{ state: "#/manage/events", text: "Events" }, 
-					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
-					{ state: "#/inventory", text: "Inventory" }, 
-					{ state: "#/manage/training", text: "My Training" },
-					{ state: "#/manage/profile", text: "My Profile"}
-				];
+                $scope.participantNav = [
+                    { state: "#/manage/events", text: "Events" },
+                    { state: "#/manage/profile", text: "My Profile" }
+                ];
 
-				$scope.nationalNav = [
-					{ state: "#/manage/events", text: "Events" }, 
-					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
-					{ state: "#/inventory", text: "Inventory" }, 
-					{ state: "#/manage/training", text: "My Training" },
-					{ state: "#/manage/directory", text: "Member Directory" },
-					{ state: "donors", text: "Donor Management" }, 
-					{ state: "#/superAdmin", text: "Administration" },
-					{ state: "#/manage/profile", text: "My Profile"}
-				];
+                $scope.volunteerNav = [
+                    { state: "#/manage/events", text: "Events" },
+                    { state: "#/manage/training", text: "My Training" },
+                    { state: "#/manage/profile", text: "My Profile" }
+                ];
 
-				$scope.adminNav = [
-					{ state: "#/manage/events", text: "Events" }, 
-					{ state: "#/dash/broadcasts", text: "Broadcasts" }, 
-					{ state: "#/inventory", text: "Inventory" }, 
-					{ state: "#/manage/training", text: "My Training" },
-					{ state: "#/manage/directory", text: "Member Directory" },
-					{ state: "donors", text: "Donor Management" }, 
-					{ state: "#/superAdmin", text: "Administration" },
-					{ state: "#/manage/profile", text: "My Profile"},
-					{ state: "#/expense/viewexpense", text: "Expense"}
-				];
+                $scope.ltmNav = [
+                    { state: "#/manage/events", text: "Events" },
+                    { state: "#/dash/broadcasts", text: "Broadcasts" },
+                    { state: "#/inventory", text: "Inventory" },
+                    { state: "#/manage/training", text: "My Training" },
+                    { state: "#/manage/profile", text: "My Profile" }
+                ];
 
-				$scope.showDonate = function () {
-					$uibModal.open({
-						templateUrl: '/parts/donors.html',
-						controller: 'DonorsCtrl'
-					});
+                $scope.nationalNav = [
+                    { state: "#/manage/events", text: "Events" },
+                    { state: "#/dash/broadcasts", text: "Broadcasts" },
+                    { state: "#/inventory", text: "Inventory" },
+                    { state: "#/manage/training", text: "My Training" },
+                    { state: "#/manage/directory", text: "Member Directory" },
+                    { state: "donors", text: "Donor Management" },
+                    { state: "#/superAdmin", text: "Administration" },
+                    { state: "#/manage/profile", text: "My Profile" }
+                ];
 
-				}; // end $scope.showDonate
+                $scope.adminNav = [
+                    { state: "#/manage/events", text: "Events" },
+                    { state: "#/dash/broadcasts", text: "Broadcasts" },
+                    { state: "#/inventory", text: "Inventory" },
+                    { state: "#/manage/training", text: "My Training" },
+                    { state: "#/manage/directory", text: "Member Directory" },
+                    { state: "donors", text: "Donor Management" },
+                    { state: "#/superAdmin", text: "Administration" },
+                    { state: "#/manage/profile", text: "My Profile" },
+                    { state: "#/expense/viewexpense", text: "Expense" }
+                ];
 
-			}
+                $scope.showDonate = function() {
+                    window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5WAD6PF3BUHPE");
+                }; // end $scope.showDonate
 
-		};
-	});
+            }
+
+        };
+    });
