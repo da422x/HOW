@@ -7,8 +7,8 @@
  * # directive
  */
 angular.module('ohanaApp')
-  .directive('connectToQuickbooks', function ($window) {
-    return {
+    .directive('connectToQuickbooks', function($window) {
+        return {
             restrict: 'E',
             template: "<ipp:connectToIntuit></ipp:connectToIntuit>",
             link: function(scope) {
@@ -26,4 +26,4 @@ angular.module('ohanaApp')
                 });
             }
         }
-  });
+    });

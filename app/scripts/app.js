@@ -255,26 +255,20 @@ angular.module('ohanaApp', [
             var retArray = [];
             if (input != null && startdate != null && enddate != null) {
 
-                var tstart = startdate.split("/");
-                var tend = enddate.split("/");
+
 
 
                 angular.forEach(input, function(obj) {
 
                     var receivedDate = obj.SubmitDate;
-                    var rDate = receivedDate.split("/");
+
 
                     if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                         retArray.push(obj);
                         console.log("Date ", Date.parse(receivedDate), receivedDate);
                     }
 
-                    // if ((Date(rDate[2], rDate[1] - 1, rDate[0]) >= Date(tstart[2], tstart[1] - 1, tstart[0])) &&
-                    //     (Date(rDate[2], rDate[1] - 1, rDate[0]) <= Date(tend[2], tend[1] - 1, tend[0]))) {
-                    //     console.log("Date", rDate, rDate[2], (rDate[1]), rDate[0], Date(rDate[2], rDate[0], rDate[1]), tstart, tend, obj);
-                    //     console.log("Date", Date(startdate), Date(rDate[2], rDate[1], rDate[0]), Date(tstart[2], tstart[1], tstart[0]), Date(tend[2], tend[1], tend[0]));
-                    //     retArray.push(obj);
-                    // }
+
                 });
 
                 return retArray;

@@ -5,3 +5,4 @@
 /.sass-cache
 /app/bower_components
 /app/data/env
+**/*.bowerrc

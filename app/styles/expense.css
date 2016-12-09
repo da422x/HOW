@@ -49,8 +49,8 @@
  }
  
  .table_head {
-    background: #2980b9;
-    font-size: 14px !important;
+     background: #2980b9;
+     font-size: 14px !important;
  }
  
  .table_head {
@@ -101,6 +101,6 @@
  }
  
  .format_button_mm {
-     width: 55%;
+     width: 90%;
      margin: 10px;
  }

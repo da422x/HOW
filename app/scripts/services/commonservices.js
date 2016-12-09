@@ -206,7 +206,6 @@ angular.module('ohanaApp')
 	* 			 DAO object container - start             *
 	*******************************************************/
 	this.DAO = DAO;
-
 	this.getEvent = function(event){
         return firebase.database().ref('/events').orderByChild("name").equalTo(event.name)
 		    .once('value')
@@ -220,7 +219,6 @@ angular.module('ohanaApp')
 				console.log('ERROR: ' + error.code + ': ' + error.message);
 			});
 	}
-
 
 	/******************************************************
 	* 			 DAO object container - end             *

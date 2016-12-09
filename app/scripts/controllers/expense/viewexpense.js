@@ -8,15 +8,18 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-  .controller('ViewExpenseController', function ($scope, $filter, commonServices, expenseservice) {
-   
+    .controller('ViewExpenseController', function($scope, $filter, commonServices, expenseservice) {
+
         var self = this;
         var originalList = [];
         $scope.listS = "";
         $scope.lists = {};
         $scope.PayStatus = "Pending";
         $scope.userlist = "";
-
+        var currentdate = new Date();
+        var firstday = new Date(currentdate.getFullYear(), 0, 1);
+        $scope.startdate = firstday;
+        // $scope.enddate = currentdate;
 
         $scope.orderByField = 'SubmitDate';
         $scope.reverseSort = false;
@@ -35,7 +38,7 @@ angular.module('ohanaApp')
         };
 
 
-        var rptdata = [];
+        // var rptdata = [];
         var currentdate = new Date();
         var reportDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
 
@@ -46,28 +49,21 @@ angular.module('ohanaApp')
         //Get Report Data - Data fileterd based on Dropdown/Date value
 
         var GetJsonData = function() {
-            console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
+            var rptdata = [];
+            // // $scope.userinfo = commonServices.getUserChapter();
+            // console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
+            // console.log("report entery", $scope.userinfo.viewuserdata[0].role, $scope.userinfo.viewuserdata[0].Chapter);
 
-            var sdate = $scope.startdate;
-            var edate = $scope.enddate;
-            var tstart = sdate.split("/");
-            var tend = edate.split("/");
-
-            console.log("report entery", rptdata);
             angular.forEach($scope.lists, function(value, index) {
-                console.log("JSON DATA Entery", value.length);
-                for (var i = 0; i < value.length; i++) {
-                    var subDate = value[i].SubmitDate;
-                    var subDates = subDate.split("/");
 
-                    if ($scope.listS.length > 0) {
+                    for (var i = 0; i < value.length; i++) {
+                        console.log("first for-if", value.length, $scope.listS, $scope.userlist);
 
-
-                        // console.log("date ", value[i], value[i].SubmitDate, $scope.startdate, $scope.enddate);
-                        if (($scope.listS === value[i].Chapter) && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date(subDates[2], subDates[1] - 1, subDates[0]) >= Date(tstart[2], tstart[1] - 1, tstart[0]) &&
-                                Date(subDates[2], subDates[1] - 1, subDates[0]) <= Date(tend[2], tend[1] - 1, tend[0]))) {
-                            // (value[i].SubmitDate >= $scope.startdate) && (value[i].SubmitDate <= $scope.enddate)) {
+                        // if ($scope.listS.length > 0) {  
+                        // if ($scope.userlist.length > 0) { 
+                        console.log("first list length", $scope.listS.length);
+                        if (($scope.listS === value[i].Chapter || $scope.listS === "") && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) && $scope.userinfo.viewuserdata[0].role != 'coordinator') {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -79,19 +75,14 @@ angular.module('ohanaApp')
                                 "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
-                            // console.log("JSON Chapter", value[i].Chapter, $scope.listS);
-                            // console.log("JSON Date", value[i].SubmitDate, $scope.startdate, $scope.enddate);
-                            //alert($scope.rpttabledata[t]);
+                            console.log("first if");
                             rptdata.push(reportdata);
-                            console.log("Payment first ", value[i].PaymentStatus, $scope.PayStatus);
                         }
 
-                    } else {
+                        console.log("Real Value", value[i].SubmitDate, $scope.startdate, $scope.enddate, $scope.userinfo.viewuserdata[0].Chapter, value[i].Chapter, $scope.userinfo.viewuserdata[0].role, 'coordinator', value[i].PaymentStatus, $scope.PayStatus);
+                        if (($scope.userinfo.viewuserdata[0].Chapter == value[i].Chapter && $scope.userinfo.viewuserdata[0].role == 'coordinator') && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate))) {
 
-                        if ((value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date(subDates[2], subDates[1] - 1, subDates[0]) >= Date(tstart[2], tstart[1] - 1, tstart[0]) &&
-                                Date(subDates[2], subDates[1] - 1, subDates[0]) <= Date(tend[2], tend[1] - 1, tend[0]))) {
-                            //  if ((value[i].SubmitDate >= $scope.startdate) && (value[i].SubmitDate <= $scope.enddate)) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -103,20 +94,14 @@ angular.module('ohanaApp')
                                 "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
-                            //alert($scope.rpttabledata[t]);
-                            rptdata.push(reportdata);
-                            console.log("JSON No Chapter Date", value[i].SubmitDate, $scope.startdate, $scope.enddate);
-                            console.log("Payment second", value[i].PaymentStatus, $scope.PayStatus);
 
+                            // console.log("second if");
+                            rptdata.push(reportdata);
                         }
 
-                    }
-
-
-
-                    console.log("report", i, rptdata);
-                }
-            })
+                        console.log("report", i, rptdata);
+                    } //for loop 
+                }) //for each
             console.log("JSON DATA", rptdata);
 
             return rptdata;
@@ -131,13 +116,20 @@ angular.module('ohanaApp')
 
             console.log("Get Report Data", $scope.lists, $scope.startdate, $scope.enddate);
 
-            var Chaptername = $scope.listS;
+            var Chaptername = $scope.userinfo.viewuserdata[0].Chapter;
             var sdate = $scope.startdate;
             var edate = $scope.enddate;
+            var email = $scope.userinfo.viewuserdata[0].email;
+            var name = $scope.userinfo.viewuserdata[0].name.first + ' ' + $scope.userinfo.viewuserdata[0].name.last;
+            var address = $scope.userinfo.viewuserdata[0].address.line1 + ', ' + $scope.userinfo.viewuserdata[0].address.line2;
+            var cityinfo = $scope.userinfo.viewuserdata[0].address.city + ', ' + $scope.userinfo.viewuserdata[0].address.state + ', ' + $scope.userinfo.viewuserdata[0].address.zip;
             $scope.expenseservice = expenseservice;
             console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
             console.log("Get Report Data", Chaptername, sdate, edate);
             //var datatest = expenseservice.GetJsonData(this.Chaptername, this.sdate, this.edate);
+            console.log("1Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
+            console.log("1report entery", $scope.userinfo.role, $scope.userinfo.Chapter);
+
             var datatest = GetJsonData();
             console.log("check data old", datatest);
 
@@ -198,23 +190,23 @@ angular.module('ohanaApp')
                         columns: [{
                             stack: [
                                 // second column consists of paragraphs
-                                'Payable To: Name',
-                                'Address 1',
-                                'City/State/Zip'
+                                'Payable To: ' + name,
+                                'Address : ' + address,
+                                'City/State/Zip : ' + cityinfo
                             ],
                             fontSize: 11
                         }, {
                             stack: [
                                 // second column consists of paragraphs
-                                'Chapter Name: ',
-                                'Email Id'
+                                'Chapter Name : ' + Chaptername,
+                                'Email Id :' + email
                             ],
                             fontSize: 11
                         }, {
                             stack: [
                                 // second column consists of paragraphs
-                                'Expense From : ',
-                                'Expense To : '
+                                'Expense From : ' + sdate,
+                                'Expense To : ' + edate
                             ],
                             fontSize: 11
                         }]
@@ -269,4 +261,3 @@ function numberWithCommas(x) {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
 }
-

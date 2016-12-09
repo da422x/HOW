@@ -8,8 +8,8 @@
  * Service in the ohanaApp.
  */
 angular.module('ohanaApp')
-  .service('expenseservice', function (filterFilter, $firebaseArray) {
-     this.expense = {
+    .service('expenseservice', function(filterFilter, $firebaseArray) {
+        this.expense = {
             BillId: "",
             Chapter: "",
             eventdate: "",
@@ -139,4 +139,4 @@ angular.module('ohanaApp')
                 }
             };
         }
-  });
+    });
