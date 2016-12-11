@@ -8,7 +8,7 @@
  * Service in the mainAppApp.
  */
 angular.module('ohanaApp')
-    .service('DAO', function () {
+    .service('DAO', function() {
         // AngularJS will instantiate a singleton by calling "new" on this function
 
         var userData = function userData() {
@@ -83,7 +83,7 @@ angular.module('ohanaApp')
                     zip: null
                 }
             };
-            this.reports = {};//list of reports that are under a chapter. report types may vary
+            this.reports = {}; //list of reports that are under a chapter. report types may vary
 
 
             if (arguments.length == 1) {

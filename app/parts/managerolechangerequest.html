@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <div class="modal-header" ng-init="update()">
-	<button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Manage Role Change Requests</h4>
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Manage Role Change Requests</h4>
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-	<div ng-repeat="request in requests">
-		<div class="panel panel-default" >
-			<div class="panel-heading clearfix" 
-				ng-style="request.request_status === 'Declined' && {'background-color':'#ff6666'} || 
+    <div ng-repeat="request in requests">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix" ng-style="request.request_status === 'Declined' && {'background-color':'#ff6666'} || 
 						  request.request_status === 'Approved' && {'background-color':'#70db70'} ||
 						  request.request_status === 'pending' && {'background-color':'#ffff66'}">
-			<h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
-			<h3 class="panel-title pull-left">{{request.request_role}}</h3>
-			<i ng-click="showForm = !showForm" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
-			<i ng-click="declined(request.key, request)" class="fa fa-times pull-right" aria-hidden="true"></i>
-			<i ng-click="approved(request.key, request)" class="fa fa-check pull-right" aria-hidden="true"></i>
-		</div>
-		<div ng-show="showForm">
-			<div>Email: {{request.email}}</div>
-			<div>Current Role: {{request.current_role}}</div>
-			<div>Request Status: {{request.request_status}}</div>
-			<div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
-		</div>
-	</div>
-</div>
-<!-- end modal body -->
+                <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
+                <h3 class="panel-title pull-left">{{request.request_role}}</h3>
+                <i ng-click="showForm = !showForm" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+                <i ng-click="declined(request.key, request)" class="fa fa-times pull-right" aria-hidden="true"></i>
+                <i ng-click="approved(request.key, request)" class="fa fa-check pull-right" aria-hidden="true"></i>
+            </div>
+            <div ng-show="showForm">
+                <div>Email: {{request.email}}</div>
+                <div>Current Role: {{request.current_role}}</div>
+                <div>Request Status: {{request.request_status}}</div>
+                <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal body -->

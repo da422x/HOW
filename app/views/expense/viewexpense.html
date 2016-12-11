@@ -1,32 +1,32 @@
 <div class="container" ng-init="viewexpensedata()" ng-controller="ViewExpenseController">
     <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline">
         <script>
-            var currentdate = new Date();
-            var firstday = new Date(currentdate.getFullYear(), 0, 1);
+        var currentdate = new Date();
+        var firstday = new Date(currentdate.getFullYear(), 0, 1);
 
-            //currentdate.getMonth()
-            $(document).ready(function() {
-                $('#startdate').pickadate({
-                    format: 'mm/dd/yyyy',
-                    formatSubmit: 'mm/dd/yyyy',
-                    editable: false,
-                    hiddenName: true,
-                    onStart: function() {
-                        this.set('select', firstday); // Set to first day of this month 
-                    }
-                });
-                $('#enddate').pickadate({
-                    format: 'mm/dd/yyyy',
-                    formatSubmit: 'mm/dd/yyyy',
-                    hiddenName: true,
-                    editable: false,
-                    onStart: function() {
-                        this.set('select', currentdate); // Set to current date on load
-                    }
-                });
-
-
+        //currentdate.getMonth()
+        $(document).ready(function() {
+            $('#startdate').pickadate({
+                format: 'mm/dd/yyyy',
+                formatSubmit: 'mm/dd/yyyy',
+                editable: false,
+                hiddenName: true,
+                onStart: function() {
+                    this.set('select', firstday); // Set to first day of this month 
+                }
             });
+            $('#enddate').pickadate({
+                format: 'mm/dd/yyyy',
+                formatSubmit: 'mm/dd/yyyy',
+                hiddenName: true,
+                editable: false,
+                onStart: function() {
+                    this.set('select', currentdate); // Set to current date on load
+                }
+            });
+
+
+        });
         </script>
         <div class="panel panel-default  ">
             <div class="panel-heading clearfix">
@@ -164,8 +164,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userinfo.viewuserdata[0].Chapter} | dateRange: startdate : enddate " ng-click="setSelected(coord.BillId) "
-                        ng-class="{selected: coord.BillId===idSelectedBill} ">
+                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userinfo.viewuserdata[0].Chapter} | dateRange: startdate : enddate " ng-click="setSelected(coord.BillId) " ng-class="{selected: coord.BillId===idSelectedBill} ">
                         <tr class="hoverme ">
                             <td class="col-md-2 "> <a href="#/expense/expensedetail/{{coord.BillId}} ">{{coord.SubmitDate}} </a></td>
                             <td class="col-md-3 "> <a href="#/expense/expensedetail/{{coord.BillId}} ">{{coord.SubmitBy}}</a> </td>

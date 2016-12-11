@@ -20,7 +20,9 @@ angular.module('ohanaApp')
                 };
                 $window.document.body.appendChild(script);
                 scope.$on('intuitjs:loaded', function(evt) {
-                    $window.intuit.ipp.anywhere.setup({ grantUrl: '/' });
+                    $window.intuit.ipp.anywhere.setup({
+                        grantUrl: '/'
+                    });
                     scope.connected = true;
                     scope.$apply();
                 });

@@ -1,14 +1,14 @@
     var selDiv = "";
     var storedFiles = [];
 
-        $(document).ready(function() {
-            $("#files").on("change", handleFileSelect);
+    $(document).ready(function() {
+        $("#files").on("change", handleFileSelect);
 
-            selDiv = $("#selectedFiles");
-            $("#myForm").on("submit", handleForm);
+        selDiv = $("#selectedFiles");
+        $("#myForm").on("submit", handleForm);
 
-            $("body").on("click", ".selFile", removeFile);
-        });
+        $("body").on("click", ".selFile", removeFile);
+    });
 
     function handleFileSelect(e) {
         var files = e.target.files;

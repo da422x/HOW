@@ -89,7 +89,7 @@ angular.module('ohanaApp')
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/newEventDirectoryForm.html',
                 controller: 'NewEventDirectoryFormCtrl'
-            }); 
+            });
             modalInstance.result.then(function() {
                 console.log("Reloading...");
                 loadAll();

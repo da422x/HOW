@@ -155,7 +155,10 @@ angular.module('ohanaApp')
                     columns: [
                         reportDate,
 
-                        { text: 'AT&T', alignment: 'right' }
+                        {
+                            text: 'AT&T',
+                            alignment: 'right'
+                        }
                     ]
                 },
 
@@ -214,7 +217,10 @@ angular.module('ohanaApp')
                         text: '\n'
                     },
 
-                    { width: '', text: '' },
+                    {
+                        width: '',
+                        text: ''
+                    },
 
                     expenseservice.table(datatest, ['Date', 'Business Purpose, Origin & Destination', 'Miles Driven', 'Travel @ .25/mile', 'Trailer Miles', 'Trailer Hauling @ .40/mile', 'Other Expenses', 'Total', 'Explanation of Other Expense'])
 

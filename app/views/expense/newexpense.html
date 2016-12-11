@@ -151,23 +151,23 @@
         </div>
     </form>
     <script>
-        var currentdate = new Date();
-        $(document).ready(function() {
-            $('#eventdate').pickadate({
-                format: 'mm/dd/yyyy',
-                formatSubmit: 'mm/dd/yyyy',
-                hiddenName: true,
-                onStart: function() {
-                    this.set('select', currentdate); // Set to current date on load
-                }
-            });
-
-            $("#files").on("change", handleFileSelect);
-
-            selDiv = $("#selectedFiles");
-            $("#myForm").on("submit", handleForm);
-
-            $("body").on("click", ".selFile", removeFile);
+    var currentdate = new Date();
+    $(document).ready(function() {
+        $('#eventdate').pickadate({
+            format: 'mm/dd/yyyy',
+            formatSubmit: 'mm/dd/yyyy',
+            hiddenName: true,
+            onStart: function() {
+                this.set('select', currentdate); // Set to current date on load
+            }
         });
+
+        $("#files").on("change", handleFileSelect);
+
+        selDiv = $("#selectedFiles");
+        $("#myForm").on("submit", handleForm);
+
+        $("body").on("click", ".selFile", removeFile);
+    });
     </script>
 </div>

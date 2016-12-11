@@ -19,13 +19,22 @@ angular.module('ohanaApp')
             comment: ''
         };
 
-        $scope.roles = [
-            { value: 'Participant', text: 'Participant' },
-            { value: 'Volunteer', text: 'Volunteer' },
-            { value: 'Leadership Team Member', text: 'Leadership Team Member' },
-            { value: 'HOW National Team/Staff', text: 'HOW National Team/Staff' },
-            { value: 'admin', text: 'admin' }
-        ];
+        $scope.roles = [{
+            value: 'Participant',
+            text: 'Participant'
+        }, {
+            value: 'Volunteer',
+            text: 'Volunteer'
+        }, {
+            value: 'Leadership Team Member',
+            text: 'Leadership Team Member'
+        }, {
+            value: 'HOW National Team/Staff',
+            text: 'HOW National Team/Staff'
+        }, {
+            value: 'admin',
+            text: 'admin'
+        }];
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');

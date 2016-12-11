@@ -9,7 +9,7 @@
  * Controller of management console - super administration
  */
 angular.module('ohanaApp')
-	.controller('SuperadminCtrl', function () {
-		'use strict';
-		// empty controller
-	});
+    .controller('SuperadminCtrl', function() {
+        'use strict';
+        // empty controller
+    });

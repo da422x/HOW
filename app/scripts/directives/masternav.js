@@ -71,56 +71,106 @@ angular.module('ohanaApp')
                     text: "EVENTS"
                 }];
 
-                $scope.rightnav = [
-                    { state: "#/login", text: "LOGIN" },
-                ];
+                $scope.rightnav = [{
+                    state: "#/login",
+                    text: "LOGIN"
+                }, ];
 
-                $scope.rightnavloggedin = [
-                    { state: "#/manage/dash", text: "MANAGE" },
-                    {}
-                ];
+                $scope.rightnavloggedin = [{
+                    state: "#/manage/dash",
+                    text: "MANAGE"
+                }, {}];
 
-                $scope.participantNav = [
-                    { state: "#/manage/events", text: "Events" },
-                    { state: "#/manage/profile", text: "My Profile" }
-                ];
+                $scope.participantNav = [{
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }];
 
-                $scope.volunteerNav = [
-                    { state: "#/manage/events", text: "Events" },
-                    { state: "#/manage/training", text: "My Training" },
-                    { state: "#/manage/profile", text: "My Profile" }
-                ];
+                $scope.volunteerNav = [{
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }];
 
-                $scope.ltmNav = [
-                    { state: "#/manage/events", text: "Events" },
-                    { state: "#/dash/broadcasts", text: "Broadcasts" },
-                    { state: "#/inventory", text: "Inventory" },
-                    { state: "#/manage/training", text: "My Training" },
-                    { state: "#/manage/profile", text: "My Profile" }
-                ];
+                $scope.ltmNav = [{
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/dash/broadcasts",
+                    text: "Broadcasts"
+                }, {
+                    state: "#/inventory",
+                    text: "Inventory"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }];
 
-                $scope.nationalNav = [
-                    { state: "#/manage/events", text: "Events" },
-                    { state: "#/dash/broadcasts", text: "Broadcasts" },
-                    { state: "#/inventory", text: "Inventory" },
-                    { state: "#/manage/training", text: "My Training" },
-                    { state: "#/manage/directory", text: "Member Directory" },
-                    { state: "donors", text: "Donor Management" },
-                    { state: "#/superAdmin", text: "Administration" },
-                    { state: "#/manage/profile", text: "My Profile" }
-                ];
+                $scope.nationalNav = [{
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/dash/broadcasts",
+                    text: "Broadcasts"
+                }, {
+                    state: "#/inventory",
+                    text: "Inventory"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
+                }, {
+                    state: "#/manage/directory",
+                    text: "Member Directory"
+                }, {
+                    state: "donors",
+                    text: "Donor Management"
+                }, {
+                    state: "#/superAdmin",
+                    text: "Administration"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }];
 
-                $scope.adminNav = [
-                    { state: "#/manage/events", text: "Events" },
-                    { state: "#/dash/broadcasts", text: "Broadcasts" },
-                    { state: "#/inventory", text: "Inventory" },
-                    { state: "#/manage/training", text: "My Training" },
-                    { state: "#/manage/directory", text: "Member Directory" },
-                    { state: "donors", text: "Donor Management" },
-                    { state: "#/superAdmin", text: "Administration" },
-                    { state: "#/manage/profile", text: "My Profile" },
-                    { state: "#/expense/viewexpense", text: "Expense" }
-                ];
+                $scope.adminNav = [{
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/dash/broadcasts",
+                    text: "Broadcasts"
+                }, {
+                    state: "#/inventory",
+                    text: "Inventory"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
+                }, {
+                    state: "#/manage/directory",
+                    text: "Member Directory"
+                }, {
+                    state: "donors",
+                    text: "Donor Management"
+                }, {
+                    state: "#/superAdmin",
+                    text: "Administration"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
+                }];
 
                 $scope.showDonate = function() {
                     window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5WAD6PF3BUHPE");

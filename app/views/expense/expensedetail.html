@@ -225,10 +225,12 @@
                                 <span style=" font-size: 20px">Approved</span>
                             </label>
                             <label class="btn">
-                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Need Info"> <span style=" font-size: 20px">Need Info</span>
+                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Need Info">
+                                <span style=" font-size: 20px">Need Info</span>
                             </label>
                             <label class="btn">
-                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Pending"> <span style=" font-size: 20px">Pending</span>
+                                <input type="radio" ng-model="dexedit.PaymentStatus" value="Pending">
+                                <span style=" font-size: 20px">Pending</span>
                             </label>
                         </div>
                         <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus)" class="btn btn-primary format_button_med" value="Payment Status Update" />
