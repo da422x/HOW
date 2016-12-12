@@ -14,11 +14,81 @@ angular.module('ohanaApp')
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
-
+        $scope.lineamount = 0;
         $scope.exp.email = commonServices.getCurrentUserEmail();
         $scope.userinfo = commonServices.getUserChapter();
         //   alert($scope.userinfo.viewuserdata[0].name.first, $scope.userinfo.viewuserdata[0].name.last);
 
+        //------------Addition Line Items--------------//
+        $scope.LineDetails = [{
+            'Description': '',
+            'Amount': 0
+        }];
+
+        $scope.addNew = function(LineDetails) {
+            $scope.LineDetails.push({
+                'Description': "",
+                'Amount': ""
+            });
+            console.log($scope.LineDetails);
+        };
+
+        $scope.remove = function() {
+            var newDataList = [];
+            $scope.selectedAll = false;
+            angular.forEach($scope.LineDetails, function(selected) {
+                if (!selected.selected) {
+                    newDataList.push(selected);
+                }
+            });
+
+            $scope.LineDetails = newDataList;
+        };
+        $scope.checkAll = function() {
+            if (!$scope.selectedAll) {
+                $scope.selectedAll = true;
+            } else {
+                $scope.selectedAll = false;
+            }
+            angular.forEach($scope.LineDetails, function(LineDetails) {
+                LineDetails.selected = $scope.selectedAll;
+            });
+        };
+
+        //------------UI Bootstrap Date -----START--------------//
+        $scope.today = function() {
+            $scope.exp.eventdate = new Date();
+
+        };
+
+        $scope.today();
+        $scope.dateopen = function() {
+            $scope.popup.opened = true;
+        };
+
+        $scope.clear = function() {
+            $scope.exp.eventdate = new Date();
+
+        };
+
+        $scope.dateOptions = {
+            'year-format': "'yyyy'",
+            'starting-day': 1
+        };
+
+        $scope.popup = {
+            opened: false
+        };
+
+        $scope.formats = ['MM/dd/yyyy'];
+        $scope.format = $scope.formats[0];
+        // 
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+        //------------UI Bootstrap Date -----END--------------//
 
         $scope.createnewexpense = function() {
 
@@ -28,6 +98,28 @@ angular.module('ohanaApp')
             var jsonString = '';
             var obj = {}; //new Object();
             var i = 0;
+            var eventdate = $scope.exp.eventdate;
+            $scope.exp.eventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
+
+
+            //---ADD line item array ---//
+            if ($scope.LineDetails.length) {
+                var i = 2;
+                for (var x = 0; x < $scope.LineDetails.length; x++) {
+                    console.log("Inside", $scope.LineDetails[x]);
+                    $scope.lineamount = parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount);
+                    $scope.exp.Line.push({
+
+                        "ID": i,
+                        "Description": $scope.LineDetails[x].Description,
+                        "Quantity": 1,
+                        "Rate": 1,
+                        "Amount": parseFloat($scope.LineDetails[x].Amount)
+                    });
+                    i++;
+                }
+                console.log("Scope Value", $scope.exp.Line);
+            }
             console.log("New expense entry ");
             var input = document.getElementById('files');
             $scope.exp.Chapter = $scope.userinfo.viewuserdata[0].Chapter;
@@ -39,7 +131,8 @@ angular.module('ohanaApp')
             $scope.exp.SubmitAddress = $scope.userinfo.viewuserdata[0].address.line1 + ' , ' + $scope.userinfo.viewuserdata[0].address.line2 + ' , ' + $scope.userinfo.viewuserdata[0].address.city + ' , ' + $scope.userinfo.viewuserdata[0].address.state + ' , ' + $scope.userinfo.viewuserdata[0].address.zip;
             $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate;
             $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
-            $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + ($scope.exp.Line[2].Amount * 1) + ($scope.exp.Line[3].Amount * 1))
+            $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
+            //($scope.exp.Line[2].Amount * 1) + ($scope.exp.Line[3].Amount * 1))
 
             console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy);
 

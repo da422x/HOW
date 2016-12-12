@@ -19,7 +19,7 @@ angular.module('ohanaApp')
         var currentdate = new Date();
         var firstday = new Date(currentdate.getFullYear(), 0, 1);
         $scope.startdate = firstday;
-        // $scope.enddate = currentdate;
+
 
         $scope.orderByField = 'SubmitDate';
         $scope.reverseSort = false;
@@ -29,12 +29,60 @@ angular.module('ohanaApp')
         $scope.sortDescending = false; // default ascending
         $scope.searchText = ''; // default blank
 
+        //------------UI Bootstrap Date -----START--------------//
+
+        $scope.today = function() {
+            $scope.startdate = firstday;
+            $scope.enddate = currentdate;
+        };
+
+        $scope.today();
+
+        $scope.dateopen = function() {
+            $scope.popup.opened = true;
+        };
+
+        $scope.dateopen1 = function() {
+            $scope.popup1.opened = true;
+        };
+
+
+        $scope.clear = function() {
+            $scope.startdate = new Date(currentdate.getFullYear(), 0, 1);
+            $scope.enddate = currentdate;
+        };
+
+        $scope.dateOptions = {
+            'year-format': "'yyyy'",
+            'starting-day': 1
+        };
+
+
+        $scope.popup = {
+            opened: false
+        };
+        $scope.popup1 = {
+            opened: false
+        };
+
+
+        $scope.formats = ['MM/dd/yyyy'];
+        $scope.format = $scope.formats[0];
+        // 
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+        //------------UI Bootstrap Date -----END--------------//
+
         $scope.viewexpensedata = function() {
             console.log("Service to be called");
             $scope.lists = originalList = expenseservice.getViewExpenseData();
-            console.log("Controller Expense List Data", $scope.lists);
+            console.log("Controller Expense List Data", $scope.lists, originalList);
             $scope.userinfo = commonServices.getUserChapter();
             console.log("Controller User Data", $scope.userinfo);
+
         };
 
 
@@ -50,18 +98,11 @@ angular.module('ohanaApp')
 
         var GetJsonData = function() {
             var rptdata = [];
-            // // $scope.userinfo = commonServices.getUserChapter();
-            // console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
-            // console.log("report entery", $scope.userinfo.viewuserdata[0].role, $scope.userinfo.viewuserdata[0].Chapter);
 
             angular.forEach($scope.lists, function(value, index) {
 
                     for (var i = 0; i < value.length; i++) {
-                        console.log("first for-if", value.length, $scope.listS, $scope.userlist);
-
-                        // if ($scope.listS.length > 0) {  
-                        // if ($scope.userlist.length > 0) { 
-                        console.log("first list length", $scope.listS.length);
+                        // console.log("first list length", $scope.listS.length);
                         if (($scope.listS === value[i].Chapter || $scope.listS === "") && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
                             (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) && $scope.userinfo.viewuserdata[0].role != 'coordinator') {
                             var reportdata = {
@@ -75,7 +116,7 @@ angular.module('ohanaApp')
                                 "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
-                            console.log("first if");
+                            // console.log("first if");
                             rptdata.push(reportdata);
                         }
 
@@ -225,19 +266,7 @@ angular.module('ohanaApp')
                     expenseservice.table(datatest, ['Date', 'Business Purpose, Origin & Destination', 'Miles Driven', 'Travel @ .25/mile', 'Trailer Miles', 'Trailer Hauling @ .40/mile', 'Other Expenses', 'Total', 'Explanation of Other Expense'])
 
                 ],
-                // styles: {
-                //     header: {
-                //         bold: true,
-                //         color: '#000',
-                //         fontSize: 11
-                //     },
-                //     demoTable: {
-                //         color: '#666',
-                //         fontSize: 9,
-                //         width: 750,
-                //         alignment: 'right'
-                //     }
-                // }
+
             };
 
             //alert(docDefinition);

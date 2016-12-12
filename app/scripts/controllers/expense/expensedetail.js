@@ -39,6 +39,43 @@ angular.module('ohanaApp')
             }]
         }
 
+        //------------Addition Line Items--------------//
+        $scope.LineDetails = [];
+
+        $scope.addNew = function(LineDetails) {
+            $scope.LineDetails.push({
+                'Description': "",
+                'Amount': ""
+            });
+            console.log($scope.LineDetails);
+        };
+
+        $scope.remove = function() {
+            var newDataList = [];
+            $scope.selectedAll = false;
+            angular.forEach($scope.LineDetails, function(selected) {
+                if (!selected.selected) {
+                    newDataList.push(selected);
+                }
+            });
+
+            $scope.LineDetails = newDataList;
+        };
+        $scope.checkAll = function() {
+            if (!$scope.selectedAll) {
+                $scope.selectedAll = true;
+            } else {
+                $scope.selectedAll = false;
+            }
+            angular.forEach($scope.LineDetails, function(LineDetails) {
+                LineDetails.selected = $scope.selectedAll;
+            });
+        };
+
+        // if ($scope.userinfo.viewuserdata[0].role != 'areacoordinator') {
+        //     $scope.btn_remove =
+        // }
+
         //  $scope.dexedit = this.expense;
 
         //$scope.$applyAsync();
@@ -54,13 +91,10 @@ angular.module('ohanaApp')
                 $scope.expense = snapshot.val();
                 console.log("Expense Detail Loaded", $scope.expense);
                 $scope.$applyAsync();
-                // var imageList = [];
-                angular.forEach($scope.expense, function(item) {
-                    // if (item.PaymentStatus == 'Approved') {
-                    //     $scope.isdisabled = true;
-                    //     //$scope.paymentstatusbtn.value = "Expense Approved";
 
-                    // };
+
+                angular.forEach($scope.expense, function(item) {
+
                     var img = document.createElement('img');
                     var storage = firebase.storage();
                     var storageRef = firebase.storage().ref();
@@ -68,6 +102,21 @@ angular.module('ohanaApp')
                     var storageRefPic = '';
                     $scope.vimageurl = item.ImageURL;
                     //alert(item.ImageURL[0].FileName);
+
+                    //---ADD line item array ---//
+                    if (item.Line.length) {
+                        var i = 2;
+                        for (var x = 0; x < item.Line.length; x++) {
+                            // console.log("Inside", $scope.LineDetails[x]);
+                            if (x > 1) {
+                                $scope.LineDetails.push({
+                                    'Description': item.Line[x].Description,
+                                    'Amount': item.Line[x].Amount
+                                });
+                            }
+                        }
+                        console.log("Scope Value", item.Line);
+                    }
 
                     if (item.ImageURL) {
 

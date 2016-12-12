@@ -265,7 +265,7 @@ angular.module('ohanaApp', [
 
                     if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                         retArray.push(obj);
-                        console.log("Date ", Date.parse(receivedDate), receivedDate);
+                        // console.log("Date ", Date.parse(receivedDate), receivedDate);
                     }
 
 

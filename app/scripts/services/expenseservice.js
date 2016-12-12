@@ -24,30 +24,20 @@ angular.module('ohanaApp')
             Amount: 0,
             ImageURL: [],
             Line: [{
-                "ID": "1",
-                "Description": "Mileage Rate - Travel @.25/mile",
-                "Quantity": 0, // this.exp.miles,
-                "Rate": 0.25,
-                "Amount": 0 //(this.exp.miles * .25)
-            }, {
-                "ID": "2",
-                "Description": "Trailer Mileage Rate @.40/mile",
-                "Quantity": 0, //this.exp.trailermiles,
-                "Rate": 0.4,
-                "Amount": 0 //(this.exp.trailermiles * .4)
-            }, {
-                "ID": "3",
-                "Description": "",
-                "Quantity": "1",
-                "Rate": 1,
-                "Amount": 0
-            }, {
-                "ID": "4",
-                "Description": "",
-                "Quantity": "1",
-                "Rate": 1,
-                "Amount": 0
-            }]
+                    "ID": "1",
+                    "Description": "Mileage Rate - Travel @.25/mile",
+                    "Quantity": 0, // this.exp.miles,
+                    "Rate": 0.25,
+                    "Amount": 0 //(this.exp.miles * .25)
+                }, {
+                    "ID": "2",
+                    "Description": "Trailer Mileage Rate @.40/mile",
+                    "Quantity": 0, //this.exp.trailermiles,
+                    "Rate": 0.4,
+                    "Amount": 0 //(this.exp.trailermiles * .4)
+                }
+
+            ]
 
         }
 
