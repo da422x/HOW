@@ -138,5 +138,3 @@ angular.module('ohanaApp')
 			);
 		};
 	});
-
-};
