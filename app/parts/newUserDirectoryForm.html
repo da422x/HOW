@@ -108,7 +108,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="region">Region*</label>
                 <div class="col-md-7">
-                    <select id="region" name="region" class="form-control" ng-options="region as region.name for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
+                    <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
                     </select>
                 </div>
             </div>
