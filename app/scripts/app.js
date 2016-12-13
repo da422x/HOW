@@ -219,6 +219,13 @@ angular.module('ohanaApp', [
             });
 
             console.log($rootScope.siteData);
+
+			//FIREBASE LOG
+			firebase.database.enableLogging(function(logMessage) {
+				// Add a timestamp to the messages.
+				console.log(new Date().toISOString() + ': ' + logMessage);
+				}, true)
+			})
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
