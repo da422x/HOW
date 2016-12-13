@@ -249,6 +249,11 @@ angular.module('ohanaApp', [
                 localStorageService.set('sessionState', false);
             }
         });
+
+        //Firebase Logs
+        if (window.location.href.indexOf("localhost") > -1) {
+            firebase.database.enableLogging(true, true);
+        }
     })
 
 .filter('unique', function() {
