@@ -9,16 +9,10 @@
  * Controller of management console - event detail
  */
 angular.module('ohanaApp')
-    .controller('DetailsCtrl', function($http, $scope, $location, localStorageService, Api) {
+    .controller('DetailsCtrl', function($http, $scope, $location, localStorageService, DAO) {
         'use strict';
 
-        $scope.getCurrentEventRequest = Api.getCurrentEvent.query({
-            event_id: localStorageService.get('currentEvent')
-        }).$promise
-
-        $scope.getCurrentEventRequest.then(function(response) {
-            $scope.howEvent.currentEvent = response;
-        });
+        $scope.selectedEvent = DAO.selectedEvent;
 
         $scope.goBackToEvents = function() {
             $location.url('/manage/events');

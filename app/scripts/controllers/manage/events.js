@@ -9,7 +9,7 @@
  * Controller of management console - events
  */
 angular.module('ohanaApp')
-    .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, Api, selectValues) {
+    .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, $location, selectValues, DAO) {
         'use strict';
 
         $scope.newQuery = {};
@@ -98,6 +98,8 @@ angular.module('ohanaApp')
 				}
 			});
 
+			DAO.selectedEvent = selected;
+            $location.url('details');
 			//do something
 		};
 

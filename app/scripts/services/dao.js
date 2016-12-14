@@ -91,12 +91,29 @@ angular.module('ohanaApp')
             }
         }
 
+        var selectedEvent = function chapter(){
+            this.title= null,
+            this.allDay= null,
+            this.startTime= null,
+            this.endTime= null,
+            this.description= null,
+            this.name= null,
+            this.data= null,
+            this.images= null,
+            this.participants= null,
+            this.volunteers= null,
+            this.location = null
+            if (arguments.length == 1) {
+                angular.extend(this.prototype, arguments[0]);
+            }
 
+        }
 
 
         return {
             userData: userData,
             report: report,
-            chapter: chapter
+            chapter: chapter,
+            selectedEvent: selectedEvent
         }
     });
