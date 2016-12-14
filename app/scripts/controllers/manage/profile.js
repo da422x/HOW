@@ -199,7 +199,7 @@ angular.module('ohanaApp')
                             text: ''
                         }];
                 }
-                
+
             }
         });
 

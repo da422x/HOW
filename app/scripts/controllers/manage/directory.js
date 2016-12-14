@@ -9,7 +9,7 @@
  * Controller of management console - directory
  */
 angular.module('ohanaApp')
-    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, Api, dataGridUtil, selectValues) {
+    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil, localStorageService) {
         'use strict';
 
         $scope.$on('modalClosing', function() {
@@ -216,7 +216,15 @@ angular.module('ohanaApp')
                                 var path = '/userRoles/' + $scope.currId;
                                 commonServices.updateData(path, packet);
                             },
-                            source: $rootScope.siteData.roles
+                            source: function() {
+                                var currentUserRole = localStorageService.get('sessionUserRole');
+                                if (currentUserRole === 'admin') {
+                                    return $rootScope.siteData.roles;
+                                } else {
+                                    var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
+                                    return newRoles;
+                                }
+                            }
                         });
                         $('#membersTable .tdSelectRegion a').editable({
                             type: "select",
@@ -323,21 +331,55 @@ angular.module('ohanaApp')
         $scope.update = function() {
             var newDataSet = commonServices.getData('/userData/');
             var newRoleData = commonServices.getData('/userRoles/');
+            var currentUserRole = localStorageService.get('sessionUserRole');
+            var currentUserData = localStorageService.get('sessionUserData');
             $q.all([newDataSet, newRoleData]).then(function(userData) {
-                var users = [];
-                var roles = [];
+                var users = [],
+                    roles = [],
+                    keys = [];
                 var i = 0;
 
-                _.each(userData[1], function(value) {
-                    roles.push(value.role);
+                _.each(userData[1], function(value, key) {
+                    switch (currentUserRole) {
+                        case 'admin':
+                            roles.push(value.role);
+                            keys.push(key);
+                            break;
+                        case 'Chapter Lead':
+                            if (value.role === 'Participant' || value.role === 'Volunteer' || value.role === 'Chapter Lead') {
+                                roles.push(value.role);
+                                keys.push(key);
+                            }
+                            break;
+                        default:
+                            console.log('should not be here');
+                    }
                 });
 
-                _.each(userData[0], function(value, key) {
-                    value.key = key;
-                    value.role = roles[i];
-                    users.push(value);
+                _.each(keys, function() {
+                    _.each(userData[0], function(value, key) {
+                        switch (currentUserRole) {
+                            case 'admin':
+                                if (keys[i] === key) {
+                                    value.key = key;
+                                    value.role = roles[i];
+                                    users.push(value);
+                                }
+                                break;
+                            case 'Chapter Lead':
+                                if (keys[i] === key && (currentUserData.Chapter === value.Chapter)) {
+                                    value.key = key;
+                                    value.role = roles[i];
+                                    users.push(value);
+                                }
+                                break;
+                            default:
+                                console.log('should not be here');
+                        }
+                    });
                     i++;
                 });
+                console.log(users);
                 $scope.buildTable(users);
             });
         }; // end $scope.update

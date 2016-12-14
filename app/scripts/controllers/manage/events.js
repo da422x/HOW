@@ -15,22 +15,22 @@ angular.module('ohanaApp')
         $scope.newQuery = {};
         var allEvents = [];
 
-		
-		var loadAll = function(){
-			var getEvents = commonServices.getPublicEvents();
-			allEvents = [];
-			$q.all([getEvents]).then(function(data) {
-				if (data[0]) {
-					_.each(data[0], function(event, key) {
-						event.key = key;
-						allEvents.push(event);
-					});
-					$scope.eventList = allEvents;
-				}else{
-					console.log('Failed to get Events...');
-				}
-			});
-		};
+
+        var loadAll = function() {
+            var getEvents = commonServices.getPublicEvents();
+            allEvents = [];
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        event.key = key;
+                        allEvents.push(event);
+                    });
+                    $scope.eventList = allEvents;
+                } else {
+                    console.log('Failed to get Events...');
+                }
+            });
+        };
 
         loadAll();
 

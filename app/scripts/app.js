@@ -233,6 +233,7 @@ angular.module('ohanaApp', [
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
                         console.log('Name: ' + userData.name.first);
+                        console.log('Chapter: ' + userData.Chapter);
                         console.log('Role: ' + userRole);
                         localStorageService.set('sessionUserRole', userRole);
                         localStorageService.set('sessionUserData', userData);
