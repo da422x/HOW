@@ -76,70 +76,6 @@ angular.module('ohanaApp')
             });
         };
 
-<<<<<<< HEAD
-        $scope.manageEvent = function(index) {
-            var selected = allEvents[index];
-            console.log('Index is: ' + index);
-            console.log(selected.key);
-
-
-
-            var getEvents = commonServices.getEvent(selected);
-            console.log(getEvents);
-
-            //match event to db
-            $q.all([getEvents]).then(function(data) {
-                if (data[0]) {
-                    _.each(data[0], function(event, key) {
-                        if (selected.key === event.key) {
-                            console.log('Event: ' + event.name);
-                            selected = event;
-                        }
-                    });
-                }
-            });
-
-            //do something
-        };
-
-        $scope.deleteEvent = function(index) {
-            var selected = allEvents[index];
-            console.log('Index is: ' + index);
-            console.log(selected.key);
-
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this event!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete '" + selected.name + "'",
-                cancelButtonText: "Cancel"
-            }).then(
-                function(result) {
-                    console.log('confirm');
-                    var result = commonServices.removeData('/events/' + selected.key);
-                    swal({
-                        text: "Deleting " + selected.name,
-                        type: 'success',
-                        timer: 2500
-                    });
-                    $q.all([result]).then(function(data) {
-                        loadAll();
-                        if (data[0]) {
-                            console.log(result);
-                        } else {
-                            console.log('Log: Error on deletion');
-                        }
-                    });
-                },
-                function(dismiss) {
-                    console.log('cancel');
-                }
-            );
-        };
-    });
-=======
 		$scope.manageEvent = function(index){
 			var selected = allEvents[index];
 			console.log('Index is: '+ index);
@@ -204,4 +140,3 @@ angular.module('ohanaApp')
 			);
 		};
 	});
->>>>>>> a9c88f9e63bc7d919d9ced79d6590803bf166c8e
