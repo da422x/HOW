@@ -220,7 +220,7 @@ angular.module('ohanaApp')
                                 var currentUserRole = localStorageService.get('sessionUserRole');
                                 if (currentUserRole === 'admin') {
                                     return $rootScope.siteData.roles;
-                                }else{
+                                } else {
                                     var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
                                     return newRoles;
                                 }

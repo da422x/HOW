@@ -5,17 +5,17 @@
     <div class="form-group">
         <label for="eventName" class="col-sm-2 control-label">Event Name*</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control" id="eventName" ng-model="newEventName" ng-required="true" placeholder="{{howEvent.currentEvent.name}}">
+            <input type="text" class="form-control" id="eventName" ng-model="newEventName" ng-required="true" placeholder="{{selectedEvent.name}}">
         </div>
     </div>
     <!-- Location -->
     <div class="form-group">
         <label for="eventLocation" class="col-sm-2 control-label">Location*</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control" id="eventLocation" ng-required="true" placeholder="Location" value="{{location}}">
+            <input type="text" class="form-control" id="eventLocation" ng-required="true" placeholder="Location" value="{{selectedEvent.location}}">
         </div>
     </div>
-    <!-- Start Date/Time -->
+    <!-- <!-- Start Date/Time -->
     <div class="form-group">
         <label for="startDate" class="col-sm-2 control-label">Start Date*</label>
         <div class="col-sm-7">
@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    <!-- Event Manager Selection -->
+ -->    <!-- Event Manager Selection -->
     <div class="form-group">
         <label for="eventManager" class="col-sm-2 control-label">Manager*</label>
         <div class="col-sm-7">
