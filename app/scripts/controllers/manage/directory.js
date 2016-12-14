@@ -216,7 +216,15 @@ angular.module('ohanaApp')
                                 var path = '/userRoles/' + $scope.currId;
                                 commonServices.updateData(path, packet);
                             },
-                            source: $rootScope.siteData.roles
+                            source: function() {
+                                var currentUserRole = localStorageService.get('sessionUserRole');
+                                if (currentUserRole === 'admin') {
+                                    return $rootScope.siteData.roles;
+                                }else{
+                                    var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
+                                    return newRoles;
+                                }
+                            }
                         });
                         $('#membersTable .tdSelectRegion a').editable({
                             type: "select",
