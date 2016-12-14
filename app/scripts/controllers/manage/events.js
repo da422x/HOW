@@ -15,22 +15,22 @@ angular.module('ohanaApp')
         $scope.newQuery = {};
         var allEvents = [];
 
-		
-		var loadAll = function(){
-			var getEvents = commonServices.getPublicEvents();
-			allEvents = [];
-			$q.all([getEvents]).then(function(data) {
-				if (data[0]) {
-					_.each(data[0], function(event, key) {
-						event.key = key;
-						allEvents.push(event);
-					});
-					$scope.eventList = allEvents;
-				}else{
-					console.log('Failed to get Events...');
-				}
-			});
-		};
+
+        var loadAll = function() {
+            var getEvents = commonServices.getPublicEvents();
+            allEvents = [];
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        event.key = key;
+                        allEvents.push(event);
+                    });
+                    $scope.eventList = allEvents;
+                } else {
+                    console.log('Failed to get Events...');
+                }
+            });
+        };
 
         loadAll();
 
@@ -76,65 +76,65 @@ angular.module('ohanaApp')
             });
         };
 
-		$scope.manageEvent = function(index){
-			var selected = allEvents[index];
-			console.log('Index is: '+ index);
-			console.log(selected.key);
+        $scope.manageEvent = function(index) {
+            var selected = allEvents[index];
+            console.log('Index is: ' + index);
+            console.log(selected.key);
 
 
-		
-			var getEvents = commonServices.getEvent(selected);
-			console.log(getEvents);
 
-			//match event to db
-			$q.all([getEvents]).then(function(data) {
-				if(data[0]){
-					_.each(data[0], function(event, key){
-						if(selected.key === event.key){
-							console.log('Event: ' + event.name);
-							selected = event;
-						}
-					});
-				}
-			});
+            var getEvents = commonServices.getEvent(selected);
+            console.log(getEvents);
 
-			//do something
-		};
+            //match event to db
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        if (selected.key === event.key) {
+                            console.log('Event: ' + event.name);
+                            selected = event;
+                        }
+                    });
+                }
+            });
 
-		$scope.deleteEvent = function(index){
-			var selected = allEvents[index];
-			console.log('Index is: '+ index);
-			console.log(selected.key);
+            //do something
+        };
 
-			swal({
-			  title: "Are you sure?",
-			  text: "You will not be able to recover this event!",
-			  type: "warning",
-			  showCancelButton: true,
-			  confirmButtonColor: "#DD6B55",
-			  confirmButtonText: "Yes, delete '" + selected.name + "'",
-			  cancelButtonText: "Cancel"
-			}).then(
-				function(result){
-					console.log('confirm');
-					var result = commonServices.removeData('/events/'+selected.key);
-					swal({
-						text: "Deleting " + selected.name,
-						type: 'success',
-						timer: 2500
-					});
-	                $q.all([result]).then(function(data){
-	                	loadAll();
-						if(data[0]){
-							console.log(result);
-						}
-						else{
-							console.log('Log: Error on deletion');
-						}
-					});	
-				}, function(dismiss){
-					console.log('cancel');
-				}
-			);
-		};
-	});
+        $scope.deleteEvent = function(index) {
+            var selected = allEvents[index];
+            console.log('Index is: ' + index);
+            console.log(selected.key);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this event!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete '" + selected.name + "'",
+                cancelButtonText: "Cancel"
+            }).then(
+                function(result) {
+                    console.log('confirm');
+                    var result = commonServices.removeData('/events/' + selected.key);
+                    swal({
+                        text: "Deleting " + selected.name,
+                        type: 'success',
+                        timer: 2500
+                    });
+                    $q.all([result]).then(function(data) {
+                        loadAll();
+                        if (data[0]) {
+                            console.log(result);
+                        } else {
+                            console.log('Log: Error on deletion');
+                        }
+                    });
+                },
+                function(dismiss) {
+                    console.log('cancel');
+                }
+            );
+        };
+    });
