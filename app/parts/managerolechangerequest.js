@@ -25,17 +25,17 @@ angular.module('ohanaApp')
                     if (currentRole === 'admin') {
                         value.key = key;
                         $scope.requests.push(value);
-                    }else{
+                    } else {
                         _.each(data[1], function(value2, key2) {
                             console.log(value.uid + ' === ' + key2);
-                            if (value.uid === key2 
-                                && value2.Chapter === currentUserData.Chapter 
-                                && (value.request_role === 'Participant' || value.request_role === 'Volunteer' || value.request_role === 'Chapter Lead')) {
+                            if (value.uid === key2 &&
+                                value2.Chapter === currentUserData.Chapter &&
+                                (value.request_role === 'Participant' || value.request_role === 'Volunteer' || value.request_role === 'Chapter Lead')) {
                                 value.key = key;
                                 $scope.requests.push(value);
                             }
                         });
-                    } 
+                    }
                 });
                 console.log($scope.requests);
             });
