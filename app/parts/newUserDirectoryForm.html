@@ -5,13 +5,14 @@
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-    <form class="form-horizontal">
+    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate>
         <fieldset>
             <!-- Text - First Name -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="fname">First Name*</label>
                 <div class="col-md-7">
                     <input id="fname" name="fname" type="text" placeholder="John" class="form-control input-md" ng-model="newUserDirectory.name.first" ng-required="true">
+                    <p ng-show="userForm.fname.$invalid && !userForm.fname.$pristine" class="help-block">Enter a valid first name.</p>
                 </div>
             </div>
 
@@ -20,6 +21,7 @@
                 <label class="col-md-4 control-label" for="lname">Last Name*</label>
                 <div class="col-md-7">
                     <input id="lname" name="lname" type="text" placeholder="Doe" class="form-control input-md" ng-model="newUserDirectory.name.last" ng-required="true">
+                    <p ng-show="userForm.lname.$invalid && !userForm.lname.$pristine" class="help-block">Enter a valid last name.</p>
                 </div>
             </div>
 
@@ -28,6 +30,8 @@
                 <label class="col-md-4 control-label" for="Address1">Address 1*</label>
                 <div class="col-md-7">
                     <input id="Address1" name="line1" type="text" placeholder="Street" class="form-control input-md" ng-model="newUserDirectory.address.line1" ng-required="true">
+                    <p ng-show="userForm.line1.$invalid && !userForm.line1.$pristine" class="help-block">Enter a valid address line.</p>
+
                 </div>
             </div>
 
@@ -36,6 +40,7 @@
                 <label class="col-md-4 control-label" for="Address2">Address 2*</label>
                 <div class="col-md-7">
                     <input id="Address2" name="Address2" type="text" placeholder="APT/SUITE" class="form-control input-md" ng-model="newUserDirectory.address.line2" ng-required="false">
+                    <p ng-show="userForm.Address2.$invalid && !userForm.Address2.$pristine" class="help-block">Enter a valid address line.</p>
                 </div>
             </div>
 
@@ -44,6 +49,7 @@
                 <label class="col-md-4 control-label" for="City">City*</label>
                 <div class="col-md-7">
                     <input id="City" name="City" type="text" placeholder="City" class="form-control input-md" ng-model="newUserDirectory.address.city" ng-required="false">
+                    <p ng-show="userForm.City.$invalid && !userForm.City.$pristine" class="help-block">Enter a valid city name.</p>
                 </div>
             </div>
 
@@ -59,6 +65,7 @@
                 <label class="col-md-4 control-label" for="Zip">Zip*</label>
                 <div class="col-md-7">
                     <input id="Zip" name="Zip" type="number" placeholder="Zip" class="form-control input-md" ng-model="newUserDirectory.address.zip" ng-required="false">
+                    <p ng-show="userForm.Zip.$invalid && !userForm.Zip.$pristine" class="help-block">Enter a valid zip code.</p>
                 </div>
             </div>
 
@@ -92,6 +99,7 @@
                 <label class="col-md-4 control-label" for="email">Email*</label>
                 <div class="col-md-7">
                     <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="newUserDirectory.email" ng-required="true">
+                    <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email address.</p>
                 </div>
             </div>
 
@@ -101,6 +109,7 @@
                 <div class="col-md-7">
                     <input id="phonenum" name="phonenum" type="number" placeholder="1234576890" class="form-control input-md" ng-model="newUserDirectory.phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^\d{10}$/" ng-required="true">
                     <span class="help-block">10 digits only; no formatting, prefixes or extensions.</span>
+                    <p ng-show="userForm.phonenum.$invalid && !userForm.phonenum.$pristine" class="help-block">Enter a valid phone number.</p>
                 </div>
             </div>
 
@@ -108,7 +117,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="region">Region*</label>
                 <div class="col-md-7">
-                    <select id="region" name="region" class="form-control" ng-options="region as region.name for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
+                    <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
                     </select>
                 </div>
             </div>
@@ -127,6 +136,7 @@
                 <div class="col-md-7">
                     <input id="branch" name="branch" type="text" placeholder="" class="form-control input-md" ng-model="newUserDirectory.branch">
                     <span class="help-block">Please provide military service branch</span>
+                    <p ng-show="userForm.branch.$invalid && !userForm.branch.$pristine" class="help-block">Enter a valid service background.</p>
                 </div>
             </div>
 
@@ -136,6 +146,7 @@
                 <div class="col-md-7">
                     <input id="Years_Served" name="Years_Served" type="text" placeholder="" class="form-control input-md" ng-model="newUserDirectory.years">
                     <span class="help-block">Please provide years served</span>
+                    <p ng-show="userForm.Years_Served.$invalid && !userForm.Years_Served.$pristine" class="help-block">Enter a valid number.</p>
                 </div>
             </div>
 
@@ -144,6 +155,7 @@
                 <label class="col-md-4 control-label" for="password">Password*</label>
                 <div class="col-md-7">
                     <input id="password" name="password" type="text" class="form-control input-md" ng-model="newUserDirectory.password" ng-required="true">
+                    <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password.</p>
                 </div>
             </div>
 
@@ -151,7 +163,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-7">
-                    <button id="submit" name="submit" class="btn btn-primary" ng-click="postUser()">Submit</button>
+                    <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
                 </div>
             </div>
         </fieldset>

@@ -157,7 +157,7 @@ angular.module('ohanaApp', [
             });
 
     }).run(function($q, commonServices, localStorageService, $rootScope, $firebaseAuth) {
-        $rootScope.path = "thad";
+
         var config = {
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
             authDomain: "herosonthewater-55a79.firebaseapp.com",
@@ -171,6 +171,55 @@ angular.module('ohanaApp', [
         }
 
         $rootScope.authObj = $firebaseAuth();
+        $rootScope.siteData = {
+            states: [],
+            roles: [],
+            regions: [],
+            regionsChapters: [],
+            chapters: []
+        };
+
+        var getSiteData = commonServices.getData('/siteData/');
+
+        $q.all([getSiteData]).then(function(data) {
+            _.each(data[0].states, function(states) {
+                $rootScope.siteData.states.push(states);
+            });
+
+            _.each(data[0].roles, function(roles) {
+                $rootScope.siteData.roles.push(roles);
+            });
+
+            _.each(data[0].regions, function(regions) {
+                var chapters = [];
+
+                _.each(regions.chapters, function(newChapters) {
+
+                    $rootScope.siteData.chapters.push({
+                        'value': newChapters.value,
+                        'text': newChapters.text
+                    });
+
+                    chapters.push({
+                        'value': newChapters.value,
+                        'text': newChapters.text
+                    });
+                });
+
+                $rootScope.siteData.regions.push({
+                    'value': regions.value,
+                    'text': regions.text
+                });
+
+                $rootScope.siteData.regionsChapters.push({
+                    'value': regions.value,
+                    'text': regions.text,
+                    'chapters': chapters
+                });
+            });
+
+            console.log($rootScope.siteData);
+        });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
             if (user) {
@@ -184,6 +233,7 @@ angular.module('ohanaApp', [
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
                         console.log('Name: ' + userData.name.first);
+                        console.log('Chapter: ' + userData.Chapter);
                         console.log('Role: ' + userRole);
                         localStorageService.set('sessionUserRole', userRole);
                         localStorageService.set('sessionUserData', userData);
@@ -200,6 +250,11 @@ angular.module('ohanaApp', [
                 localStorageService.set('sessionState', false);
             }
         });
+
+        //Firebase Logs
+        if (window.location.href.indexOf("localhost") > -1) {
+            firebase.database.enableLogging(true, true);
+        }
     })
 
 .filter('unique', function() {

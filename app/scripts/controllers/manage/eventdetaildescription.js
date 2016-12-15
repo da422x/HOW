@@ -9,8 +9,15 @@
  * Controller of management console - event description
  */
 angular.module('ohanaApp')
-    .controller('EventdetaildescriptionCtrl', function($http, $location, $scope, Api) {
+    .controller('EventdetaildescriptionCtrl', function($http, $location, $scope, DAO) {
         'use strict';
+        console.log('hello');
+        $scope.selectedEvent = DAO.selectedEvent;
+
+        console.log('hello:' + selectedEvent);
+
+
+
         $scope.startTime = "";
         $scope.endTime = "";
         $scope.startDate = "";
@@ -57,21 +64,21 @@ angular.module('ohanaApp')
         }
 
         $scope.saveEventDescription = function() {
-            //			var packet = {
-            //				name: $scope
-            //			}
-            //			Api.events.update(packet,
-            //				function (successMsg) {},
-            //				function (errorMsg) {}
-            //				);
+            // //			var packet = {
+            // //				name: $scope
+            // //			}
+            // //			Api.events.update(packet,
+            // //				function (successMsg) {},
+            // //				function (errorMsg) {}
+            // //				);
 
-            $http.put('http://txcdt36an7383.itservices.sbc.com:1337/events/' + $scope.howEvent.currentEvent.id, {
-                name: $scope.newEventName
-            }).then(function() {
-                $scope.howEvent.currentEvent.name = $scope.newEventName;
-            }, function(response) {
-                console.log(response);
-            });
-            eventDetailsDescription.reset();
+            // $http.put('http://txcdt36an7383.itservices.sbc.com:1337/events/' + $scope.howEvent.currentEvent.id, {
+            //     name: $scope.newEventName
+            // }).then(function() {
+            //     $scope.howEvent.currentEvent.name = $scope.newEventName;
+            // }, function(response) {
+            //     console.log(response);
+            // });
+            // eventDetailsDescription.reset();
         };
     });
