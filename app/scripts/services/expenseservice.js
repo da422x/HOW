@@ -21,6 +21,11 @@ angular.module('ohanaApp')
             PaymentStatus: "Pending",
             PaymentStatusBy: "",
             PaymentStatusDate: "",
+            PaymentLog: [{
+                PayStatus: "",
+                PayStatusBy: "",
+                PayStatusDate: ""
+            }],
             Amount: 0,
             ImageURL: [],
             Line: [{
@@ -48,12 +53,9 @@ angular.module('ohanaApp')
 
         this.addNewImage = function(obj, BillId) {
 
-                this.expense.ImageURL.push(obj);
-            }
-            // var ref = firebase.database().ref('/expense').on('value', function(snapshot) {
-            //     $scope.expense = snapshot.val();
+            this.expense.ImageURL.push(obj);
+        }
 
-        // })
 
         this.getExpense = function() {
             console.log("Get Expense", expense);
@@ -83,12 +85,27 @@ angular.module('ohanaApp')
          *        View Expense                                 *
          *******************************************************/
 
-        this.getViewExpenseData = function() {
+        this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
-            var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
+
+            console.log("getViewExpenseData", useremail, userRole, Chapter);
+
+            switch (userRole) {
+                case 'Volunteer':
+                case 'Participant':
+                    var ref = firebase.database().ref('/expense').orderByChild("email").equalTo(useremail);
+                    break;
+                case 'Leadership Team Member':
+                case 'Chapter Lead':
+                    var ref = firebase.database().ref('/expense').orderByChild("Chapter").equalTo(Chapter);
+                    break;
+                default:
+                    var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
+            }
+            // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             var viewExpenseList = $firebaseArray(ref);
 
-            console.log("Service Expense List return", viewExpenseList);
+            console.log("Service Expense ", viewExpenseList);
             return {
                 viewExpenseList: viewExpenseList,
             }

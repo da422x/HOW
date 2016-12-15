@@ -9,13 +9,12 @@
                     <label for="exp.eventdate" class="col-xs-6 col-form-label">Event Date</label>
                     <div class="col-xs-10">
                         <div class="input-group">
-                            <input id="startdate" type="text" class="form-control" ng-model="exp.eventdate
+                            <input id="exp.eventdate" type="text" class="form-control" ng-model="exp.eventdate
 " is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="dateopen()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="btn btn-default" ng-click="dateopen()" title="Event Date - Expenses can only be created for events 60 days prior to current date"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </div>
-
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
@@ -36,17 +35,17 @@
                         <label for="Chapter" class="col-xs-12 col-form-label">Chapter Name</label>
                         <div class="col-xs-12">
                             <label id="Chapter" class="form-control classname2" ng-model="exp.Chapter" name="Chapter">
-                                {{userinfo.viewuserdata[0].Chapter}}</label>
+                                {{profileData.Chapter}}</label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-xs-12 col-form-label">User Payment Address</label>
                         <div class="col-xs-12">
                             <div class="panel panel-default form-group col-xs-14">
-                                <div style="display: block"> <b>{{userinfo.viewuserdata[0].name.last}}  , {{userinfo.viewuserdata[0].name.first}}</b></div>
-                                <div style="display: block">{{userinfo.viewuserdata[0].address.line1}} </div>
-                                <div style="display: block">{{userinfo.viewuserdata[0].address.line2}} </div>
-                                <div style="display: block">{{userinfo.viewuserdata[0].address.city}} , {{userinfo.viewuserdata[0].address.state}}, {{userinfo.viewuserdata[0].address.zip}}</div>
+                                <div style="display: block"> <b>{{profileData.name.last}} , {{profileData.name.first}}</b></div>
+                                <div style="display: block">{{profileData.address.line1}}</div>
+                                <div style="display: block">{{profileData.address.line2}}</div>
+                                <div style="display: block"> {{profileData.address.city}}, {{profileData.address.state}} ,{{profileData.address.zip}}</div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +131,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="form-group   panel panel-default  " title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">
                     <div class="panel-heading"><b>Load supporting documents (images only)</b></div>

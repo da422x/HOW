@@ -87,6 +87,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/manage/profile",
                     text: "My Profile"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
                 }];
 
                 $scope.volunteerNav = [{
@@ -98,6 +101,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/manage/profile",
                     text: "My Profile"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
                 }];
 
                 $scope.ltmNav = [{
@@ -115,6 +121,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/manage/profile",
                     text: "My Profile"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
                 }];
 
                 $scope.nationalNav = [{
@@ -141,6 +150,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/manage/profile",
                     text: "My Profile"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
                 }];
 
                 $scope.adminNav = [{

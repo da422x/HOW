@@ -8,18 +8,18 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ViewExpenseController', function($scope, $filter, commonServices, expenseservice) {
+    .controller('ViewExpenseController', function($scope, $filter, expenseservice, commonServices, localStorageService, $q) {
 
         var self = this;
         var originalList = [];
         $scope.listS = "";
         $scope.lists = {};
-        $scope.PayStatus = "Pending";
+
         $scope.userlist = "";
         var currentdate = new Date();
         var firstday = new Date(currentdate.getFullYear(), 0, 1);
         $scope.startdate = firstday;
-
+        $scope.useremail = commonServices.getCurrentUserEmail();
 
         $scope.orderByField = 'SubmitDate';
         $scope.reverseSort = false;
@@ -29,6 +29,37 @@ angular.module('ohanaApp')
         $scope.sortDescending = false; // default ascending
         $scope.searchText = ''; // default blank
 
+        //---Role Based information ---------------
+
+        var userUID = localStorageService.get('sessionUserUID');
+        var userData = commonServices.getData('/userData/' + userUID);
+        $scope.userRole = localStorageService.get('sessionUserRole');
+        $scope.userName = localStorageService.get('sessionUserName');
+        $scope.userChapter = localStorageService.get('sessionUserChapter');
+        var userRquests = commonServices.getData('/roleChangeRequests/');
+
+        $q.all([userData, userRquests]).then(function(data) {
+            $scope.profileData = data[0];
+            $scope.profileData.role = $scope.userRole;
+            $scope.profilechapter = $scope.profileData.Chapter;
+            $scope.userUID = userUID;
+
+        });
+        $scope.Head = "";
+        switch ($scope.userRole) {
+            case 'Volunteer':
+            case 'Participant':
+                $scope.PayStatus = "Pending";
+                $scope.HeadTitle = ' created by ' + $scope.userName;
+                break;
+            case 'Leadership Team Member':
+            case 'Chapter Lead':
+                $scope.PayStatus = "Pending";
+                $scope.HeadTitle = ' for ' + $scope.userChapter;
+                break;
+            default:
+                $scope.PayStatus = "Approved";
+        }
         //------------UI Bootstrap Date -----START--------------//
 
         $scope.today = function() {
@@ -74,14 +105,40 @@ angular.module('ohanaApp')
                 mode = data.mode;
             return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
         }
+
+        $scope.ctrldate = {
+            datetime: null
+        };
+
         //------------UI Bootstrap Date -----END--------------//
+        //----Past Due - Expense list function -------Start -----------//
+        $scope.filterPastDue = function() {
+            $scope.startdate = new Date(currentdate.getFullYear(), 0, 1);
+            $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 60));
+            //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation
+
+            switch ($scope.userRole) {
+                case 'Volunteer':
+                case 'Participant':
+                    $scope.PayStatus = "Pending";
+
+                    break;
+                case 'Leadership Team Member':
+                    $scope.PayStatus = "Pending";
+                    break;
+                default:
+                    $scope.PayStatus = "Approved";
+            }
+
+        }
+
+        //----Past Due - Expense list function -------END -----------//
 
         $scope.viewexpensedata = function() {
-            console.log("Service to be called");
-            $scope.lists = originalList = expenseservice.getViewExpenseData();
+
+            console.log("Service to be called", $scope.userChapter);
+            $scope.lists = originalList = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
             console.log("Controller Expense List Data", $scope.lists, originalList);
-            $scope.userinfo = commonServices.getUserChapter();
-            console.log("Controller User Data", $scope.userinfo);
 
         };
 

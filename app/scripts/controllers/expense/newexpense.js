@@ -8,22 +8,36 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewExpenseCtrl', function($scope, expenseservice, commonServices, $location) {
+    .controller('NewExpenseCtrl', function($scope, expenseservice, commonServices, $location, localStorageService, $q) {
 
         var user = this;
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
         $scope.lineamount = 0;
+        $scope.role = "";
         $scope.exp.email = commonServices.getCurrentUserEmail();
-        $scope.userinfo = commonServices.getUserChapter();
-        //   alert($scope.userinfo.viewuserdata[0].name.first, $scope.userinfo.viewuserdata[0].name.last);
+
+
+        var userUID = localStorageService.get('sessionUserUID');
+        var userData = commonServices.getData('/userData/' + userUID);
+        $scope.userRole = localStorageService.get('sessionUserRole');
+        var userRquests = commonServices.getData('/roleChangeRequests/');
+
+        $q
+            .all([userData, userRquests]).then(function(data) {
+                $scope.profileData = data[0];
+                $scope.profileData.role = $scope.userRole;
+                $scope.userUID = userUID;
+
+            });
 
         //------------Addition Line Items--------------//
         $scope.LineDetails = [{
             'Description': '',
             'Amount': 0
         }];
+
 
         $scope.addNew = function(LineDetails) {
             $scope.LineDetails.push({
@@ -56,6 +70,9 @@ angular.module('ohanaApp')
         };
 
         //------------UI Bootstrap Date -----START--------------//
+        var currentdate = new Date();
+        var priorDate = new Date().setDate(currentdate.getDate() - 60);
+
         $scope.today = function() {
             $scope.exp.eventdate = new Date();
 
@@ -73,7 +90,10 @@ angular.module('ohanaApp')
 
         $scope.dateOptions = {
             'year-format': "'yyyy'",
-            'starting-day': 1
+            'starting-day': 1,
+            minDate: priorDate,
+            maxDate: new Date()
+
         };
 
         $scope.popup = {
@@ -120,19 +140,31 @@ angular.module('ohanaApp')
                 }
                 console.log("Scope Value", $scope.exp.Line);
             }
-            console.log("New expense entry ");
+
             var input = document.getElementById('files');
-            $scope.exp.Chapter = $scope.userinfo.viewuserdata[0].Chapter;
-            $scope.exp.SubmitBy = $scope.userinfo.viewuserdata[0].name.first + ' ' + $scope.userinfo.viewuserdata[0].name.last;
+            $scope.exp.Chapter = $scope.profileData.Chapter;
+            $scope.exp.SubmitBy = $scope.profileData.name.first + ' ' + $scope.profileData.name.last;
             $scope.exp.PaymentStatus = "Pending";
             var currentdate = new Date();
-            $scope.exp.BillId = $scope.userinfo.viewuserdata[0].address.state + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
+            $scope.profileData.Chapter.charAt(1);
+
+            $scope.exp.BillId = $scope.profileData.Region.charAt(1) + $scope.profileData.Chapter.charAt(1) + $scope.profileData.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
-            $scope.exp.SubmitAddress = $scope.userinfo.viewuserdata[0].address.line1 + ' , ' + $scope.userinfo.viewuserdata[0].address.line2 + ' , ' + $scope.userinfo.viewuserdata[0].address.city + ' , ' + $scope.userinfo.viewuserdata[0].address.state + ' , ' + $scope.userinfo.viewuserdata[0].address.zip;
+            $scope.exp.SubmitAddress = $scope.profileData.address.line1 + ' , ' + $scope.profileData.address.line2 + ' , ' + $scope.profileData.address.city + ' , ' + $scope.profileData.address.state + ' , ' + $scope.profileData.address.zip;
             $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate;
             $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
             $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
-            //($scope.exp.Line[2].Amount * 1) + ($scope.exp.Line[3].Amount * 1))
+
+            $scope.exp.PaymentLog[0].PayStatus = "Pending";
+            $scope.exp.PaymentLog[0].PayStatusBy = $scope.exp.SubmitBy;
+            $scope.exp.PaymentLog[0].PayRole = $scope.userRole;
+            if (currentdate.getHours() > 12) {
+                $scope.exp.PaymentLog[0].PayStatusDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
+
+            } else {
+                $scope.exp.PaymentLog[0].PayStatusDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+
+            }
 
             console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy);
 
@@ -164,7 +196,7 @@ angular.module('ohanaApp')
             firebase.database().ref(datalocation).push(angular.fromJson(angular.toJson($scope.exp)))
                 .then(function(jsonString) {
 
-                    console.log('success : data pushed');
+                    console.log('success : data pushed', $scope.exp);
 
                 })
                 .catch(function(error) {

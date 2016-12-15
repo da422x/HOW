@@ -1,8 +1,8 @@
 <div class="container" ng-init="viewexpensedata()" ng-controller="ViewExpenseController">
-    <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline">
+    <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline" novalidate>
         <div class="panel panel-default ">
             <div class="panel-heading clearfix">
-                <h3 class="panel-title pull-left">View Expense</h3>
+                <h3 class="panel-title pull-left">View Expense {{HeadTitle}}</h3>
             </div>
             <div class="form-group form-inline panel-body" style="padding-top: 6px;  padding-bottom:  6px;">
                 <div class="form-group row">
@@ -14,15 +14,33 @@
                                 <button type="button" class="btn btn-default" ng-click="dateopen()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </div>
+                        <div class="col-md-4 ">
+                            <span ng-show="viewExpenseform.startdate.$error.required && 
+                            !viewExpenseform.startdate.$pristine">
+                                Invalid or Empty from date
+                            </span>
+                            <span ng-show="viewExpenseform.startdate.$error.dateLowerThan">
+                                From date must be greater than To date
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="enddate" class="col-xs-6 col-form-label">To</label>
                     <div class="col-xs-10">
                         <div class="input-group">
-                            <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
+                            <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" date-lower-than="{{startdate| date:'short'}}" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="dateopen1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <div class="col-md-4 ">
+                            <span ng-show="viewExpenseform.enddate.$error.required && 
+                            !viewExpenseform.startdate.$pristine">
+                                Invalid or Empty from date
+                            </span>
+                            <span ng-show="viewExpenseform.enddate.$error.dateLowerThan">
+                                From date must be lower than To date
                             </span>
                         </div>
                     </div>
@@ -30,14 +48,10 @@
                 <div class="form-group row">
                     <label for="PayStatus" class="col-xs-6 col-form-label">Payment Status</label>
                     <div class="col-xs-10">
-                        <!-- <select class="form-control" ng-model="PayStatus" id="PayStatus" name="PayStatus" title="Select Payment Status">
- -->
                         <select class="form-control" ng-model="PayStatus" id="PayStatus" name="PayStatus" title="Select Payment Status">
-                            <!--    <option ng-selected="PayStatus == item.value" ng-repeat="item  in paystatusoptions" ng-value="item.value">{{item.label}}</option>
-                        </select> -->
                             <option value="">All</option>
-                            <option value="Pending" ng-selected="userinfo.viewuserdata[0].role !='financemanager'">Pending</option>
-                            <option value="Approved" ng-selected="userinfo.viewuserdata[0].role =='financemanager'">Approved</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
                             <option value="Need Info">Need Info</option>
                             <option value="Payment Issued">Payment Issued</option>
                         </select>
@@ -47,14 +61,16 @@
                     <div class="panel-body">
                         <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
                         <a href="#/expense/newexpense" class="btn btn-primary format_button_md" title="Create New Expense">New Expense</a>
-                        <a href=" #/expense_QBUpdate" ng-show="userinfo.viewuserdata[0].role=='financemanager'" title="QuickBooks Update">
+                        <button class="btn btn-primary btn-danger" ng-click="filterPastDue
+()" title="Filters expenses that were submitted 60 days prior to date and still Overdue">Overdue Expenses</button>
+                        <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='HOW National Team/Staff'">
                             <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div ng-show="userinfo.viewuserdata[0].role !='coordinator'" class="form-group row-fluid col-lg-12">
+        <div ng-show="userRole=='HOW National Team/Staff' || userRole=='National Staff'" class="form-group row-fluid col-lg-12">
             <div class="form-group row">
                 <label for="selectedchapter" class="col-xs-6 col-form-label">Chapter List</label>
                 <div class="col-md-8">
@@ -109,11 +125,11 @@
                 </table>
             </div>
         </div>
-        <div ng-show="userinfo.viewuserdata[0].role=='coordinator'" class=" form-group row-fluid col-lg-12">
-            <div class="form-group row">
-                <label for="selectedcoordinator" class="col-xs-6 col-form-label">Co-ordinator Name</label>
+        <div ng-show="userRole!='HOW National Team/Staff' && userRole!='National Staff'" class=" form-group row-fluid col-lg-12">
+            <div class="form-group row" ng-show="userRole=='Leadership Team Member' || userRole=='Chapter Lead'">
+                <label for="userlist" class="col-xs-6 col-form-label">Co-ordinator Name</label>
                 <div class="col-md-8">
-                    <select class="form-control col-md-8" required="" ng-model="userlist" id="selectedcoordinator" name="selectedcoordinator" title="Select Coordinator Name">
+                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Coordinator Name">
                         <option value="" selected="true">All Coordinator</option>
                         <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: userinfo.viewuserdata[0].SubmitBy} | filter: {Chapter: userinfo.viewuserdata[0].Chapter}" value="{{coord.SubmitBy}}">{{coord.SubmitBy}}
                         </option>

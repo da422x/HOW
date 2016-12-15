@@ -14,7 +14,6 @@
                     <input id="fname" name="fname" type="text" placeholder="John" class="form-control input-md" ng-model="newUserDirectory.name.first" ng-required="true">
                 </div>
             </div>
-
             <!-- Text - Last Name -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="lname">Last Name*</label>
@@ -22,7 +21,6 @@
                     <input id="lname" name="lname" type="text" placeholder="Doe" class="form-control input-md" ng-model="newUserDirectory.name.last" ng-required="true">
                 </div>
             </div>
-
             <!-- Text - Address 1 -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Address1">Address 1*</label>
@@ -30,7 +28,6 @@
                     <input id="Address1" name="line1" type="text" placeholder="Street" class="form-control input-md" ng-model="newUserDirectory.address.line1" ng-required="true">
                 </div>
             </div>
-
             <!-- Text - street 2 -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Address2">Address 2*</label>
@@ -38,7 +35,6 @@
                     <input id="Address2" name="Address2" type="text" placeholder="APT/SUITE" class="form-control input-md" ng-model="newUserDirectory.address.line2" ng-required="false">
                 </div>
             </div>
-
             <!-- Text - City -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="City">City*</label>
@@ -46,14 +42,12 @@
                     <input id="City" name="City" type="text" placeholder="City" class="form-control input-md" ng-model="newUserDirectory.address.city" ng-required="false">
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="" class="col-md-4 control-label">State*</label>
                 <div class="col-md-7">
                     <select ng-options="state as state.name for state in states" class="form-control input-md" ng-model="newUserDirectory.address.state"></select>
                 </div>
             </div>
-
             <!-- Number - Zip -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Zip">Zip*</label>
@@ -61,7 +55,6 @@
                     <input id="Zip" name="Zip" type="number" placeholder="Zip" class="form-control input-md" ng-model="newUserDirectory.address.zip" ng-required="false">
                 </div>
             </div>
-
             <!-- Datepicker - DOB -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="date">Date of Birth*</label>
@@ -74,7 +67,6 @@
                     </p>
                 </div>
             </div>
-
             <!-- Text - Gender -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Gender">Gender*</label>
@@ -86,7 +78,6 @@
                     </select>
                 </div>
             </div>
-
             <!-- Text - Email -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="email">Email*</label>
@@ -94,7 +85,6 @@
                     <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="newUserDirectory.email" ng-required="true">
                 </div>
             </div>
-
             <!-- Text - Phone # -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="phonenum">Phone #*</label>
@@ -103,7 +93,6 @@
                     <span class="help-block">10 digits only; no formatting, prefixes or extensions.</span>
                 </div>
             </div>
-
             <!-- Select - Region -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="region">Region*</label>
@@ -112,15 +101,14 @@
                     </select>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="col-md-4 control-label" for="chapter">Chapter*</label>
                 <div class="col-md-7">
                     <select id="chapter" name="chapter" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters">
-                    </select>
+                        <!-- <option value="KANSAS CHAPTER">KANSAS CHAPTER</option> -->
+                        <ng-options </select>
                 </div>
             </div>
-
             <!-- Text - Service background -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="branch">Service background*</label>
@@ -129,7 +117,6 @@
                     <span class="help-block">Please provide military service branch</span>
                 </div>
             </div>
-
             <!-- Text - Years Served -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Years_Served">Years Served*</label>
@@ -138,7 +125,6 @@
                     <span class="help-block">Please provide years served</span>
                 </div>
             </div>
-
             <!-- Text - Password -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="password">Password*</label>
@@ -146,7 +132,6 @@
                     <input id="password" name="password" type="text" class="form-control input-md" ng-model="newUserDirectory.password" ng-required="true">
                 </div>
             </div>
-
             <!-- Button - Submit -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="submit"></label>

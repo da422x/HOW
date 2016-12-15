@@ -35,7 +35,7 @@ angular.module('ohanaApp', [
             })
             .when('/whoweare', {
                 templateUrl: 'views/whoweare.html',
-                //				controller: 'WhoweareCtrl as whoweare'
+                //              controller: 'WhoweareCtrl as whoweare'
             })
             .when('/getinvolved', {
                 templateUrl: 'views/getinvolved.html',
@@ -76,9 +76,9 @@ angular.module('ohanaApp', [
             .when("/description", {
                 templateUrl: 'views/manage/event.details.description.html',
                 controller: 'EventdetaildescriptionCtrl as eventDescription',
-                //				params: {
-                //					event_id: id
-                //				},
+                //              params: {
+                //                  event_id: id
+                //              },
             })
             .when("/volunteers", {
                 templateUrl: 'views/manage/event.details.volunteers.html',
@@ -106,11 +106,11 @@ angular.module('ohanaApp', [
             })
             .when('/manage/training', {
                 templateUrl: 'views/manage/training.html',
-                //				controller: 'TrainingCtrl as training'
+                //              controller: 'TrainingCtrl as training'
             })
             .when('/manage/hours', {
                 templateUrl: 'views/manage/hours.html',
-                //				controller: 'HoursCtrl as hours'
+                //              controller: 'HoursCtrl as hours'
             })
             .when('/manage/directory', {
                 templateUrl: 'views/manage/directory.html',
@@ -122,15 +122,15 @@ angular.module('ohanaApp', [
             })
             .when('/manage/chAdmin', {
                 templateUrl: 'views/manage/chadmin.html',
-                //				controller: 'ChadminCtrl as chadmin'
+                //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
-                //				controller: 'RegadminCtrl as regadmin'
+                //              controller: 'RegadminCtrl as regadmin'
             })
             .when('/superAdmin', {
                 templateUrl: 'views/manage/superadmin.html',
-                //				controller: 'SuperadminCtrl as superadmin'
+                //              controller: 'SuperadminCtrl as superadmin'
             })
             .when('/publicEvents', {
                 templateUrl: 'views/public.events.html',
@@ -177,6 +177,7 @@ angular.module('ohanaApp', [
                 var currentUserId = firebase.auth().currentUser.uid;
                 var currentUserData = commonServices.getData('/userData/' + currentUserId);
                 var currentUserRole = commonServices.getData('/userRoles/' + currentUserId + '/role/');
+
                 $q.all([currentUserData, currentUserRole])
                     .then(function(data) {
                         var userData = data[0];
@@ -184,10 +185,13 @@ angular.module('ohanaApp', [
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
                         console.log('Name: ' + userData.name.first);
+                        console.log('Chapter: ' + userData.Chapter);
                         console.log('Role: ' + userRole);
                         localStorageService.set('sessionUserRole', userRole);
                         localStorageService.set('sessionUserData', userData);
+                        localStorageService.set('sessionUserName', userData.name.first + ' ' + userData.name.last);
                         localStorageService.set('sessionUserUID', currentUserId);
+                        localStorageService.set('sessionUserChapter', userData.Chapter);
                         localStorageService.set('sessionState', true);
                         $rootScope.$broadcast('changeSessionUserRole', userRole);
                         $rootScope.$broadcast('changeSessionState', true);
@@ -265,7 +269,7 @@ angular.module('ohanaApp', [
 
                     if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                         retArray.push(obj);
-                        // console.log("Date ", Date.parse(receivedDate), receivedDate);
+                        // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate);
                     }
 
 
