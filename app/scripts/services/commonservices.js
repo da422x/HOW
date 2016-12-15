@@ -89,6 +89,7 @@ angular.module('ohanaApp')
                 });
         };
 
+        // Get current signed in Users email.
         this.getCurrentUserEmail = function() {
             var user = firebase.auth().currentUser
             if (user != null) {
@@ -98,6 +99,7 @@ angular.module('ohanaApp')
             }
         }
 
+        // Get current signed in Users UID.
         this.getCurrentUserUid = function() {
             var user = firebase.auth().currentUser
             if (user != null) {
@@ -105,6 +107,16 @@ angular.module('ohanaApp')
             } else {
                 return '';
             }
+        }
+
+        // Returns a promise containing the users current role.
+        this.getCurrentUserRole = function() {
+            var user = firebase.auth().currentUser.uid;
+            return firebase.database().ref('/userRoles/' + user + '/role/')
+                .once('value')
+                .then(function(snapshot) {
+                    return snapshot.val();
+                });
         }
 
         /******************************************************
@@ -185,6 +197,7 @@ angular.module('ohanaApp')
                 });
         };
 
+        // Gets all Public events from database.
         this.getPublicEvents = function() {
             return firebase.database().ref('events')
                 .once('value')

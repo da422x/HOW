@@ -119,6 +119,9 @@ angular.module('ohanaApp')
                     state: "#/manage/training",
                     text: "My Training"
                 }, {
+                    state: "#/manage/directory",
+                    text: "Member Directory"
+                }, {
                     state: "#/manage/profile",
                     text: "My Profile"
                 }, {
