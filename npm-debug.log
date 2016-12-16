@@ -1,0 +1,49 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\gm4018\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'ready' ]
+2 info using npm@4.0.2
+3 info using node@v6.3.0
+4 verbose run-script [ 'preready', 'ready', 'postready' ]
+5 info lifecycle ohana@~preready: ohana@
+6 silly lifecycle ohana@~preready: no script for preready, continuing
+7 info lifecycle ohana@~ready: ohana@
+8 verbose lifecycle ohana@~ready: unsafe-perm in lifecycle true
+9 verbose lifecycle ohana@~ready: PATH: C:\Users\gm4018\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\0veteran\ohana\node_modules\.bin;%SystemRoot%\system32\WindowsPowerShell\v1.0\;C:\ProgramData\Oracle\Java\javapath;C:\Temp\usb\spark-training\spark\bin;C:\Program Files\Java\jdk1.8.0_77\bin;C:\Python34\;C:\Python34\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\OpenCL SDK\3.0\bin\x86;c:\Program Files\Microsoft SQL Server\110\Tools\Binn\;c:\Program Files\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\;c:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\ManagementStudio\;C:\Program Files\sbt\\bin;C:\Program Files\Microsoft JDBC Driver 4.0 for SQL Server\sqljdbc_4.0\enu\sqljdbc.jar;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\MongoDB\bin;C:\0Veteran\gradle-3.1-bin\gradle-3.1\bin;C:\Program Files\Enterprise Vault\EVClient\;C:\Program Files\1E\NomadBranch\;C:\Users\gm4018\AppData\Roaming\npm
+10 verbose lifecycle ohana@~ready: CWD: C:\0veteran\ohana
+11 silly lifecycle ohana@~ready: Args: [ '/d /s /c',
+11 silly lifecycle   'grunt jsbeautifier && git merge origin nitenite && git add .' ]
+12 silly lifecycle ohana@~ready: Returned: code: 1  signal: null
+13 info lifecycle ohana@~ready: Failed to exec ready script
+14 verbose stack Error: ohana@ ready: `grunt jsbeautifier && git merge origin nitenite && git add .`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\gm4018\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:279:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\gm4018\AppData\Roaming\npm\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:191:7)
+14 verbose stack     at maybeClose (internal/child_process.js:852:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
+15 verbose pkgid ohana@
+16 verbose cwd C:\0veteran\ohana
+17 error Windows_NT 6.1.7601
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\gm4018\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "ready"
+19 error node v6.3.0
+20 error npm  v4.0.2
+21 error code ELIFECYCLE
+22 error ohana@ ready: `grunt jsbeautifier && git merge origin nitenite && git add .`
+22 error Exit status 1
+23 error Failed at the ohana@ ready script 'grunt jsbeautifier && git merge origin nitenite && git add .'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the ohana package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     grunt jsbeautifier && git merge origin nitenite && git add .
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs ohana
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls ohana
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]
