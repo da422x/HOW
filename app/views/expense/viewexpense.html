@@ -131,7 +131,7 @@
                 <div class="col-md-8">
                     <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Coordinator Name">
                         <option value="" selected="true">All Coordinator</option>
-                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: userinfo.viewuserdata[0].SubmitBy} | filter: {Chapter: userinfo.viewuserdata[0].Chapter}" value="{{coord.SubmitBy}}">{{coord.SubmitBy}}
+                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: coord.SubmitBy} | filter: {Chapter: userChapter}" value="{{coord.SubmitBy}}">{{coord.SubmitBy}}
                         </option>
                     </select>
                 </div>
@@ -168,7 +168,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userinfo.viewuserdata[0].Chapter} | dateRange: startdate : enddate" ng-click="setSelected(coord.BillId)" ng-class="{selected: coord.BillId===idSelectedBill}">
+                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userChapter} | dateRange: startdate : enddate" ng-click="setSelected(coord.BillId)" ng-class="{selected: coord.BillId===idSelectedBill}">
                         <tr class="hoverme">
                             <td class="col-md-2"> <a href="#/expense/expensedetail/{{coord.BillId}}">{{coord.SubmitDate}} </a></td>
                             <td class="col-md-3"> <a href="#/expense/expensedetail/{{coord.BillId}}">{{coord.SubmitBy}}</a> </td>
