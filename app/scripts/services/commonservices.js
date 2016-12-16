@@ -8,10 +8,10 @@
  * Service in the mainAppApp.
  */
 angular.module('ohanaApp')
-    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray) {
+    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, localStorageService) {
 
         /******************************************************
-         * 			 User Management - start                  *
+         *           User Management - start                  *
          *******************************************************/
 
         // Registers a new user to the application, requires vaild email and password.
@@ -120,7 +120,7 @@ angular.module('ohanaApp')
         }
 
         /******************************************************
-         * 			   User Management - end                  *
+         *             User Management - end                  *
          *******************************************************/
 
         /******************************************************
@@ -216,7 +216,7 @@ angular.module('ohanaApp')
          *******************************************************/
 
         /******************************************************
-         * 			 DAO object container - start             *
+         *           DAO object container - start             *
          *******************************************************/
         this.DAO = DAO;
         this.getEvent = function(event) {
@@ -234,7 +234,7 @@ angular.module('ohanaApp')
         }
 
         /******************************************************
-         * 			 DAO object container - end             *
+         *           DAO object container - end             *
          *******************************************************/
 
         /******************************************************
@@ -244,20 +244,23 @@ angular.module('ohanaApp')
 
         // Gets user chapter and address information 
         this.getUserChapter = function() {
-                var expemail = this.getCurrentUserEmail();
-                // alert(expemail);
+            var expemail = this.getCurrentUserEmail();
+            // alert(expemail);
 
-                var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
-                var viewuserdata = $firebaseArray(ref);
+            var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
+            var viewuserdata = $firebaseArray(ref);
 
-                console.log("Get User Data", viewuserdata);
-                return {
-                    viewuserdata: viewuserdata,
-                }
+            console.log("Get User Data ", viewuserdata);
+            return {
+                viewuserdata: viewuserdata,
 
             }
-            /******************************************************
-             *   Expense Service object container - start         *
-             ******************************************************/
+
+        }
+
+
+        /******************************************************
+         *   Expense Service object container - start         *
+         ******************************************************/
 
     }]);

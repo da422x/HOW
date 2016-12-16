@@ -1,178 +1,181 @@
 <div class="container" ng-init="viewexpensedata()" ng-controller="ViewExpenseController">
-    <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline">
-        <script>
-        var currentdate = new Date();
-        var firstday = new Date(currentdate.getFullYear(), 0, 1);
-
-        //currentdate.getMonth()
-        $(document).ready(function() {
-            $('#startdate').pickadate({
-                format: 'mm/dd/yyyy',
-                formatSubmit: 'mm/dd/yyyy',
-                editable: false,
-                hiddenName: true,
-                onStart: function() {
-                    this.set('select', firstday); // Set to first day of this month 
-                }
-            });
-            $('#enddate').pickadate({
-                format: 'mm/dd/yyyy',
-                formatSubmit: 'mm/dd/yyyy',
-                hiddenName: true,
-                editable: false,
-                onStart: function() {
-                    this.set('select', currentdate); // Set to current date on load
-                }
-            });
-
-
-        });
-        </script>
-        <div class="panel panel-default  ">
+    <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline" novalidate>
+        <div class="panel panel-default ">
             <div class="panel-heading clearfix">
-                <h3 class="panel-title pull-left">View Expense</h3>
+                <h3 class="panel-title pull-left">View Expense {{HeadTitle}}</h3>
             </div>
-            <div class="form-group form-inline" style="padding-top: 6px;  padding-bottom:  6px;">
+            <div class="form-group form-inline panel-body" style="padding-top: 6px;  padding-bottom:  6px;">
                 <div class="form-group row">
-                    <label for="startdate" class="col-xs-6 col-form-label">Submit date From</label>
+                    <label for="startdate" class="col-xs-7 col-form-label">Submit date From</label>
                     <div class="col-xs-10">
-                        <input ng-model="startdate" type="text" title="Start Date" class="form-control" name="startdate" id="startdate" ng-required="true" style="background: white" aria-describedby="basic-addon1" />
+                        <div class="input-group">
+                            <input id="startdate" type="text" class="form-control" ng-model="startdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="dateopen()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <div class="col-md-4 ">
+                            <span ng-show="viewExpenseform.startdate.$error.required && 
+                            !viewExpenseform.startdate.$pristine">
+                                Invalid or Empty from date
+                            </span>
+                            <span ng-show="viewExpenseform.startdate.$error.dateLowerThan">
+                                From date must be greater than To date
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="enddate" class="col-xs-6 col-form-label">To</label>
                     <div class="col-xs-10">
-                        <input ng-model="enddate" type="text" title="End Date" class="form-control" name="enddate" id="enddate" ng-required="true" style="background: white" aria-describedby="basic-addon1" />
+                        <div class="input-group">
+                            <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" date-lower-than="{{startdate| date:'short'}}" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="dateopen1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <div class="col-md-4 ">
+                            <span ng-show="viewExpenseform.enddate.$error.required && 
+                            !viewExpenseform.startdate.$pristine">
+                                Invalid or Empty from date
+                            </span>
+                            <span ng-show="viewExpenseform.enddate.$error.dateLowerThan">
+                                From date must be lower than To date
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="lpay" class="col-xs-6 col-form-label">Payment Status</label>
+                    <label for="PayStatus" class="col-xs-6 col-form-label">Payment Status</label>
                     <div class="col-xs-10">
-                        <select id=lpay class="form-control" ng-model="PayStatus" id="PayStatus" name="PayStatus" title="Select Payment Status">
+                        <select class="form-control" ng-model="PayStatus" id="PayStatus" name="PayStatus" title="Select Payment Status">
                             <option value="">All</option>
-                            <option value="Pending" selected="true">Pending</option>
+                            <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
                             <option value="Need Info">Need Info</option>
+                            <option value="Payment Issued">Payment Issued</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
-                    <a href="#/expense/newexpense" class="btn btn-primary format_button_md  " title="Create New Expense">New Expense</a>
-                    <a href=" #/expense_QBUpdate " ng-show="userinfo.viewuserdata[0].role =='financemanager'" title="QuickBooks Update">
-                        <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
-                    </a>
+                <div class="form-group   row">
+                    <div class="panel-body">
+                        <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
+                        <a href="#/expense/newexpense" class="btn btn-primary format_button_md" title="Create New Expense">New Expense</a>
+                        <button class="btn btn-primary btn-danger" ng-click="filterPastDue
+()" title="Filters expenses that were submitted 60 days prior to date and still Overdue">Overdue Expenses</button>
+                        <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='HOW National Team/Staff'">
+                            <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div ng-show="userinfo.viewuserdata[0].role !='coordinator' " class="form-group row-fluid col-lg-12">
-            <div class="form-group row   ">
+        <div ng-show="userRole=='HOW National Team/Staff' || userRole=='National Staff'" class="form-group row-fluid col-lg-12">
+            <div class="form-group row">
                 <label for="selectedchapter" class="col-xs-6 col-form-label">Chapter List</label>
                 <div class="col-md-8">
                     <select class="form-control col-md-8" ng-model="listS" id="selectedchapter" name="selectedchapter" title="Select Chapter Name">
                         <option value="" selected="true">All Chapters</option>
-                        <option ng-repeat="chapter in lists.viewExpenseList | unique:'Chapter'" value="{{chapter.Chapter}}">{{chapter.Chapter}}</option>
+                        <option ng-repeat="chapter in lists.viewExpenseList | unique: 'Chapter'" value="{{chapter.Chapter}}">{{chapter.Chapter}}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row col-lg-12">
-                <table class="table table-bordered table-condensed display nowrap" id="tblexpenselist" width="100%">
-                    <thead class="table_head ">
+                <table id="tblexpenselist" class="table table-striped table-hover table-bordered   nowrap" cellspacing="0" width="100%">
+                    <thead class="table_head">
                         <tr>
                             <th>
-                                <a ng-click="sortBy='SubmitDate' ; sortDescending=! sortDescending ">Submit Date </a>
-                                <span ng-show="sortBy=='SubmitDate' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='SubmitDate' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='SubmitDate' ; sortDescending=! sortDescending">Submit Date </a>
+                                <span ng-show="sortBy=='SubmitDate' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='SubmitDate' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='Chapter' ; sortDescending=! sortDescending ">Chapter Name </a>
-                                <span ng-show="sortBy=='Chapter' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='Chapter' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='Chapter' ; sortDescending=! sortDescending">Chapter Name </a>
+                                <span ng-show="sortBy=='Chapter' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='Chapter' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='eventdate' ; sortDescending=! sortDescending ">Event Date </a>
-                                <span ng-show="sortBy=='eventdate' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='eventdate' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='eventdate' ; sortDescending=! sortDescending">Event Date </a>
+                                <span ng-show="sortBy=='eventdate' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='eventdate' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='Amount' ; sortDescending=! sortDescending ">Amount </a>
-                                <span ng-show="sortBy=='Amount' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='Amount' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='Amount' ; sortDescending=! sortDescending">Amount </a>
+                                <span ng-show="sortBy=='Amount' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='Amount' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='PaymentStatus' ; sortDescending=! sortDescending ">Payment Status </a>
-                                <span ng-show="sortBy=='PaymentStatus' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='PaymentStatus' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='PaymentStatus' ; sortDescending=! sortDescending">Payment Status </a>
+                                <span ng-show="sortBy=='PaymentStatus' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='PaymentStatus' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="list in lists.viewExpenseList |   orderBy:sortBy:sortDescending|  filter: {Chapter: listS} | filter: {PaymentStatus: PayStatus} | dateRange: startdate : enddate" ng-click="setSelected(list.BillId)" ng-class="{selected: list.BillId === idSelectedBill}">
+                    <tbody ng-repeat="list in lists.viewExpenseList | orderBy:sortBy:sortDescending  | filter: {Chapter: listS} | filter: {PaymentStatus: PayStatus} | dateRange: startdate : enddate" ng-click="setSelected(list.BillId)" ng-class="{selected: list.BillId===idSelectedBill}">
                         <tr class="hoverme">
-                            <td class="col-md-2 "> <a href="#/expense/expensedetail/{{list.BillId}} "> {{list.SubmitDate}} </a></td>
-                            <td class="col-md-4 "> <a href="#/expense/expensedetail/{{list.BillId}} ">{{list.Chapter}}</a></td>
-                            <td class="col-md-2 "> <a href="#/expense/expensedetail/{{list.BillId}} ">{{list.eventdate}} </a></td>
-                            <td class="col-md-2 " style="text-align: right "><a href="#/expense/expensedetail/{{list.BillId}} ">{{list.Amount | currency:'$'}} </a></td>
-                            <!--td class="col-md-4 ">{{list.Description}}</td-->
-                            <td class="col-md-2 " ng-class="{ 'color-green': list.PaymentStatus==='Approved' , 'color-red': list.PaymentStatus==='Pending' , 'color-orange': list.PaymentStatus==='Need Info' } ">
-                                <a href="#/expense/expensedetail/{{list.BillId}} "> <b>{{list.PaymentStatus}} </b></a>
+                            <td class="col-md-2"> <a href="#/expense/expensedetail/{{list.BillId}}"> {{list.SubmitDate}} </a></td>
+                            <td class="col-md-4"> <a href="#/expense/expensedetail/{{list.BillId}}">{{list.Chapter}}</a></td>
+                            <td class="col-md-2"> <a href="#/expense/expensedetail/{{list.BillId}}">{{list.eventdate   }} </a></td>
+                            <td class="col-md-2" style="text-align: right"><a href="#/expense/expensedetail/{{list.BillId}}">{{list.Amount | currency:'$'}} </a></td>
+                            <td class="col-md-2" ng-class="{ 'color-green': list.PaymentStatus==='Approved' , 'color-red': list.PaymentStatus==='Pending' , 'color-orange': list.PaymentStatus==='Need Info' }">
+                                <a href="#/expense/expensedetail/{{list.BillId}}"> <b>{{list.PaymentStatus}} </b></a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div ng-show="userinfo.viewuserdata[0].role=='coordinator'" class=" form-group row-fluid col-lg-12 ">
-            <div class="form-group row  ">
-                <label for="selectedcoordinator " class="col-xs-6 col-form-label ">Co-ordinator Name</label>
-                <div class="col-md-8 ">
-                    <select class="form-control col-md-8    " required=" " ng-model="userlist " id="selectedcoordinator " name="selectedcoordinator " title="Select Coordinator Name ">
-                        <option value=" " selected="true ">All Coordinator</option>
-                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: userinfo.viewuserdata[0].SubmitBy} " value="{{coord.SubmitBy}} ">{{coord.SubmitBy}}
+        <div ng-show="userRole!='HOW National Team/Staff' && userRole!='National Staff'" class=" form-group row-fluid col-lg-12">
+            <div class="form-group row" ng-show="userRole=='Leadership Team Member' || userRole=='Chapter Lead'">
+                <label for="userlist" class="col-xs-6 col-form-label">Co-ordinator Name</label>
+                <div class="col-md-8">
+                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Coordinator Name">
+                        <option value="" selected="true">All Coordinator</option>
+                        <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: coord.SubmitBy} | filter: {Chapter: userChapter}" value="{{coord.SubmitBy}}">{{coord.SubmitBy}}
                         </option>
                     </select>
                 </div>
             </div>
             <br>
             <div class="form-group row col-lg-12">
-                <table class="table table-bordered table-condensed display nowrap " id="tblexpenselist " cellspacing="0 " width="100% ">
-                    <thead class="table_head ">
+                <table class="table table-bordered table-condensed display nowrap" id="tblexpenselist" cellspacing="0" width="100%">
+                    <thead class="table_head">
                         <tr>
                             <th>
-                                <a ng-click="sortBy='SubmitDate' ; sortDescending=! sortDescending ">Submit Date </a>
-                                <span ng-show="sortBy=='SubmitDate' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='SubmitDate' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='SubmitDate' ; sortDescending=! sortDescending">Submit Date </a>
+                                <span ng-show="sortBy=='SubmitDate' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='SubmitDate' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='SubmitBy' ; sortDescending=! sortDescending ">Coordinator Name </a>
-                                <span ng-show="sortBy=='SubmitBy' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='SubmitBy' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='SubmitBy' ; sortDescending=! sortDescending">Coordinator Name </a>
+                                <span ng-show="sortBy=='SubmitBy' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='SubmitBy' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='eventdate' ; sortDescending=! sortDescending ">Event Date </a>
-                                <span ng-show="sortBy=='eventdate' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='eventdate' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='eventdate' ; sortDescending=! sortDescending">Event Date </a>
+                                <span ng-show="sortBy=='eventdate' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='eventdate' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='Amount' ; sortDescending=! sortDescending ">Amount </a>
-                                <span ng-show="sortBy=='Amount' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='Amount' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='Amount' ; sortDescending=! sortDescending">Amount </a>
+                                <span ng-show="sortBy=='Amount' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='Amount' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                             <th>
-                                <a ng-click="sortBy='PaymentStatus' ; sortDescending=! sortDescending ">Payment Status </a>
-                                <span ng-show="sortBy=='PaymentStatus' && !sortDescending " class="glyphicon glyphicon-chevron-down "></span>
-                                <span ng-show="sortBy=='PaymentStatus' && sortDescending " class="glyphicon glyphicon-chevron-up "></span>
+                                <a ng-click="sortBy='PaymentStatus' ; sortDescending=! sortDescending">Payment Status </a>
+                                <span ng-show="sortBy=='PaymentStatus' && !sortDescending" class="glyphicon glyphicon-chevron-down"></span>
+                                <span ng-show="sortBy=='PaymentStatus' && sortDescending" class="glyphicon glyphicon-chevron-up"></span>
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userinfo.viewuserdata[0].Chapter} | dateRange: startdate : enddate " ng-click="setSelected(coord.BillId) " ng-class="{selected: coord.BillId===idSelectedBill} ">
-                        <tr class="hoverme ">
-                            <td class="col-md-2 "> <a href="#/expense/expensedetail/{{coord.BillId}} ">{{coord.SubmitDate}} </a></td>
-                            <td class="col-md-3 "> <a href="#/expense/expensedetail/{{coord.BillId}} ">{{coord.SubmitBy}}</a> </td>
-                            <td class="col-md-2 "> <a href="#/expense/expensedetail/{{coord.BillId}} "> {{coord.eventdate}} </a></td>
-                            <td class="col-md-2 " style="text-align: right "><a href="#/expense/expensedetail/{{coord.BillId}} ">{{coord.Amount | currency:'$'}} </a></td>
-                            <!--td class="col-md-4 ">{{list.Description}}</td-->
-                            <td class="col-md-2 " ng-class="{ 'color-green': coord.PaymentStatus==='Approved' , 'color-red': coord.PaymentStatus==='Pending' , 'color-orange': coord.PaymentStatus==='Need Info' } ">
-                                <a href="#/expense/expensedetail/{{coord.BillId}} "> <b>{{coord.PaymentStatus}} </b></a>
+                    <tbody ng-repeat="coord in lists.viewExpenseList | orderBy:sortBy:sortDescending | filter: {SubmitBy: userlist} | filter: {PaymentStatus: PayStatus} | filter: {Chapter: userChapter} | dateRange: startdate : enddate" ng-click="setSelected(coord.BillId)" ng-class="{selected: coord.BillId===idSelectedBill}">
+                        <tr class="hoverme">
+                            <td class="col-md-2"> <a href="#/expense/expensedetail/{{coord.BillId}}">{{coord.SubmitDate}} </a></td>
+                            <td class="col-md-3"> <a href="#/expense/expensedetail/{{coord.BillId}}">{{coord.SubmitBy}}</a> </td>
+                            <td class="col-md-2"> <a href="#/expense/expensedetail/{{coord.BillId}}"> {{coord.eventdate}} </a></td>
+                            <td class="col-md-2" style="text-align: right"><a href="#/expense/expensedetail/{{coord.BillId}}">{{coord.Amount | currency:'$'}} </a></td>
+                            <td class="col-md-2" ng-class="{ 'color-green': coord.PaymentStatus==='Approved' , 'color-red': coord.PaymentStatus==='Pending' , 'color-orange': coord.PaymentStatus==='Need Info' }">
+                                <a href="#/expense/expensedetail/{{coord.BillId}}"> <b>{{coord.PaymentStatus}} </b></a>
                             </td>
                         </tr>
                     </tbody>
