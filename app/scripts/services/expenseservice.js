@@ -79,7 +79,21 @@ angular.module('ohanaApp')
             return Chapterlist;
         }
 
+        /******************************************************
+         *  New Expense / Expense Detail - Other Expense Line  *
+         *******************************************************/
+        this.LineDetails = [{
+            'Description': '',
+            'Amount': 0
+        }];
 
+        this.addNew = function(LineDetails) {
+            this.LineDetails.push({
+                'Description': "",
+                'Amount': ""
+            });
+            console.log("Other expense - New Line Added", this.LineDetails);
+        };
 
         /******************************************************
          *        View Expense                                 *

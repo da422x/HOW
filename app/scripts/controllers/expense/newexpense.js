@@ -33,18 +33,11 @@ angular.module('ohanaApp')
             });
 
         //------------Addition Line Items--------------//
-        $scope.LineDetails = [{
-            'Description': '',
-            'Amount': 0
-        }];
+        $scope.LineDetails = [];
+        $scope.LineDetails = expenseservice.LineDetails;
 
-
-        $scope.addNew = function(LineDetails) {
-            $scope.LineDetails.push({
-                'Description': "",
-                'Amount': ""
-            });
-            console.log($scope.LineDetails);
+        $scope.addNew = function() {
+            angular.extend($scope.LineDetails, expenseservice.addNew($scope.LineDetails));
         };
 
         $scope.remove = function() {

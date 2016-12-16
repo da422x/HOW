@@ -333,7 +333,7 @@ angular.module('ohanaApp')
 
             // var totalamt = totalamt + lineamount;
             console.log("Update", expenseupdate, totalamt);
-            alert(expenseupdate);
+            // alert(expenseupdate);
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
