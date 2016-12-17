@@ -16,15 +16,6 @@
                             </span>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
-                        <div class="col-md-12 ">
-                            <input name="Description" ng-model="exp.Description" type="text" class="form-control" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required>
-                            <div ng-if="newExpenseform.Description.$touched && newExpenseform.Description.$invalid">
-                                Enter description for your expense
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group row-fluid">
                         <label for="totalcost" class="col-xs-12 col-form-label">Total Expense Amount</label>
                         <div class="col-xs-16">
@@ -135,28 +126,36 @@
                 <div class="form-group   panel panel-default  " title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">
                     <div class="panel-heading"><b>Load supporting documents (images only)</b></div>
                     <div class="panel-body">
-                        <input type="file" id="files" name="files" class="custom-file-input" multiple accept="image/*">
+                        <input type="file" id="files" name="files" class="custom-file-input" multiple accept="image/*" ng-model="noblankfile" onchange="angular.element(this).scope().uploadImageFile(this.files)">
                         <br />
                         <label for="" class="col-form-label">Multiple image files can be loaded in single load/click. 'Click' on the loaded image will remove the image from the list. </label>
                         <div id="selectedFiles"></div>
-                        <input type="submit" hidden>
+                        <input type="submit " hidden>
                     </div>
                 </div>
-                <div class="form-group  form-inline row">
-                    <button class="btn btn-primary ur_format_button" ng-click="createnewexpense()" type="submit" ng-disabled="newExpenseform.$invalid">Add New Expense</button>
-                    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_small" ng-click="">Cancel</a>
+                <div class="form-group row">
+                    <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
+                    <div class="col-md-12 ">
+                        <input name="Description" ng-model="exp.Description" type="text" class="form-control" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required>
+                        <div ng-if="newExpenseform.Description.$touched && newExpenseform.Description.$invalid">
+                            Enter description for your expense
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="panel-body row ">
+                    <button class="btn btn-primary ur_format_button " ng-click="createnewexpense() " type="submit " data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>
+                    <a ng-href="#/expense/viewexpense " class="btn btn-primary format_button_small " ng-click=" ">Cancel</a>
+                </div>
     </form>
     <script>
     $(document).ready(function() {
 
-        $("#files").on("change", handleFileSelect);
+        $("#files ").on("change ", handleFileSelect);
 
-        selDiv = $("#selectedFiles");
-        $("#myForm").on("submit", handleForm);
+        selDiv = $("#selectedFiles ");
+        $("#myForm ").on("submit ", handleForm);
 
-        $("body").on("click", ".selFile", removeFile);
+        $("body ").on("click ", ".selFile ", removeFile);
     });
     </script>
     </div>
