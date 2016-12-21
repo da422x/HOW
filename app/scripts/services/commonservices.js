@@ -8,7 +8,7 @@
  * Service in the mainAppApp.
  */
 angular.module('ohanaApp')
-    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, localStorageService) {
+    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray) {
 
         /******************************************************
          *           User Management - start                  *

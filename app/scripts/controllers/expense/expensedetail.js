@@ -8,12 +8,13 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ExpenseDetailsCtrl', function($scope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document, localStorageService) {
+    .controller('ExpenseDetailsCtrl', function($scope, $rootScope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
 
         $scope.expense = {};
         $scope.expense = expenseservice.expense;
-        $scope.userRole = localStorageService.get('sessionUserRole');
-        $scope.userName = localStorageService.get('sessionUserData');
+
+        $scope.userRole = $rootScope.userRole
+        $scope.userName = $rootScope.userData;
         $scope.useremail = commonServices.getCurrentUserEmail();
 
         //----Modal -- Payment Status Log  ---------//

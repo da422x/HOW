@@ -9,13 +9,13 @@
  * 
  */
 angular.module('ohanaApp')
-    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, localStorageService, $uibModal) {
+    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal) {
         'use strict';
 
         $scope.update = function() {
-            var userUID = localStorageService.get('sessionUserUID');
+            var userUID = $rootScope.userId;
             var userData = commonServices.getData('/userData/' + userUID);
-            var userRole = localStorageService.get('sessionUserRole');
+            var userRole = $rootScope.userRole;
             var userRquests = commonServices.getData('/roleChangeRequests/');
 
             $q.all([userData, userRquests]).then(function(data) {
