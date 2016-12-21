@@ -24,15 +24,22 @@ angular.module('ohanaApp')
         $scope.userRole = $rootScope.userRole;
         var userRquests = commonServices.getData('/roleChangeRequests/');
 
-        $q
-            .all([userData, userRquests]).then(function(data) {
-                $scope.profileData = data[0];
-                $scope.profileData.role = $scope.userRole;
-                $scope.userUID = userUID;
+        $q.all([userData, userRquests]).then(function(data) {
+            $scope.profileData = data[0];
+            $scope.profileData.role = $scope.userRole;
+            $scope.userUID = userUID;
 
-            });
+        });
 
-        //------------Addition Line Items--------------//
+        $scope.fileadded = false;
+        $scope.uploadImageFile = function() {
+                var input = document.getElementById('files');
+                if (input.files.length > 0) {
+                    $scope.fileadded = true;
+                } else { $scope.fileadded = false; }
+                console.log("File status check - ", input.files.length, $scope.fileadded)
+            }
+            //------------Addition Line Items--------------//
         $scope.LineDetails = [];
         $scope.LineDetails = expenseservice.LineDetails;
 
@@ -104,7 +111,9 @@ angular.module('ohanaApp')
         //------------UI Bootstrap Date -----END--------------//
 
         $scope.createnewexpense = function() {
+            // console.log('file ', $scope.uploader, $scope.uploader.queue[0].file.name);
 
+            // alert("Hell");
             var Line = [];
             var ImageFile = [];
             var BillId = [];
@@ -137,7 +146,7 @@ angular.module('ohanaApp')
             var input = document.getElementById('files');
             $scope.exp.Chapter = $scope.profileData.Chapter;
             $scope.exp.SubmitBy = $scope.profileData.name.first + ' ' + $scope.profileData.name.last;
-            $scope.exp.PaymentStatus = "Pending";
+
             var currentdate = new Date();
             $scope.profileData.Chapter.charAt(1);
 
@@ -148,7 +157,13 @@ angular.module('ohanaApp')
             $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
             $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
 
-            $scope.exp.PaymentLog[0].PayStatus = "Pending";
+            if ($scope.userRole == 'Chapter Lead') {
+                $scope.exp.PaymentLog[0].PayStatus = "Submitted";
+                $scope.exp.PaymentStatus = "Submitted";
+            } else {
+                $scope.exp.PaymentLog[0].PayStatus = "Pending";
+                $scope.exp.PaymentStatus = "Pending";
+            }
             $scope.exp.PaymentLog[0].PayStatusBy = $scope.exp.SubmitBy;
             $scope.exp.PaymentLog[0].PayRole = $scope.userRole;
             if (currentdate.getHours() > 12) {
@@ -158,6 +173,7 @@ angular.module('ohanaApp')
                 $scope.exp.PaymentLog[0].PayStatusDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
 
             }
+            $scope.exp.PaymentLog[0].PayStatusDescription = 'New Expense created';
 
             console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy);
 
@@ -182,6 +198,22 @@ angular.module('ohanaApp')
 
 
             }
+
+
+            // if ($scope.uploader.queue.length > 0) {
+
+            //     for (var x = 0; x < $scope.uploader.queue.length; x++) {
+
+            //         imagefilename = 'images/' + $scope.exp.BillId + "_" + $scope.uploader.queue[x].file.name;
+            //         expenseservice.addNewImage({
+            //             ID: (x + 1),
+            //             ImageUrlLocation: "",
+            //             FileName: imagefilename
+            //         })
+
+            //     }
+            // }
+
 
 
             var datalocation = 'expense/';
@@ -236,6 +268,7 @@ function LoadImageData(UniqueBillId, datalocation) {
                 var storage = firebase.storage();
 
                 var file = document.getElementById("files").files[i];
+                console.log("load file - ", file);
 
                 var storageRef = firebase.storage().ref();
                 var path = storageRef.fullPath

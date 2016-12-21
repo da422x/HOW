@@ -24,7 +24,9 @@ angular.module('ohanaApp')
             PaymentLog: [{
                 PayStatus: "",
                 PayStatusBy: "",
-                PayStatusDate: ""
+                PayStatusDate: "",
+                PayRole: "",
+                PayStatusDescription: ""
             }],
             Amount: 0,
             ImageURL: [],
@@ -95,9 +97,32 @@ angular.module('ohanaApp')
             console.log("Other expense - New Line Added", this.LineDetails);
         };
 
-        /******************************************************
-         *        View Expense                                 *
-         *******************************************************/
+
+        this.deleteExpense = function(billid) {
+                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
+                query.on('child_added', function(snap) {
+                    var obj = snap.val();
+                    console.log("key ", snap.key);
+                    firebase.database().ref('expense/' + snap.key).remove()
+                        .then(function(data) {
+                            console.log('success : - ', billid, ' data Deleted');
+                            swal('Expense Deleted Successfully!', '', 'success');
+                        })
+                        .catch(function(error) {
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            console.log('ERROR: ' + error.code + ': ' + error.message);
+                            console.log('Expense - ', billid, ' Removal Failed');
+                        });
+
+
+
+                });
+
+            }
+            /******************************************************
+             *        View Expense                                 *
+             *******************************************************/
 
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
