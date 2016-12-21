@@ -9,7 +9,7 @@
  * Controller of management console - directory
  */
 angular.module('ohanaApp')
-    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil, localStorageService) {
+    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil) {
         'use strict';
 
         $scope.$on('modalClosing', function() {
@@ -217,7 +217,7 @@ angular.module('ohanaApp')
                                 commonServices.updateData(path, packet);
                             },
                             source: function() {
-                                var currentUserRole = localStorageService.get('sessionUserRole');
+                                var currentUserRole = $rootScope.userRole;
                                 if (currentUserRole === 'admin') {
                                     return $rootScope.siteData.roles;
                                 } else {
@@ -331,8 +331,8 @@ angular.module('ohanaApp')
         $scope.update = function() {
             var newDataSet = commonServices.getData('/userData/');
             var newRoleData = commonServices.getData('/userRoles/');
-            var currentUserRole = localStorageService.get('sessionUserRole');
-            var currentUserData = localStorageService.get('sessionUserData');
+            var currentUserRole = $rootScope.userRole;
+            var currentUserData = $rootScope.userData;
             $q.all([newDataSet, newRoleData]).then(function(userData) {
                 var users = [],
                     roles = [],

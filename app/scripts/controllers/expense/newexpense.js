@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewExpenseCtrl', function($scope, expenseservice, commonServices, $location, localStorageService, $q) {
+    .controller('NewExpenseCtrl', function($scope, $rootScope, expenseservice, commonServices, $location, $q) {
 
         var user = this;
 
@@ -19,9 +19,9 @@ angular.module('ohanaApp')
         $scope.exp.email = commonServices.getCurrentUserEmail();
 
 
-        var userUID = localStorageService.get('sessionUserUID');
+        var userUID = $rootScope.userId;
         var userData = commonServices.getData('/userData/' + userUID);
-        $scope.userRole = localStorageService.get('sessionUserRole');
+        $scope.userRole = $rootScope.userRole;
         var userRquests = commonServices.getData('/roleChangeRequests/');
 
         $q
