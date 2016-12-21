@@ -14,6 +14,7 @@ angular.module('ohanaApp')
         $scope.expense = expenseservice.expense;
         $scope.userRole = localStorageService.get('sessionUserRole');
         $scope.userName = localStorageService.get('sessionUserData');
+        $scope.useremail = commonServices.getCurrentUserEmail();
 
         //----Modal -- Payment Status Log  ---------//
         var $ctrl = this;
@@ -22,7 +23,7 @@ angular.module('ohanaApp')
             $scope.$modalInstance = $uibModal.open({
                 scope: $scope,
                 templateUrl: "myModalContent.html",
-                size: '',
+                size: 'lg',
             })
         };
 
@@ -111,7 +112,14 @@ angular.module('ohanaApp')
                     var img = document.createElement('img');
                     var storage = firebase.storage();
                     var storageRef = firebase.storage().ref();
+                    $scope.paystat = item.PaymentStatus;
+                    $scope.expenseemail = item.email;
+                    if (item.PaymentStatus == 'Overage') {
+                        swal('Overage Expense - Rejected!', '', 'error');
+                        $scope.OverageDisable = true;
+                    }
 
+                    // alert($scope.useremail);
                     var storageRefPic = '';
                     $scope.vimageurl = item.ImageURL;
                     var vTotalLineCost = 0;
@@ -146,7 +154,8 @@ angular.module('ohanaApp')
                                 'PayStatus': item.PaymentLog[x].PayStatus,
                                 'PayStatusBy': item.PaymentLog[x].PayStatusBy,
                                 'PayStatusDate': item.PaymentLog[x].PayStatusDate,
-                                'PayRole': item.PaymentLog[x].PayRole
+                                'PayRole': item.PaymentLog[x].PayRole,
+                                'PayStatusDescription': item.PaymentLog[x].PayStatusDescription
                             });
 
                         }
@@ -279,17 +288,62 @@ angular.module('ohanaApp')
 
         }
 
+        //-----Delete Expenses Created by the User -------------//
+        $scope.deleteexp = function(billid) {
+
+            expenseservice.deleteExpense(billid);
+
+        }
 
         $scope.updateexpense = function(billid) {
 
 
             var self = this;
-            var totalamt = ((self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate) + (self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate));
+            console.log("Data ", dexedit, $scope.dexedit, self.dexedit);
+            var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
+            var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+            var currentdate = new Date();
+            var StatusChangedDate = "";
+            if (currentdate.getHours() > 12) {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
+
+            } else {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+
+            };
+
+
+            switch ($scope.paystat) {
+                case 'Resubmit':
+                    $scope.paystat = 'Pending';
+                    $scope.PayStatusLogList.push({
+                        "PayStatus": 'Pending',
+                        "PayStatusBy": StatusChangedBy,
+                        "PayStatusDate": StatusChangedDate,
+                        "PayRole": $scope.userRole,
+                        "PayStatusDescription": 'Resending expense with fixes'
+
+                    });
+                    break;
+                case 'Returned':
+                    $scope.paystat = 'Submitted';
+                    $scope.PayStatusLogList.push({
+                        "PayStatus": 'Submitted',
+                        "PayStatusBy": StatusChangedBy,
+                        "PayStatusDate": StatusChangedDate,
+                        "PayRole": $scope.userRole,
+                        "PayStatusDescription": 'Resending expense with fixes'
+
+                    });
+                    break;
+            }
 
 
             var expenseupdate = {
                 "Description": self.dexedit.Description,
                 "Amount": totalamt,
+                "PaymentStatus": $scope.paystat,
+                "PaymentLog": $scope.PayStatusLogList,
                 "Line": [{
                         "ID": "0",
                         "Description": self.dexedit.Line[0].Description,
@@ -306,6 +360,8 @@ angular.module('ohanaApp')
 
                 ]
             };
+
+
 
             var lineamount = 0;
             if ($scope.LineDetails.length) {
@@ -334,7 +390,7 @@ angular.module('ohanaApp')
             // var totalamt = totalamt + lineamount;
             console.log("Update", expenseupdate, totalamt);
             // alert(expenseupdate);
-            var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
+            var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
                 console.log("key ", snap.key);
@@ -381,7 +437,93 @@ angular.module('ohanaApp')
 
         }
 
-        $scope.UpdatePaymentStatus = function(billid, paymentstat) {
+        $scope.resubmitexpense = function(billid, statreason) {
+
+
+            var self = this;
+            var totalamt = ((self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate) + (self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate));
+            var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+            var currentdate = new Date();
+            var StatusChangedDate = "";
+            if (currentdate.getHours() > 12) {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
+
+            } else {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+
+            };
+
+            $scope.PayStatusLogList.push({
+                "PayStatus": 'Submitted',
+                "PayStatusBy": StatusChangedBy,
+                "PayStatusDate": StatusChangedDate,
+                "PayRole": $scope.userRole,
+                "PayStatusDescription": statreason
+
+            });
+
+            var expenseupdate = {
+                "Description": self.dexedit.Description,
+                "Amount": totalamt,
+                "Line": [{
+                        "ID": "0",
+                        "Description": self.dexedit.Line[0].Description,
+                        "Quantity": self.dexedit.Line[0].Quantity, // this.exp.miles,
+                        "Rate": self.dexedit.Line[0].Rate,
+                        "Amount": self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate //(this.exp.miles * .25)
+                    }, {
+                        "ID": "1",
+                        "Description": self.dexedit.Line[1].Description,
+                        "Quantity": self.dexedit.Line[1].Quantity, //this.exp.trailermiles,
+                        "Rate": self.dexedit.Line[1].Rate,
+                        "Amount": self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate //(this.exp.trailermiles * .4)
+                    }
+
+                ],
+                "PaymentStatus": 'Submitted',
+                "PaymentLog": $scope.PayStatusLogList
+            };
+
+            var lineamount = 0;
+            if ($scope.LineDetails.length) {
+                var i = 2;
+                for (var x = 0; x < $scope.LineDetails.length; x++) {
+
+                    lineamount = parseFloat(lineamount) + parseFloat($scope.LineDetails[x].Amount);
+                    expenseupdate.Line.push({
+                        "ID": i,
+                        "Description": $scope.LineDetails[x].Description,
+                        "Quantity": 1,
+                        "Rate": 1,
+                        "Amount": parseFloat($scope.LineDetails[x].Amount)
+                    });
+                    //} 
+                    i++;
+                    console.log("Re-Submitted", x, expenseupdate.Line, $scope.LineDetails[x].Amount, lineamount);
+                }
+                expenseupdate.Amount = totalamt + lineamount;
+            }
+
+            // var totalamt = totalamt + lineamount;
+            console.log("ReSubmit", expenseupdate, totalamt);
+            // alert(expenseupdate);
+            var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
+            query.on('child_added', function(snap) {
+                var obj = snap.val();
+                console.log("key ", snap.key);
+                firebase.database().ref('expense/' + snap.key).update(expenseupdate);
+                // alert("Expense Successfully Updated ");
+                swal('Expense Re-Submitted Successfully!', '', 'success');
+
+
+            });
+
+            $location.path("expense/viewexpense");
+
+        }
+
+        $scope.UpdatePaymentStatus = function(billid, paymentstat, statreason) {
+
 
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             // $scope.userinfo.viewuserdata[0].name.first + ' ' + $scope.userinfo.viewuserdata[0].name.last;
@@ -397,13 +539,12 @@ angular.module('ohanaApp')
 
             }
 
-
-
             $scope.PayStatusLogList.push({
                 "PayStatus": paymentstat,
                 "PayStatusBy": StatusChangedBy,
+                "PayStatusDate": StatusChangedDate,
                 "PayRole": $scope.userRole,
-                "PayStatusDate": StatusChangedDate
+                "PayStatusDescription": statreason
 
             });
             var ePaymentLog = {
@@ -411,14 +552,15 @@ angular.module('ohanaApp')
                 "PaymentLog": $scope.PayStatusLogList
             };
 
-            console.log(StatusChangedDate, $scope.PayStatusLogList, ePaymentLog);
-            var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
+            console.log(StatusChangedDate, $scope.PayStatusLogList, ePaymentLog, $routeParams.BillId, $scope.dexedit.BillId);
+
+            var query = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
                 console.log("key ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(ePaymentLog);
 
-                swal('Expense Updated Successfully!', '', 'success');
+                swal('Payment Status Updated Successfully!', '', 'success');
 
             });
 

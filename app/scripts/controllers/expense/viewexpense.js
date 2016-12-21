@@ -46,19 +46,93 @@ angular.module('ohanaApp')
 
         });
         $scope.Head = "";
+
         switch ($scope.userRole) {
             case 'Volunteer':
             case 'Participant':
-                $scope.PayStatus = "Pending";
                 $scope.HeadTitle = ' created by ' + $scope.userName;
+                $scope.paystatuslist = [{
+                    name: 'All',
+                    value: ''
+                }, {
+                    name: 'Pending',
+                    value: 'Pending'
+                }, {
+                    name: 'Submitted',
+                    value: 'Submitted'
+                }, {
+                    name: 'Resubmit',
+                    value: 'Resubmit'
+                }, {
+                    name: 'Approved',
+                    value: 'Approved'
+                }, {
+                    name: 'Paid',
+                    value: 'Paid'
+                }, {
+                    name: 'Overage',
+                    value: 'Overage'
+                }];
+                $scope.PayStatus = $scope.paystatuslist[1];
                 break;
-            case 'Leadership Team Member':
+
             case 'Chapter Lead':
-                $scope.PayStatus = "Pending";
                 $scope.HeadTitle = ' for ' + $scope.userChapter;
+                $scope.paystatuslist = [{
+                    name: 'All',
+                    value: ''
+                }, {
+                    name: 'Pending',
+                    value: 'Pending'
+                }, {
+                    name: 'Submitted',
+                    value: 'Submitted'
+                }, {
+                    name: 'Resubmit',
+                    value: 'Resubmit'
+                }, {
+                    name: 'Returned',
+                    value: 'Returned'
+                }, {
+                    name: 'Approved',
+                    value: 'Approved'
+                }, {
+                    name: 'Paid',
+                    value: 'Paid'
+                }, {
+                    name: 'Overage',
+                    value: 'Overage'
+                }];
+                $scope.PayStatus = $scope.paystatuslist[1];
                 break;
+
             default:
-                $scope.PayStatus = "Approved";
+                $scope.paystatuslist = [{
+                    name: 'All',
+                    value: ''
+                }, {
+                    name: 'Pending',
+                    value: 'Pending'
+                }, {
+                    name: 'Submitted',
+                    value: 'Submitted'
+                }, {
+                    name: 'Resubmit',
+                    value: 'Resubmit'
+                }, {
+                    name: 'Returned',
+                    value: 'Returned'
+                }, {
+                    name: 'Approved',
+                    value: 'Approved'
+                }, {
+                    name: 'Paid',
+                    value: 'Paid'
+                }, {
+                    name: 'Overage',
+                    value: 'Overage'
+                }];
+                $scope.PayStatus = $scope.paystatuslist[2];
         }
         //------------UI Bootstrap Date -----START--------------//
 
@@ -120,14 +194,15 @@ angular.module('ohanaApp')
             switch ($scope.userRole) {
                 case 'Volunteer':
                 case 'Participant':
-                    $scope.PayStatus = "Pending";
+                    $scope.PayStatus = $scope.paystatuslist[1];
 
                     break;
-                case 'Leadership Team Member':
-                    $scope.PayStatus = "Pending";
+                case 'Chapter Lead':
+
+                    $scope.PayStatus = $scope.paystatuslist[1];
                     break;
                 default:
-                    $scope.PayStatus = "Approved";
+                    $scope.PayStatus = $scope.paystatuslist[2];
             }
 
         }
