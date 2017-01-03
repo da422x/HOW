@@ -15,17 +15,6 @@ angular.module('ohanaApp')
         $scope.logObj = {};
         $scope.checkLogin = function(user) {
 
-            // $scope.loginRequest.$promise.then( function(data) {
-            //   $state.go('manage');
-            //   // console.log(data);
-            //   // console.log("OH YEAH.");
-            // }, function(data) {
-            //   $scope.loginForm.$invalid = true;
-            //   // console.log(log);
-            // }
-            // );
-            // log.login = {};
-
             var results = commonServices.signin(user);
             $q.all([results]).then(function(data) {
                 if (data[0]) {
@@ -48,4 +37,14 @@ angular.module('ohanaApp')
                 $scope.update();
             }
         }; // end $scope.addUser
+
+        $scope.passwordReset = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/passwordReset.html',
+                controller: 'passwordResetFormCtrl'
+            });
+            if (!modalInstance) {
+                $scope.update();
+            }
+        }; // end $scope.passwordReset
     });
