@@ -3,9 +3,9 @@
 
 /**
  * @ngdoc function
- * @name ohanaApp.controller:NewuserdirectoryformCtrl
+ * @name ohanaApp.controller:passwordResetFormCtrl
  * @description
- * # NewuserdirectoryformCtrl
+ * # passwordResetFormCtrl
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
