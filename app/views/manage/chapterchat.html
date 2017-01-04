@@ -1,0 +1,35 @@
+<div class="container" id="chat_window">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="accordion">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                </div>
+                <div class="panel">
+                    <div class="panel-body">
+                        <div ng-repeat="n in chatLog">
+                            <div class="header">
+                                <strong class="primary-font">{{n.name}}</strong>
+                                <small class="pull-right text-muted">
+                                    <span class="glyphicon glyphicon-time"></span>{{n.time}}</small>
+                            </div>
+                            <p>
+                                {{n.message}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." ng-model="newMessage" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="sendMessage()">Send</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>

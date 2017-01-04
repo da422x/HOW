@@ -89,6 +89,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.volunteerNav = [{
@@ -103,6 +106,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.ltmNav = [{
@@ -126,6 +132,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.nationalNav = [{
@@ -155,6 +164,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.adminNav = [{
@@ -184,6 +196,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.showDonate = function() {
