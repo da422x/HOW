@@ -25,13 +25,13 @@ angular.module('ohanaApp')
             var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
 
             $q.all([getLog]).then(function(data) {
-            	$scope.chatLog = _.sortBy(data[0], ['time']);
-            	firebase.database().ref('/chat/chapters/' + usersChapter)
-                .on('value', function(snapshot) {
-                    $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
-                });
+                $scope.chatLog = _.sortBy(data[0], ['time']);
+                firebase.database().ref('/chat/chapters/' + usersChapter)
+                    .on('value', function(snapshot) {
+                        $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
+                    });
             });
-            
+
         };
 
         $scope.sendMessage = function() {
