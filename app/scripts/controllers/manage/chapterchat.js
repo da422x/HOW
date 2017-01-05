@@ -18,14 +18,20 @@ angular.module('ohanaApp')
             $('.panel-body').animate({
                 scrollTop: $('.panel-body').get(0).scrollHeight
             });
-        });
+        }, true);
 
         $scope.init = function() {
             var usersChapter = $rootScope.userChapter;
-            var getLog = firebase.database().ref('/chat/chapters/' + usersChapter)
+            var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
+
+            $q.all([getLog]).then(function(data) {
+            	$scope.chatLog = _.sortBy(data[0], ['time']);
+            	firebase.database().ref('/chat/chapters/' + usersChapter)
                 .on('value', function(snapshot) {
                     $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
                 });
+            });
+            
         };
 
         $scope.sendMessage = function() {
