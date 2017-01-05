@@ -9,6 +9,7 @@ test:
 dependencies:
   post:
     - bower install
+    - npm install -g grunt
 
 general:
   branches:
