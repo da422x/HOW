@@ -78,16 +78,14 @@ angular.module('ohanaApp')
 
         // Sends code needed for password reset to users email.
         this.sendPasswordReset = function(user) {
-            return firebase.auth().sendPasswordResetEmail(user.email)
+            firebase.auth().sendPasswordResetEmail(user.email)
                 .then(function(data) {
                     console.log('success : password reset sent');
-                    return true;
                 })
                 .catch(function(error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
                     console.log('ERROR: ' + error.code + ': ' + error.message);
-                    return false;
                 });
         };
 

@@ -15,18 +15,15 @@ angular.module('ohanaApp')
         $scope.chatLog = [];
 
         $scope.$watch('chatLog', function() {
-            $scope.update();
+        	 $('.panel-body').animate({scrollTop: $('.panel-body').get(0).scrollHeight});
         });
 
-        $scope.update = function() {
+        $scope.init = function() {
             var usersChapter = $rootScope.userChapter;
-            var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
-
-            $q.all([getLog]).then(function(data) {
-                console.log(data[0]);
-                $scope.chatLog = _.sortBy(data[0], ['time']);
-                console.log($scope.chatLog);
-            });
+            var getLog = firebase.database().ref('/chat/chapters/' + usersChapter)
+	            .on('value', function(snapshot) {
+	                $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
+	            });
         };
 
         $scope.sendMessage = function() {
