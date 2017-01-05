@@ -12,7 +12,7 @@
                             <div class="header">
                                 <strong class="primary-font">{{n.name}}</strong>
                                 <small class="pull-right text-muted">
-                                    <span class="glyphicon glyphicon-time"></span>{{n.time}}</small>
+                                    <span class="glyphicon glyphicon-time"></span> {{n.time | date : "short"}}</small>
                             </div>
                             <p>
                                 {{n.message}}
