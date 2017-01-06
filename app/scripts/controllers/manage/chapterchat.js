@@ -28,7 +28,12 @@ angular.module('ohanaApp')
                 $scope.chatLog = _.sortBy(data[0], ['time']);
                 firebase.database().ref('/chat/chapters/' + usersChapter)
                     .on('value', function(snapshot) {
-                        $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
+                        $scope.chatLog = _.sortBy(snapshot.val(), ['time']); 
+                        var kyz = Object.keys(snapshot.val());
+                        var lastObj = snapshot.val()[kyz[kyz.length - 1]];
+                        if (lastObj.userId !== $rootScope.userId) {
+                            $scope.$apply();
+                        }
                     });
             });
 
