@@ -366,6 +366,13 @@ angular.module('ohanaApp')
                                     users.push(value);
                                 }
                                 break;
+                            case 'National Staff':
+                                if (keys[i] === key) {
+                                    value.key = key;
+                                    value.role = roles[i];
+                                    users.push(value);
+                                }
+                                break;
                             case 'Chapter Lead':
                                 if (keys[i] === key && (currentUserData.Chapter === value.Chapter)) {
                                     value.key = key;

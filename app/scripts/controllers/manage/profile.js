@@ -144,6 +144,7 @@ angular.module('ohanaApp')
                 var packet = params.value;
                 var path = '/userData/' + $scope.userUID + '/phone/';
                 commonServices.updateData(path, packet);
+                $rootScope.userData.phone = params.value;
             }
         });
 
@@ -157,6 +158,7 @@ angular.module('ohanaApp')
                 var packet = params.value;
                 var path = '/userData/' + $scope.userUID + '/Region/';
                 commonServices.updateData(path, packet);
+                $rootScope.userData.Region = params.value;
             },
             source: $rootScope.siteData.regions
         });
@@ -171,6 +173,8 @@ angular.module('ohanaApp')
                 var packet = params.value;
                 var path = '/userData/' + $scope.userUID + '/Chapter/';
                 commonServices.updateData(path, packet);
+                $rootScope.userChapter = params.value;
+                $rootScope.userData.Chapter = params.value;
             },
             source: function() {
                 var regionText = $(this).parent().parent().find('#user_region').text();

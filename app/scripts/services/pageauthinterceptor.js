@@ -13,7 +13,7 @@ angular.module('ohanaApp')
         // Performs an action based on the page request.
         var requestInterceptor = {
             request: function(config) {
-                if ($rootScope.userId !== undefined) {
+                if ($rootScope.userId !== undefined || $rootScope.userId !== '') {
                     switch (config.url) {
                         case 'views/manage/directory.html':
                             if ($rootScope.userRole === 'National Staff' || $rootScope.userRole === 'Chapter Lead' || $rootScope.userRole === 'admin') {
