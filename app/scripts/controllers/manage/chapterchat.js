@@ -47,6 +47,7 @@ angular.module('ohanaApp')
             messageData.time = Date.now();
             messageData.message = $scope.newMessage;
             commonServices.pushData('/chat/chapters/' + usersChapter, messageData);
+            $scope.newMessage = '';
         };
 
     });

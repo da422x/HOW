@@ -13,28 +13,23 @@ angular.module('ohanaApp')
         // Performs an action based on the page request.
         var requestInterceptor = {
             request: function(config) {
-                switch (config.url) {
-                    case 'views/sign_in.html':
-                        console.log('Sign In');
-                        break;
+                if ($rootScope.userId !== undefined) {
+                    switch (config.url) {
+                        case 'views/manage/directory.html':
+                            if ($rootScope.userRole === 'National Staff' || $rootScope.userRole === 'Chapter Lead' || $rootScope.userRole === 'admin') {
+                                console.log('Authorized')
+                            } else {
+                                window.location.replace('#/home');
+                                console.log('Not Authorized!');
+                            }
+                            break;
 
-                    case 'views/user_registration.html':
-                        console.log('Registration');
-                        break;
-
-                        // Cant be accessed without being and admin.
-                    case 'views/user_permissions.html':
-                        if ($rootScope.userRole !== 'admin') {
-                            window.location.replace('/');
-                            console.log('Not Authorized!');
-                        } else {
-                            console.log('User Management');
-                        }
-                        break;
-
-                    default:
-                        console.log('Main');
-                        break;
+                        default:
+                            break;
+                    }
+                } else {
+                    // If user refreshes a page, they will be redirected to the main page.
+                    window.location.replace('#/home');
                 }
                 return config; //deferred.promise;
             }

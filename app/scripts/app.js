@@ -27,7 +27,8 @@ angular.module('ohanaApp', [
         // 'uiGmapgoogle-maps',
         'firebase'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $routeProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+        $httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
                 templateUrl: 'views/home.html',
