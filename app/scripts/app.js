@@ -152,6 +152,11 @@ angular.module('ohanaApp', [
                 controller: 'ViewExpenseController',
                 controllerAs: 'expense/viewexpense'
             })
+            .when('/manage/chapterchat', {
+                templateUrl: 'views/manage/chapterchat.html',
+                controller: 'ManageChapterchatCtrl',
+                controllerAs: 'manage/chapterchat'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
