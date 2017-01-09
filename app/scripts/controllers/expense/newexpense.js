@@ -36,7 +36,9 @@ angular.module('ohanaApp')
                 var input = document.getElementById('files');
                 if (input.files.length > 0) {
                     $scope.fileadded = true;
-                } else { $scope.fileadded = false; }
+                } else {
+                    $scope.fileadded = false;
+                }
                 console.log("File status check - ", input.files.length, $scope.fileadded)
             }
             //------------Addition Line Items--------------//

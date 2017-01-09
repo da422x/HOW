@@ -53,15 +53,13 @@
                     </div>
                 </div>
                 <div class="form-group   row">
-                    <div class="panel-body">
-                        <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
-                        <a href="#/expense/newexpense" ng-show="userRole!='National Staff'" class="btn btn-primary format_button_md" title="Create New Expense">New Expense</a>
-                        <button class="btn btn-primary btn-danger" ng-click="filterPastDue
+                    <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
+                    <a href="#/expense/newexpense" ng-show="userRole!='National Staff'" class="btn btn-primary format_button_md" title="Create New Expense">New Expense</a>
+                    <button class="btn btn-primary btn-danger" ng-click="filterPastDue
 ()" title="Filters expenses that were submitted 60 days prior to date and still Overdue">Overdue Expenses</button>
-                        <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
-                            <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
-                        </a>
-                    </div>
+                    <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
+                        <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
+                    </a>
                 </div>
             </div>
         </div>
