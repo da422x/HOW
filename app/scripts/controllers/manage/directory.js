@@ -198,14 +198,14 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "null",
                             url: function(params) {
-                                    var packet = params.value
-                                    var path = '/userData/' + $scope.currId + '/email/';
-                                    commonServices.updateData(path, packet);
-                                    if ($scope.currId === userService.getId()) {
-                                        var tempData = userService.getUserData();
-                                        tempData.email = packet;
-                                        userService.setUserData(tempData);
-                                    }
+                                var packet = params.value
+                                var path = '/userData/' + $scope.currId + '/email/';
+                                commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.email = packet;
+                                    userService.setUserData(tempData);
+                                }
                             }
                         });
                         $('#membersTable .tdTelly a').editable({
@@ -262,7 +262,7 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/Region/';
                                 commonServices.updateData(path, packet);
-                                 if ($scope.currId === userService.getId()) {
+                                if ($scope.currId === userService.getId()) {
                                     var tempData = userService.getUserData();
                                     tempData.Region = packet;
                                     userService.setUserData(tempData);
@@ -280,7 +280,7 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/Chapter/';
                                 commonServices.updateData(path, packet);
-                                 if ($scope.currId === userService.getId()) {
+                                if ($scope.currId === userService.getId()) {
                                     var tempData = userService.getUserData();
                                     tempData.Chapter = packet;
                                     userService.setUserData(tempData);

@@ -104,15 +104,54 @@
             <a ng-href="#/home" ng-click="dismissMenu()">
                 <h2>HOME</h2>
             </a>
-            <a ng-repeat="nav in leftnav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-                <h2>{{nav.text}}</h2>
-            </a>
+            <div ng-switch="sessionUserRole">
+                <div ng-switch-when="admin">
+                    <a ng-href="dash" ng-click="dismissMenu()">
+                        <h2>{{rightnavloggedin[0].text}}</h2>
+                    </a>
+                    <a ng-repeat="nav in adminNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                        <h3>{{nav.text}}</h3>
+                    </a>
+                </div>
+                <div ng-switch-when="National Staff">
+                    <a ng-href="dash" ng-click="dismissMenu()">
+                        <h2>{{rightnavloggedin[0].text}}</h2>
+                    </a>
+                    <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                        <h3>{{nav.text}}</h3>
+                    </a>
+                </div>
+                <div ng-switch-when="Chapter Lead">
+                    <a ng-href="dash" ng-click="dismissMenu()">
+                        <h2>{{rightnavloggedin[0].text}}</h2>
+                    </a>
+                    <a ng-repeat="nav in ltmNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                        <h3>{{nav.text}}</h3>
+                    </a>
+                </div>
+                <div ng-switch-when="Volunteer">
+                    <a ng-href="dash" ng-click="dismissMenu()">
+                        <h2>{{rightnavloggedin[0].text}}</h2>
+                    </a>
+                    <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                        <h3>{{nav.text}}</h3>
+                    </a>
+                </div>
+                <div ng-switch-when="Participant">
+                    <a ng-href="dash" ng-click="dismissMenu()">
+                        <h2>{{rightnavloggedin[0].text}}</h2>
+                    </a>
+                    <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                        <h3>{{nav.text}}</h3>
+                    </a>
+                </div>
+            </div>
             <hr />
             <a href="http://visitor.r20.constantcontact.com/d.jsp?&#10;&#10;llr=t5yuarcab&amp;p=oi&amp;m=1102230217683&amp;sit=oimdo5qdb&amp;f=612&#10;&#10;b8958-893d-420d-99b7-0d5e512a9507" target="_blank">
                 <h2>SUBSCRIBE</h2>
             </a>
-            <a ng-click="showDonate()">
-                <h2>DONATE</h2>
+            <a href="#" ng-click="logout()">
+                <h2>Sign Out</h2>
             </a>
             <hr />
             <div class="loggedout" ng-hide="sessionState">
@@ -130,7 +169,7 @@
                             <h3>{{nav.text}}</h3>
                         </a>
                     </div>
-                    <div ng-switch-when="HOW National Team/Staff">
+                    <div ng-switch-when="National Staff">
                         <a ng-href="dash" ng-click="dismissMenu()">
                             <h2>{{rightnavloggedin[0].text}}</h2>
                         </a>
@@ -138,7 +177,7 @@
                             <h3>{{nav.text}}</h3>
                         </a>
                     </div>
-                    <div ng-switch-when="Leadership Team Member">
+                    <div ng-switch-when="Chapter Lead">
                         <a ng-href="dash" ng-click="dismissMenu()">
                             <h2>{{rightnavloggedin[0].text}}</h2>
                         </a>
