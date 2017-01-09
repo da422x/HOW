@@ -14,10 +14,9 @@ angular.module('ohanaApp')
             templateUrl: 'views/masternav.html',
             restrict: 'E',
 
-            controller: function($state, $rootScope, commonServices, $scope, $uibModal, localStorageService) {
-                $scope.sessionState = localStorageService.get('sessionState');
-                $scope.sessionUserRole = localStorageService.get('sessionUserRole');
-                console.log($scope.sessionUserRole);
+            controller: function($state, $rootScope, commonServices, $scope, $uibModal) {
+                $scope.sessionState = $rootScope.sessionState;
+                $scope.sessionUserRole = $rootScope.userRole;
                 $scope.$on('changeSessionState', function(event, arg) {
                     $scope.sessionState = arg;
                 });
@@ -55,7 +54,7 @@ angular.module('ohanaApp')
                 // logout function
                 $scope.logout = function() {
                     $scope.sessionState = false;
-                    localStorageService.set('sessionState', false);
+                    $rootScope.sessionState = false;
                     commonServices.signout();
                 };
 
@@ -90,6 +89,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.volunteerNav = [{
@@ -104,6 +106,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.ltmNav = [{
@@ -127,6 +132,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.nationalNav = [{
@@ -156,6 +164,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.adminNav = [{
@@ -185,6 +196,9 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }];
 
                 $scope.showDonate = function() {

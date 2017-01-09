@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ManageRoleChangeRequestCtrl', function($q, commonServices, $scope, $rootScope, $location, $uibModalInstance, localStorageService) {
+    .controller('ManageRoleChangeRequestCtrl', function($q, commonServices, $scope, $rootScope, $location, $uibModalInstance) {
         'use strict';
 
         $scope.requests = [];
@@ -17,8 +17,8 @@ angular.module('ohanaApp')
         $scope.update = function() {
             var allRequests = commonServices.getData('/roleChangeRequests/');
             var allUserData = commonServices.getData('/userData/');
-            var currentRole = localStorageService.get('sessionUserRole');
-            var currentUserData = localStorageService.get('sessionUserData');
+            var currentRole = $rootScope.userRole;
+            var currentUserData = $rootScope.userData;
             $q.all([allRequests, allUserData]).then(function(data) {
                 $scope.requests = [];
                 _.each(data[0], function(value, key) {

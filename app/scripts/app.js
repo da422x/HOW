@@ -152,11 +152,16 @@ angular.module('ohanaApp', [
                 controller: 'ViewExpenseController',
                 controllerAs: 'expense/viewexpense'
             })
+            .when('/manage/chapterchat', {
+                templateUrl: 'views/manage/chapterchat.html',
+                controller: 'ManageChapterchatCtrl',
+                controllerAs: 'manage/chapterchat'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
 
-    }).run(function($q, commonServices, localStorageService, $rootScope, $firebaseAuth) {
+    }).run(function($q, commonServices, $rootScope, $firebaseAuth) {
 
         var config = {
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
@@ -231,26 +236,36 @@ angular.module('ohanaApp', [
                     .then(function(data) {
                         var userData = data[0];
                         var userRole = data[1];
+
+                        // temporary for debugging displays user logged in.
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
                         console.log('Name: ' + userData.name.first);
                         console.log('Chapter: ' + userData.Chapter);
                         console.log('Role: ' + userRole);
-                        localStorageService.set('sessionUserRole', userRole);
-                        localStorageService.set('sessionUserData', userData);
-                        localStorageService.set('sessionUserName', userData.name.first + ' ' + userData.name.last);
-                        localStorageService.set('sessionUserUID', currentUserId);
-                        localStorageService.set('sessionUserChapter', userData.Chapter);
-                        localStorageService.set('sessionState', true);
+
+                        // Setting session variables.
+                        $rootScope.userRole = userRole;
+                        $rootScope.userData = userData;
+                        $rootScope.userName = userData.name.first + ' ' + userData.name.last;
+                        $rootScope.userId = currentUserId;
+                        $rootScope.userChapter = userData.Chapter;
+                        $rootScope.sessionState = true;
+
+                        // Signals role change to nav.
                         $rootScope.$broadcast('changeSessionUserRole', userRole);
                         $rootScope.$broadcast('changeSessionState', true);
                     });
+
             } else {
                 console.log('Logged Out...');
-                localStorageService.set('sessionUserRole', false);
-                localStorageService.set('sessionUserData', false);
-                localStorageService.set('sessionUserUID', false);
-                localStorageService.set('sessionState', false);
+
+                // Set session variables to empty, and false when user logs out
+                $rootScope.userRole = '';
+                $rootScope.userData = '';
+                $rootScope.userName = '';
+                $rootScope.userId = '';
+                $rootScope.userChapter = '';
             }
         });
 

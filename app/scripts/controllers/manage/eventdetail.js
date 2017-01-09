@@ -9,7 +9,7 @@
  * Controller of management console - event detail
  */
 angular.module('ohanaApp')
-    .controller('DetailsCtrl', function($http, $scope, $location, localStorageService, DAO) {
+    .controller('DetailsCtrl', function($http, $scope, $location, DAO) {
         'use strict';
 
         $scope.selectedEvent = DAO.selectedEvent;

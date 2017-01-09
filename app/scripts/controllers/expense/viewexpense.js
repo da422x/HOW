@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ViewExpenseController', function($scope, $filter, expenseservice, commonServices, localStorageService, $q) {
+    .controller('ViewExpenseController', function($scope, $rootScope, $filter, expenseservice, commonServices, $q) {
 
         var self = this;
         var originalList = [];
@@ -31,11 +31,11 @@ angular.module('ohanaApp')
 
         //---Role Based information ---------------
 
-        var userUID = localStorageService.get('sessionUserUID');
+        var userUID = $rootScope.userId;
         var userData = commonServices.getData('/userData/' + userUID);
-        $scope.userRole = localStorageService.get('sessionUserRole');
-        $scope.userName = localStorageService.get('sessionUserName');
-        $scope.userChapter = localStorageService.get('sessionUserChapter');
+        $scope.userRole = $rootScope.userRole;
+        $scope.userName = $rootScope.userName;
+        $scope.userChapter = $rootScope.userChapter;
         var userRquests = commonServices.getData('/roleChangeRequests/');
 
         $q.all([userData, userRquests]).then(function(data) {
