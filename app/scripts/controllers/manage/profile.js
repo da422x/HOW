@@ -9,21 +9,18 @@
  * 
  */
 angular.module('ohanaApp')
-    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal) {
+    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal, userService) {
         'use strict';
 
         $scope.update = function() {
-            var userUID = $rootScope.userId;
-            var userData = commonServices.getData('/userData/' + userUID);
-            var userRole = $rootScope.userRole;
             var userRquests = commonServices.getData('/roleChangeRequests/');
 
-            $q.all([userData, userRquests]).then(function(data) {
-                $scope.profileData = data[0];
-                $scope.profileData.role = userRole;
-                $scope.userUID = userUID;
+            $q.all([userRquests]).then(function(data) {
+                $scope.profileData = userService.getUserData();
+                $scope.profileData.role = userService.getRole();
+                $scope.userUID = userService.getId();;
                 $scope.requests = [];
-                _.each(data[1], function(value, key) {
+                _.each(data[0], function(value, key) {
                     if (value.uid === $scope.userUID) {
                         value.key = key;
                         $scope.requests.push(value);
@@ -104,8 +101,11 @@ angular.module('ohanaApp')
             },
             url: function(params) {
                 var packet = params.value;
+                var tempData = userService.getUserData();
                 var path = '/userData/' + $scope.userUID + '/DOB/';
                 commonServices.updateData(path, packet);
+                tempData.DOB = packet;
+                userService.setUserData(tempData);
             }
         });
 
@@ -117,8 +117,11 @@ angular.module('ohanaApp')
             showbuttons: false,
             url: function(params) {
                 var packet = params.value;
+                var tempData = userService.getUserData();
                 var path = '/userData/' + $scope.userUID + '/gender/';
                 commonServices.updateData(path, packet);
+                tempData.gender = packet;
+                userService.setUserData(tempData);
             },
             source: [{
                 value: 'M',
@@ -142,8 +145,12 @@ angular.module('ohanaApp')
             showbuttons: true,
             url: function(params) {
                 var packet = params.value;
+                var tempData = userService.getUserData();
                 var path = '/userData/' + $scope.userUID + '/phone/';
                 commonServices.updateData(path, packet);
+                $rootScope.userData.phone = params.value;
+                tempData.phone = packet;
+                userService.setUserData(tempData);
             }
         });
 
@@ -155,8 +162,11 @@ angular.module('ohanaApp')
             showbuttons: false,
             url: function(params) {
                 var packet = params.value;
+                var tempData = userService.getUserData();
                 var path = '/userData/' + $scope.userUID + '/Region/';
                 commonServices.updateData(path, packet);
+                tempData.Region = packet;
+                userService.setUserData(tempData);
             },
             source: $rootScope.siteData.regions
         });
@@ -169,8 +179,12 @@ angular.module('ohanaApp')
             showbuttons: false,
             url: function(params) {
                 var packet = params.value;
+                var tempData = userService.getUserData();
                 var path = '/userData/' + $scope.userUID + '/Chapter/';
                 commonServices.updateData(path, packet);
+                tempData.Chapter = packet;
+                userService.setUserData(tempData);
+                userService.setChapter(packet);
             },
             source: function() {
                 var regionText = $(this).parent().parent().find('#user_region').text();

@@ -7,43 +7,43 @@
         <div class="list-group">
             <div class="list-group-item">
                 <h6 class="list-group-item-text">User: </h6>
-                <h4 class="list-group-item-heading">Name - {{profileData.name.first}} {{profileData.name.last}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.name.first}} {{profileData.name.last}}</h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_dob">DOB - {{profileData.DOB | date:'MM/dd/yyyy'}}</a>
+                    <a href="#" id="user_dob">{{profileData.DOB | date:'MM/dd/yyyy'}}</a>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_gender">Gender - {{profileData.gender}}</a>
+                    <a href="#" id="user_gender">{{profileData.gender}}</a>
                 </h4>
-                <h4 class="list-group-item-heading">Role - {{profileData.role}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.role}}</h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Address: </h6>
-                <h4 class="list-group-item-heading">Line 1 - {{profileData.address.line1}}</h4>
-                <h4 class="list-group-item-heading">Line 2 - {{profileData.address.line2}}</h4>
-                <h4 class="list-group-item-heading">City/State/Zip - {{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.address.line1}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.address.line2}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Contact: </h6>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_phone">Phone - {{profileData.phone}}</a>
+                    <a href="#" id="user_phone">{{profileData.phone}}</a>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_email">Email - {{profileData.email}}</a>
+                    <a href="#" id="user_email">{{profileData.email}}</a>
                 </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Orginization Data: </h6>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_region">Region - {{profileData.Region}}</a>
+                    <a href="#" id="user_region">{{profileData.Region}}</a>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_chapter">Chapter - {{profileData.Chapter}}</a>
+                    <a href="#" id="user_chapter">{{profileData.Chapter}}</a>
                 </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Military Data: </h6>
-                <h4 class="list-group-item-heading">Branch - {{profileData.branch}}</h4>
-                <h4 class="list-group-item-heading">Years served - {{profileData.years}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.branch}}</h4>
+                <h4 class="list-group-item-heading">{{profileData.years}}</h4>
             </div>
         </div>
         <div class="panel-footer" style="height:55px">
