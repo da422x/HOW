@@ -136,13 +136,11 @@ angular.module('ohanaApp')
         });
 
         $('#user_phone').editable({
-            type: 'number',
+            type: 'text',
             name: 'phone',
             placement: 'bottom',
             emptytext: 'null',
-            min: '1000000000',
-            max: '9999999999',
-            showbuttons: true,
+            tpl: '<input type="text" id ="zipiddemo" class="mask form-control input-sm dd" style="padding-right: 24px;">',
             url: function(params) {
                 var packet = params.value;
                 var tempData = userService.getUserData();
@@ -152,6 +150,10 @@ angular.module('ohanaApp')
                 tempData.phone = packet;
                 userService.setUserData(tempData);
             }
+        });
+
+        $(document).on("focus", ".mask", function() {
+            $(this).mask("(999) 999-9999?");
         });
 
         $('#user_region').editable({
