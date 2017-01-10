@@ -213,19 +213,23 @@ angular.module('ohanaApp')
                             name: "phone",
                             placement: "bottom",
                             emptytext: "null",
+                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
                             url: function(params) {
-                                    var packet = params.value
-                                    var path = '/userData/' + $scope.currId + '/phone/';
-                                    commonServices.updateData(path, packet);
-                                    if ($scope.currId === userService.getId()) {
-                                        var tempData = userService.getUserData();
-                                        tempData.phone = packet;
-                                        userService.setUserData(tempData);
-                                    }
+                                var packet = params.value
+                                var path = '/userData/' + $scope.currId + '/phone/';
+                                commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.phone = packet;
+                                    userService.setUserData(tempData);
                                 }
-                                // TODO fix pattern masking for phone #s
-                                // pattern: "\d{3}\-\d{3}\-\d{4}"
+                            }
                         });
+
+                        $(document).on("focus", ".mask", function() {
+                            $(this).mask("(999) 999-9999?");
+                        });
+
                         $('#membersTable .tdSelectRole a').editable({
                             type: "select",
                             name: "role",
