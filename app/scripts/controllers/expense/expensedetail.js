@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ExpenseDetailsCtrl', function($scope, $rootScope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
+    .controller('ExpenseDetailsCtrl', function($scope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
 
         $scope.expense = {};
         $scope.expense = expenseservice.expense;
@@ -78,17 +78,14 @@ angular.module('ohanaApp')
             if ($scope.LineDetails.length) {
 
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
-
-
                     vTotalLineCost = vTotalLineCost + parseFloat($scope.LineDetails[x].Amount);
-
-                    console.log("line amount change", vTotalLineCost, $scope.LineDetails[x].Amount);
+                    console.log("line amount change", x, vTotalLineCost, $scope.LineDetails[x].Amount, parseFloat($scope.LineDetails[x].Amount));
 
                 }
             }
-
-            $scope.$applyAsync();
             $scope.TotalLineCost = vTotalLineCost;
+            $scope.$applyAsync();
+            // $scope.TotalLineCost = vTotalLineCost;
             // $scope.TotalLineCost = parseFloat(vTotalLineCost);
             // console.log("line amount change", $scope.TotalLineCost, $scope.LineDetails, parseFloat(item.Line[x].Amount));
         }
@@ -104,12 +101,11 @@ angular.module('ohanaApp')
             ref.on('value', function(snapshot) {
                 //  $scope.$apply(function(){
                 $scope.expense = snapshot.val();
-                console.log("Expense Detail Loaded", $scope.expense);
                 $scope.$applyAsync();
-
 
                 angular.forEach($scope.expense, function(item) {
 
+                    console.log("Expense Detail Loaded", $scope.expense);
                     var img = document.createElement('img');
                     var storage = firebase.storage();
                     var storageRef = firebase.storage().ref();
@@ -127,6 +123,7 @@ angular.module('ohanaApp')
                     //alert(item.ImageURL[0].FileName);
 
                     //---ADD line item array ---//
+                    $scope.TotalLineCost = 0;
                     if (item.Line.length) {
                         var i = 2;
                         for (var x = 0; x < item.Line.length; x++) {
@@ -141,7 +138,7 @@ angular.module('ohanaApp')
                             }
                         }
                         $scope.TotalLineCost = vTotalLineCost;
-                        console.log("Scope Value", item.Line, $scope.TotalLineCost);
+                        console.log("Scope Value", item.Line, vTotalLineCost, $scope.TotalLineCost);
                         $scope.$applyAsync();
 
                     }
@@ -289,19 +286,21 @@ angular.module('ohanaApp')
 
         }
 
-        //-----Delete Expenses Created by the User -------------//
-        $scope.deleteexp = function(billid) {
+        //-----Delete Expenses Created by the User --START-------//
+        $scope.deleteexp = function() {
+                expenseservice.deleteExpense($routeParams.BillId);
+            }
+            //-----Delete Expenses Created by the User ---END----------//
 
-            expenseservice.deleteExpense(billid);
+        $scope.updateexpense = function() {
 
-        }
-
-        $scope.updateexpense = function(billid) {
-
-
+            var billid = $routeParams.BillId;
             var self = this;
-            console.log("Data ", dexedit, $scope.dexedit, self.dexedit);
-            var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
+            console.log("Data ", $scope.eventdate);
+            // var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
+
+            var totalamt = ($scope.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate);
+            //+ ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             var currentdate = new Date();
             var StatusChangedDate = "";

@@ -1,11 +1,11 @@
 <div class="container" ng-init="viewexpensedata()" ng-controller="ViewExpenseController">
     <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline" novalidate>
-        <div class="panel panel-default ">
+        <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <h3 class="panel-title pull-left">View Expense {{HeadTitle}}</h3>
             </div>
-            <div class="form-group form-inline panel-body" style="padding-top: 6px;  padding-bottom:  6px;">
-                <div class="form-group row">
+            <div class="panel-body-exp">
+                <div class="form-group row" style="padding-left: 10px;  padding-top: 6px;">
                     <label for="startdate" class="col-xs-7 col-form-label">Submit date From</label>
                     <div class="col-xs-10">
                         <div class="input-group">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="padding-left: 10px; padding-top: 6px;">
                     <label for="enddate" class="col-xs-6 col-form-label">To</label>
                     <div class="col-xs-10">
                         <div class="input-group">
@@ -45,18 +45,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="padding-left: 10px;  padding-top: 6px;">
                     <label for="PayStatus" class="col-xs-6 col-form-label">Payment Status</label>
                     <div class="col-xs-10">
                         <select class="form-control" ng-model="PayStatus" ng-options="status.name for status  in paystatuslist" name="PayStatus" title="Select Payment Status">
                         </select>
                     </div>
                 </div>
-                <div class="form-group   row">
+                <div class="form-group row" style="padding-left: 30px; padding-top: 10px; padding-bottom: 10px;">
                     <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
                     <a href="#/expense/newexpense" ng-show="userRole!='National Staff'" class="btn btn-primary format_button_md" title="Create New Expense">New Expense</a>
-                    <button class="btn btn-primary btn-danger" ng-click="filterPastDue
-()" title="Filters expenses that were submitted 60 days prior to date and still Overdue">Overdue Expenses</button>
+                    <button class="btn btn-primary btn-danger" ng-click="filterPastDue()" title="Filters expenses that were submitted 60 days prior to date and still Overdue">Overdue Expenses</button>
                     <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
                         <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
                     </a>

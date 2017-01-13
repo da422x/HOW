@@ -15,6 +15,8 @@ angular.module('ohanaApp')
         $scope.listS = "";
         $scope.lists = {};
 
+
+
         $scope.userlist = "";
         var currentdate = new Date();
         var firstday = new Date(currentdate.getFullYear(), 0, 1);
@@ -187,9 +189,9 @@ angular.module('ohanaApp')
         //------------UI Bootstrap Date -----END--------------//
         //----Past Due - Expense list function -------Start -----------//
         $scope.filterPastDue = function() {
-            $scope.startdate = new Date(currentdate.getFullYear(), 0, 1);
+            $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
             $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 60));
-            //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation
+            //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation           
 
             switch ($scope.userRole) {
                 case 'Volunteer':
@@ -211,9 +213,9 @@ angular.module('ohanaApp')
 
         $scope.viewexpensedata = function() {
 
-            console.log("Service to be called", $scope.userChapter);
+            //console.log("Service to be called", $scope.userChapter);
             $scope.lists = originalList = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
-            console.log("Controller Expense List Data", $scope.lists, originalList);
+            //console.log("Controller Expense List Data", $scope.lists, originalList);
 
         };
 

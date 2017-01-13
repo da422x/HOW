@@ -14,6 +14,33 @@ angular.module('ohanaApp')
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
+
+        // Initialize FORM field to clear old values in creating new expense.
+        $scope.exp.Chapter = "";
+        $scope.exp.email = "";
+        $scope.exp.SubmitDate = "";
+        $scope.exp.SubmitBy = "";
+        $scope.exp.SubmitAddress = "";
+        $scope.exp.Description = "";
+        $scope.exp.PaymentStatus = "Pending";
+        $scope.exp.PaymentStatusBy = "";
+        $scope.exp.PaymentStatusDate = "";
+        $scope.exp.PayStatus = "";
+        $scope.exp.PayStatusBy = "";
+        $scope.exp.PayStatusDate = "";
+        $scope.exp.PayRole = "";
+        $scope.exp.PayStatusDescription = "";
+
+
+        $scope.exp.ImageURL = [];
+        $scope.exp.Line[0].Quantity = 0; // this.exp.miles;
+        $scope.exp.Line[0].Rate = 0.25;
+        $scope.exp.Line[1].Quantity = 0; //this.exp.trailermiles;
+        $scope.exp.Line[1].Rate = 0.4;
+
+        // Initialize FORM field 
+        // --- END ---------
+
         $scope.lineamount = 0;
         $scope.role = "";
         $scope.exp.email = commonServices.getCurrentUserEmail();
@@ -45,6 +72,15 @@ angular.module('ohanaApp')
         $scope.LineDetails = [];
         $scope.LineDetails = expenseservice.LineDetails;
 
+        // Initialize FORM field to clear old values in creating new expense.
+        if ($scope.LineDetails.length) {
+
+            $scope.LineDetails = [{
+                'Description': '',
+                'Amount': 0
+            }];
+        }
+        // --- END ---------
         $scope.addNew = function() {
             angular.extend($scope.LineDetails, expenseservice.addNew($scope.LineDetails));
         };
