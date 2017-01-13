@@ -99,10 +99,11 @@ angular.module('ohanaApp')
 
 
         this.deleteExpense = function(billid) {
+
                 var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
                 query.on('child_added', function(snap) {
                     var obj = snap.val();
-                    console.log("key ", snap.key);
+                    // console.log("key ", snap.key);
                     firebase.database().ref('expense/' + snap.key).remove()
                         .then(function(data) {
                             console.log('success : - ', billid, ' data Deleted');
@@ -127,7 +128,7 @@ angular.module('ohanaApp')
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
 
-            console.log("getViewExpenseData", useremail, userRole, Chapter);
+            //console.log("getViewExpenseData", useremail, userRole, Chapter);
 
             switch (userRole) {
                 case 'Volunteer':
@@ -144,7 +145,7 @@ angular.module('ohanaApp')
             // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             var viewExpenseList = $firebaseArray(ref);
 
-            console.log("Service Expense ", viewExpenseList);
+            //console.log("Service Expense ", viewExpenseList);
             return {
                 viewExpenseList: viewExpenseList,
             }
