@@ -164,4 +164,7 @@ angular.module('ohanaApp')
             $uibModalInstance.dismiss('cancel');
         };
 
+        angular.element(document).ready(function() {
+            $("#phonenum").mask("(999)999-9999");
+        });
     });

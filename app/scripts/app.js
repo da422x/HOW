@@ -27,7 +27,8 @@ angular.module('ohanaApp', [
         // 'uiGmapgoogle-maps',
         'firebase'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $routeProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+        $httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
                 templateUrl: 'views/home.html',
@@ -161,7 +162,7 @@ angular.module('ohanaApp', [
                 redirectTo: '/home'
             });
 
-    }).run(function($q, commonServices, $rootScope, $firebaseAuth) {
+    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService) {
 
         var config = {
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
@@ -245,11 +246,11 @@ angular.module('ohanaApp', [
                         console.log('Role: ' + userRole);
 
                         // Setting session variables.
-                        $rootScope.userRole = userRole;
-                        $rootScope.userData = userData;
-                        $rootScope.userName = userData.name.first + ' ' + userData.name.last;
-                        $rootScope.userId = currentUserId;
-                        $rootScope.userChapter = userData.Chapter;
+                        userService.setRole(userRole);
+                        userService.setUserData(userData);
+                        userService.setUserName(userData.name.first, userData.name.last);
+                        userService.setId(currentUserId);
+                        userService.setChapter(userData.Chapter);
                         $rootScope.sessionState = true;
 
                         // Signals role change to nav.
@@ -261,11 +262,11 @@ angular.module('ohanaApp', [
                 console.log('Logged Out...');
 
                 // Set session variables to empty, and false when user logs out
-                $rootScope.userRole = '';
-                $rootScope.userData = '';
-                $rootScope.userName = '';
-                $rootScope.userId = '';
-                $rootScope.userChapter = '';
+                userService.setRole('');
+                userService.setUserData('');
+                userService.setUserName('', '');
+                userService.setId('');
+                userService.setChapter('');
             }
         });
 
@@ -328,19 +329,14 @@ angular.module('ohanaApp', [
             var retArray = [];
             if (input != null && startdate != null && enddate != null) {
 
-
-
-
                 angular.forEach(input, function(obj) {
 
                     var receivedDate = obj.SubmitDate;
-
 
                     if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                         retArray.push(obj);
                         // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate);
                     }
-
 
                 });
 

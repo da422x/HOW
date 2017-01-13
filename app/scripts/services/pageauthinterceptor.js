@@ -14,30 +14,21 @@ angular.module('ohanaApp')
         var requestInterceptor = {
             request: function(config) {
                 switch (config.url) {
-                    case 'views/sign_in.html':
-                        console.log('Sign In');
-                        break;
-
-                    case 'views/user_registration.html':
-                        console.log('Registration');
-                        break;
-
-                        // Cant be accessed without being and admin.
-                    case 'views/user_permissions.html':
-                        if ($rootScope.userRole !== 'admin') {
-                            window.location.replace('/');
-                            console.log('Not Authorized!');
+                    case 'views/manage/directory.html':
+                        if ($rootScope.userRole === 'National Staff' || $rootScope.userRole === 'Chapter Lead' || $rootScope.userRole === 'admin') {
+                            console.log('Authorized')
                         } else {
-                            console.log('User Management');
+                            window.location.replace('#/home');
+                            console.log('Not Authorized!');
                         }
                         break;
 
                     default:
-                        console.log('Main');
                         break;
                 }
                 return config; //deferred.promise;
             }
         };
         return requestInterceptor;
+
     }]);
