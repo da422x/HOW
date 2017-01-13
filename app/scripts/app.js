@@ -270,9 +270,9 @@ angular.module('ohanaApp', [
         });
 
         //Firebase Logs
-        if (window.location.href.indexOf("localhost") > -1) {
-            firebase.database.enableLogging(true, true);
-        }
+        // if (window.location.href.indexOf("localhost") > -1) {
+        //     firebase.database.enableLogging(true, true);
+        // }
     })
 
 .filter('unique', function() {
