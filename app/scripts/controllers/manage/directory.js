@@ -9,7 +9,7 @@
  * Controller of management console - directory
  */
 angular.module('ohanaApp')
-    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil) {
+    .controller('DirectoryCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil, userService) {
         'use strict';
 
         $scope.$on('modalClosing', function() {
@@ -143,6 +143,12 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/name/first/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.name.first = packet;
+                                    userService.setUserData(tempData);
+                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                }
                             }
                         });
                         $('#membersTable .tdLname a').editable({
@@ -154,6 +160,12 @@ angular.module('ohanaApp')
                                 var packet = params.value
                                 var path = '/userData/' + $scope.currId + '/name/last/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.name.last = packet;
+                                    userService.setUserData(tempData);
+                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                }
                             }
                         });
                         $('#membersTable .tdDob a').editable({
@@ -173,6 +185,11 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/DOB/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.DOB = packet;
+                                    userService.setUserData(tempData);
+                                }
                             }
                         });
                         $('#membersTable .tdEmail a').editable({
@@ -181,28 +198,38 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "null",
                             url: function(params) {
-                                    var packet = params.value
-                                    var path = '/userData/' + $scope.currId + '/email/';
-                                    commonServices.updateData(path, packet);
+                                var packet = params.value
+                                var path = '/userData/' + $scope.currId + '/email/';
+                                commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.email = packet;
+                                    userService.setUserData(tempData);
                                 }
-                                // TODO email throws error Uncaught InvalidStateError: Failed to
-                                //execute 'setSelectionRange' on 'HTMLInputElement': The input
-                                // element's type ('email') does not support selection.
-                                // ONLY IN CHROME. BUG FIX https://bugs.chromium.org/p/chromium/issues/detail?id=346270
+                            }
                         });
                         $('#membersTable .tdTelly a').editable({
                             type: "text",
                             name: "phone",
                             placement: "bottom",
                             emptytext: "null",
+                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
                             url: function(params) {
-                                    var packet = params.value
-                                    var path = '/userData/' + $scope.currId + '/phone/';
-                                    commonServices.updateData(path, packet);
+                                var packet = params.value
+                                var path = '/userData/' + $scope.currId + '/phone/';
+                                commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.phone = packet;
+                                    userService.setUserData(tempData);
                                 }
-                                // TODO fix pattern masking for phone #s
-                                // pattern: "\d{3}\-\d{3}\-\d{4}"
+                            }
                         });
+
+                        $(document).on("focus", ".mask", function() {
+                            $(this).mask("(999) 999-9999?");
+                        });
+
                         $('#membersTable .tdSelectRole a').editable({
                             type: "select",
                             name: "role",
@@ -215,6 +242,9 @@ angular.module('ohanaApp')
                                 }
                                 var path = '/userRoles/' + $scope.currId;
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    userService.setRole(packet);
+                                }
                             },
                             source: function() {
                                 var currentUserRole = $rootScope.userRole;
@@ -236,6 +266,11 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/Region/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.Region = packet;
+                                    userService.setUserData(tempData);
+                                }
                             },
                             source: $rootScope.siteData.regions
                         });
@@ -249,6 +284,12 @@ angular.module('ohanaApp')
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/Chapter/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.Chapter = packet;
+                                    userService.setUserData(tempData);
+                                    userService.setChapter(packet);
+                                }
                             },
                             source: function() {
                                 var regionText = $(this).parent().parent().find('.tdSelectRegion').text();
@@ -288,6 +329,11 @@ angular.module('ohanaApp')
                                 var packet = params.value
                                 var path = '/userData/' + $scope.currId + '/branch/';
                                 commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.branch = packet;
+                                    userService.setUserData(tempData);
+                                }
                             }
                         });
                         $('#membersTable .tdNotes a').editable({
@@ -331,8 +377,8 @@ angular.module('ohanaApp')
         $scope.update = function() {
             var newDataSet = commonServices.getData('/userData/');
             var newRoleData = commonServices.getData('/userRoles/');
-            var currentUserRole = $rootScope.userRole;
-            var currentUserData = $rootScope.userData;
+            var currentUserRole = userService.getRole();
+            var currentUserData = userService.getUserData();
             $q.all([newDataSet, newRoleData]).then(function(userData) {
                 var users = [],
                     roles = [],
@@ -360,6 +406,13 @@ angular.module('ohanaApp')
                     _.each(userData[0], function(value, key) {
                         switch (currentUserRole) {
                             case 'admin':
+                                if (keys[i] === key) {
+                                    value.key = key;
+                                    value.role = roles[i];
+                                    users.push(value);
+                                }
+                                break;
+                            case 'National Staff':
                                 if (keys[i] === key) {
                                     value.key = key;
                                     value.role = roles[i];

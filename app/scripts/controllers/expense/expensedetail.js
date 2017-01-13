@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ExpenseDetailsCtrl', function($scope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
+    .controller('ExpenseDetailsCtrl', function($scope, $rootScope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
 
         $scope.expense = {};
         $scope.expense = expenseservice.expense;

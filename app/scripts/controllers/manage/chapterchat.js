@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ManageChapterchatCtrl', function($scope, $rootScope, $q, commonServices) {
+    .controller('ManageChapterchatCtrl', function($scope, $rootScope, $q, commonServices, userService) {
 
         $scope.newMessage = '';
 
@@ -21,7 +21,7 @@ angular.module('ohanaApp')
         }, true);
 
         $scope.init = function() {
-            var usersChapter = $rootScope.userChapter;
+            var usersChapter = userService.getChapter();
             var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
 
             $q.all([getLog]).then(function(data) {
@@ -47,6 +47,7 @@ angular.module('ohanaApp')
             messageData.time = Date.now();
             messageData.message = $scope.newMessage;
             commonServices.pushData('/chat/chapters/' + usersChapter, messageData);
+            $scope.newMessage = '';
         };
 
     });
