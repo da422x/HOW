@@ -38,7 +38,7 @@ angular.module('ohanaApp')
 
 
         //------------Addition Line Items--------------//
-        $scope.LineDetails = new Array(); //[];
+        $scope.LineDetails = [];
 
         $scope.addNew = function(LineDetails) {
             if ($scope.userRole == 'Volunteer' || $scope.userRole == 'Participant') {
@@ -123,9 +123,15 @@ angular.module('ohanaApp')
                     var vTotalLineCost = 0;
                     //alert(item.ImageURL[0].FileName);
 
-                    //---ADD line item array ---//
+                    // --- clear $scope.LineDetails Array
+                    $scope.LineDetails = [];
+                    for (var i = $scope.LineDetails.length; i > 0; i--) {
+                        $scope.LineDetails.pop();
+                    }
 
+                    //---ADD line item array ---//
                     $scope.TotalLineCost = 0;
+
                     if (item.Line.length) {
                         var i = 0;
 

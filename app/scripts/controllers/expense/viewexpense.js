@@ -31,6 +31,12 @@ angular.module('ohanaApp')
         $scope.sortDescending = false; // default ascending
         $scope.searchText = ''; // default blank
 
+        //---select
+        $scope.selectedRow = null; // initialize our variable to null
+        $scope.setClickedRow = function(index) { //function that sets the value of selectedRow to current index
+            $scope.selectedRow = index;
+        }
+
         //---Role Based information ---------------
 
         var userUID = $rootScope.userId;
@@ -436,7 +442,9 @@ angular.module('ohanaApp')
         $scope.idSelectedBill = null;
         $scope.setSelected = function(idSelectedBill) {
             $scope.idSelectedBill = idSelectedBill;
-            //alert($scope.idSelectedBill); 
+            // alert("expense/expensedetail/" + $scope.idSelectedBill);
+            window.location = "#/expense/expensedetail/" + $scope.idSelectedBill;
+            // $location.path("#/expense/expensedetail/" + $scope.idSelectedBill);
         };
 
 
