@@ -8,13 +8,13 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ExpenseDetailsCtrl', function($scope, $rootScope, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document) {
+    .controller('ExpenseDetailsCtrl', function($scope, $routeParams, userService, commonServices, expenseservice, $location, $uibModal, $log, $document) {
 
         $scope.expense = {};
         $scope.expense = expenseservice.expense;
 
-        $scope.userRole = $rootScope.userRole
-        $scope.userName = $rootScope.userData;
+        $scope.userRole = userService.getRole();
+        $scope.userName = userService.getUserData();
         $scope.useremail = commonServices.getCurrentUserEmail();
 
         //----Modal -- Payment Status Log  ---------//
@@ -38,16 +38,17 @@ angular.module('ohanaApp')
 
 
         //------------Addition Line Items--------------//
-        $scope.LineDetails = [];
+        $scope.LineDetails = new Array(); //[];
 
         $scope.addNew = function(LineDetails) {
             if ($scope.userRole == 'Volunteer' || $scope.userRole == 'Participant') {
                 $scope.LineDetails.push({
                     'Description': "",
-                    'Amount': ""
+                    'Amount': 0
                 });
                 console.log($scope.LineDetails);
             }
+
         };
 
         $scope.remove = function() {
@@ -112,7 +113,7 @@ angular.module('ohanaApp')
                     $scope.paystat = item.PaymentStatus;
                     $scope.expenseemail = item.email;
                     if (item.PaymentStatus == 'Overage') {
-                        swal('Overage Expense - Rejected!', '', 'error');
+                        swal('Overage Expense - Not editable! Rejected', '', 'error');
                         $scope.OverageDisable = true;
                     }
 
@@ -123,22 +124,27 @@ angular.module('ohanaApp')
                     //alert(item.ImageURL[0].FileName);
 
                     //---ADD line item array ---//
+
                     $scope.TotalLineCost = 0;
                     if (item.Line.length) {
-                        var i = 2;
+                        var i = 0;
+
                         for (var x = 0; x < item.Line.length; x++) {
+                            console.log("Scope Value Data - ", item.Line[x].Amount, x);
 
                             if (x > 1) {
                                 vTotalLineCost = vTotalLineCost + parseFloat(item.Line[x].Amount);
                                 console.log("Load amount ", vTotalLineCost, parseFloat(item.Line[x].Amount));
                                 $scope.LineDetails.push({
-                                    'Description': item.Line[x].Description,
-                                    'Amount': item.Line[x].Amount
+                                    "Description": item.Line[x].Description,
+                                    "Amount": parseFloat(item.Line[x].Amount)
                                 });
+
                             }
                         }
+
                         $scope.TotalLineCost = vTotalLineCost;
-                        console.log("Scope Value", item.Line, vTotalLineCost, $scope.TotalLineCost);
+                        console.log("Scope Value", item.Line, vTotalLineCost, $scope.TotalLineCost, $scope.LineDetails);
                         $scope.$applyAsync();
 
                     }
@@ -288,7 +294,25 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
-                expenseservice.deleteExpense($routeParams.BillId);
+                var bill = $routeParams.BillId;
+                console.log('Data Delete Request SWAL ', $routeParams.BillId);
+                swal({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(function() {
+                        expenseservice.deleteExpense(bill)
+                        swal(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    })
+                    // expenseservice.deleteExpense($routeParams.BillId);
             }
             //-----Delete Expenses Created by the User ---END----------//
 
@@ -296,10 +320,11 @@ angular.module('ohanaApp')
 
             var billid = $routeParams.BillId;
             var self = this;
-            console.log("Data ", $scope.eventdate);
-            // var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
 
-            var totalamt = ($scope.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate);
+            //var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
+            var totalamt = ((self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate) + (self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate));
+
+            // var totalamt = ($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate);
             //+ ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             var currentdate = new Date();
@@ -371,6 +396,7 @@ angular.module('ohanaApp')
                     // $scope.lineamount = parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount);
 
                     lineamount = parseFloat(lineamount) + parseFloat($scope.LineDetails[x].Amount);
+                    console.log("Update-", x, expenseupdate.Line, $scope.LineDetails, lineamount, totalamt);
                     // if (x > 1) {
                     expenseupdate.Line.push({
 
@@ -382,6 +408,7 @@ angular.module('ohanaApp')
                     });
                     //} 
                     i++;
+
                     console.log("Update-", x, expenseupdate.Line, $scope.LineDetails[x].Amount, lineamount);
                 }
                 expenseupdate.Amount = totalamt + lineamount;
@@ -524,7 +551,7 @@ angular.module('ohanaApp')
 
         $scope.UpdatePaymentStatus = function(billid, paymentstat, statreason) {
 
-
+            console.log("Update Payment Status - ", billid, paymentstat, statreason);
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             // $scope.userinfo.viewuserdata[0].name.first + ' ' + $scope.userinfo.viewuserdata[0].name.last;
 
@@ -545,16 +572,16 @@ angular.module('ohanaApp')
                 "PayStatusDate": StatusChangedDate,
                 "PayRole": $scope.userRole,
                 "PayStatusDescription": statreason
-
             });
             var ePaymentLog = {
                 "PaymentStatus": paymentstat,
                 "PaymentLog": $scope.PayStatusLogList
             };
 
-            console.log(StatusChangedDate, $scope.PayStatusLogList, ePaymentLog, $routeParams.BillId, $scope.dexedit.BillId);
+            console.log(StatusChangedDate, $scope.PayStatusLogList, ePaymentLog, $routeParams.BillId);
 
             var query = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
+
             query.on('child_added', function(snap) {
                 var obj = snap.val();
                 console.log("key ", snap.key);

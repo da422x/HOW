@@ -232,13 +232,23 @@ angular.module('ohanaApp')
 
         var GetJsonData = function() {
             var rptdata = [];
-
+            var useremail = commonServices.getCurrentUserEmail();
+            $scope.userRole = $rootScope.userRole;
+            $scope.userName = $rootScope.userName;
+            $scope.userChapter = $rootScope.userChapter;
             angular.forEach($scope.lists, function(value, index) {
 
                     for (var i = 0; i < value.length; i++) {
                         // console.log("first list length", $scope.listS.length);
-                        if (($scope.listS === value[i].Chapter || $scope.listS === "") && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) && $scope.userRole != 'coordinator') {
+                        //$scope.listS === value[i].Chapter || $scope.listS === "") &&
+
+                        console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
+                        console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
+                        console.log("third check - ", $scope.userRole, value[i].email, useremail);
+
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -250,14 +260,13 @@ angular.module('ohanaApp')
                                 "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
-                            // console.log("first if");
+
                             rptdata.push(reportdata);
                         }
 
-                        console.log("Real Value", value[i].SubmitDate, $scope.startdate, $scope.enddate, $scope.userChapter, value[i].Chapter, $scope.userRole, 'coordinator', value[i].PaymentStatus, $scope.PayStatus);
-                        if (($scope.userChapter == value[i].Chapter && $scope.userRole == 'coordinator') && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate))) {
-
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -270,14 +279,31 @@ angular.module('ohanaApp')
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
 
-                            // console.log("second if");
+                            rptdata.push(reportdata);
+                        }
+
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            $scope.userRole == 'National Staff') {
+                            var reportdata = {
+                                "Date": value[i].eventdate,
+                                "Business Purpose, Origin & Destination": value[i].Description,
+                                "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                                "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                                "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                                "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                                "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                                "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                                "Explanation of Other Expense": value[i].Line[2].Description
+                            };
+
                             rptdata.push(reportdata);
                         }
 
                         console.log("report", i, rptdata);
                     } //for loop 
                 }) //for each
-            console.log("JSON DATA", rptdata);
+
 
             return rptdata;
 

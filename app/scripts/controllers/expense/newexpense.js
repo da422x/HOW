@@ -23,13 +23,14 @@ angular.module('ohanaApp')
         $scope.exp.SubmitAddress = "";
         $scope.exp.Description = "";
         $scope.exp.PaymentStatus = "Pending";
-        $scope.exp.PaymentStatusBy = "";
-        $scope.exp.PaymentStatusDate = "";
-        $scope.exp.PayStatus = "";
-        $scope.exp.PayStatusBy = "";
-        $scope.exp.PayStatusDate = "";
-        $scope.exp.PayRole = "";
-        $scope.exp.PayStatusDescription = "";
+        // $scope.exp.PaymentStatusBy = "";
+        // $scope.exp.PaymentStatusDate = "";
+        // $scope.exp.PayStatus = "";
+        // $scope.exp.PayStatusBy = "";
+        // $scope.exp.PayStatusDate = "";
+        // $scope.exp.PayRole = "";
+        // $scope.exp.PayStatusDescription = "";
+
 
 
         $scope.exp.ImageURL = [];
@@ -81,8 +82,14 @@ angular.module('ohanaApp')
             }];
         }
         // --- END ---------
-        $scope.addNew = function() {
-            angular.extend($scope.LineDetails, expenseservice.addNew($scope.LineDetails));
+        $scope.addNew = function(LineDetails) {
+            // angular.extend($scope.LineDetails, expenseservice.addNew($scope.LineDetails));            
+            $scope.LineDetails.push({
+                'Description': "",
+                'Amount': 0
+            });
+            console.log($scope.LineDetails);
+
         };
 
         $scope.remove = function() {

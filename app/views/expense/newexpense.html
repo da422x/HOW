@@ -90,14 +90,17 @@
                                 <input type="checkbox" ng-model="Line.selected" />
                             </td>
                             <td>
-                                <input type="text" size="80" class="form-control" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required ng-minlength="3" />
+                                <input type="text" size="80" class="form-control" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
+                                <!-- 
+                                ng-minlength="3"
                                 <p ng-if="newExpenseform.LineDescription.$touched && newExpenseform.LineDescription.$invalid" class="help-block">
                                     Enter Line description for your other expense
-                                </p>
-                                <p ng-show="newExpenseform.LineDescription.$error.minlength" class="help-block">Other Expense Line Description is too short.</p>
+                                </p> -->
+                                <!-- <p ng-show="newExpenseform.LineDescription.$error.minlength" class="help-block">Other Expense Line Description is too short.</p>
+ -->
                             </td>
                             <td>
-                                <input type="text" class="form-control" ng-model="Line.Amount" required/>
+                                <input class="form-control" ng-model="Line.Amount" required placeholder="0.0" type="number" step="0.01" />
                             </td>
                         </tr>
                     </tbody>

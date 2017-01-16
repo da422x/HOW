@@ -19,8 +19,8 @@ angular.module('ohanaApp')
             SubmitAddress: "",
             Description: "",
             PaymentStatus: "Pending",
-            PaymentStatusBy: "",
-            PaymentStatusDate: "",
+            // PaymentStatusBy: "",
+            // PaymentStatusDate: "",
             PaymentLog: [{
                 PayStatus: "",
                 PayStatusBy: "",
@@ -92,32 +92,29 @@ angular.module('ohanaApp')
         this.addNew = function(LineDetails) {
             this.LineDetails.push({
                 'Description': "",
-                'Amount': ""
+                'Amount': 0
             });
             console.log("Other expense - New Line Added", this.LineDetails);
         };
 
 
-        this.deleteExpense = function(billid) {
+        this.deleteExpense = function(BillId) {
 
-                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
+                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(BillId);
                 query.on('child_added', function(snap) {
                     var obj = snap.val();
                     // console.log("key ", snap.key);
                     firebase.database().ref('expense/' + snap.key).remove()
                         .then(function(data) {
-                            console.log('success : - ', billid, ' data Deleted');
+                            console.log('success : - ', BillId, ' data Deleted');
                             swal('Expense Deleted Successfully!', '', 'success');
                         })
                         .catch(function(error) {
                             var errorCode = error.code;
                             var errorMessage = error.message;
                             console.log('ERROR: ' + error.code + ': ' + error.message);
-                            console.log('Expense - ', billid, ' Removal Failed');
+                            console.log('Expense - ', BillId, ' Removal Failed');
                         });
-
-
-
                 });
 
             }

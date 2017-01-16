@@ -73,11 +73,11 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="userlist" class="col-xs-6 col-form-label">Co-ordinator Name</label>
+                <label for="userlist" class="col-xs-8 col-form-label">Expense Originator Name</label>
                 <div class="col-md-8">
-                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Coordinator Name">
-                        <option value="" selected="true">All Coordinator</option>
-                        <option ng-repeat="SubmitBy in lists.viewExpenseList | unique: 'SubmitBy' | filter: {Chapter: chapter.Chapter}" value="{{coord.SubmitBy}}">{{chapter.SubmitBy}}
+                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Expense Originator Name">
+                        <option value="" selected="true">All</option>
+                        <option ng-repeat="chapter in lists.viewExpenseList | unique: 'SubmitBy' | filter: {Chapter: listS}" value="{{chapter.SubmitBy}}" ng-if="chapter.SubmitBy">{{chapter.SubmitBy}}
                         </option>
                     </select>
                 </div>
@@ -135,10 +135,10 @@
         </div>
         <div ng-show=" userRole!='National Staff'" class=" form-group row-fluid col-lg-12">
             <div class="form-group row" ng-show=" userRole=='Chapter Lead'">
-                <label for="userlist" class="col-xs-6 col-form-label">Co-ordinator Name</label>
+                <label for="userlist" class="col-xs-8 col-form-label">Expense Originator Name</label>
                 <div class="col-md-8">
-                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Coordinator Name">
-                        <option value="" selected="true">All Coordinator</option>
+                    <select class="form-control col-md-8" required="" ng-model="userlist" id="userlist" name="userlist" title="Select Expense Originator Name">
+                        <option value="" selected="true">All</option>
                         <option ng-repeat="coord in lists.viewExpenseList | unique: 'SubmitBy' | filter: {SubmitBy: coord.SubmitBy} | filter: {Chapter: userChapter}" value="{{coord.SubmitBy}}">{{coord.SubmitBy}}
                         </option>
                     </select>
