@@ -108,3 +108,19 @@
  .panel-body-exp {
      padding: 15px;
  }
+ 
+ .expense_pad {
+     padding-left: 10px;
+     padding-top: 6px;
+ }
+ 
+ .expense_pad1 {
+     padding-left: 30px;
+     padding-top: 10px;
+     padding-bottom: 10px;
+ }
+ 
+ .expense_currency {
+     text-align: right;
+     padding-right: 10px;
+ }
