@@ -19,8 +19,8 @@ angular.module('ohanaApp')
             SubmitAddress: "",
             Description: "",
             PaymentStatus: "Pending",
-            PaymentStatusBy: "",
-            PaymentStatusDate: "",
+            // PaymentStatusBy: "",
+            // PaymentStatusDate: "",
             PaymentLog: [{
                 PayStatus: "",
                 PayStatusBy: "",
@@ -92,31 +92,29 @@ angular.module('ohanaApp')
         this.addNew = function(LineDetails) {
             this.LineDetails.push({
                 'Description': "",
-                'Amount': ""
+                'Amount': 0
             });
             console.log("Other expense - New Line Added", this.LineDetails);
         };
 
 
-        this.deleteExpense = function(billid) {
-                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(billid);
+        this.deleteExpense = function(BillId) {
+
+                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(BillId);
                 query.on('child_added', function(snap) {
                     var obj = snap.val();
-                    console.log("key ", snap.key);
+                    // console.log("key ", snap.key);
                     firebase.database().ref('expense/' + snap.key).remove()
                         .then(function(data) {
-                            console.log('success : - ', billid, ' data Deleted');
+                            console.log('success : - ', BillId, ' data Deleted');
                             swal('Expense Deleted Successfully!', '', 'success');
                         })
                         .catch(function(error) {
                             var errorCode = error.code;
                             var errorMessage = error.message;
                             console.log('ERROR: ' + error.code + ': ' + error.message);
-                            console.log('Expense - ', billid, ' Removal Failed');
+                            console.log('Expense - ', BillId, ' Removal Failed');
                         });
-
-
-
                 });
 
             }
@@ -127,7 +125,7 @@ angular.module('ohanaApp')
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
 
-            console.log("getViewExpenseData", useremail, userRole, Chapter);
+            //console.log("getViewExpenseData", useremail, userRole, Chapter);
 
             switch (userRole) {
                 case 'Volunteer':
@@ -144,7 +142,7 @@ angular.module('ohanaApp')
             // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             var viewExpenseList = $firebaseArray(ref);
 
-            console.log("Service Expense ", viewExpenseList);
+            //console.log("Service Expense ", viewExpenseList);
             return {
                 viewExpenseList: viewExpenseList,
             }
