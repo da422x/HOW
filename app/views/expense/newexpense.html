@@ -20,26 +20,21 @@
                     </div>
                 </div>
             </div>
-            <!--         <div class="form-group row" style="padding-left: 10px; padding-top: 16px; padding-bottom: 10px;">
-                    <label for="totalcost" class="col-xs-12 col-form-label">Total Expense Amount</label>
-                    <div class="col-xs-10">
-                        <input id=totalcost ng-model="totalcost" type="text" readonly class="form-control exp_format2" name="totalcost" placeholder="0" value="{{ ((exp.Line[0].Quantity *  exp.Line[0].Rate) + (exp.Line[1].Quantity *  exp.Line[1].Rate) + exp.Line[2].Amount + exp.Line[3].Amount) | currency}}">
-                    </div>
-                </div> -->
             <div class="list-group-item">
                 <div class="form-group row">
                     <label for="" class="col-xs-6 col-form-label">Miles Driven</label>
                     <div class="col-xs-10">
                         <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control" placeholder="0" type="number" min="1" pattern="\d+">
-                        <p ng-if="newExpenseform.miles.$touched && newExpenseform.miles.$invalid" class="help-block">
+                        <p ng-if="newExpenseform.miles.$invalid" class="field-feedback">
                             Enter miles driven > 0
                         </p>
                     </div>
                 </div>
-                <div class="form-group row" style="padding: 10">
+                <div class="form-group row">
                     <label for="" class="col-xs-6 col-form-label">Mile Rate</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[0].Rate" name="milerate" class="form-control" placeholder="0.25">
+                        <input ng-model="exp.Line[0].Rate" name="milerate" class="form-control" placeholder="0.25" pattern="\d+.\d+" />
+                        <p ng-if="newExpenseform.milerate.$invalid" class="field-feedback">Enter valid mile rate</p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -54,15 +49,16 @@
                     <label for="" class="col-xs-8 col-form-label">Trailer Miles</label>
                     <div class="col-xs-10">
                         <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" type="number" min="1" pattern="\d+">
-                        <p ng-if="newExpenseform.trailermiles.$touched && newExpenseform.trailermiles.$invalid" class="help-block">
+                        <p ng-if=" newExpenseform.trailermiles.$invalid" class="field-feedback">
                             Enter trailer hauling miles > 0
                         </p>
                     </div>
                 </div>
-                <div class="form-group row" style="padding: 10">
+                <div class="form-group row">
                     <label for="" class="col-xs-8 col-form-label">Trailer Mile Rate</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[1].Rate" name="milerate" class="form-control" placeholder="0.4">
+                        <input ng-model="exp.Line[1].Rate" name="trailermilerate" class="form-control" placeholder="0.4" pattern="\d+.\d+" />
+                        <p ng-if="newExpenseform.trailermilerate.$invalid" class="field-feedback">Enter valid mile rate</p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -73,7 +69,9 @@
                 </div>
             </div>
             <div class="list-group-item">
-                <label for="" class="col-md-12 col-form-label" title="Other Expenses">Other Expenses</label>
+                <label for="" class="col-md-12 col-form-label" title="Other Expenses">
+                    <h4>Other Expenses</h4>
+                </label>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -91,47 +89,42 @@
                             </td>
                             <td>
                                 <input type="text" size="80" class="form-control" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
-                                <!-- 
-                                ng-minlength="3"
-                                <p ng-if="newExpenseform.LineDescription.$touched && newExpenseform.LineDescription.$invalid" class="help-block">
-                                    Enter Line description for your other expense
-                                </p> -->
-                                <!-- <p ng-show="newExpenseform.LineDescription.$error.minlength" class="help-block">Other Expense Line Description is too short.</p>
- -->
                             </td>
                             <td>
-                                <input class="form-control" ng-model="Line.Amount" required placeholder="0.0" type="number" step="0.01" />
+                                <div class="input-group  ">
+                                    <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" placeholder="0.0" type="number" step="0.01" required>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="form-group" style="padding-left: 10px;padding-top: 6px; padding-bottom: 6px;">
-                    <input ng-hide="!LineDetails.length" style="padding-left: 10px;" type="button" class="btn btn-danger " ng-click="remove()" value="Remove">
-                    <input type="submit" class="btn btn-primary addnew  " style="padding-left: 20px;" ng-click="addNew()" value="Add New">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btnalign  " ng-click="addNew()" value="Add New">
+                    <input ng-hide="!LineDetails.length" type="button" class="btn btn-danger btnalign " ng-click="remove()" value="Remove">
                 </div>
             </div>
-            <!-- </div> -->
-            <div class="form-group row" style="padding-left: 20px; padding-top: 6px; padding-bottom: 6px;">
+            <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
-                <input type="file" id="files" name="files" class="custom-file-input" multiple accept="image/*" ng-model="noblankfile" onchange="angular.element(this).scope().uploadImageFile(this.files)">
+                <input type="file" id="files" name="files" multiple accept="image/*" ng-model="noblankfile" onchange="angular.element(this).scope().uploadImageFile(this.files)" required title="  " class="fullwidth input rqd" />
                 <br />
                 <p>Multiple image files can be loaded in single load/click. 'Click' on the loaded image will remove the image from the list. </p>
                 <div id="selectedFiles"></div>
                 <input type="submit " hidden>
             </div>
-            <div class="form-group row" style="padding-left: 10px;  padding-top: 6px;">
+            <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
                 <div class="col-md-12 ">
                     <input name="Description" ng-model="exp.Description" type="text" class="form-control" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required ng-minlength="3">
-                    <p ng-if="newExpenseform.Description.$touched && newExpenseform.Description.$invalid" class="help-block">
+                    <p ng-if="newExpenseform.Description.$invalid" class="field-feedback">
                         Enter description for your expense
                     </p>
-                    <p ng-show="newExpenseform.Description.$error.minlength" class="help-block">Business purpose, Origin, Destination - Description is too short.</p>
+                    <p ng-show="newExpenseform.Description.$error.minlength" class="field-feedback">Description is too short.</p>
                 </div>
             </div>
-            <div class="panel-body-exp row " style="padding-left: 25px;  padding-top: 26px; padding-bottom: 16px;">
-                <button class="btn btn-primary ur_format_button " ng-click="createnewexpense() " type="submit " data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>
-                <a ng-href="#/expense/viewexpense " class="btn btn-primary format_button_small " ng-click=" ">Cancel</a>
+            <div class="panel-body-exp row btnalign">
+                <button class="btn btn-primary ur_format_button " ng-click="createnewexpense() " type="submit ">Add New Expense</button>
+                <!-- <data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>  class="custom-file-input"-->
+                <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
             </div>
     </form>
     <script>

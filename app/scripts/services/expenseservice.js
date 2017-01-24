@@ -31,13 +31,13 @@ angular.module('ohanaApp')
             Amount: 0,
             ImageURL: [],
             Line: [{
-                    "ID": "1",
+                    "ID": 1,
                     "Description": "Mileage Rate - Travel @.25/mile",
                     "Quantity": 0, // this.exp.miles,
                     "Rate": 0.25,
                     "Amount": 0 //(this.exp.miles * .25)
                 }, {
-                    "ID": "2",
+                    "ID": 2,
                     "Description": "Trailer Mileage Rate @.40/mile",
                     "Quantity": 0, //this.exp.trailermiles,
                     "Rate": 0.4,
@@ -127,28 +127,289 @@ angular.module('ohanaApp')
 
             //console.log("getViewExpenseData", useremail, userRole, Chapter);
 
+            var expenselist = [];
             switch (userRole) {
                 case 'Volunteer':
                 case 'Participant':
                     var ref = firebase.database().ref('/expense').orderByChild("email").equalTo(useremail);
                     break;
-                case 'Leadership Team Member':
                 case 'Chapter Lead':
+                case 'National Staff':
                     var ref = firebase.database().ref('/expense').orderByChild("Chapter").equalTo(Chapter);
                     break;
                 default:
                     var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             }
-            // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
+            var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             var viewExpenseList = $firebaseArray(ref);
 
-            //console.log("Service Expense ", viewExpenseList);
+            console.log("Service Expense ", viewExpenseList);
             return {
                 viewExpenseList: viewExpenseList,
             }
 
+
+
         }
 
+
+        this.getPastDue = function(submitdate) {
+            console.log("Past Due Test", submitdate);
+            var currentdate = new Date();
+            var mdyy = submitdate.split('/');
+            var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
+            var pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
+            console.log("Past Due result", pastdue);
+            //console.log("due", pastdue, currentdate, receivedDate);
+            return pastdue;
+        }
+
+        this.buildExpenseTableData = function(useremail, userRole, Chapter, startdate, enddate, paystatus) {
+
+            // console.log(useremail, userRole, Chapter, startdate, enddate, paystatus);
+            var expenselist = [];
+            var expenselistdata = [];
+            var ref = '';
+            switch (userRole) {
+                case 'Volunteer':
+                case 'Participant':
+                    ref = firebase.database().ref('/expense').orderByChild("email").equalTo(useremail);
+                    break;
+                case 'Chapter Lead':
+                    ref = firebase.database().ref('/expense').orderByChild("Chapter").equalTo(Chapter);
+                    break;
+                case 'National Staff':
+                case 'admin':
+                    ref = firebase.database().ref('/expense'); //.orderByChild("SubmitDate");
+                    break;
+            }
+
+            var viewExpenseList = [];
+            var expensearray = [];
+            // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
+            viewExpenseList = $firebaseArray(ref);
+            // console.log("view ", viewExpenseList, ref);
+            var currentdate = new Date();
+
+            viewExpenseList.$loaded(function(list) {
+                    // viewExpenseList.$loaded().then(function(list) {
+                    expensearray = [];
+                    // console.log("key ", list, list.length, expensearray);
+                    for (var i = 0; i < list.length; i++) {
+                        // console.log("SubmitDate - ", list[i].SubmitDate);
+                        var mdyy = list[i].SubmitDate.toString().split('/');
+                        var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
+                        var pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
+                        // var pastduedatecount = getPastDue(list[i].SubmitDate);
+
+                        expensearray.push({
+                            "SubmitDate": list[i].SubmitDate,
+                            "SubmitBy": list[i].SubmitBy,
+                            "eventdate": list[i].eventdate,
+                            "Chapter": list[i].Chapter,
+                            "Amount": list[i].Amount,
+                            "PaymentStatus": list[i].PaymentStatus,
+                            "pastdue": pastdue,
+                            "BillId": list[i].BillId
+                        });
+
+                    }
+
+                    //date filter
+                    // var ViewExpenseFilter = datefilter(expensearray, startdate, enddate, paystatus);
+                    //use other methods for the $firebaseArray object
+                    var retArray = [];
+                    if (expensearray != null && startdate != null && enddate != null) {
+
+                        angular.forEach(expensearray, function(obj) {
+
+                            var receivedDate = obj.SubmitDate;
+
+                            if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
+                                retArray.push(obj);
+                                // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate, retArray);
+                            }
+                        });
+                    }
+                    var retResults = [];
+                    if (paystatus != null && retArray != null && paystatus != '') {
+                        angular.forEach(retArray, function(obj) {
+
+                            var tpaystatus = obj.PaymentStatus;
+
+                            if (tpaystatus == paystatus) {
+                                retResults.push(obj);
+                                //console.log("paystatus ", retArray, retResults, paystatus, tpaystatus);
+                            }
+
+                        });
+                    } else
+                        retResults = retArray;
+                    // console.log("key expe array", expensearray, retArray, retResults);
+
+
+                    angular.element(document).ready(function() {
+                        //toggle `popup` / `inline` mode
+                        $.fn.editable.defaults.mode = 'popup';
+                        $.fn.editable.defaults.ajaxOptions = {
+                            type: 'PUT'
+                        };
+                        //if exists, destroy instance of table
+                        if ($.fn.DataTable.isDataTable($('#expenseTable'))) {
+                            $('#expenseTable').DataTable().destroy();
+                        }
+
+                        var table = $('#expenseTable').DataTable({
+                            responsive: true,
+                            data: retResults,
+                            "fnRowCallback": function(nRow, data, iDisplayIndex, iDisplayIndexFull) {
+                                if (data.pastdue > 30) {
+                                    $(nRow).css('color', 'red')
+                                }
+                            },
+                            "pagingType": "full_numbers",
+                            columns: [{
+                                data: "Chapter"
+                            }, {
+                                data: "SubmitDate"
+                            }, {
+                                data: "SubmitBy"
+                            }, {
+                                data: "eventdate"
+                            }, {
+                                data: "Amount"
+                            }, {
+                                data: "PaymentStatus"
+                            }, {
+                                data: "pastdue"
+                            }],
+                            'columnDefs': [{
+                                targets: 0,
+                                width: '50px',
+                                visible: userRole == 'National Staff'
+                            }, {
+                                targets: 3,
+                                width: '50px'
+                            }, {
+                                targets: 5,
+                                width: '90px'
+                            }],
+                            'order': [
+                                [5, 'desc']
+                            ],
+
+
+
+                        })
+
+
+                        $('#expenseTable').dataTable().yadcf([{
+
+                                column_number: 0,
+                                select_type: 'chosen',
+                                filter_default_label: "Chapter"
+
+                            }, {
+
+                                column_number: 1,
+                                select_type: 'chosen',
+                                filter_default_label: "Submit Date"
+
+                            }, {
+                                column_number: 2,
+                                select_type: 'chosen',
+                                filter_default_label: "Expense Originator Name"
+                            },
+
+                            {
+                                column_number: 3,
+                                select_type: 'chosen',
+                                filter_default_label: "Event Date"
+
+                            }, {
+                                column_number: 4,
+                                select_type: 'chosen',
+                                filter_default_label: "Amount"
+
+                            }, {
+                                column_number: 5,
+                                select_type: 'chosen',
+                                filter_default_label: "Payment Status"
+
+                            }, {
+                                column_number: 6,
+                                select_type: 'chosen',
+                                filter_default_label: "Past Due"
+
+                            }
+                        ]);
+
+                        // var table = $('#expenseTable').DataTable();
+
+                        $('#expenseTable tbody').on('click', 'tr', function() {
+                            var data = table.row(this).data();
+                            // alert('You clicked on ' + data.BillId + '\'s row');
+                            window.location = "#/expense/expensedetail/" + data.BillId;
+                        });
+
+                        // $('a.toggle-vis').on('click', function(e) {
+                        //     e.preventDefault();
+                        //     var column = table.column($(this).attr('data-column'));
+                        //     //Toggle the visibility    
+                        //     console.log("Data Table - Hide - ", userRole);
+
+
+                        //     column.visible(!column.visible());
+                        // });
+
+
+
+
+                    });
+
+
+
+                })
+                .catch(function(error) {
+                    console.error("error", error);
+                });
+
+            // console.log("key expe array1", expensearray);
+        };
+
+        this.datefilter = function(input, startdate, enddate, paystatus) {
+
+            var retArray = [];
+            if (input != null && startdate != null && enddate != null) {
+
+                angular.forEach(input, function(obj) {
+
+                    var receivedDate = obj.SubmitDate;
+
+                    if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
+                        retArray.push(obj);
+                        console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate, retArray);
+                    }
+                });
+
+                var retResults = [];
+                if (paystatus != null && retArray != null && paystatus != '') {
+                    angular.forEach(retArray, function(obj) {
+
+                        var tpaystatus = obj.PaymentStatus;
+
+                        if (tpaystatus == paystatus) {
+                            retResults.push(obj);
+                            console.log("paystatus ", retArray, retResults, paystatus, tpaystatus);
+                        }
+
+                    });
+                } else
+                    retResults = retArray;
+
+                return retResults;
+            };
+        };
 
         /******************************************************
          *        REPORT                                *
