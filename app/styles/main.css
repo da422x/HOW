@@ -171,3 +171,22 @@ a:visited {
     margin-top: 0px;
     margin-bottom: 5px;
 }
+
+
+/* styling for 'Role Change Requests' */
+
+#approved-requests {
+    background-color: #DFF2BF;
+}
+
+#declined-requests {
+    background-color: #FFBABA;
+}
+
+#pending-requests {
+    background-color: #FEEFB3;
+}
+
+#rcr-alert {
+    background-color: #9F6000;
+}

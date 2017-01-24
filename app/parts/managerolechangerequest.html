@@ -1,22 +1,33 @@
 <!DOCTYPE html>
+
+<!-- start modal-header -->
 <div class="modal-header" ng-init="update()">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Manage Role Change Requests</h4>
 </div>
 <!-- end modal-header -->
+
+<!-- start modal body -->
 <div class="modal-body">
-    <div ng-repeat="request in requests">
+
+    <!-- Pending Requests -->
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix" id="pending-requests">
+            <h3 class="panel-title pull-left">Pending Requests &nbsp</h3>
+            <i class="fa fa-exclamation-circle" aria-hidden="true" ng-show="alertPending"></i>
+            <i ng-click="showForm1a = !showForm1a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div ng-repeat="request in pending_requests" ng-show="showForm1a">
         <div class="panel panel-default">
-            <div class="panel-heading clearfix" ng-style="request.request_status === 'Declined' && {'background-color':'#ff6666'} || 
-						  request.request_status === 'Approved' && {'background-color':'#70db70'} ||
-						  request.request_status === 'pending' && {'background-color':'#ffff66'}">
+            <div class="panel-heading clearfix">
                 <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
                 <h3 class="panel-title pull-left">{{request.request_role}}</h3>
-                <i ng-click="showForm = !showForm" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
-                <i ng-click="declined(request.key, request)" class="fa fa-times pull-right" aria-hidden="true"></i>
-                <i ng-click="approved(request.key, request)" class="fa fa-check pull-right" aria-hidden="true"></i>
+                <i ng-click="showForm1b = !showForm1b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+                <i ng-click="declined(request.key, request)" class="fa fa-minus-square pull-right" aria-hidden="true"></i>
+                <i ng-click="approved(request.key, request)" class="fa fa-plus-square pull-right" aria-hidden="true"></i>
             </div>
-            <div ng-show="showForm">
+            <div ng-show="showForm1b">
                 <div>Email: {{request.email}}</div>
                 <div>Current Role: {{request.current_role}}</div>
                 <div>Request Status: {{request.request_status}}</div>
@@ -24,4 +35,52 @@
             </div>
         </div>
     </div>
-    <!-- end modal body -->
+
+    <!-- Approved Requests -->
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix" id="approved-requests">
+            <h3 class="panel-title pull-left">Approved Requests</h3>
+            <i ng-click="showForm2a = !showForm2a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div ng-repeat="request in approved_requests" ng-show="showForm2a">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
+                <h3 class="panel-title pull-left">{{request.request_role}}</h3>
+                <i ng-click="showForm2b = !showForm2b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+            </div>
+            <div ng-show="showForm2b">
+                <div>Email: {{request.email}}</div>
+                <div>Current Role: {{request.current_role}}</div>
+                <div>Request Status: {{request.request_status}}</div>
+                <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Declined Requests -->
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix" id="declined-requests">
+            <h3 class="panel-title pull-left">Declined Requests</h3>
+            <i ng-click="showForm3a = !showForm3a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div ng-repeat="request in declined_requests" ng-show="showForm3a">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
+                <h3 class="panel-title pull-left">{{request.request_role}}</h3>
+                <i ng-click="showForm3b = !showForm3b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+            </div>
+            <div ng-show="showForm3b">
+                <div>Email: {{request.email}}</div>
+                <div>Current Role: {{request.current_role}}</div>
+                <div>Request Status: {{request.request_status}}</div>
+                <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end modal body -->
