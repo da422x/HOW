@@ -25,7 +25,7 @@ angular.module('ohanaApp')
         $scope.exp.Description = "";
         $scope.exp.PaymentStatus = "Pending";
 
-
+        // $scope.handleFileSelect = handleFileSelect();
 
         $scope.exp.ImageURL = [];
 
@@ -39,16 +39,16 @@ angular.module('ohanaApp')
         // --- END ---------
 
         //---To remove the “No file chosen” tooltip from a file input --START
-        $(function() {
-                $('input[type="file"]').change(function() {
-                    if ($(this).val() != "") {
-                        $(this).css('color', '#333');
-                    } else {
-                        $(this).css('color', 'transparent');
-                    }
-                });
-            })
-            //---To remove the “No file chosen” tooltip from a file input --END
+        // $(function() {
+        //         $('input[type="file"]').change(function() {
+        //             if ($(this).val() != "") {
+        //                 $(this).css('color', '#333');
+        //             } else {
+        //                 $(this).css('color', 'transparent');
+        //             }
+        //         });
+        //     })
+        //---To remove the “No file chosen” tooltip from a file input --END
 
         $scope.lineamount = 0;
         $scope.role = "";

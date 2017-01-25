@@ -91,9 +91,9 @@
                                 <input type="text" size="80" class="form-control" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
                             </td>
                             <td>
-                                <div class="input-group  ">
-                                    <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" placeholder="0.0" type="number" step="0.01" required>
-                                </div>
+                                <!-- <div class="input-group  "> -->
+                                <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" placeholder="0.0" type="number" step="0.01" required>
+                                <!-- </div> -->
                             </td>
                         </tr>
                     </tbody>
@@ -105,11 +105,12 @@
             </div>
             <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
-                <input type="file" id="files" name="files" multiple accept="image/*" ng-model="noblankfile" onchange="angular.element(this).scope().uploadImageFile(this.files)" required title="  " class="fullwidth input rqd" />
+                <input type="file" id="files" name="files" multiple accept="image/*" ng-model="noblankfile" ng-change="uploadImageFile(); " required title="" class="fullwidth input rqd" ng-style="noblankfile?{'color':'#333'}:{'color':'transparent'}" />
                 <br />
                 <p>Multiple image files can be loaded in single load/click. 'Click' on the loaded image will remove the image from the list. </p>
                 <div id="selectedFiles"></div>
                 <input type="submit " hidden>
+                <!-- <onchange="angular.element(this).scope().uploadImageFile(this.files)" > handleFileSelect($evt); -->
             </div>
             <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
