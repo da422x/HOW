@@ -11,6 +11,7 @@
     });
 
     function handleFileSelect(e) {
+        // console.log(e);
         var files = e.target.files;
         var filesArr = Array.prototype.slice.call(files);
 

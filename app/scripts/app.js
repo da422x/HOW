@@ -158,6 +158,11 @@ angular.module('ohanaApp', [
                 controller: 'ManageChapterchatCtrl',
                 controllerAs: 'manage/chapterchat'
             })
+            .when('/expense/CustomDateRange', {
+                templateUrl: 'views/expense/customdaterange.html',
+                controller: 'ExpenseCustomdaterangeCtrl',
+                controllerAs: 'expense/CustomDateRange'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
