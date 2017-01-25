@@ -51,7 +51,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="creditcard">Credit Card Number*</label>
                 <div class="col-md-7">
-                    <input id="creditcard"  name="creditcard" type="text" ngpattern="[0-9,-]{13,19}" placeholder="1234-5678-9123-4567" class="form-control input-md" ng-required="true">
+                    <input id="creditcard" name="creditcard" type="text" ngpattern="[0-9,-]{13,19}" placeholder="1234-5678-9123-4567" class="form-control input-md" ng-required="true">
                 </div>
             </div>
 
@@ -62,8 +62,8 @@
                     <p class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                         <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
+                            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
                     </p>
                 </div>
 
@@ -73,9 +73,9 @@
                     <input id="cvc" name="cvc" type="text" ngpattern="[0-9]{0,3}" placeholder="123" class="form-control input-md" ng-required="true">
                 </div>
             </div>
-            
+
             <div class="form-group">
-                
+
             </div>
 
             <div class="form-group">
@@ -84,7 +84,7 @@
                     <input id="dollaramount" type="text" name="dollaramount" type="number" placeholder="$1.00" class="form-control input-md" ng-requied="true">
                 </div>
             </div>
-           
+
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <p class="col-md-7">* indicates required field.</p>

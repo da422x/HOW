@@ -1,17 +1,17 @@
     var selDiv = "";
     var storedFiles = [];
-    jQuery.noConflict()(function($) {
-        $(document).ready(function() {
-            $("#files").on("change", handleFileSelect);
 
-            selDiv = $("#selectedFiles");
-            $("#myForm").on("submit", handleForm);
+    $(document).ready(function() {
+        $("#files").on("change", handleFileSelect);
 
-            $("body").on("click", ".selFile", removeFile);
-        });
+        selDiv = $("#selectedFiles");
+        $("#myForm").on("submit", handleForm);
+
+        $("body").on("click", ".selFile", removeFile);
     });
 
     function handleFileSelect(e) {
+        // console.log(e);
         var files = e.target.files;
         var filesArr = Array.prototype.slice.call(files);
 

@@ -10,197 +10,276 @@
  * Main module of the application.
  */
 angular.module('ohanaApp', [
-		'ngAnimate',
-		'ui.bootstrap',
-		'ui.router',
-		'ui.select',
-		'ngCookies',
-		'ngMessages',
-		'ngResource',
-		'ngRoute',
-		'ngSanitize',
-		'ngTouch',
-		'summernote',
-		'ui.timepicker',
-		'LocalStorageModule',
-		'ngMap',
-		// 'uiGmapgoogle-maps',
-		'firebase'
-])
-	.config(function ($stateProvider, $urlRouterProvider, $routeProvider) {
-			$routeProvider
-			.when("/home", {
-				templateUrl: 'views/home.html',
-				controller: 'HomeCtrl as home'
-			})
-			.when('/whoweare', {
-				templateUrl: 'views/whoweare.html',
-				//				controller: 'WhoweareCtrl as whoweare'
-			})
-			.when('/getinvolved', {
-				templateUrl: 'views/getinvolved.html',
-				controller: 'GetinvolvedCtrl as getinvolved'
-			})
-			.when('/chapters', {
-				templateUrl: 'views/chapters.html',
-				controller: 'ChaptersCtrl as chapters'
-			})
-			.when("/login", {
-				templateUrl: 'views/login.html',
-				controller: 'LoginCtrl as login'
-			})
-			.when("/manage/dash", {
-				templateUrl: 'views/manage/dash.html',
-				controller: 'DashCtrl as dash'
-			})
-			.when("/dash/upcoming-events", {
-				templateUrl: 'views/manage/dash.upcomingEvents.html',
-				controller: 'DashUpcomingEventsCtrl as dashUpcomingEvents'
-			})
-			.when("/dash/broadcasts", {
-				templateUrl: 'views/manage/dash.broadcasts.html',
-				controller: 'DashBroadcastsCtrl as dashBroadcasts'
-			})
-			.when("/manage/events", {
-				templateUrl: 'views/manage/events.html',
-				controller: 'EventsCtrl as events'
-			})
-			.when("/events", {
-				templateUrl: 'views/publicevents.html',
-				controller: 'PubliceventsCtrl as publicEvents'
-			})
-			.when("/details", {
-				templateUrl: 'views/manage/event.details.html',
-				controller: 'DetailsCtrl as eventDetail'
-			})
-			.when("/description", {
-				templateUrl: 'views/manage/event.details.description.html',
-				controller: 'EventdetaildescriptionCtrl as eventDescription',
-				//				params: {
-				//					event_id: id
-				//				},
-			})
-			.when("/volunteers", {
-				templateUrl: 'views/manage/event.details.volunteers.html',
-				controller: 'EventdetailvolunteersCtrl as eventVolunteers'
-			})
-			.when("/participants", {
-				templateUrl: 'views/manage/event.details.participants.html',
-				controller: 'EventdetailparticipantsCtrl as eventParticipants'
-			})
-			.when("/inventory", {
-				templateUrl: 'views/manage/event.details.equipment.html',
-				controller: 'EventdetailequipmentCtrl as eventEquipment'
-			})
-			.when("/notifications", {
-				templateUrl: 'views/manage/event.details.notifications.html',
-				controller: 'EventdetailnotificationCtrl as eventNotifications'
-			})
-			.when("/manage/broadcasts", {
-				templateUrl: 'views/manage/broadcasts.html',
-				controller: 'BroadcastsCtrl as broadcasts'
-			})
-			.when('/manage/inventory', {
-				templateUrl: 'views/manage/inventory.html',
-				controller: 'InventoryCtrl as inventory'
-			})
-			.when('/manage/training', {
-				templateUrl: 'views/manage/training.html',
-				//				controller: 'TrainingCtrl as training'
-			})
-			.when('/manage/hours', {
-				templateUrl: 'views/manage/hours.html',
-				//				controller: 'HoursCtrl as hours'
-			})
-			.when('/manage/directory', {
-				templateUrl: 'views/manage/directory.html',
-				controller: 'DirectoryCtrl as directory'
-			})
-			.when('/manage/profile', {
-				templateUrl: 'views/manage/profile.html',
-				controller: 'ProfileCtrl as profile'
-			})
-			.when('/manage/chAdmin', {
-				templateUrl: 'views/manage/chadmin.html',
-				//				controller: 'ChadminCtrl as chadmin'
-			})
-			.when('/manage/regAdmin', {
-				templateUrl: 'views/manage/regadmin.html',
-				//				controller: 'RegadminCtrl as regadmin'
-			})
-			.when('/superAdmin', {
-				templateUrl: 'views/manage/superadmin.html',
-				//				controller: 'SuperadminCtrl as superadmin'
-			})
-			.when('/publicEvents', {
-				templateUrl: 'views/public.events.html',
-				controller: 'PublicEventsCtrl',
-				controllerAs: 'public.events'
-			})
-			.when('/expense/expensedetail/:BillId', {
-			  templateUrl: 'views/expense/expensedetail.html',
-			  controller: 'ExpenseDetailsCtrl',
-			  controllerAs: 'expensedetail'
-			})
-			.when('/expense/newexpense', {
-			  templateUrl: 'views/expense/newexpense.html',
-			  controller: 'NewExpenseCtrl',
-			  controllerAs: 'newexpense'
-			})
-			.when('/expense/viewexpense', {
-			  templateUrl: 'views/expense/viewexpense.html',
-			  controller: 'ViewExpenseController',
-			  controllerAs: 'expense/viewexpense'
-			})
-			.otherwise({
-				redirectTo: '/home'
-			});
+        'ngAnimate',
+        'ui.bootstrap',
+        'ui.router',
+        'ui.select',
+        'ngCookies',
+        'ngMessages',
+        'ngResource',
+        'ngRoute',
+        'ngSanitize',
+        'ngTouch',
+        'summernote',
+        'ui.timepicker',
+        'LocalStorageModule',
+        'ngMap',
+        // 'uiGmapgoogle-maps',
+        'firebase'
+    ])
+    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+        $httpProvider.interceptors.push('pageAuthInterceptor');
+        $routeProvider
+            .when("/home", {
+                templateUrl: 'views/home.html',
+                controller: 'HomeCtrl as home'
+            })
+            .when('/whoweare', {
+                templateUrl: 'views/whoweare.html',
+                //              controller: 'WhoweareCtrl as whoweare'
+            })
+            .when('/getinvolved', {
+                templateUrl: 'views/getinvolved.html',
+                controller: 'GetinvolvedCtrl as getinvolved'
+            })
+            .when('/chapters', {
+                templateUrl: 'views/chapters.html',
+                controller: 'ChaptersCtrl as chapters'
+            })
+            .when("/login", {
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl as login'
+            })
+            .when("/manage/dash", {
+                templateUrl: 'views/manage/dash.html',
+                controller: 'DashCtrl as dash'
+            })
+            .when("/dash/upcoming-events", {
+                templateUrl: 'views/manage/dash.upcomingEvents.html',
+                controller: 'DashUpcomingEventsCtrl as dashUpcomingEvents'
+            })
+            .when("/dash/broadcasts", {
+                templateUrl: 'views/manage/dash.broadcasts.html',
+                controller: 'DashBroadcastsCtrl as dashBroadcasts'
+            })
+            .when("/manage/events", {
+                templateUrl: 'views/manage/events.html',
+                controller: 'EventsCtrl as events'
+            })
+            .when("/events", {
+                templateUrl: 'views/publicevents.html',
+                controller: 'PubliceventsCtrl as publicEvents'
+            })
+            .when("/details", {
+                templateUrl: 'views/manage/event.details.html',
+                controller: 'DetailsCtrl as eventDetail'
+            })
+            .when("/description", {
+                templateUrl: 'views/manage/event.details.description.html',
+                controller: 'EventdetaildescriptionCtrl as eventDescription',
+                //              params: {
+                //                  event_id: id
+                //              },
+            })
+            .when("/volunteers", {
+                templateUrl: 'views/manage/event.details.volunteers.html',
+                controller: 'EventdetailvolunteersCtrl as eventVolunteers'
+            })
+            .when("/participants", {
+                templateUrl: 'views/manage/event.details.participants.html',
+                controller: 'EventdetailparticipantsCtrl as eventParticipants'
+            })
+            .when("/inventory", {
+                templateUrl: 'views/manage/event.details.equipment.html',
+                controller: 'EventdetailequipmentCtrl as eventEquipment'
+            })
+            .when("/notifications", {
+                templateUrl: 'views/manage/event.details.notifications.html',
+                controller: 'EventdetailnotificationCtrl as eventNotifications'
+            })
+            .when("/manage/broadcasts", {
+                templateUrl: 'views/manage/broadcasts.html',
+                controller: 'BroadcastsCtrl as broadcasts'
+            })
+            .when('/manage/inventory', {
+                templateUrl: 'views/manage/inventory.html',
+                controller: 'InventoryCtrl as inventory'
+            })
+            .when('/manage/training', {
+                templateUrl: 'views/manage/training.html',
+                //              controller: 'TrainingCtrl as training'
+            })
+            .when('/manage/hours', {
+                templateUrl: 'views/manage/hours.html',
+                //              controller: 'HoursCtrl as hours'
+            })
+            .when('/manage/directory', {
+                templateUrl: 'views/manage/directory.html',
+                controller: 'DirectoryCtrl as directory'
+            })
+            .when('/manage/profile', {
+                templateUrl: 'views/manage/profile.html',
+                controller: 'ProfileCtrl as profile'
+            })
+            .when('/manage/chAdmin', {
+                templateUrl: 'views/manage/chadmin.html',
+                //              controller: 'ChadminCtrl as chadmin'
+            })
+            .when('/manage/regAdmin', {
+                templateUrl: 'views/manage/regadmin.html',
+                //              controller: 'RegadminCtrl as regadmin'
+            })
+            .when('/superAdmin', {
+                templateUrl: 'views/manage/superadmin.html',
+                //              controller: 'SuperadminCtrl as superadmin'
+            })
+            .when('/publicEvents', {
+                templateUrl: 'views/public.events.html',
+                controller: 'PublicEventsCtrl',
+                controllerAs: 'public.events'
+            })
+            .when('/expense/expensedetail/:BillId', {
+                templateUrl: 'views/expense/expensedetail.html',
+                controller: 'ExpenseDetailsCtrl',
+                controllerAs: 'expensedetail'
+            })
+            .when('/expense/newexpense', {
+                templateUrl: 'views/expense/newexpense.html',
+                controller: 'NewExpenseCtrl',
+                controllerAs: 'newexpense'
+            })
+            .when('/expense/viewexpense', {
+                templateUrl: 'views/expense/viewexpense.html',
+                controller: 'ViewExpenseController',
+                controllerAs: 'expense/viewexpense'
+            })
+            .when('/manage/chapterchat', {
+                templateUrl: 'views/manage/chapterchat.html',
+                controller: 'ManageChapterchatCtrl',
+                controllerAs: 'manage/chapterchat'
+            })
+            .when('/expense/CustomDateRange', {
+                templateUrl: 'views/expense/customdaterange.html',
+                controller: 'ExpenseCustomdaterangeCtrl',
+                controllerAs: 'expense/CustomDateRange'
+            })
+            .otherwise({
+                redirectTo: '/home'
+            });
 
-	}).run(function ($q, commonServices, localStorageService, $rootScope, $firebaseAuth) {
-		$rootScope.path ="thad";
-		var config = {
-			apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
-			authDomain: "herosonthewater-55a79.firebaseapp.com",
-			databaseURL: "https://herosonthewater-55a79.firebaseio.com",
-			storageBucket: "herosonthewater-55a79.appspot.com",
-			messagingSenderId: "183234806884"
-		};
+    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService) {
 
-		if (firebase.apps.length === 0) {
-			firebase.initializeApp(config);
-		}
+        var config = {
+            apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+            authDomain: "herosonthewater-55a79.firebaseapp.com",
+            databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+            storageBucket: "herosonthewater-55a79.appspot.com",
+            messagingSenderId: "183234806884"
+        };
 
-		$rootScope.authObj = $firebaseAuth();
+        if (firebase.apps.length === 0) {
+            firebase.initializeApp(config);
+        }
 
-		$rootScope.authObj.$onAuthStateChanged(function (user) {
-			if (user) {
-				var currentUserId = firebase.auth().currentUser.uid;
-				var currentUserData = commonServices.getData('/userData/' + currentUserId);
-				var currentUserRole = commonServices.getData('/userRoles/' + currentUserId + '/role/');
-				$q.all([currentUserData, currentUserRole])
-					.then(function (data) {
-						var userData = data[0];
-						var userRole = data[1];
-						console.log('Logged in!');
-						console.log('UID: ' + currentUserId);
-						console.log('Name: ' + userData.name.first);
-						console.log('Role: ' + userRole);
-						localStorageService.set('sessionUserRole', userRole);
-						localStorageService.set('sessionUserData', userData);
-						localStorageService.set('sessionUserUID', currentUserId);
-						localStorageService.set('sessionState', true);
-						$rootScope.$broadcast('changeSessionUserRole', userRole);
-						$rootScope.$broadcast('changeSessionState', true);
-					});
-			} else {
-				console.log('Logged Out...');
-				localStorageService.set('sessionUserRole', false);
-				localStorageService.set('sessionUserData', false);
-				localStorageService.set('sessionUserUID', false);
-				localStorageService.set('sessionState', false);
-			}
-		});
-	})
+        $rootScope.authObj = $firebaseAuth();
+        $rootScope.siteData = {
+            states: [],
+            roles: [],
+            regions: [],
+            regionsChapters: [],
+            chapters: []
+        };
+
+        var getSiteData = commonServices.getData('/siteData/');
+
+        $q.all([getSiteData]).then(function(data) {
+            _.each(data[0].states, function(states) {
+                $rootScope.siteData.states.push(states);
+            });
+
+            _.each(data[0].roles, function(roles) {
+                $rootScope.siteData.roles.push(roles);
+            });
+
+            _.each(data[0].regions, function(regions) {
+                var chapters = [];
+
+                _.each(regions.chapters, function(newChapters) {
+
+                    $rootScope.siteData.chapters.push({
+                        'value': newChapters.value,
+                        'text': newChapters.text
+                    });
+
+                    chapters.push({
+                        'value': newChapters.value,
+                        'text': newChapters.text
+                    });
+                });
+
+                $rootScope.siteData.regions.push({
+                    'value': regions.value,
+                    'text': regions.text
+                });
+
+                $rootScope.siteData.regionsChapters.push({
+                    'value': regions.value,
+                    'text': regions.text,
+                    'chapters': chapters
+                });
+            });
+
+            console.log($rootScope.siteData);
+        });
+
+        $rootScope.authObj.$onAuthStateChanged(function(user) {
+            if (user) {
+                var currentUserId = firebase.auth().currentUser.uid;
+                var currentUserData = commonServices.getData('/userData/' + currentUserId);
+                var currentUserRole = commonServices.getData('/userRoles/' + currentUserId + '/role/');
+
+                $q.all([currentUserData, currentUserRole])
+                    .then(function(data) {
+                        var userData = data[0];
+                        var userRole = data[1];
+
+                        // temporary for debugging displays user logged in.
+                        console.log('Logged in!');
+                        console.log('UID: ' + currentUserId);
+                        console.log('Name: ' + userData.name.first);
+                        console.log('Chapter: ' + userData.Chapter);
+                        console.log('Role: ' + userRole);
+
+                        // Setting session variables.
+                        userService.setRole(userRole);
+                        userService.setUserData(userData);
+                        userService.setUserName(userData.name.first, userData.name.last);
+                        userService.setId(currentUserId);
+                        userService.setChapter(userData.Chapter);
+                        $rootScope.sessionState = true;
+
+                        // Signals role change to nav.
+                        $rootScope.$broadcast('changeSessionUserRole', userRole);
+                        $rootScope.$broadcast('changeSessionState', true);
+                    });
+
+            } else {
+                console.log('Logged Out...');
+
+                // Set session variables to empty, and false when user logs out
+                userService.setRole('');
+                userService.setUserData('');
+                userService.setUserName('', '');
+                userService.setId('');
+                userService.setChapter('');
+            }
+        });
+
+        //Firebase Logs
+        // if (window.location.href.indexOf("localhost") > -1) {
+        //     firebase.database.enableLogging(true, true);
+        // }
+    })
 
 .filter('unique', function() {
 
@@ -255,32 +334,18 @@ angular.module('ohanaApp', [
             var retArray = [];
             if (input != null && startdate != null && enddate != null) {
 
-                var tstart = startdate.split("/");
-                var tend = enddate.split("/");
-
-
                 angular.forEach(input, function(obj) {
 
                     var receivedDate = obj.SubmitDate;
-                    var rDate = receivedDate.split("/");
 
                     if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                         retArray.push(obj);
-                        console.log("Date ", Date.parse(receivedDate), receivedDate);
+                        // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate);
                     }
 
-                    // if ((Date(rDate[2], rDate[1] - 1, rDate[0]) >= Date(tstart[2], tstart[1] - 1, tstart[0])) &&
-                    //     (Date(rDate[2], rDate[1] - 1, rDate[0]) <= Date(tend[2], tend[1] - 1, tend[0]))) {
-                    //     console.log("Date", rDate, rDate[2], (rDate[1]), rDate[0], Date(rDate[2], rDate[0], rDate[1]), tstart, tend, obj);
-                    //     console.log("Date", Date(startdate), Date(rDate[2], rDate[1], rDate[0]), Date(tstart[2], tstart[1], tstart[0]), Date(tend[2], tend[1], tend[0]));
-                    //     retArray.push(obj);
-                    // }
                 });
 
                 return retArray;
             };
         };
     });
-
-
-

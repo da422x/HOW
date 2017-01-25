@@ -1,5 +1,7 @@
-.angular-google-map-container { height: 400px; }
+.angular-google-map-container {
+    height: 400px;
+}
 
 .infoWindow {
-	width: 250px;
+    width: 250px;
 }

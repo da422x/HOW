@@ -9,7 +9,7 @@
  * Controller of management console - chapter administration
  */
 angular.module('ohanaApp')
-	.controller('ChadminCtrl', function () {
-		'use strict';
-		// empty controller
-	});
+    .controller('ChadminCtrl', function() {
+        'use strict';
+        // empty controller
+    });

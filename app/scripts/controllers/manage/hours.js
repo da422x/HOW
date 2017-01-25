@@ -9,7 +9,7 @@
  * Controller of management console - volunteer hours
  */
 angular.module('ohanaApp')
-	.controller('HoursCtrl', function () {
-		'use strict';
-		// empty controller
-	});
+    .controller('HoursCtrl', function() {
+        'use strict';
+        // empty controller
+    });

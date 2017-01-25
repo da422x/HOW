@@ -9,96 +9,134 @@
  * Controller of management console - events
  */
 angular.module('ohanaApp')
-	.controller('EventsCtrl', function ($q, commonServices, $scope, $uibModal, Api, selectValues) {
-		'use strict';
+    .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, $location, selectValues, DAO) {
+        'use strict';
 
-		$scope.newQuery = {};
-		$scope.SearchPlaceHolder = "Enter your query";
-		var allEvents = [];
+        $scope.newQuery = {};
+        var allEvents = [];
 
 
-		var loadAll = function(){
-			var path = '/events/';
-			var getEvents = commonServices.getData(path);
-			allEvents = [];
-			$q.all([getEvents]).then(function(data) {
-					if (data[0]) {
-						console.log(data[0]);
-						_.each(data[0], function(event) {
-							allEvents.push(event);
-						});
-						$scope.eventList = allEvents;
-					}else{
-						console.log('Failed to get Events...');
-					}
-				});
-		};
+        var loadAll = function() {
+            var getEvents = commonServices.getPublicEvents();
+            allEvents = [];
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        event.key = key;
+                        allEvents.push(event);
+                    });
+                    $scope.eventList = allEvents;
+                } else {
+                    console.log('Failed to get Events...');
+                }
+            });
+        };
 
-		loadAll();
+        loadAll();
 
-		$scope.search = function(){
-			console.log($scope.newQuery.search);
-			if(allEvents.length>0){
-				if($scope.newQuery.search == '*'){
-					loadAll();
-				}
-				else{
-					var eventsFound = [];
-					_.each(allEvents, function(event){
-						_.each(event, function(attribute){
-							if(_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())){
-								eventsFound.push(event);
-								return false;
-							}
-						});				
-					});
-					if(eventsFound.length == 0){
-						console.log('no results');
-						$scope.newQuery.search = null;
-						$scope.SearchPlaceHolder = 'No results for \'' +$scope.newQuery.search +  '\' found';
-					}
-					$scope.eventList = eventsFound;
-				}
-			}
-				
-		};
+        $scope.search = function() {
+            if (allEvents.length > 0) {
+                $scope.empty = false;
 
-		$scope.update = function () {
-			
-			// Api.events.query().$promise.then(
-			// 	function (response) { // on success
-			// 		$scope.eventList = response;
-			// 		if (response.length === 0) {
-			// 			swal({
-			// 				text: "No events exist.",
-			// 				type: 'warning',
-			// 				timer: 2500
-			// 			});
-			// 		}
-			// 		$scope.manageEvent = function (index) {
-			// 			$scope.isDetailView = !$scope.isDetailView;
-			// 			$scope.howEvent.currentEvent = $scope.eventList[index];
-			// 			localStorageService.set('currentEvent', $scope.howEvent.currentEvent.id);
-			// 			$location.path('/manage/events/details/description');
-			// 		};
-			// 	},
-			// 	function (response) { // on error
-			// 		swal({
-			// 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
-			// 			type: 'warning',
-			// 			timer: 2500
-			// 		});
-			// 	}
-			// );
-		};
+                if ($scope.newQuery.search == '*' || !($scope.newQuery.search)) {
+                    loadAll();
+                } else {
+                    var eventsFound = [];
+                    _.each(allEvents, function(event) {
+                        _.each(event, function(attribute) {
+                            if (angular.isString(attribute) && angular.isString($scope.newQuery.search)) {
+                                if (_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())) {
+                                    eventsFound.push(event);
+                                    return false;
+                                }
+                            } else if (_.includes(attribute, $scope.newQuery.search)) {
+                                eventsFound.push(event);
+                                return false;
+                            }
+                        });
+                    });
+                    if (eventsFound.length == 0) {
+                        console.log('no results');
+                        $scope.empty = true;
+                        $scope.noEventsFound = "No results for " + $scope.newQuery.search + " found.";
+                    }
+                    $scope.eventList = eventsFound;
+                }
+            }
+        };
 
-		$scope.add = function () {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/parts/newEventForm.html',
-				controller: 'NewEventFormCtrl'
-			});
-			if (!modalInstance) {
-				$scope.update();
-			}
-		};
-	});
+        $scope.add = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/newEventForm.html',
+                controller: 'NewEventFormCtrl'
+            });
+            modalInstance.result.then(function() {
+                console.log("Reloading...");
+                loadAll();
+            });
+        };
+
+        $scope.manageEvent = function(index) {
+            var selected = allEvents[index];
+            console.log('Index is: ' + index);
+            console.log(selected.key);
+
+
+
+            var getEvents = commonServices.getEvent(selected);
+            console.log(getEvents);
+
+            //match event to db
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        if (selected.key === event.key) {
+                            console.log('Event: ' + event.name);
+                            selected = event;
+                        }
+                    });
+                }
+            });
+
+            DAO.selectedEvent = selected;
+            $location.url('details');
+            //do something
+        };
+
+        $scope.deleteEvent = function(index) {
+            var selected = allEvents[index];
+            console.log('Index is: ' + index);
+            console.log(selected.key);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this event!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete '" + selected.name + "'",
+                cancelButtonText: "Cancel"
+            }).then(
+                function(result) {
+                    console.log('confirm');
+                    var result = commonServices.removeData('/events/' + selected.key);
+                    swal({
+                        text: "Deleting " + selected.name,
+                        type: 'success',
+                        timer: 2500
+                    });
+                    $q.all([result]).then(function(data) {
+                        loadAll();
+                        if (data[0]) {
+                            console.log(result);
+                        } else {
+                            console.log('Log: Error on deletion');
+                        }
+                    });
+                },
+                function(dismiss) {
+                    console.log('cancel');
+                }
+            );
+        };
+    });

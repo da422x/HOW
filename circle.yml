@@ -1,13 +1,30 @@
+machine:
+  node:
+    version: 6.8.1
+
 test:
   override:
     - grunt test --force
 
 dependencies:
-  pre:
-    - npm install -g npm
+  post:
+    - bower install
+    - npm install -g grunt
+
+general:
+  branches:
+    only: 
+      - master
+      - nitenite
 
 deployment:
   production:
     branch: master
     commands:
-      - ./node_modules/surge/lib/cli.js --project ./docs
+      - grunt build
+      - npm run surge_prod
+  nightly:
+    branch: nitenite
+    commands:
+      - grunt build
+      - npm run surge_test

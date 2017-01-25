@@ -9,56 +9,52 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-	.controller('RoleRequestChangeFormCtrl', function ($q, commonServices, $scope, $uibModalInstance, userInfo) {
-		'use strict';
+    .controller('RoleRequestChangeFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, userInfo) {
+        'use strict';
 
-		$scope.userData = userInfo;
+        $scope.userData = userInfo;
 
-		console.log($scope.userData)
+        $scope.formData = {
+            role: '',
+            comment: ''
+        };
 
-		$scope.formData = {
-			role: '',
-			comment: '' 
-		};
+        $scope.roles = $rootScope.siteData.roles;
 
-		$scope.roles = [
-			{ value: 'Participant', text: 'Participant' },
-			{ value: 'Volunteer', text: 'Volunteer' },
-			{ value: 'Leadership Team Member', text: 'Leadership Team Member' },
-			{ value: 'HOW National Team/Staff', text: 'HOW National Team/Staff' },
-			{ value: 'admin', text: 'admin' }
-		];
+        $scope.cancel = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
 
-		$scope.cancel = function () {
-			$uibModalInstance.dismiss('cancel');
-		};
+        $scope.submitForm = function() {
+            if ($scope.formData.role.value) {
 
-		$scope.submitForm = function () {
-			if ($scope.formData.role.value) {
+                var newKey = commonServices.getNewKey('/roleChangeRequests/');
 
-				var newKey = commonServices.getNewKey('/roleChangeRequests/');
+                $q.all([newKey]).then(function(data) {
 
-				$q.all([newKey]).then(function(data) {
+                    var newTS = Date.now();
+                    var packet = {
+                        uid: $scope.userData.uid,
+                        name: ($scope.userData.data.name.first + ' ' + $scope.userData.data.name.last),
+                        email: $scope.userData.data.email,
+                        current_role: $scope.userData.data.role,
+                        request_role: $scope.formData.role.value,
+                        user_comment: $scope.formData.comment,
+                        admin_comment: '',
+                        request_status: 'pending',
+                        request_created: newTS,
+                        request_updated: newTS,
+                        request_closed: ''
+                    };
 
-					console.log(data[0]);
-					var packet = {
-						uid: $scope.userData.uid,
-						name: ($scope.userData.data.name.first + ' ' + $scope.userData.data.name.last),
-						email: $scope.userData.data.email,
-						current_role: $scope.userData.data.role,
-						request_role: $scope.formData.role.value,
-						user_comment: $scope.formData.comment,
-						admin_comment: '',
-						request_status: 'pending'
-					};
+                    commonServices.updateData('/roleChangeRequests/' + data[0], packet);
+                    $rootScope.$broadcast('modalClosing');
+                    $uibModalInstance.dismiss('cancel');
+                });
 
-					commonServices.updateData('/roleChangeRequests/' + data[0], packet);
-					$uibModalInstance.dismiss('cancel');
-				});
-				
-			}else{
-				console.log('select role...');
-			}
-		}
+            } else {
+                console.log('select role...');
+            }
+        }
 
-	});
+    });

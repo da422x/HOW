@@ -9,7 +9,7 @@
  * Controller of management console - region administration
  */
 angular.module('ohanaApp')
-	.controller('RegadminCtrl', function () {
-		'use strict';
-		// empty controller
-	});
+    .controller('RegadminCtrl', function() {
+        'use strict';
+        // empty controller
+    });
