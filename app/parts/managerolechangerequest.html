@@ -32,6 +32,7 @@
                 <div>Current Role: {{request.current_role}}</div>
                 <div>Request Status: {{request.request_status}}</div>
                 <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+                <div>User Comments: {{request.user_comment}}</div>
             </div>
         </div>
     </div>
@@ -55,6 +56,9 @@
                 <div>Current Role: {{request.current_role}}</div>
                 <div>Request Status: {{request.request_status}}</div>
                 <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+                <div>Reviewed By: {{request.reviewer}}</div>
+                <div>User Comments: {{request.user_comment}}</div>
+                <div>Reviewer Comments: {{request.reviewers_comment}}</div>
             </div>
         </div>
     </div>
@@ -78,6 +82,9 @@
                 <div>Current Role: {{request.current_role}}</div>
                 <div>Request Status: {{request.request_status}}</div>
                 <div>Created: {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}</div>
+                <div>Reviewed By: {{request.reviewer}}</div>
+                <div>User Comments: {{request.user_comment}}</div>
+                <div>Reviewer Comments: {{request.reviewers_comment}}</div>
             </div>
         </div>
     </div>
