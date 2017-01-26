@@ -18,7 +18,7 @@
                         <label for="startdate" class="col-xs-2 col-form-label">From</label>
                         <div class="col-xs-6">
                             <div class="input-group">
-                                <input id="startdate" type="text" class="form-control" ng-model="startdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" ng-change="ExpenseSearch()" />
+                                <input id="startdate" type="text" class="form-control" ng-model="startdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" ng-change="ExpenseSearch('normal')" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="dateopen()"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
@@ -38,7 +38,7 @@
                         <label for="enddate" class="col-xs-2 col-form-label">To</label>
                         <div class="col-xs-6">
                             <div class="input-group">
-                                <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" date-lower-than="{{startdate| date:'short'}}" ng-change="ExpenseSearch()" />
+                                <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" date-lower-than="{{startdate| date:'short'}}" ng-change="ExpenseSearch('normal')" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="dateopen1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
@@ -65,7 +65,7 @@
                 <div class="form-actions">
                     <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
                     <input type="button" class="btn btn-primary format_button_md" ng-click="neweexpense()" ng-show="userRole!='National Staff'" value="New Expense">
-                    <button class="btn btn-primary btn-danger" ng-click="filterPastDue()" title="Filters expenses that were submitted 30 days prior to date and still Overdue">Overdue Expenses</button>
+                    <button class="btn btn-primary btn-danger" ng-show="userRole=='National Staff' || userRole=='Chapter Lead'" ng-click="filterPastDue()" title="Filters expenses that were submitted 30 days prior to date and still Overdue">Overdue Expenses</button>
                     <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
                         <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
                     </a>
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="form-group row col-lg-12">
-            <table id="expenseTable" class="display table table-bordered responsive" cellspacing="0" width="100%">
+            <table id="expenseTable" class="display table table-bordered responsive" cellspacing="0" width="80%">
             </table>
         </div>
     </form>
