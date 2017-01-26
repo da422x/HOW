@@ -46,24 +46,86 @@ angular.module('ohanaApp')
         }
 
         $scope.declined = function(key, request) {
-            var ts = Date.now();
-            delete request.key
-            delete request.$$hashKey;
-            request.request_update = ts;
-            request.request_status = 'Declined';
-            commonServices.updateData('/roleChangeRequests/' + key, request);
-            $scope.update();
+            swal({
+                title: 'Reason for approval?',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+            }).then(function(message) {
+                    if (message === '') {
+                        swal(
+                            'Alert',
+                            'Declining request requires a comment...',
+                            'error'
+                        );
+                    } else {
+                        var ts = Date.now();
+                        delete request.key
+                        delete request.$$hashKey;
+                        request.reviewer = userService.getUserName();
+                        request.reviewers_comment = message;
+                        request.request_update = ts;
+                        request.request_status = 'Declined';
+                        commonServices.updateData('/roleChangeRequests/' + key, request);
+                        $scope.update();
+                        swal(
+                            'Declined',
+                            'Role change was declined!',
+                            'success'
+                        );
+                    }
+                },
+                function(dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'No change made to request',
+                            'error'
+                        );
+                    }
+                });
         };
 
         $scope.approved = function(key, request) {
-            var ts = Date.now();
-            delete request.key
-            delete request.$$hashKey;
-            request.request_update = ts;
-            request.request_status = 'Approved';
-            commonServices.updateData('/roleChangeRequests/' + key, request);
-            commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
-            $scope.update();
+            swal({
+                title: 'Reason for approval?',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+            }).then(function(message) {
+                    if (message === '') {
+                        swal(
+                            'Alert',
+                            'Approval requires a comment...',
+                            'error'
+                        );
+                    } else {
+                        var ts = Date.now();
+                        delete request.key
+                        delete request.$$hashKey;
+                        request.reviewer = userService.getUserName();
+                        request.reviewers_comment = message;
+                        request.request_update = ts;
+                        request.request_status = 'Approved';
+                        commonServices.updateData('/roleChangeRequests/' + key, request);
+                        commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
+                        $scope.update();
+                        swal(
+                            'Approved',
+                            'Role change was approved!',
+                            'success'
+                        );
+                    }
+                },
+                function(dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'Your imaginary file is safe :)',
+                            'error'
+                        );
+                    }
+                });
         };
 
         $scope.cancel = function() {
