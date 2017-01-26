@@ -69,18 +69,20 @@ angular.module('ohanaApp')
             name: 'Past Year',
             value: 'Past Year'
         }, {
-            name: 'Overdue',
-            value: 'Overdue'
-        }, {
             name: 'Custom Range',
             value: 'Custom Range'
         }];
         $scope.DateFilter = $scope.DateRangelist[2];
         var currentdate = new Date();
-        var firstday = new Date(currentdate.getFullYear(), 0, 1);
+        var firstday = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
         $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
         $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
         $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+
+        // $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
+        $scope.enddate = currentdate;
+        $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+
 
 
         //Date Filter Change
@@ -88,39 +90,43 @@ angular.module('ohanaApp')
 
             switch ($scope.DateFilter.value) {
                 case 'Past Week':
+                    var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 7));
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
                     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    $scope.ExpenseSearch();
+                    $scope.ExpenseSearch("normal");
                     break;
 
                 case 'Past Month':
+                    var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
                     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    $scope.ExpenseSearch();
+                    $scope.ExpenseSearch("normal");
                     break;
 
                 case 'Past 3 Month':
+                    var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
                     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    $scope.ExpenseSearch();
+                    $scope.ExpenseSearch("normal");
                     break;
 
                 case 'Past Year':
+                    var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
                     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    $scope.ExpenseSearch();
+                    $scope.ExpenseSearch("normal");
                     break;
 
                 case 'Custom Range':
@@ -130,13 +136,13 @@ angular.module('ohanaApp')
 
                     break;
 
-                case 'Overdue':
-                    $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
-                    $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
-                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
-                    $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
-                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    $scope.ExpenseSearch();
+                    // case 'Overdue':
+                    //     $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
+                    //     $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
+                    //     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    //     $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
+                    //     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    //     $scope.ExpenseSearch();
                 default:
                     break;
 
@@ -185,8 +191,8 @@ angular.module('ohanaApp')
                     name: 'Paid',
                     value: 'Paid'
                 }, {
-                    name: 'Overage',
-                    value: 'Overage'
+                    name: 'Over Age',
+                    value: 'Over Age'
                 }];
                 $scope.PayStatus = $scope.paystatuslist[1];
                 break;
@@ -215,8 +221,8 @@ angular.module('ohanaApp')
                     name: 'Paid',
                     value: 'Paid'
                 }, {
-                    name: 'Overage',
-                    value: 'Overage'
+                    name: 'Over Age',
+                    value: 'Over Age'
                 }];
                 $scope.PayStatus = $scope.paystatuslist[1];
                 break;
@@ -244,8 +250,8 @@ angular.module('ohanaApp')
                     name: 'Paid',
                     value: 'Paid'
                 }, {
-                    name: 'Overage',
-                    value: 'Overage'
+                    name: 'Over Age',
+                    value: 'Over Age'
                 }];
                 $scope.PayStatus = $scope.paystatuslist[2];
         }
@@ -318,6 +324,7 @@ angular.module('ohanaApp')
         //------------UI Bootstrap Date -----END--------------//
         //----Past Due - Expense list function -------Start -----------//
         $scope.filterPastDue = function() {
+
             $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
             $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
             //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation           
@@ -336,15 +343,16 @@ angular.module('ohanaApp')
                     $scope.PayStatus = $scope.paystatuslist[2];
             }
             $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
-            $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
+            $scope.disp_enddate = ($scope.enddate.getMonth() + 1) + '/' + $scope.enddate.getDate() + '/' + $scope.enddate.getFullYear();
+            console.log($scope.userRole, $scope.PayStatus, $scope.startdate, $scope.enddate, $scope.disp_startdate, $scope.disp_enddate);
             $scope.DateFilter = $scope.DateRangelist[4];
-            $scope.ExpenseSearch();
+            $scope.ExpenseSearch("Overdue");
         }
 
         //----Past Due - Expense list function -------END -----------//
-        $scope.ExpenseSearch = function() {
+        $scope.ExpenseSearch = function(searchtype) {
             console.log("SEARCH - ", $scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
-            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value, searchtype);
             $scope.$applyAsync();
 
         }
@@ -357,6 +365,10 @@ angular.module('ohanaApp')
 
             $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
             $scope.$applyAsync();
+            // console.log("Service to be called", $scope.expensedataSet);
+            // angular.forEach($scope.expensedataSet, function(item) {
+            //     console.log("Service to be called");
+            // });
 
         }
 

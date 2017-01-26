@@ -25,7 +25,9 @@ angular.module('ohanaApp', [
         'LocalStorageModule',
         'ngMap',
         // 'uiGmapgoogle-maps',
-        'firebase'
+        'firebase',
+        'angularFileUpload',
+        'bcherny/formatAsCurrency'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
         $httpProvider.interceptors.push('pageAuthInterceptor');
