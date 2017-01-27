@@ -251,7 +251,7 @@ angular.module('ohanaApp')
                 var i = 2;
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
                     // console.log("Inside", $scope.LineDetails[x]);
-                    $scope.lineamount = parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount);
+                    $scope.lineamount = Math.round((parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount)) * 100) / 100;
                     $scope.exp.Line.push({
 
                         "ID": i,
