@@ -3,8 +3,8 @@
     "private": true,
     "scripts": {
         "ready": "grunt jsbeautifier && git merge origin nitenite && git add .",
-        "surge_test": "node ./node_modules/surge/lib/cli.js -p dist -d howtest.surge.sh",
-        "surge_prod": "node ./node_modules/surge/lib/cli.js -p dist -d howprod.surge.sh"
+        "surge_test": "surge -p dist -d howtest.surge.sh",
+        "surge_prod": "surge -p dist -d howprod.surge.sh"
     },
     "devDependencies": {
         "autoprefixer-core": "^5.2.1",
