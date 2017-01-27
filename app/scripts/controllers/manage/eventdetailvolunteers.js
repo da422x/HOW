@@ -16,12 +16,12 @@ angular.module('ohanaApp')
         $scope.selectedParticipants = [];
 
         $scope.add = function() {
-                var modalInstance = $uibModal.open({
-                    scope: $scope,
-                    templateUrl: '/parts/addParticipantsToEvent.html',
-                    controller: 'EventaddvolunteersCtrl'
-                });
-            } // end $scope.add
+            var modalInstance = $uibModal.open({
+                scope: $scope,
+                templateUrl: '/parts/addParticipantsToEvent.html',
+                controller: 'EventaddvolunteersCtrl'
+            });
+        } // end $scope.add
         $scope.removed = function(item) {
             var itemNum = $scope.selectedParticipants.indexOf(item);
             $scope.selectedParticipants.splice(itemNum, 1);

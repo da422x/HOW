@@ -194,7 +194,7 @@ module.exports = function(grunt) {
         injector: {
             options: {
                 template: 'app/index.html'
-                    // Task-specific options go here.
+                // Task-specific options go here.
             },
             local_dependencies: {
                 files: {
@@ -550,7 +550,7 @@ module.exports = function(grunt) {
             }
         },
         "jsbeautifier": {
-            files: ["Gruntfile.js", "./**.json", "./**.js", "bower.json", "app/**/*.js", "app/**/*.html", "app/**/*.css", "app/**/*.json"],
+            files: ["Gruntfile.js", "./**.json", "./**.js", "bower.json", "app/**/*.js", "app/**/*.html", "app/**/*.css", "app/**/*.json", "!app/bower_components/**/*.*"],
             options: {
                 //config: "path/to/configFile",
                 html: {
