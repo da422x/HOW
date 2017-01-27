@@ -48,8 +48,7 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-8 col-form-label">Trailer Miles</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number"
->
+                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
                         <p ng-if="newExpenseform.trailermiles.$error.pattern" class="field-feedback">
                             Enter trailer hauling miles > 0
                         </p>
