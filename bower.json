@@ -42,7 +42,9 @@
         "lodash": "^4.17.2",
         "ng-pickadate": "^0.3.1",
         "bootstrap-ui-datetime-picker": "^2.4.3",
-        "pdfmake": "^0.1.20"
+        "pdfmake": "^0.1.20",
+        "yadcf": "^0.9.1",
+        "chosen": "^1.6.2"
     },
     "resolutions": {
         "angular": "~1.5.9"

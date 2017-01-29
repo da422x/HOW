@@ -98,9 +98,127 @@
  .format_button_med {
      width: 40%;
      margin: 10px;
+     font-size: 16px;
  }
  
  .format_button_mm {
      width: 90%;
      margin: 10px;
  }
+ 
+ .format_button_orig {
+     width: 100%;
+     margin: 10px;
+ }
+ 
+ .panel-body-exp {
+     padding: 15px;
+ }
+ 
+ .expense_pad {
+     padding-left: 10px;
+     padding-top: 6px;
+ }
+ 
+ .expense_pad1 {
+     padding-left: 30px;
+     padding-top: 10px;
+     padding-bottom: 10px;
+ }
+ 
+ .expense_currency {
+     text-align: right;
+     padding-right: 10px;
+ }
+ 
+ input.currency {
+     text-align: right;
+     padding-right: 15px;
+ }
+ 
+ .input-group .form-control {
+     float: none;
+ }
+ 
+ .input-group .input-buttons {
+     position: relative;
+     z-index: 3;
+ }
+ 
+ .pastdue {
+     background-color: red !important;
+ }
+ 
+ input:invalid {
+     border: 2px solid red;
+ }
+ 
+ input:valid {
+     border: 2px solid green;
+ }
+ 
+ .field-feedback {
+     color: #a94442;
+     font-weight: bold;
+ }
+ 
+ .file-browser {
+     visibility: hidden;
+ }
+ /* 
+ To remove the “No file chosen” tooltip from a file input
+ */
+ 
+ .input[type='file'] {
+     color: transparent;
+ }
+ 
+ .radiofieldgroup {
+     float: left;
+     width: auto;
+     margin-left: 3em;
+     font-size: 20px;
+     padding-top: 5px;
+     padding-bottom: 5px;
+ }
+ 
+ .imagedisplay {
+     padding: 20px;
+     width: 300px;
+     height: 200px;
+ }
+ 
+ .labeldisplay {
+     padding-top: 6px;
+     padding-bottom: 6px;
+     padding-left: 25px;
+ }
+ 
+ .btnalign {
+     padding-left: 10px;
+     padding-right: 10px;
+     padding-top: 6px;
+     padding-bottom: 6px;
+ }
+ 
+ .divhide {
+     display: none;
+ }
+ 
+ .btninfo {
+     font-size: 16px;
+     font-weight: bold;
+     color: white;
+     background-color: orange;
+     border-radius: 10px;
+     padding-left: 5px;
+     padding-top: 6px;
+ }
+ 
+ .inputtextpad {
+     padding-bottom: 6px;
+     padding-top: 6px;
+ }
+ /* #OtherExpensebtn {
+     visibility: hidden;
+ }*/

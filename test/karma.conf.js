@@ -80,6 +80,8 @@ module.exports = function(config) {
             'bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
             'bower_components/pdfmake/build/pdfmake.js',
             'bower_components/pdfmake/build/vfs_fonts.js',
+            'bower_components/yadcf/jquery.dataTables.yadcf.js',
+            'bower_components/chosen/chosen.jquery.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'app/scripts/**/*.js',

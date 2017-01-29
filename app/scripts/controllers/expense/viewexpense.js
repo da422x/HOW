@@ -8,49 +8,164 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ViewExpenseController', function($scope, $rootScope, $filter, expenseservice, commonServices, $q) {
+    .controller('ViewExpenseController', function($scope, userService, $filter, $uibModal, expenseservice, commonServices, $q) {
 
         var self = this;
         var originalList = [];
         $scope.listS = "";
         $scope.lists = {};
+        $scope.form = {};
 
         $scope.userlist = "";
-        var currentdate = new Date();
-        var firstday = new Date(currentdate.getFullYear(), 0, 1);
-        $scope.startdate = firstday;
         $scope.useremail = commonServices.getCurrentUserEmail();
 
         $scope.orderByField = 'SubmitDate';
         $scope.reverseSort = false;
 
         $scope.pageTitle = 'Search & Sort Table Records';
-        $scope.sortBy = 'name'; // default value
-        $scope.sortDescending = false; // default ascending
-        $scope.searchText = ''; // default blank
+        $scope.sortType = 'SubmitDate'; // set the default sort type
+        $scope.sortReverse = true; // set the default sort order
+        $scope.searchText = ''; // set the default search/filter term
+
+        //Go to New Expense Page
+        $scope.neweexpense = function() {
+            window.location = "#/expense/newexpense";
+        }
+
+        //---select
+        $scope.selectedRow = null; // initialize our variable to null
+        $scope.setClickedRow = function(index) { //function that sets the value of selectedRow to current index
+            $scope.selectedRow = index;
+        }
 
         //---Role Based information ---------------
 
-        var userUID = $rootScope.userId;
+        var userUID = userService.getId();
         var userData = commonServices.getData('/userData/' + userUID);
-        $scope.userRole = $rootScope.userRole;
-        $scope.userName = $rootScope.userName;
-        $scope.userChapter = $rootScope.userChapter;
-        var userRquests = commonServices.getData('/roleChangeRequests/');
+        $scope.userRole = userService.getRole();
+        $scope.userName = userService.getUserData();
+        $scope.userChapter = userService.getChapter();
+        // var userRquests = commonServices.getData('/roleChangeRequests/');
 
-        $q.all([userData, userRquests]).then(function(data) {
-            $scope.profileData = data[0];
-            $scope.profileData.role = $scope.userRole;
-            $scope.profilechapter = $scope.profileData.Chapter;
-            $scope.userUID = userUID;
+        // $q.all([userData, userRquests]).then(function(data) {
+        //     $scope.profileData = data[0];
+        //     $scope.profileData.role = $scope.userRole;
+        //     $scope.profilechapter = $scope.profileData.Chapter;
+        //     $scope.userUID = userUID;
 
-        });
+        // });
         $scope.Head = "";
+
+        $scope.DateRangelist = [{
+            name: 'Past Week',
+            value: 'Past Week'
+        }, {
+            name: 'Past Month',
+            value: 'Past Month'
+        }, {
+            name: 'Past 3 Month',
+            value: 'Past 3 Month'
+        }, {
+            name: 'Past Year',
+            value: 'Past Year'
+        }, {
+            name: 'Overdue',
+            value: 'Overdue'
+        }, {
+            name: 'Custom Range',
+            value: 'Custom Range'
+        }];
+        $scope.DateFilter = $scope.DateRangelist[2];
+        var currentdate = new Date();
+        var firstday = new Date(currentdate.getFullYear(), 0, 1);
+        $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
+        $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+        $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+
+
+        //Date Filter Change
+        $scope.DateFilterChange = function() {
+
+            switch ($scope.DateFilter.value) {
+                case 'Past Week':
+                    $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 7));
+                    $scope.enddate = currentdate;
+                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    $scope.ExpenseSearch();
+                    break;
+
+                case 'Past Month':
+                    $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
+                    $scope.enddate = currentdate;
+                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    $scope.ExpenseSearch();
+                    break;
+
+                case 'Past 3 Month':
+                    $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
+                    $scope.enddate = currentdate;
+                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    $scope.ExpenseSearch();
+                    break;
+
+                case 'Past Year':
+                    $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
+                    $scope.enddate = currentdate;
+                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    $scope.ExpenseSearch();
+                    break;
+
+                case 'Custom Range':
+                    $scope.disp_startdate = '';
+                    $scope.disp_enddate = '';
+                    $scope.disp_filterdate = '';
+
+                    break;
+
+                case 'Overdue':
+                    $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
+                    $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
+                    $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+                    $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
+                    $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
+                    $scope.ExpenseSearch();
+                default:
+                    break;
+
+            }
+        }
+
+        // //----Modal -- Payment Status Log  ---------//
+        // var $ctrl = this;
+
+        // $scope.ok = function() {
+        //     alert($scope.datefromto);
+        //     console.log("modal ", $scope.$modalInstance.result);
+        //     $scope.ExpenseSearch();
+        //     $scope.$modalInstance.close();
+        // };
+
+        // $scope.cancel = function() {
+        //     $scope.$modalInstance.dismiss('cancel');
+        // };
+
+        var LoggedUser = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+
+
+
 
         switch ($scope.userRole) {
             case 'Volunteer':
             case 'Participant':
-                $scope.HeadTitle = ' created by ' + $scope.userName;
+                $scope.HeadTitle = ' created by ' + LoggedUser;
                 $scope.paystatuslist = [{
                     name: 'All',
                     value: ''
@@ -134,6 +249,18 @@ angular.module('ohanaApp')
                 }];
                 $scope.PayStatus = $scope.paystatuslist[2];
         }
+
+        //---Past Due Days Calculation ---------
+        $scope.getPastDue = function(submitdate) {
+            var currentdate = new Date();
+            var mdyy = submitdate.split('/');
+            var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
+            var pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
+
+            //console.log("due", pastdue, currentdate, receivedDate);
+            return pastdue;
+        }
+
         //------------UI Bootstrap Date -----START--------------//
 
         $scope.today = function() {
@@ -145,10 +272,14 @@ angular.module('ohanaApp')
 
         $scope.dateopen = function() {
             $scope.popup.opened = true;
+            $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+            $scope.$applyAsync();
         };
 
         $scope.dateopen1 = function() {
             $scope.popup1.opened = true;
+            $scope.disp_enddate = ($scope.enddate.getMonth() + 1) + '/' + $scope.enddate.getDate() + '/' + $scope.enddate.getFullYear();
+            $scope.$applyAsync();
         };
 
 
@@ -187,9 +318,9 @@ angular.module('ohanaApp')
         //------------UI Bootstrap Date -----END--------------//
         //----Past Due - Expense list function -------Start -----------//
         $scope.filterPastDue = function() {
-            $scope.startdate = new Date(currentdate.getFullYear(), 0, 1);
-            $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 60));
-            //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation
+            $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
+            $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
+            //(1000 * 60 * 60 * 24 * 60) - 60 Day prior calculation           
 
             switch ($scope.userRole) {
                 case 'Volunteer':
@@ -204,19 +335,30 @@ angular.module('ohanaApp')
                 default:
                     $scope.PayStatus = $scope.paystatuslist[2];
             }
-
+            $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
+            $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
+            $scope.DateFilter = $scope.DateRangelist[4];
+            $scope.ExpenseSearch();
         }
 
         //----Past Due - Expense list function -------END -----------//
+        $scope.ExpenseSearch = function() {
+            console.log("SEARCH - ", $scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+            $scope.$applyAsync();
+
+        }
 
         $scope.viewexpensedata = function() {
 
-            console.log("Service to be called", $scope.userChapter);
-            $scope.lists = originalList = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
-            console.log("Controller Expense List Data", $scope.lists, originalList);
+            //console.log("Service to be called", $scope.userChapter);
+            // $scope.lists = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
+            // originalList = $scope.lists.viewExpenseList;
 
-        };
+            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+            $scope.$applyAsync();
 
+        }
 
         // var rptdata = [];
         var currentdate = new Date();
@@ -230,13 +372,23 @@ angular.module('ohanaApp')
 
         var GetJsonData = function() {
             var rptdata = [];
-
+            var useremail = commonServices.getCurrentUserEmail();
+            // $scope.userRole = $rootScope.userRole;
+            // $scope.userName = $rootScope.userName;
+            // $scope.userChapter = $rootScope.userChapter;
             angular.forEach($scope.lists, function(value, index) {
 
                     for (var i = 0; i < value.length; i++) {
                         // console.log("first list length", $scope.listS.length);
-                        if (($scope.listS === value[i].Chapter || $scope.listS === "") && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) && $scope.userRole != 'coordinator') {
+                        //$scope.listS === value[i].Chapter || $scope.listS === "") &&
+
+                        console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
+                        console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
+                        console.log("third check - ", $scope.userRole, value[i].email, useremail);
+
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -248,14 +400,13 @@ angular.module('ohanaApp')
                                 "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
-                            // console.log("first if");
+
                             rptdata.push(reportdata);
                         }
 
-                        console.log("Real Value", value[i].SubmitDate, $scope.startdate, $scope.enddate, $scope.userChapter, value[i].Chapter, $scope.userRole, 'coordinator', value[i].PaymentStatus, $scope.PayStatus);
-                        if (($scope.userChapter == value[i].Chapter && $scope.userRole == 'coordinator') && (value[i].PaymentStatus === $scope.PayStatus || $scope.PayStatus === "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate))) {
-
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -268,14 +419,31 @@ angular.module('ohanaApp')
                                 "Explanation of Other Expense": value[i].Line[2].Description
                             };
 
-                            // console.log("second if");
+                            rptdata.push(reportdata);
+                        }
+
+                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                            $scope.userRole == 'National Staff') {
+                            var reportdata = {
+                                "Date": value[i].eventdate,
+                                "Business Purpose, Origin & Destination": value[i].Description,
+                                "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                                "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                                "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                                "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                                "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                                "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                                "Explanation of Other Expense": value[i].Line[2].Description
+                            };
+
                             rptdata.push(reportdata);
                         }
 
                         console.log("report", i, rptdata);
                     } //for loop 
                 }) //for each
-            console.log("JSON DATA", rptdata);
+
 
             return rptdata;
 
@@ -293,9 +461,12 @@ angular.module('ohanaApp')
             var sdate = ($scope.startdate.getMonth() + 1) + '/' + $scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
             var edate = ($scope.enddate.getMonth() + 1) + '/' + $scope.enddate.getDate() + '/' + $scope.enddate.getFullYear();
             var email = commonServices.getCurrentUserEmail();
-            var name = $scope.userName;
-            var address = $scope.profileData.address.line1 + ', ' + $scope.profileData.address.line2;
-            var cityinfo = $scope.profileData.address.city + ', ' + $scope.profileData.address.state + ', ' + $scope.profileData.address.zip;
+            var name = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+            var address = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2;
+            var cityinfo = $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
+
+            // var address = $scope.profileData.address.line1 + ', ' + $scope.profileData.address.line2;
+            // var cityinfo = $scope.profileData.address.city + ', ' + $scope.profileData.address.state + ', ' + $scope.profileData.address.zip;
             $scope.expenseservice = expenseservice;
             console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
             console.log("1report entery", $scope.userRole, $scope.userChapter);
@@ -408,7 +579,10 @@ angular.module('ohanaApp')
         $scope.idSelectedBill = null;
         $scope.setSelected = function(idSelectedBill) {
             $scope.idSelectedBill = idSelectedBill;
-            //alert($scope.idSelectedBill); 
+            // alert("expense/expensedetail/" + $scope.idSelectedBill);
+            window.location = "#/expense/expensedetail/" + $scope.idSelectedBill;
+
+            // $location.path("#/expense/expensedetail/" + $scope.idSelectedBill);
         };
 
 

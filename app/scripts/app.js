@@ -158,6 +158,11 @@ angular.module('ohanaApp', [
                 controller: 'ManageChapterchatCtrl',
                 controllerAs: 'manage/chapterchat'
             })
+            .when('/expense/CustomDateRange', {
+                templateUrl: 'views/expense/customdaterange.html',
+                controller: 'ExpenseCustomdaterangeCtrl',
+                controllerAs: 'expense/CustomDateRange'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
@@ -271,9 +276,9 @@ angular.module('ohanaApp', [
         });
 
         //Firebase Logs
-        if (window.location.href.indexOf("localhost") > -1) {
-            firebase.database.enableLogging(true, true);
-        }
+        // if (window.location.href.indexOf("localhost") > -1) {
+        //     firebase.database.enableLogging(true, true);
+        // }
     })
 
 .filter('unique', function() {
