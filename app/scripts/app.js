@@ -123,8 +123,10 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/profile.html',
                 controller: 'ProfileCtrl as profile'
             })
-            .when('/manage/chAdmin', {
+            .when('/manage/chadmin', {
                 templateUrl: 'views/manage/chadmin.html',
+                controller: 'ChadminCtrl',
+                controllerAs: 'manage/chadmin'
                 //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
