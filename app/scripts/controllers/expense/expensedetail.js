@@ -139,7 +139,7 @@ angular.module('ohanaApp')
                     // }
                     // document.getElementById('OtherExpensebtn').style.display = 'block';
                     $scope.OverageDisable = false;
-                    if (item.PaymentStatus == 'Overage') {
+                    if (item.PaymentStatus == 'Over Age') {
                         swal('Overage Expense - Not editable! ', '', 'error');
 
                         $scope.OverageDisable = true;
@@ -163,7 +163,7 @@ angular.module('ohanaApp')
                     switch ($scope.userRole) {
                         case 'Participant':
                         case 'Volunteer':
-                            if (item.PaymentStatus == 'Submitted' || item.PaymentStatus == 'Returned' || item.PaymentStatus == 'Approved' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Overage') {
+                            if (item.PaymentStatus == 'Submitted' || item.PaymentStatus == 'Returned' || item.PaymentStatus == 'Approved' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
                                 $scope.OverageDisable = true;
                                 $scope.EditMode = " - READ-ONLY mode";
                                 // document.getElementById('OtherExpensebtn').style.display = 'none';
@@ -192,8 +192,8 @@ angular.module('ohanaApp')
                                     name: 'Resubmit',
                                     value: 'Resubmit'
                                 }, {
-                                    name: 'Overage',
-                                    value: 'Overage'
+                                    name: 'Over Age',
+                                    value: 'Over Age'
                                 }];
                             }
                             if (item.PaymentStatus == 'Returned') {
@@ -205,8 +205,8 @@ angular.module('ohanaApp')
                                     name: 'Resubmit',
                                     value: 'Resubmit'
                                 }, {
-                                    name: 'Overage',
-                                    value: 'Overage'
+                                    name: 'Over Age',
+                                    value: 'Over Age'
                                 }];
                             }
                             if (($scope.useremail != $scope.expenseemail) && (item.PaymentStatus == 'Pending' || item.PaymentStatus == 'Returned')) {
@@ -220,9 +220,10 @@ angular.module('ohanaApp')
                                 // document.getElementById('OtherExpensebtn').style.display = 'block';
                             }
 
-                            if (item.PaymentStatus == 'Approved' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Overage') {
+                            if (item.PaymentStatus == 'Approved' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
                                 $scope.EditMode = " - READ-ONLY";
-                                $scope.OverageDisable = true;
+                                $scope.Overage
+                                Disable = true;
 
                             }
 
@@ -241,8 +242,8 @@ angular.module('ohanaApp')
                                     name: 'Approved',
                                     value: 'Approved'
                                 }, {
-                                    name: 'Overage',
-                                    value: 'Overage'
+                                    name: 'Over Age',
+                                    value: 'Over Age'
                                 }];
                             }
                             if (item.PaymentStatus == 'Approved') {

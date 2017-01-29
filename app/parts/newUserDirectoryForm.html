@@ -33,9 +33,9 @@
             </div>
             <!-- Text - street 2 -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="Address2">Address 2*</label>
+                <label class="col-md-4 control-label" for="Address2">Address 2</label>
                 <div class="col-md-7">
-                    <input id="Address2" name="Address2" type="text" placeholder="APT/SUITE" class="form-control input-md" ng-model="newUserDirectory.address.line2" ng-required="false">
+                    <input id="Address2" name="Address2" type="text" placeholder="APT/SUITE" class="form-control input-md" ng-model="newUserDirectory.address.line2">
                     <p ng-show="userForm.Address2.$invalid && !userForm.Address2.$pristine" class="help-block">Enter a valid address line.</p>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <label class="col-md-4 control-label" for="date">Date of Birth*</label>
                 <div class="col-md-7">
                     <p class="input-group">
-                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                        <input type="text" id="sanicDOB" class="form-control input-md mask" placeholder="mm/dd/yyyy" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
@@ -96,7 +96,8 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="phonenum">Phone #*</label>
                 <div class="col-md-7">
-                    <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="newUserDirectory.phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^\d{10}$/" ng-required="true">
+                    <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="newUserDirectory.phone" ng-minlength="13" ng-maxlength="13" ng-required="true">
+                    <!--ng-pattern="/^\d{10}$/"-->
                     <span class="help-block">10 digits only; no formatting, prefixes or extensions.</span>
                     <p ng-show="userForm.phonenum.$invalid && !userForm.phonenum.$pristine" class="help-block">Enter a valid phone number.</p>
                 </div>
@@ -139,7 +140,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="password">Password*</label>
                 <div class="col-md-7">
-                    <input id="password" name="password" type="text" class="form-control input-md" ng-model="newUserDirectory.password" ng-required="true">
+                    <input id="password" name="password" type="password" class="form-control input-md" ng-model="newUserDirectory.password" ng-required="true">
                     <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password.</p>
                 </div>
             </div>

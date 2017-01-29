@@ -166,5 +166,6 @@ angular.module('ohanaApp')
 
         angular.element(document).ready(function() {
             $("#phonenum").mask("(999)999-9999");
+            $("#sanicDOB").mask("99/99/9999");
         });
     });
