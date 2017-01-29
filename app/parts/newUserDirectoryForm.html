@@ -4,7 +4,7 @@
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate>
+    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="height: 500px; overflow-y: auto; overflow-x: hidden;">
         <fieldset>
             <!-- Text - First Name -->
             <div class="form-group">
@@ -144,14 +144,17 @@
                     <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password.</p>
                 </div>
             </div>
-            <!-- Button - Submit -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-7">
-                    <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
-                </div>
-            </div>
+
         </fieldset>
     </form>
 </div>
 <!-- end modal body -->
+<div class="modal-footer">
+    <!-- Button - Submit -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-7">
+            <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
+        </div>
+    </div>
+</div>
