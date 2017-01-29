@@ -19,7 +19,7 @@ angular.module('ohanaApp')
         $scope.buildTable = function(results) {
             var i;
             var packet;
-            var dataSet = dataGridUtil.buildMembersTableData(results);
+            var dataSet = dataGridUtil.buildChaptersTableData(results);
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 
@@ -31,11 +31,11 @@ angular.module('ohanaApp')
                 };
 
                 //if exists, destroy instance of table
-                if ($.fn.DataTable.isDataTable($('#membersTable'))) {
-                    $scope.membersTable.destroy();
+                if ($.fn.DataTable.isDataTable($('#chaptersTable'))) {
+                    $scope.chaptersTable.destroy();
                 }
 
-                $scope.membersTable = $('#membersTable').DataTable({
+                $scope.chaptersTable = $('#chaptersTable').DataTable({
                     // ajax: 'testData/members.json',
                     data: dataSet,
                     columns: [{}, {
@@ -85,7 +85,7 @@ angular.module('ohanaApp')
                         orderable: false,
                         className: 'dt-body-center',
                         render: function() {
-                            return '<input type="checkbox" id="membersTable-select">';
+                            return '<input type="checkbox" id="chaptersTable-select">';
                         }
                     }, {
                         targets: 3,
@@ -98,7 +98,7 @@ angular.module('ohanaApp')
                         [3, 'asc']
                     ],
                     headerCallback: function(thead) {
-                        $(thead).find('th').eq(0).html('<input type="checkbox" id="membersTable-select-all">');
+                        $(thead).find('th').eq(0).html('<input type="checkbox" id="chaptersTable-select-all">');
                     },
                     rowCallback: function(row, data, index) {
                         $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
@@ -119,8 +119,8 @@ angular.module('ohanaApp')
                     },
                     drawCallback: function(settings) {
                         // set currentId to user being edited
-                        $('#membersTable').off('click', 'tr');
-                        $('#membersTable').on('click', 'tr', function() {
+                        $('#chaptersTable').off('click', 'tr');
+                        $('#chaptersTable').on('click', 'tr', function() {
                             $scope.currId = $(this).find('input[type="checkbox"]').val();
 
                             if ($(this).find('input[type="checkbox"]').is(':checked')) {
@@ -134,7 +134,7 @@ angular.module('ohanaApp')
                             }
                         });
                         // editable field definitions and CRUD ops
-                        $('#membersTable .tdFname a').editable({
+                        $('#chaptersTable .tdFname a').editable({
                             type: "text",
                             name: "first",
                             placement: "bottom",
@@ -151,7 +151,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdLname a').editable({
+                        $('#chaptersTable .tdLname a').editable({
                             type: "text",
                             name: "last",
                             placement: "bottom",
@@ -168,7 +168,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdDob a').editable({
+                        $('#chaptersTable .tdDob a').editable({
                             type: "combodate",
                             name: "DOB",
                             placement: "bottom",
@@ -192,7 +192,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdEmail a').editable({
+                        $('#chaptersTable .tdEmail a').editable({
                             type: "email",
                             name: "email",
                             placement: "bottom",
@@ -208,7 +208,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdTelly a').editable({
+                        $('#chaptersTable .tdTelly a').editable({
                             type: "text",
                             name: "phone",
                             placement: "bottom",
@@ -230,7 +230,7 @@ angular.module('ohanaApp')
                             $("#phonenum").mask("(999)999-9999");
                         });
 
-                        $('#membersTable .tdSelectRole a').editable({
+                        $('#chaptersTable .tdSelectRole a').editable({
                             type: "select",
                             name: "role",
                             placement: "bottom",
@@ -256,7 +256,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdSelectRegion a').editable({
+                        $('#chaptersTable .tdSelectRegion a').editable({
                             type: "select",
                             name: "region",
                             placement: "bottom",
@@ -274,7 +274,7 @@ angular.module('ohanaApp')
                             },
                             source: $rootScope.siteData.regions
                         });
-                        $('#membersTable .tdSelectChapter a').editable({
+                        $('#chaptersTable .tdSelectChapter a').editable({
                             type: "select",
                             name: "chapter",
                             placement: "bottom",
@@ -320,7 +320,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdMil a').editable({
+                        $('#chaptersTable .tdMil a').editable({
                             type: "text",
                             name: "branch",
                             placement: "bottom",
@@ -336,7 +336,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdNotes a').editable({
+                        $('#chaptersTable .tdNotes a').editable({
                             type: "textarea",
                             name: "notes",
                             placement: "bottom",
@@ -349,9 +349,9 @@ angular.module('ohanaApp')
                 });
 
                 // Handle click on "Select all" control
-                $('#membersTable-select-all').on('click', function() {
+                $('#chaptersTable-select-all').on('click', function() {
                     // Get all rows with search applied
-                    var rows = $scope.membersTable.rows({
+                    var rows = $scope.chaptersTable.rows({
                         'search': 'applied'
                     }).nodes();
                     // Check/uncheck checkboxes for all rows in the table
@@ -359,10 +359,10 @@ angular.module('ohanaApp')
                 });
 
                 // Handle click on checkbox to set state of "Select all" control
-                $('#membersTable tbody').on('change', 'input[type="checkbox"]', function() {
+                $('#chaptersTable tbody').on('change', 'input[type="checkbox"]', function() {
                     // If checkbox is not checked
                     if (!this.checked) {
-                        var el = $('#membersTable-select-all').get(0);
+                        var el = $('#chaptersTable-select-all').get(0);
                         // If "Select all" control is checked and has 'indeterminate' property
                         if (el && el.checked && ('indeterminate' in el)) {
                             // Set visual state of "Select all" control
@@ -375,25 +375,24 @@ angular.module('ohanaApp')
         }; // end $scope.buildTable
 
         $scope.update = function() {
-            var newDataSet = commonServices.getData('/userData/');
-            var newRoleData = commonServices.getData('/userRoles/');
+            var newRegionsSet = commonServices.getData('/Regions/');
             var currentUserRole = userService.getRole();
             var currentUserData = userService.getUserData();
-            $q.all([newDataSet, newRoleData]).then(function(userData) {
-                var users = [],
-                    roles = [],
+            $q.all([newRegionsSet]).then(function(chapterData) {
+                var chapters = [],
+                    regions = [],
                     keys = [];
                 var i = 0;
 
-                _.each(userData[1], function(value, key) {
+                _.each(chapterData[0], function(value, key) {
                     switch (currentUserRole) {
                         case 'admin':
-                            roles.push(value.role);
+                            regions.push(value);
                             keys.push(key);
                             break;
                         case 'Chapter Lead':
                             if (value.role === 'Participant' || value.role === 'Volunteer' || value.role === 'Chapter Lead') {
-                                roles.push(value.role);
+                                regions.push(value);
                                 keys.push(key);
                             }
                             break;
@@ -403,27 +402,27 @@ angular.module('ohanaApp')
                 });
 
                 _.each(keys, function() {
-                    _.each(userData[0], function(value, key) {
+                    _.each(chapterData[0], function(value, key) {
                         switch (currentUserRole) {
                             case 'admin':
                                 if (keys[i] === key) {
                                     value.key = key;
-                                    value.role = roles[i];
-                                    users.push(value);
+                                    value.regions = regions[i];
+                                    chapters.push(value);
                                 }
                                 break;
                             case 'National Staff':
                                 if (keys[i] === key) {
                                     value.key = key;
-                                    value.role = roles[i];
-                                    users.push(value);
+                                    value.regions = regions[i];
+                                    chapters.push(value);
                                 }
                                 break;
                             case 'Chapter Lead':
                                 if (keys[i] === key && (currentUserData.Chapter === value.Chapter)) {
                                     value.key = key;
-                                    value.role = roles[i];
-                                    users.push(value);
+                                    value.regions = regions[i];
+                                    chapters.push(value);
                                 }
                                 break;
                             default:
@@ -432,12 +431,11 @@ angular.module('ohanaApp')
                     });
                     i++;
                 });
-                console.log(users);
                 $scope.buildTable(users);
             });
         }; // end $scope.update
 
-        $scope.roleChangeRequests = function() {
+        $scope.addChapter = function() {
             console.log();
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/managerolechangerequest.html',
@@ -445,7 +443,7 @@ angular.module('ohanaApp')
             });
         };
 
-        $scope.remove = function() {
+        $scope.removeChapter = function() {
             if ($scope.checkedBoxes.length === 0) {
                 swal('', 'No records selected!', 'warning');
             } else {

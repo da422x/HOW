@@ -112,11 +112,14 @@ angular.module('ohanaApp')
                 }];
 
                 $scope.ltmNav = [{
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }, {
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
+                }, {
+                    state: "#/manage/chadmin",
+                    text: "Chapter Administration"
+                }, {
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }, {
                     state: "#/manage/events",
                     text: "Events"
@@ -143,9 +146,6 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
-                }, {
-                    state: "#/manage/chadmin",
-                    text: "Chapter Administration"
                 }, {
                     state: "#/manage/chapterchat",
                     text: "Chapter Chat"

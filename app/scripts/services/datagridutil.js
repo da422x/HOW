@@ -139,4 +139,42 @@ angular.module('ohanaApp')
             return gridData;
         };
 
+        dataGridUtil.buildChaptersTableData = function(results) {
+            var resultsLen = results.length;
+            var gridData = [];
+            console.log(results);
+            // build chapters data table from http response
+            for (var i = 0; i < resultsLen; i++) {
+                var arr = {};
+                arr.region = results[i].key;
+                arr.first = results[i].name.first;
+                arr.last = results[i].name.last;
+                var dobparse = new Date(results[i].DOB);
+                var endob = dobparse.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+                arr.dob = endob;
+                arr.email = results[i].email;
+                arr.phone = results[i].phone;
+                arr.role = results[i].role;
+                arr.region = results[i].Region;
+                arr.chapter = results[i].Chapter;
+                if (results[i].branch) {
+                    arr.branch = results[i].branch;
+                } else {
+                    arr.branch = "";
+                }
+                if (results[i].notes) {
+                    arr.notes = results[i].notes;
+                } else {
+                    arr.notes = "";
+                }
+                gridData.push(arr);
+            }
+            console.log(gridData);
+            return gridData;
+        };
+
     });
