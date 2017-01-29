@@ -135,12 +135,17 @@ angular.module('ohanaApp')
             }]
         });
 
+        console.log($scope);
+        var mesy = $scope;
         $('#user_phone').editable({
             type: 'text',
             name: 'phone',
             placement: 'bottom',
             emptytext: 'null',
-            tpl: '<input type="text" id ="zipiddemo" class="mask form-control input-sm dd" style="padding-right: 24px;">',
+            display: function(value) {
+                console.log(value);
+            }
+            tpl: '<input type="text" ng-model="profileData.phone" class="mask form-control input-sm dd" style="padding-right: 24px;">',
             url: function(params) {
                 var packet = params.value;
                 var tempData = userService.getUserData();
@@ -152,8 +157,8 @@ angular.module('ohanaApp')
             }
         });
 
-        $(document).on("focus", ".mask", function() {
-            $(this).mask("(999) 999-9999?");
+        angular.element(document).ready(function() {
+            $("#phonenum").mask("(999)999-9999");
         });
 
         $('#user_region').editable({
