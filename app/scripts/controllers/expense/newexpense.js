@@ -74,15 +74,15 @@ angular.module('ohanaApp')
 
         $scope.fileadded = false;
         $scope.uploadImageFile = function() {
-                var input = document.getElementById('files');
-                if (input.files.length > 0) {
-                    $scope.fileadded = true;
-                } else {
-                    $scope.fileadded = false;
-                }
-                console.log("File status check - ", input.files.length, $scope.fileadded)
+            var input = document.getElementById('files');
+            if (input.files.length > 0) {
+                $scope.fileadded = true;
+            } else {
+                $scope.fileadded = false;
             }
-            //------------Addition Line Items--------------//
+            console.log("File status check - ", input.files.length, $scope.fileadded)
+        }
+        //------------Addition Line Items--------------//
         $scope.LineDetails = [];
         $scope.LineDetails.length = 0;
         $scope.LineDetails = expenseservice.LineDetails;

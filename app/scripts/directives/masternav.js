@@ -81,48 +81,51 @@ angular.module('ohanaApp')
                 }, {}];
 
                 $scope.participantNav = [{
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
+                }, {
                     state: "#/manage/events",
                     text: "Events"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
                 }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/manage/profile",
+                    text: "My Profile"
                 }];
 
                 $scope.volunteerNav = [{
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
+                }, {
                     state: "#/manage/events",
                     text: "Events"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
                 }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
                 }];
 
                 $scope.ltmNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }, {
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
                 }, {
+                    state: "#/manage/events",
+                    text: "Events"
+                }, {
+                    state: "#/expense/viewexpense",
+                    text: "Expense"
+                }, {
                     state: "#/inventory",
                     text: "Inventory"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
                 }, {
                     state: "#/manage/directory",
                     text: "Member Directory"
@@ -130,75 +133,78 @@ angular.module('ohanaApp')
                     state: "#/manage/profile",
                     text: "My Profile"
                 }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/manage/training",
+                    text: "My Training"
                 }];
 
                 $scope.nationalNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
+                    state: "#/superAdmin",
+                    text: "Administration"
                 }, {
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
                 }, {
-                    state: "#/inventory",
-                    text: "Inventory"
+                    state: "#/manage/chadmin",
+                    text: "Chapter Administration"
                 }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }, {
                     state: "donors",
                     text: "Donor Management"
                 }, {
-                    state: "#/superAdmin",
-                    text: "Administration"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
+                    state: "#/manage/events",
+                    text: "Events"
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
                 }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/inventory",
+                    text: "Inventory"
+                }, {
+                    state: "#/manage/directory",
+                    text: "Member Directory"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
                 }];
 
                 $scope.adminNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
+                    state: "#/superAdmin",
+                    text: "Administration"
                 }, {
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
                 }, {
-                    state: "#/inventory",
-                    text: "Inventory"
+                    state: "#/manage/chadmin",
+                    text: "Chapter Administration"
                 }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
                 }, {
                     state: "donors",
                     text: "Donor Management"
                 }, {
-                    state: "#/superAdmin",
-                    text: "Administration"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
+                    state: "#/manage/events",
+                    text: "Events"
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
                 }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/inventory",
+                    text: "Inventory"
+                }, {
+                    state: "#/manage/directory",
+                    text: "Member Directory"
+                }, {
+                    state: "#/manage/profile",
+                    text: "My Profile"
+                }, {
+                    state: "#/manage/training",
+                    text: "My Training"
                 }];
 
                 $scope.showDonate = function() {
