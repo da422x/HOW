@@ -9,8 +9,22 @@
  * 
  */
 angular.module('ohanaApp')
-    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal, userService) {
+    .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal, userService, $filter, $http) {
         'use strict';
+
+        $scope.updateChapterDropdown = function(regionProfileText) {
+            var region = $scope.profileData.Region;
+            if (regionProfileText)
+                region = regionProfileText //if the region was updated, then use that new value to update the chapter list
+            var lst = $rootScope.siteData.regionsChapters.filter(function(val, idx) {
+                return val.text === region;
+            });
+            if (regionProfileText) {
+                $scope.saveUserData(lst[0].chapters[0].text, 'Chapter');
+                $scope.profileData.Chapter = lst[0].chapters[0].text;
+            }
+            $scope.chapters = lst[0].chapters;
+        }
 
         $scope.update = function() {
             var userRquests = commonServices.getData('/roleChangeRequests/');
@@ -86,131 +100,88 @@ angular.module('ohanaApp')
             });
         };
 
-        $('#user_dob').editable({
-            type: 'combodate',
-            name: 'DOB',
-            placement: 'bottom',
-            emptytext: 'null',
-            format: 'YYYY-MM-DD',
-            viewformat: 'MM/DD/YYYY',
-            template: 'MMM / DD / YYYY',
-            combodate: {
-                template: 'MMM / DD / YYYY',
-                minYear: 1900,
-                axYear: 2020
-            },
-            url: function(params) {
-                var packet = params.value;
-                var tempData = userService.getUserData();
-                var path = '/userData/' + $scope.userUID + '/DOB/';
-                commonServices.updateData(path, packet);
-                tempData.DOB = packet;
-                userService.setUserData(tempData);
-            }
-        });
+        $scope.opened = {};
 
-        $('#user_gender').editable({
-            type: 'select',
-            name: 'gender',
-            placement: 'bottom',
-            emptytext: 'null',
-            showbuttons: false,
-            url: function(params) {
-                var packet = params.value;
-                var tempData = userService.getUserData();
-                var path = '/userData/' + $scope.userUID + '/gender/';
-                commonServices.updateData(path, packet);
-                tempData.gender = packet;
-                userService.setUserData(tempData);
-            },
-            source: [{
-                value: 'M',
-                text: 'M'
-            }, {
-                value: 'F',
-                text: 'F'
-            }, {
-                value: 'N/A',
-                text: 'N/A'
-            }]
-        });
+        $scope.open = function($event, elementOpened) {
+            $event.preventDefault();
+            $event.stopPropagation();
 
-        $('#user_phone').editable({
-            type: 'text',
-            name: 'phone',
-            placement: 'bottom',
-            emptytext: 'null',
-            tpl: '<input type="text" id ="zipiddemo" class="mask form-control input-sm dd" style="padding-right: 24px;">',
-            url: function(params) {
-                var packet = params.value;
-                var tempData = userService.getUserData();
-                var path = '/userData/' + $scope.userUID + '/phone/';
-                commonServices.updateData(path, packet);
-                $rootScope.userData.phone = params.value;
-                tempData.phone = packet;
-                userService.setUserData(tempData);
+            $scope.opened[elementOpened] = !$scope.opened[elementOpened];
+        };
+
+        $scope.saveUserData = function(value, typeOfData) {
+            var firebaseTable = null;
+            console.log(value);
+
+            switch (typeOfData) {
+                case "name.first":
+                    firebaseTable = "/name/first/"
+                    break;
+                case "name.last":
+                    firebaseTable = "/name/last/"
+                    break;
+                case "address.line1":
+                    firebaseTable = "/address/line1/"
+                    break;
+                case "address.line2":
+                    firebaseTable = "/address/line2/"
+                    break;
+                case "address.city":
+                    firebaseTable = "/address/city/"
+                    break;
+                case "address.state":
+                    firebaseTable = "/address/state/"
+                    break;
+                case "address.zip":
+                    firebaseTable = "/address/zip/"
+                    break;
+                case "phone":
+                    firebaseTable = "/phone/";
+                    break;
+                case "Region":
+                    firebaseTable = "/Region/";
+                    $scope.updateChapterDropdown(value);
+                    break;
+                case "Chapter":
+                    firebaseTable = "/Chapter/";
+                    break;
+                case "DOB":
+                    firebaseTable = "/DOB/";
+                    break;
+                case "branch":
+                    firebaseTable = "/branch/";
+                    break;
+                case "gender":
+                    firebaseTable = "/gender/";
+                    break;
             }
-        });
+
+            var packet = value;
+            var tempData = userService.getUserData();
+            var path = '/userData/' + $scope.userUID + firebaseTable;
+            commonServices.updateData(path, packet);
+
+            function tree_traverse(obj_data, path, length_of_arr) {
+                var next_length = length_of_arr - 1;
+                if (path.includes('.')) {
+                    tree_traverse(obj_data[path.split('.')[0]], path.split('.')[1], next_length);
+                } else {
+                    obj_data[path] = value;
+                }
+            }
+
+            if (typeOfData.includes('.')) {
+                tree_traverse($rootScope.userData, typeOfData, typeOfData.split('.').length);
+            } else {
+                $rootScope.userData[typeOfData] = value;
+            }
+            userService.setUserData($rootScope.userData);
+
+            return true;
+        }
 
         $(document).on("focus", ".mask", function() {
             $(this).mask("(999) 999-9999?");
-        });
-
-        $('#user_region').editable({
-            type: 'select',
-            name: 'region',
-            placement: 'bottom',
-            emptytext: 'null',
-            showbuttons: false,
-            url: function(params) {
-                var packet = params.value;
-                var tempData = userService.getUserData();
-                var path = '/userData/' + $scope.userUID + '/Region/';
-                commonServices.updateData(path, packet);
-                tempData.Region = packet;
-                userService.setUserData(tempData);
-            },
-            source: $rootScope.siteData.regions
-        });
-
-        $('#user_chapter').editable({
-            type: 'select',
-            name: 'chapter',
-            placement: 'bottom',
-            emptytext: 'null',
-            showbuttons: false,
-            url: function(params) {
-                var packet = params.value;
-                var tempData = userService.getUserData();
-                var path = '/userData/' + $scope.userUID + '/Chapter/';
-                commonServices.updateData(path, packet);
-                tempData.Chapter = packet;
-                userService.setUserData(tempData);
-                userService.setChapter(packet);
-            },
-            source: function() {
-                var regionText = $(this).parent().parent().find('#user_region').text();
-                switch (regionText) {
-                    case 'Midwest Chapters':
-                        return $rootScope.siteData.regionsChapters[0].chapters;
-                    case 'Northeast Chapters':
-                        return $rootScope.siteData.regionsChapters[1].chapters;
-                    case 'Pacific Chapters':
-                        return $rootScope.siteData.regionsChapters[2].chapters;
-                    case 'Rocky Mountain Chapters':
-                        return $rootScope.siteData.regionsChapters[3].chapters;
-                    case 'Southeast Chapters':
-                        return $rootScope.siteData.regionsChapters[4].chapters;
-                    case 'Southwest Region':
-                        return $rootScope.siteData.regionsChapters[5].chapters;
-                    default:
-                        return [{
-                            value: '',
-                            text: ''
-                        }];
-                }
-
-            }
         });
 
     });
