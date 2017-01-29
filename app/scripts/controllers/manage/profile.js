@@ -193,22 +193,16 @@ angular.module('ohanaApp')
                 switch (regionText) {
                     case 'Midwest Chapters':
                         return $rootScope.siteData.regionsChapters[0].chapters;
-                        break;
                     case 'Northeast Chapters':
                         return $rootScope.siteData.regionsChapters[1].chapters;
-                        break;
                     case 'Pacific Chapters':
                         return $rootScope.siteData.regionsChapters[2].chapters;
-                        break;
                     case 'Rocky Mountain Chapters':
                         return $rootScope.siteData.regionsChapters[3].chapters;
-                        break;
                     case 'Southeast Chapters':
                         return $rootScope.siteData.regionsChapters[4].chapters;
-                        break;
                     case 'Southwest Region':
                         return $rootScope.siteData.regionsChapters[5].chapters;
-                        break;
                     default:
                         return [{
                             value: '',

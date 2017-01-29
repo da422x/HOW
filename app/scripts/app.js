@@ -283,7 +283,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-    .filter('unique', function() {
+.filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique
