@@ -237,17 +237,26 @@ angular.module('ohanaApp')
                             emptytext: "null",
                             showbuttons: false,
                             url: function(params) {
-                                var packet = {
-                                    role: params.value
-                                }
-                                var path = '/userRoles/' + $scope.currId;
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    userService.setRole(packet);
+                                var currentUserUID = userService.getId();
+                                if ($scope.currId !== currentUserUID) {
+                                    var packet = {
+                                        role: params.value
+                                    }
+                                    var path = '/userRoles/' + $scope.currId;
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        userService.setRole(packet);
+                                    }
+                                } else {
+                                    swal(
+                                        'Alert',
+                                        'You cannot edit your own role!',
+                                        'error'
+                                    )
                                 }
                             },
                             source: function() {
-                                var currentUserRole = $rootScope.userRole;
+                                var currentUserRole = userService.getRole();
                                 if (currentUserRole === 'admin') {
                                     return $rootScope.siteData.roles;
                                 } else {

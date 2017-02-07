@@ -4,6 +4,9 @@
 <div class="modal-header" ng-init="update()">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Manage Role Change Requests</h4>
+    <h6><i class="fa fa-chevron-down pull-left" aria-hidden="true"></i>Click this icon for details</h6>
+    <h6><i class="fa fa-minus-square pull-left" aria-hidden="true"></i>Click to decline request</h6>
+    <h6><i class="fa fa-plus-square pull-left" aria-hidden="true"></i>Click to approve request</h6>
 </div>
 <!-- end modal-header -->
 
@@ -14,7 +17,7 @@
     <div class="panel panel-default">
         <div class="panel-heading clearfix" id="pending-requests">
             <h3 class="panel-title pull-left">Pending Requests &nbsp</h3>
-            <i class="fa fa-exclamation-circle" aria-hidden="true" ng-show="alertPending"></i>
+            <span class="badge" ng-show="alertPending">{{pendingCount}}</span>
             <i ng-click="showForm1a = !showForm1a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
         </div>
     </div>

@@ -450,28 +450,28 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
-            var bill = $routeParams.BillId;
-            console.log('Data Delete Request SWAL ', $routeParams.BillId);
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function() {
-                expenseservice.deleteExpense(bill)
-                swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-                window.location.href = "#/expense/viewexpense"
-            })
+                var bill = $routeParams.BillId;
+                console.log('Data Delete Request SWAL ', $routeParams.BillId);
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function() {
+                    expenseservice.deleteExpense(bill)
+                    swal(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    window.location.href = "#/expense/viewexpense"
+                })
 
-        }
-        //-----Delete Expenses Created by the User ---END----------//
+            }
+            //-----Delete Expenses Created by the User ---END----------//
 
         $scope.updateexpense = function() {
 
