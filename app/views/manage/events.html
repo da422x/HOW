@@ -7,11 +7,7 @@
         </div>
         <div class="toolbar-right" style="float: right">
             Filter by:
-            <select class="" name="filterby" style="margin-top:10px; display:inline">
-                <option value="all">All</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="past">Past</option>
-            </select>
+            <select name="filter" id="filter" ng-model="filter" ng-options="ft for ft in filterTypes" ng-change="changeFilter()"></select>
         </div>
 
     </div>
