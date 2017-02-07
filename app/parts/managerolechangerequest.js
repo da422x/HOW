@@ -22,6 +22,7 @@ angular.module('ohanaApp')
             $scope.approved_requests = [];
             $scope.pending_requests = [];
             $scope.alertPending = false;
+            $scope.pendingCount = 0;
 
             $q.all([allRequests, allUserData]).then(function(data) {
                 $scope.requests = [];
@@ -31,7 +32,6 @@ angular.module('ohanaApp')
                         $scope.filterRequests(value);
                     } else {
                         _.each(data[1], function(value2, key2) {
-                            console.log(value.uid + ' === ' + key2);
                             if (value.uid === key2 &&
                                 value2.Chapter === currentUserData.Chapter &&
                                 (value.request_role === 'Participant' || value.request_role === 'Volunteer' || value.request_role === 'Chapter Lead')) {
@@ -46,86 +46,104 @@ angular.module('ohanaApp')
         }
 
         $scope.declined = function(key, request) {
-            swal({
-                title: 'Reason for approval?',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-            }).then(function(message) {
-                    if (message === '') {
-                        swal(
-                            'Alert',
-                            'Declining request requires a comment...',
-                            'error'
-                        );
-                    } else {
-                        var ts = Date.now();
-                        delete request.key
-                        delete request.$$hashKey;
-                        request.reviewer = userService.getUserName();
-                        request.reviewers_comment = message;
-                        request.request_update = ts;
-                        request.request_status = 'Declined';
-                        commonServices.updateData('/roleChangeRequests/' + key, request);
-                        $scope.update();
-                        swal(
-                            'Declined',
-                            'Role change was declined!',
-                            'success'
-                        );
-                    }
-                },
-                function(dismiss) {
-                    if (dismiss === 'cancel') {
-                        swal(
-                            'Cancelled',
-                            'No change made to request',
-                            'error'
-                        );
-                    }
-                });
+            var currentUserUID = userService.getId();
+            if (request.uid !== currentUserUID) {
+                swal({
+                    title: 'Reason for approval?',
+                    input: 'text',
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                }).then(function(message) {
+                        if (message === '') {
+                            swal(
+                                'Alert',
+                                'Declining request requires a comment...',
+                                'error'
+                            );
+                        } else {
+                            var ts = Date.now();
+                            delete request.key
+                            delete request.$$hashKey;
+                            request.reviewer = userService.getUserName();
+                            request.reviewers_comment = message;
+                            request.request_update = ts;
+                            request.request_status = 'Declined';
+                            commonServices.updateData('/roleChangeRequests/' + key, request);
+                            $scope.update();
+                            swal(
+                                'Declined',
+                                'Role change was declined!',
+                                'success'
+                            );
+                        }
+                    },
+                    function(dismiss) {
+                        if (dismiss === 'cancel') {
+                            swal(
+                                'Cancelled',
+                                'No change made to request',
+                                'error'
+                            );
+                        }
+                    });
+            } else {
+                swal(
+                    'Alert',
+                    'You cannot decline your own requests...',
+                    'error'
+                );
+            }
         };
 
         $scope.approved = function(key, request) {
-            swal({
-                title: 'Reason for approval?',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-            }).then(function(message) {
-                    if (message === '') {
-                        swal(
-                            'Alert',
-                            'Approval requires a comment...',
-                            'error'
-                        );
-                    } else {
-                        var ts = Date.now();
-                        delete request.key
-                        delete request.$$hashKey;
-                        request.reviewer = userService.getUserName();
-                        request.reviewers_comment = message;
-                        request.request_update = ts;
-                        request.request_status = 'Approved';
-                        commonServices.updateData('/roleChangeRequests/' + key, request);
-                        commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
-                        $scope.update();
-                        swal(
-                            'Approved',
-                            'Role change was approved!',
-                            'success'
-                        );
-                    }
-                },
-                function(dismiss) {
-                    if (dismiss === 'cancel') {
-                        swal(
-                            'Cancelled',
-                            'Your imaginary file is safe :)',
-                            'error'
-                        );
-                    }
-                });
+            var currentUserUID = userService.getId();
+            if (request.uid !== currentUserUID) {
+                swal({
+                    title: 'Reason for approval?',
+                    input: 'text',
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                }).then(function(message) {
+                        if (message === '') {
+                            swal(
+                                'Alert',
+                                'Approval requires a comment...',
+                                'error'
+                            );
+                        } else {
+                            var ts = Date.now();
+                            delete request.key
+                            delete request.$$hashKey;
+                            request.reviewer = userService.getUserName();
+                            request.reviewers_comment = message;
+                            request.request_update = ts;
+                            request.request_status = 'Approved';
+                            commonServices.updateData('/roleChangeRequests/' + key, request);
+                            commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
+                            $scope.update();
+                            swal(
+                                'Approved',
+                                'Role change was approved!',
+                                'success'
+                            );
+                        }
+                    },
+                    function(dismiss) {
+                        if (dismiss === 'cancel') {
+                            swal(
+                                'Cancelled',
+                                'Your imaginary file is safe :)',
+                                'error'
+                            );
+                        }
+                    });
+            } else {
+                swal(
+                    'Alert',
+                    'You cannot approve your own requests...',
+                    'error'
+                );
+            }
         };
 
         $scope.cancel = function() {
@@ -144,6 +162,7 @@ angular.module('ohanaApp')
                 default:
                     $scope.pending_requests.push(request);
                     $scope.alertPending = true;
+                    $scope.pendingCount = $scope.pending_requests.length;
                     break;
             }
         }
