@@ -550,7 +550,7 @@ module.exports = function(grunt) {
             }
         },
         "jsbeautifier": {
-            files: ["Gruntfile.js", "./**.json", "./**.js", "bower.json", "app/**/*.js", "app/**/*.html", "app/**/*.css", "app/**/*.json"],
+            files: ["Gruntfile.js", "./**.json", "./**.js", "bower.json", "app/**/*.js", "app/**/*.html", "app/**/*.css", "app/**/*.json", "!app/bower_components/**/*.*"],
             options: {
                 //config: "path/to/configFile",
                 html: {
@@ -594,6 +594,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
         if (target === 'dist') {
+            console.log('thad wuz here')
             return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 

@@ -25,7 +25,10 @@ angular.module('ohanaApp', [
         'LocalStorageModule',
         'ngMap',
         // 'uiGmapgoogle-maps',
-        'firebase'
+        'firebase',
+        'angularFileUpload',
+        'bcherny/formatAsCurrency',
+        'xeditable'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
         $httpProvider.interceptors.push('pageAuthInterceptor');
@@ -91,7 +94,7 @@ angular.module('ohanaApp', [
             })
             .when("/inventory", {
                 templateUrl: 'views/manage/event.details.equipment.html',
-                controller: 'EventdetailequipmentCtrl as eventEquipment'
+                controller: 'InventoryCtrl as inventory'
             })
             .when("/notifications", {
                 templateUrl: 'views/manage/event.details.notifications.html',
@@ -167,8 +170,10 @@ angular.module('ohanaApp', [
                 redirectTo: '/home'
             });
 
-    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService) {
-
+    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService, editableOptions) {
+        //changing jquery editable to angular editable
+        editableOptions.theme = 'bs3';
+        //end changing jquery editable to angular editable
         var config = {
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
             authDomain: "herosonthewater-55a79.firebaseapp.com",
@@ -349,3 +354,22 @@ angular.module('ohanaApp', [
             };
         };
     });
+//     .run(function($rootScope) {
+//         $rootScope.typeOf = function(value) {
+//             return typeof value;
+//         };
+//     })
+
+// .directive('stringToNumber', function() {
+//     return {
+//         require: 'ngModel',
+//         link: function(scope, element, attrs, ngModel) {
+//             ngModel.$parsers.push(function(value) {
+//                 return '' + value;
+//             });
+//             ngModel.$formatters.push(function(value) {
+//                 return parseFloat(value);
+//             });
+//         }
+//     };
+// });

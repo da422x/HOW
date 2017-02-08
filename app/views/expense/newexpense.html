@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="assets/expense.css">
 <div class="container">
     <form id="newExpenseform" name="newExpenseform" method="post" class="form-inline" novalidate>
         <div class="panel panel-default  ">
@@ -24,8 +25,8 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-6 col-form-label">Miles Driven</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control" placeholder="0" type="number" min="1" pattern="\d+">
-                        <p ng-if="newExpenseform.miles.$invalid" class="field-feedback">
+                        <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <p ng-if="newExpenseform.miles.$error.pattern" class="field-feedback">
                             Enter miles driven > 0
                         </p>
                     </div>
@@ -33,8 +34,8 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-6 col-form-label">Mile Rate</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[0].Rate" name="milerate" class="form-control" placeholder="0.25" pattern="\d+.\d+" />
-                        <p ng-if="newExpenseform.milerate.$invalid" class="field-feedback">Enter valid mile rate</p>
+                        <input ng-model="exp.Line[0].Rate" name="milerate" class="form-control" placeholder="0.25" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" />
+                        <p ng-if="newExpenseform.milerate.$error.pattern" class="field-feedback">Enter valid mile rate - 2 decimal</p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -48,8 +49,8 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-8 col-form-label">Trailer Miles</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" type="number" min="1" pattern="\d+">
-                        <p ng-if=" newExpenseform.trailermiles.$invalid" class="field-feedback">
+                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <p ng-if="newExpenseform.trailermiles.$error.pattern" class="field-feedback">
                             Enter trailer hauling miles > 0
                         </p>
                     </div>
@@ -57,8 +58,8 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-8 col-form-label">Trailer Mile Rate</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[1].Rate" name="trailermilerate" class="form-control" placeholder="0.4" pattern="\d+.\d+" />
-                        <p ng-if="newExpenseform.trailermilerate.$invalid" class="field-feedback">Enter valid mile rate</p>
+                        <input ng-model="exp.Line[1].Rate" name="trailermilerate" class="form-control" placeholder="0.4" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" />
+                        <p ng-if="newExpenseform.trailermilerate.$error.pattern" class="field-feedback">Enter valid mile rate - 2 decimal</p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -92,7 +93,8 @@
                             </td>
                             <td>
                                 <!-- <div class="input-group  "> -->
-                                <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" placeholder="0.0" type="number" step="0.01" required>
+                                <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" type="text" format-as-currency>
+                                <!-- <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" placeholder="0.0" type="number" step="0.01" pattern="\d+.\d+" required format-as-currency> -->
                                 <!-- </div> -->
                             </td>
                         </tr>
@@ -123,8 +125,10 @@
                 </div>
             </div>
             <div class="panel-body-exp row btnalign">
-                <button class="btn btn-primary ur_format_button " ng-click="createnewexpense() " type="submit ">Add New Expense</button>
-                <!-- <data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>  class="custom-file-input"-->
+                <button class="btn btn-primary ur_format_button " ng-click="confirmnewexpense() " type="submit ">Add New Expense</button>
+                <!-- <data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>  class="custom-file-input"  createnewexpense()-->
+                <input type="button" class="btn btn-primary" ng-click="ClearFields
+()" value="Clear">
                 <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
             </div>
     </form>

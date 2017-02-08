@@ -181,6 +181,96 @@ angular.module('ohanaApp')
             window.location = "#/expense/viewexpense";
         }
 
+        //Clear value in Expense Page
+        $scope.ClearFields = function() {
+
+            $scope.exp.Chapter = "";
+            $scope.exp.email = "";
+            $scope.exp.SubmitDate = "";
+            $scope.exp.SubmitBy = "";
+            $scope.exp.SubmitAddress = "";
+            $scope.exp.Description = "";
+            $scope.exp.PaymentStatus = "Pending";
+            $scope.exp.ImageURL = [];
+            $scope.exp.Line[0].Quantity = 0;
+            $scope.exp.Line[0].Rate = 0.25;
+            $scope.exp.Line[1].Quantity = 0;
+            $scope.exp.Line[1].Rate = 0.4;
+            $scope.exp.Line.length = 2;
+            $scope.LineDetails = [];
+            $scope.LineDetails.length = 0;
+            $scope.LineDetails = expenseservice.LineDetails;
+
+        }
+
+
+        $scope.confirmnewexpense = function() {
+            var eventdate = $scope.exp.eventdate;
+            var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
+            $scope.CalculateAmount();
+            var inp = document.getElementById('files');
+
+
+            if ($scope.exp.Description.length == 0 || inp.files.length == 0) {
+                swal({
+                    title: 'Required fields Missing',
+                    type: 'error',
+                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + inp.files.length + '</b></td> </tr></table>',
+
+
+                })
+            } else {
+                swal({
+                    title: 'Please confirm New Expense',
+                    text: "Created Expense will be reviewed by Chapter Lead and National Staff!",
+                    type: 'info',
+                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                        '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[0].Amount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[1].Amount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.lineamount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, create it!'
+                }).then(function() {
+
+                    $scope.createnewexpense()
+                    window.location.href = "#/expense/viewexpense"
+                })
+            }
+        }
+
+        $scope.CalculateAmount = function() {
+
+            if ($scope.LineDetails.length) {
+                var i = 2;
+                for (var x = 0; x < $scope.LineDetails.length; x++) {
+                    // console.log("Inside", $scope.LineDetails[x]);
+                    $scope.lineamount = Math.round((parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount)) * 100) / 100;
+                    $scope.exp.Line.push({
+
+                        "ID": i,
+                        "Description": $scope.LineDetails[x].Description,
+                        "Quantity": 1,
+                        "Rate": 1,
+                        "Amount": parseFloat($scope.LineDetails[x].Amount)
+                    });
+                    i++;
+                }
+                // console.log("Scope Value", $scope.exp.Line);
+            }
+
+            $scope.exp.Line[0].Amount = Math.round(($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) * 100) / 100;
+            $scope.exp.Line[1].Amount = Math.round(($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) * 100) / 100;
+            $scope.exp.Amount = Math.round(((($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1))) * 100) / 100;
+
+        }
+
         $scope.createnewexpense = function() {
 
             var Line = [];
@@ -200,24 +290,6 @@ angular.module('ohanaApp')
                 }
             }
 
-            //---ADD line item array ---//
-            if ($scope.LineDetails.length) {
-                var i = 2;
-                for (var x = 0; x < $scope.LineDetails.length; x++) {
-                    console.log("Inside", $scope.LineDetails[x]);
-                    $scope.lineamount = parseFloat($scope.lineamount) + parseFloat($scope.LineDetails[x].Amount);
-                    $scope.exp.Line.push({
-
-                        "ID": i,
-                        "Description": $scope.LineDetails[x].Description,
-                        "Quantity": 1,
-                        "Rate": 1,
-                        "Amount": parseFloat($scope.LineDetails[x].Amount)
-                    });
-                    i++;
-                }
-                console.log("Scope Value", $scope.exp.Line);
-            }
 
             var input = document.getElementById('files');
             $scope.exp.Chapter = $scope.userChapter;
@@ -229,11 +301,12 @@ angular.module('ohanaApp')
             // $scope.profileData.Chapter.charAt(1);
             $scope.exp.BillId = $scope.userName.Region.charAt(1) + $scope.userChapter.charAt(1) + $scope.userName.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
             // $scope.exp.BillId = $scope.profileData.Region.charAt(1) + $scope.profileData.Chapter.charAt(1) + $scope.profileData.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
+
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             $scope.exp.SubmitAddress = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2 + ' , ' + $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
-            $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate;
-            $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
-            $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
+            // $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate;
+            // $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
+            // $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
 
             if ($scope.userRole == 'Chapter Lead') {
                 $scope.exp.PaymentLog[0].PayStatus = "Submitted";
@@ -306,7 +379,6 @@ angular.module('ohanaApp')
 
 
     });
-
 
 function LoadImageData(UniqueBillId, datalocation) {
 

@@ -82,6 +82,11 @@ module.exports = function(config) {
             'bower_components/pdfmake/build/vfs_fonts.js',
             'bower_components/yadcf/jquery.dataTables.yadcf.js',
             'bower_components/chosen/chosen.jquery.js',
+            'bower_components/flow.js/dist/flow.js',
+            'bower_components/ng-flow/dist/ng-flow.js',
+            'bower_components/angular-file-upload/dist/angular-file-upload.min.js',
+            'bower_components/format-as-currency/dist/format-as-currency.js',
+            'bower_components/angular-xeditable/dist/js/xeditable.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'app/scripts/**/*.js',

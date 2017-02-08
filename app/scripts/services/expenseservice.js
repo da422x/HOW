@@ -164,9 +164,9 @@ angular.module('ohanaApp')
             return pastdue;
         }
 
-        this.buildExpenseTableData = function(useremail, userRole, Chapter, startdate, enddate, paystatus) {
+        this.buildExpenseTableData = function(useremail, userRole, Chapter, startdate, enddate, paystatus, searchtype) {
 
-            // console.log(useremail, userRole, Chapter, startdate, enddate, paystatus);
+            // console.log("Get Data", useremail, userRole, Chapter, startdate, enddate, paystatus);
             var expenselist = [];
             var expenselistdata = [];
             var ref = '';
@@ -199,19 +199,35 @@ angular.module('ohanaApp')
                         // console.log("SubmitDate - ", list[i].SubmitDate);
                         var mdyy = list[i].SubmitDate.toString().split('/');
                         var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
-                        var pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
-                        // var pastduedatecount = getPastDue(list[i].SubmitDate);
+                        var pastdue = 0;
+                        if (list[i].PaymentStatus != 'Paid' && list[i].PaymentStatus != 'Over Age') {
+                            pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
+                        } else
+                            pastdue = '';
+                        if (searchtype == 'overdue' && list[i].PaymentStatus != 'Paid' && list[i].PaymentStatus != 'Over Age') {
+                            expensearray.push({
+                                "SubmitDate": list[i].SubmitDate,
+                                "SubmitBy": list[i].SubmitBy,
+                                "eventdate": list[i].eventdate,
+                                "Chapter": list[i].Chapter,
+                                "Amount": list[i].Amount,
+                                "PaymentStatus": list[i].PaymentStatus,
+                                "pastdue": pastdue,
+                                "BillId": list[i].BillId
+                            });
+                        } else {
+                            expensearray.push({
+                                "SubmitDate": list[i].SubmitDate,
+                                "SubmitBy": list[i].SubmitBy,
+                                "eventdate": list[i].eventdate,
+                                "Chapter": list[i].Chapter,
+                                "Amount": list[i].Amount,
+                                "PaymentStatus": list[i].PaymentStatus,
+                                "pastdue": pastdue,
+                                "BillId": list[i].BillId
+                            });
+                        }
 
-                        expensearray.push({
-                            "SubmitDate": list[i].SubmitDate,
-                            "SubmitBy": list[i].SubmitBy,
-                            "eventdate": list[i].eventdate,
-                            "Chapter": list[i].Chapter,
-                            "Amount": list[i].Amount,
-                            "PaymentStatus": list[i].PaymentStatus,
-                            "pastdue": pastdue,
-                            "BillId": list[i].BillId
-                        });
 
                     }
 
@@ -261,31 +277,48 @@ angular.module('ohanaApp')
 
                         var table = $('#expenseTable').DataTable({
                             responsive: true,
+                            autoWidth: false,
                             data: retResults,
                             "fnRowCallback": function(nRow, data, iDisplayIndex, iDisplayIndexFull) {
-                                if (data.pastdue > 30) {
+                                if ((data.pastdue > 30 && data.pastdue < 45) && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
                                     $(nRow).css('color', 'red')
+                                }
+
+
+                                if (data.pastdue > 44 && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
+                                    $(nRow).css('color', 'red')
+                                    $(nRow).css('font-weight', 'bold');
+                                    $(nRow).css('background-color', 'yellow');
+                                    $(nRow).css('font-size', '16px');
                                 }
                             },
                             "pagingType": "full_numbers",
                             columns: [{
-                                data: "Chapter"
+                                data: "Chapter",
+                                width: "60px"
                             }, {
-                                data: "SubmitDate"
+                                data: "SubmitDate",
+                                width: "50px"
                             }, {
-                                data: "SubmitBy"
+                                data: "SubmitBy",
+                                width: "60px"
                             }, {
-                                data: "eventdate"
+                                data: "eventdate",
+                                width: "60px"
                             }, {
-                                data: "Amount"
+                                data: "Amount",
+                                width: "60px"
                             }, {
-                                data: "PaymentStatus"
+                                data: "PaymentStatus",
+                                width: "60px"
                             }, {
-                                data: "pastdue"
+                                data: "pastdue",
+                                width: "60px",
+
                             }],
                             'columnDefs': [{
                                 targets: 0,
-                                width: '50px',
+
                                 visible: userRole == 'National Staff'
                             }, {
                                 targets: 3,
@@ -295,7 +328,7 @@ angular.module('ohanaApp')
                                 width: '90px'
                             }],
                             'order': [
-                                [5, 'desc']
+                                [6, 'desc']
                             ],
 
 
@@ -362,19 +395,17 @@ angular.module('ohanaApp')
                         //     column.visible(!column.visible());
                         // });
 
-
-
-
                     });
-
-
+                    // console.log("key expe array1", expensearray);
+                    // return expensearray;
 
                 })
                 .catch(function(error) {
                     console.error("error", error);
                 });
-
-            // console.log("key expe array1", expensearray);
+            // console.log("key expe array1", viewExpenseList);
+            // return viewExpenseList;
+            // console.log("key expe array1", viewExpenseList);
         };
 
         this.datefilter = function(input, startdate, enddate, paystatus) {

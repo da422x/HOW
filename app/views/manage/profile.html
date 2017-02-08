@@ -7,25 +7,38 @@
         <div class="list-group">
             <div class="list-group-item">
                 <h6 class="list-group-item-text">User: </h6>
-                <h4 class="list-group-item-heading">{{profileData.name.first}} {{profileData.name.last}}</h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_dob">{{profileData.DOB | date:'MM/dd/yyyy'}}</a>
+                    First:
+                    <span editable-text="profileData.name.first" onbeforesave="saveUserData($data, 'name.first')">{{profileData.name.first}}</span>
+                    <br /> Last:
+                    <span editable-text="profileData.name.last" onbeforesave="saveUserData($data, 'name.last')">{{profileData.name.last}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_gender">{{profileData.gender}}</a>
+                    <a href="#" id="user_dob" editable-bsdate="profileData.DOB" e-is-open="opened.$data" e-ng-click="open($event,'$data')" onbeforesave="saveUserData($data, 'DOB')" e-datepicker-popup="dd/MM/yyyy">{{( profileData.DOB | date:"dd/MM/yyyy") || '' }}</a>
+                </h4>
+                <h4 class="list-group-item-heading">
+                    <a href="#" id="user_gender" editable-select="profileData.gender" e-ng-options="s.value as s.text for s in [{ value: 'M', text: 'M'}, {value: 'F',text: 'F'}, {value: 'N/A',text: 'N/A'}]" onbeforesave="saveUserData($data, 'gender')">{{profileData.gender|| ""}}</a>
                 </h4>
                 <h4 class="list-group-item-heading">{{profileData.role}}</h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Address: </h6>
-                <h4 class="list-group-item-heading">{{profileData.address.line1}}</h4>
-                <h4 class="list-group-item-heading">{{profileData.address.line2}}</h4>
-                <h4 class="list-group-item-heading">{{profileData.address.city}}, {{profileData.address.state}} {{profileData.address.zip}}</h4>
+                <h4 class="list-group-item-heading">Address 1:
+                    <span editable-text="profileData.address.line1" onbeforesave="saveUserData($data, 'address.line1')">{{profileData.address.line1 || ""}}</span>
+                </h4>
+                <h4 class="list-group-item-heading">Address 2:
+                    <span editable-text="profileData.address.line2" onbeforesave="saveUserData($data, 'address.line2')">{{profileData.address.line2 || ""}}</span>
+                </h4>
+                <h4 class="list-group-item-heading">
+                    <span editable-text="profileData.address.city" onbeforesave="saveUserData($data, 'address.city')">{{profileData.address.city || ""}}</span>,
+                    <span editable-select="profileData.address.state" e-ng-options="s.name as s.name for s in $root.siteData.states" onbeforesave="saveUserData($data, 'address.state')">{{profileData.address.state || ""}}</span>
+                    <span editable-text="profileData.address.zip" onbeforesave="saveUserData($data, 'address.zip')">{{profileData.address.zip || ""}}</span>
+                </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Contact: </h6>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_phone">{{profileData.phone}}</a>
+                    <a href="#" id="user_phone" editable-text="profileData.phone" onbeforesave="saveUserData($data, 'phone')">{{ profileData.phone|| "" }}</a>
                 </h4>
                 <h4 class="list-group-item-heading">
                     <a href="#" id="user_email">{{profileData.email}}</a>
@@ -34,16 +47,20 @@
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Orginization Data: </h6>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_region">{{profileData.Region}}</a>
+                    <a href="#" id="user_region" editable-select="profileData.Region" e-ng-options="s.value as s.text for s in $root.siteData.regions" onbeforesave="saveUserData($data, 'Region')">{{profileData.Region|| ""}}</a>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <a href="#" id="user_chapter">{{profileData.Chapter}}</a>
+                    <a href="#" editable-select="profileData.Chapter" onbeforesave="saveUserData($data, 'Chapter')" onshow="updateChapterDropdown()" e-ng-options="s.value as s.text for s in chapters"> {{ profileData.Chapter|| "" }}</a>
                 </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Military Data: </h6>
-                <h4 class="list-group-item-heading">{{profileData.branch}}</h4>
-                <h4 class="list-group-item-heading">{{profileData.years}}</h4>
+                <h4 class="list-group-item-heading">Military Branch:
+                    <span editable-text="profileData.branch" onbeforesave="saveUserData($data, 'branch')">{{profileData.branch || ""}}</span>
+                </h4>
+                <h4 class="list-group-item-heading">Years of Service:
+                    <span editable-number="profileData.years" e-min="0" onbeforesave="saveUserData($data, 'years')">{{profileData.years || ""}}</span>
+                </h4>
             </div>
         </div>
         <div class="panel-footer" style="height:55px">
@@ -98,7 +115,7 @@
                         {{request.user_comment}}
                     </div>
                     <div class="col-md-3">
-                        {{request.admin_comment}}
+                        {{request.reviewers_comment}}
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
