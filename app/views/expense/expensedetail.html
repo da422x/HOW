@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="assets/expense.css">
 <div class="container" ng-init="loadexpensedata()">
     <form id="ExpDetail" name="ExpDetail" method="post" class="form-inline" novalidate>
         <div class="form-group row expense_pad1">
@@ -60,10 +59,11 @@
                             {{dexedit.PaymentStatus}}</label>
                     </div>
                 </div>
-                <div class="form-group row expense_pad1" ng-show="(dexedit.PaymentStatus!='Over Age')">
-                    <button class="btninfo" type="button" class="btn btn-default" title="Payment Status Log" ng-click="open()">Payment Status Log</button>
+                <div class="form-group row expense_pad1" ng-show="(dexedit.PaymentStatus!='Over Age' &&  dexedit.PaymentStatus!='Paid')">
+                    <button class="btninfo" type="button" class="btn btn-default" title="Payment Status Log" ng-click="openPaymentStatusLog()">Payment Status Log</button>
                 </div>
             </div>
+            <!-- 1- {{useremail}} 2-{{dexedit.expenseemail}} 3-{{dexedit.PaymentStatus}} -->
             <fieldset ng-disabled="OverageDisable">
                 <div class="list-group-item">
                     <div class="form-group row ">
@@ -164,43 +164,45 @@
                     </div>
                     <div id="imagedisplay" class="form-group col-xs-12">
                         <div class="content panel-body-exp">
-                            <img id="image0" width="40%" height="40%" hidden="true" class="imagedisplay" onmouseover="image0.width='700';image0.height='450';" onmouseout="image0.width='250';image0.height='200';" />
-                            <img id="image1" width="40%" height="40%" hidden="true" class="imagedisplay" onmouseover="image1.width='700';image1.height='450';" onmouseout="image1.width='250';image1.height='200';" />
-                            <img id="image2" class="imagedisplay" hidden="true" onmouseover="image2.width='700';image2.height='450';" onmouseout="image2.width='250';image2.height='200';" />
-                            <img id="image3" class="imagedisplay" hidden="true" onmouseover="image3.width='700';image3.height='450';" onmouseout="image3.width='250';image3.height='200';" />
-                            <img id="image4" class="imagedisplay" hidden="true" onmouseover="image4.width='700';image4.height='450';" onmouseout="image4.width='250';image4.height='200';" />
-                            <img id="image5" class="imagedisplay" hidden="true" onmouseover="image5.width='700';image5.height='450';" onmouseout="image5.width='250';image5.height='200';" />
-                            <img id="image6" class="imagedisplay" hidden="true" onmouseover="image6.width='700';image6.height='450';" onmouseout="image6.width='250';image6.height='200';" />
-                            <img id="image7" class="imagedisplay" hidden="true" onmouseover="image7.width='700';image7.height='450';" onmouseout="image7.width='250';image7.height='200';" />
-                            <img id="image8" class="imagedisplay" hidden="true" onmouseover="image8.width='700';image8.height='450';" onmouseout="image8.width='250';image8.height='200';" />
-                            <img id="image9" class="imagedisplay" hidden="true" onmouseover="image9.width='700';image9.height='450';" onmouseout="image9.width='250';image9.height='200';" />
+                            <div ng-repeat="vimage in vImageList">
+                                <img id="image0" width="40%" height="40%" class="imagedisplay" ng-src="{{vimage.ImageSrc}}" ng-click="viewImage(vimage.ImageSrc);" />
+                                <button type="button " class="btn btn-danger btn-xs " ng-click="removeImage(vimage.ImageName); ">
+                                    <span class="glyphicon glyphicon-trash "></span> Remove
+                                </button>
+                            </div>
+                            <div class="form-group row btnalign">
+                                <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load Additional supporting documents (images only)</label>
+                                <input id="fileimage" name="fileimage" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
+                                <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
+                                <p>Click "SAVE EXPENSE" button to upload all newly added documents </p>
+                                <div ng-repeat="item in uploader.queue">
+                                    <strong>{{ item.file.name }}</strong>
+                                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, width: 350,height: 350 }"></div>
+                                    <span ng-show="item.isSuccess "><i class="glyphicon glyphicon-ok "></i></span>
+                                    <span ng-show="item.isCancel "><i class="glyphicon glyphicon-ban-circle "></i></span>
+                                    <span ng-show="item.isError "><i class="glyphicon glyphicon-remove "></i></span>
+                                    <button type="button " class="btn btn-danger btn-xs " ng-click="item.remove() ">
+                                        <span class="glyphicon glyphicon-trash "></span> Remove
+                                    </button>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- </div> -->
                 <div ng-show="((userRole=='Participant' || userRole=='Volunteer' || userRole=='Chapter Lead') && (useremail==expenseemail) )" class="form-group col-xs-12" style="padding-top: 6px;">
-                    <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Pending' || paystat=='Resubmit')) || (userRole=='Chapter Lead' && paystat=='Submitted') ">
-                        <input type="button" class="btn btn-primary" ng-click="updateexpense()" value="Save Expense">
-                        <input type="button" class="btn btn-primary" ng-click="deleteexp()" ng-show="( paystat=='Pending') " value="Delete Expense">
+                    <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Pending' || paystat=='Edit' ||paystat=='Resubmit')) || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Edit' || paystat=='Returned') ) ">
+                        <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" value="Save Expense">
+                        <input type="button" class="btn btn-primary" ng-click="updateexpense('submit')" ng-show="(paystat=='Edit') " value=" Submit Expense">
+                        <input type="button" class="btn btn-primary" ng-click="deleteexp()" ng-show="( paystat=='Pending' || paystat=='Edit') " value="Delete Expense">
                         <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                     </div>
-                    <!-- <div class="form-group row  col-xs-4">
-                        <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back">
-                    </div> -->
                 </div>
-                <!-- <div ng-show="((userRole=='Participant' || userRole=='Volunteer' || userRole=='Chapter Lead') && (useremail==expenseemail) && (dexedit.PaymentStatus=='Rejected'))" class="form-group col-xs-12" style="padding-top: 6px;">
-    <div class="form-group row" style="padding-bottom:  6px;">
-        <label for="lpaystatusdescription" class="col-xs-12 col-form-label">Re-Submit Reason:</label>
-        <div class="col-md-8">
-            <input id="lpaystatusdescription" ng-model="resubmitreason" type="text" class="form-control" title="Payment Status NOTES - Explain the reason for changing payment status " size="120" placeholder="Explain the reason for changing payment status" required>
-        </div>
-    </div>
-    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm" ng-show="(dexedit.PaymentStatus!='Approved') && (dexedit.PaymentStatus!='Payment Issued')" ng-click="resubmitexpense(dexedit.BillId,resubmitreason)">Re-Submit</a>
-    <a ng-href="#/expense/viewexpense" class="btn btn-primary format_button_sm" title="Go Back to View Expense List" ng-click="">Go Back</a>
-</div>
- -->
             </fieldset>
-            <div class="panel panel-default " ng-hide="(userRole=='Participant' || userRole == 'Volunteer' || paystat=='Over Age' ) ">
+            {{userRole}}{{paystat}}{{useremail}}{{expenseemail}}
+            <div class="panel panel-default " ng-hide="(userRole=='Participant' || userRole == 'Volunteer')   || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Returned' ||paystat== 'Edit') && useremail==expenseemail) ||  paystat=='Over Age' || paystat=='Paid' ">
                 <!-- <div class="panel panel-default "> -->
                 <div class="panel-heading clearfix ">
                     <h3 class="panel-title pull-left ">Payment Status Review</h3>
@@ -221,23 +223,8 @@
                     <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus, dexedit.PayStatusDescription)" class="btn btn-primary  " value="Status Update" />
                     <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                 </div>
-                <!--                 <div class="content panel-body-exp " ng-show="(userRole=='National Staff' || userRole=='admin') && (paystat=='Submitted' || paystat=='Approved')">
-                    <fieldset id="payment_status">
-                        <div ng-repeat="paystatus in paystatuslist" class="radiofieldgroup">
-                            <input type="radio" ng-model="formModel.dexedit.PaymentStatus " name="name" value="{{paystatus.name}} " required /> {{paystatus.name}}
-                        </div>
-                    </fieldset>
-                    <div class="form-group row">
-                        <label for="lpaystatusdescription" class="col-xs-12 col-form-label">Payment Status NOTES:</label>
-                        <div class="col-md-12 inputtextpad">
-                            <input id="lpaystatusdescription" ng-model="dexedit.PayStatusDescription" type="text" class="form-control" title="Payment Status NOTES - Explain the reason for changing payment status " size="120" placeholder="Explain the reason for changing payment status" required>
-                        </div>
-                    </div>
-                    <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus,   dexedit.PayStatusDescription)" class="btn btn-primary format_button_med" value="Status Update" />
-                    <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
-                </div> -->
             </div>
-            <div class="panel panel-default" ng-show="(paystat=='Over Age')">
+            <div class="panel panel-default" ng-show="(paystat=='Over Age' || paystat=='Paid')">
                 <h3 class="modal-title" id="modal-title">Payment Status Log</h3>
                 <div class="modal-body" id="modal-body">
                     <div>

@@ -28,7 +28,8 @@ angular.module('ohanaApp', [
         'firebase',
         'angularFileUpload',
         'bcherny/formatAsCurrency',
-        'xeditable'
+        'xeditable',
+        'chart.js'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
         $httpProvider.interceptors.push('pageAuthInterceptor');
@@ -165,6 +166,11 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/expense/customdaterange.html',
                 controller: 'ExpenseCustomdaterangeCtrl',
                 controllerAs: 'expense/CustomDateRange'
+            })
+            .when('/expense/overview', {
+                templateUrl: 'views/expense/overview.html',
+                controller: 'ExpenseOverviewCtrl',
+                controllerAs: 'expense/overview'
             })
             .otherwise({
                 redirectTo: '/home'
