@@ -169,38 +169,6 @@ angular.module('ohanaApp')
                     text: "Chapter Chat"
                 }];
 
-                $scope.adminNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/dash/broadcasts",
-                    text: "Broadcasts"
-                }, {
-                    state: "#/inventory",
-                    text: "Inventory"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
-                }, {
-                    state: "donors",
-                    text: "Donor Management"
-                }, {
-                    state: "#/superAdmin",
-                    text: "Administration"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }];
-
                 $scope.showDonate = function() {
                     window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5WAD6PF3BUHPE");
                 }; // end $scope.showDonate
