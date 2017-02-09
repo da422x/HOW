@@ -27,7 +27,7 @@ angular.module('ohanaApp')
             $q.all([allRequests, allUserData]).then(function(data) {
                 $scope.requests = [];
                 _.each(data[0], function(value, key) {
-                    if (currentRole === 'admin') {
+                    if (currentRole === 'National Staff') {
                         value.key = key;
                         $scope.filterRequests(value);
                     } else {

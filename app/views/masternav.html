@@ -51,11 +51,6 @@
                 </a>
                 <ul ng-switch="sessionUserRole" class="managelinks dropdown-menu">
                     <!-- ui-sref-opts was removed thad-->
-                    <li ng-switch-when="admin">
-                        <a ng-repeat="nav in adminNav" ng-href="{{nav.state}}">
-                            <h3>{{nav.text}}</h3>
-                        </a>
-                    </li>
                     <li ng-switch-when="National Staff">
                         <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}">
                             <h3>{{nav.text}}</h3>
@@ -104,11 +99,6 @@
                 <h3>HOME</h3>
             </a>
             <div ng-switch="sessionUserRole">
-                <div ng-switch-when="admin">
-                    <a ng-repeat="nav in adminNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-                        <h3>{{nav.text}}</h3>
-                    </a>
-                </div>
                 <div ng-switch-when="National Staff">
                     <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
                         <h3>{{nav.text}}</h3>
@@ -142,14 +132,6 @@
             </div>
             <div class="loggedin" ng-show="sessionState">
                 <div ng-switch="root.userRole">
-                    <div ng-switch-when="admin">
-                        <a ng-href="dash" ng-click="dismissMenu()">
-                            <h4>{{rightnavloggedin[0].text}}</h4>
-                        </a>
-                        <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-                            <h4>{{nav.text}}</h4>
-                        </a>
-                    </div>
                     <div ng-switch-when="National Staff">
                         <a ng-href="dash" ng-click="dismissMenu()">
                             <h4>{{rightnavloggedin[0].text}}</h4>

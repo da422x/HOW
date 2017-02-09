@@ -257,7 +257,7 @@ angular.module('ohanaApp')
                             },
                             source: function() {
                                 var currentUserRole = userService.getRole();
-                                if (currentUserRole === 'admin') {
+                                if (currentUserRole === 'National Staff') {
                                     return $rootScope.siteData.roles;
                                 } else {
                                     var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
@@ -396,7 +396,7 @@ angular.module('ohanaApp')
 
                 _.each(userData[1], function(value, key) {
                     switch (currentUserRole) {
-                        case 'admin':
+                        case 'National Staff':
                             roles.push(value.role);
                             keys.push(key);
                             break;
@@ -414,13 +414,6 @@ angular.module('ohanaApp')
                 _.each(keys, function() {
                     _.each(userData[0], function(value, key) {
                         switch (currentUserRole) {
-                            case 'admin':
-                                if (keys[i] === key) {
-                                    value.key = key;
-                                    value.role = roles[i];
-                                    users.push(value);
-                                }
-                                break;
                             case 'National Staff':
                                 if (keys[i] === key) {
                                     value.key = key;
@@ -441,13 +434,11 @@ angular.module('ohanaApp')
                     });
                     i++;
                 });
-                console.log(users);
                 $scope.buildTable(users);
             });
         }; // end $scope.update
 
         $scope.roleChangeRequests = function() {
-            console.log();
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/managerolechangerequest.html',
                 controller: 'ManageRoleChangeRequestCtrl'
