@@ -17,6 +17,9 @@ angular.module('ohanaApp')
         $scope.form = {};
 
         $scope.userlist = "";
+        $scope.userRole = userService.getRole();
+        $scope.userName = userService.getUserData();
+        $scope.userChapter = userService.getChapter();
         $scope.useremail = commonServices.getCurrentUserEmail();
 
         $scope.orderByField = 'SubmitDate';
@@ -32,7 +35,53 @@ angular.module('ohanaApp')
             window.location = "#/expense/newexpense";
         }
 
-        //---select
+        //pop dash
+        $scope.showPopover = function() {
+            $scope.popoverIsVisible = true;
+        };
+
+        $scope.hidePopover = function() {
+            $scope.popoverIsVisible = false;
+        };
+
+        $scope.openExpenseDash = function() {
+            $scope.$modalInstance = $uibModal.open({
+                scope: $scope,
+                templateUrl: "myModalContent.html",
+                size: 'dash',
+            })
+        };
+
+        $scope.ok = function() {
+            $scope.$modalInstance.close();
+        };
+
+        //Pie Chart Label option setting
+        $scope.options = {
+
+            legend: {
+                display: true,
+                position: 'bottom'
+            }
+        };
+
+
+        //Filter the list on expense in EDIT status
+        $scope.Showmeedit = function(BillId) {
+
+                switch ($scope.userRole) {
+                    case 'Volunteer':
+                    case 'Participant':
+                    case 'Chapter Lead':
+                        window.location = "#/expense/expensedetail/" + BillId;
+                        break;
+                    default:
+                        $scope.PayStatus = $scope.paystatuslist[1];
+                        $scope.ExpenseSearch("edit");
+                        break;
+                }
+            }
+            //---select
         $scope.selectedRow = null; // initialize our variable to null
         $scope.setClickedRow = function(index) { //function that sets the value of selectedRow to current index
             $scope.selectedRow = index;
@@ -42,18 +91,7 @@ angular.module('ohanaApp')
 
         var userUID = userService.getId();
         var userData = commonServices.getData('/userData/' + userUID);
-        $scope.userRole = userService.getRole();
-        $scope.userName = userService.getUserData();
-        $scope.userChapter = userService.getChapter();
-        // var userRquests = commonServices.getData('/roleChangeRequests/');
 
-        // $q.all([userData, userRquests]).then(function(data) {
-        //     $scope.profileData = data[0];
-        //     $scope.profileData.role = $scope.userRole;
-        //     $scope.profilechapter = $scope.profileData.Chapter;
-        //     $scope.userUID = userUID;
-
-        // });
         $scope.Head = "";
 
         $scope.DateRangelist = [{
@@ -133,40 +171,16 @@ angular.module('ohanaApp')
                     $scope.disp_startdate = '';
                     $scope.disp_enddate = '';
                     $scope.disp_filterdate = '';
-
                     break;
 
-                    // case 'Overdue':
-                    //     $scope.startdate = new Date(currentdate.getFullYear() - 5, 0, 1);
-                    //     $scope.enddate = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
-                    //     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
-                    //     $scope.disp_enddate = (scope.enddate.getMonth() + 1) + '/' + scope.enddate.getDate() + '/' + scope.enddate.getFullYear();
-                    //     $scope.disp_filterdate = $scope.disp_startdate + ' - ' + $scope.disp_enddate;
-                    //     $scope.ExpenseSearch();
                 default:
                     break;
 
             }
         }
 
-        // //----Modal -- Payment Status Log  ---------//
-        // var $ctrl = this;
-
-        // $scope.ok = function() {
-        //     alert($scope.datefromto);
-        //     console.log("modal ", $scope.$modalInstance.result);
-        //     $scope.ExpenseSearch();
-        //     $scope.$modalInstance.close();
-        // };
-
-        // $scope.cancel = function() {
-        //     $scope.$modalInstance.dismiss('cancel');
-        // };
 
         var LoggedUser = $scope.userName.name.first + ' ' + $scope.userName.name.last;
-
-
-
 
         switch ($scope.userRole) {
             case 'Volunteer':
@@ -176,32 +190,8 @@ angular.module('ohanaApp')
                     name: 'All',
                     value: ''
                 }, {
-                    name: 'Pending',
-                    value: 'Pending'
-                }, {
-                    name: 'Submitted',
-                    value: 'Submitted'
-                }, {
-                    name: 'Resubmit',
-                    value: 'Resubmit'
-                }, {
-                    name: 'Approved',
-                    value: 'Approved'
-                }, {
-                    name: 'Paid',
-                    value: 'Paid'
-                }, {
-                    name: 'Over Age',
-                    value: 'Over Age'
-                }];
-                $scope.PayStatus = $scope.paystatuslist[1];
-                break;
-
-            case 'Chapter Lead':
-                $scope.HeadTitle = ' for ' + $scope.userChapter;
-                $scope.paystatuslist = [{
-                    name: 'All',
-                    value: ''
+                    name: 'Edit',
+                    value: 'Edit'
                 }, {
                     name: 'Pending',
                     value: 'Pending'
@@ -211,41 +201,6 @@ angular.module('ohanaApp')
                 }, {
                     name: 'Resubmit',
                     value: 'Resubmit'
-                }, {
-                    name: 'Returned',
-                    value: 'Returned'
-                }, {
-                    name: 'Approved',
-                    value: 'Approved'
-                }, {
-                    name: 'Paid',
-                    value: 'Paid'
-                }, {
-                    name: 'Over Age',
-                    value: 'Over Age'
-                }];
-                $scope.PayStatus = $scope.paystatuslist[1];
-                break;
-
-            default:
-                $scope.paystatuslist = [{
-                    name: 'All',
-                    value: ''
-                }, {
-                    name: 'Pending',
-                    value: 'Pending'
-                }, {
-                    name: 'Submitted',
-                    value: 'Submitted'
-                }, {
-                    name: 'Resubmit',
-                    value: 'Resubmit'
-                }, {
-                    name: 'Returned',
-                    value: 'Returned'
-                }, {
-                    name: 'Approved',
-                    value: 'Approved'
                 }, {
                     name: 'Paid',
                     value: 'Paid'
@@ -254,6 +209,65 @@ angular.module('ohanaApp')
                     value: 'Over Age'
                 }];
                 $scope.PayStatus = $scope.paystatuslist[2];
+                break;
+
+            case 'Chapter Lead':
+                $scope.HeadTitle = ' for ' + $scope.userChapter;
+                $scope.paystatuslist = [{
+                    name: 'All',
+                    value: ''
+                }, {
+                    name: 'Edit',
+                    value: 'Edit'
+                }, {
+                    name: 'Pending',
+                    value: 'Pending'
+                }, {
+                    name: 'Submitted',
+                    value: 'Submitted'
+                }, {
+                    name: 'Resubmit',
+                    value: 'Resubmit'
+                }, {
+                    name: 'Returned',
+                    value: 'Returned'
+                }, {
+                    name: 'Paid',
+                    value: 'Paid'
+                }, {
+                    name: 'Over Age',
+                    value: 'Over Age'
+                }];
+                $scope.PayStatus = $scope.paystatuslist[2];
+                break;
+
+            default:
+                $scope.paystatuslist = [{
+                    name: 'All',
+                    value: ''
+                }, {
+                    name: 'Edit',
+                    value: 'Edit'
+                }, {
+                    name: 'Pending',
+                    value: 'Pending'
+                }, {
+                    name: 'Submitted',
+                    value: 'Submitted'
+                }, {
+                    name: 'Resubmit',
+                    value: 'Resubmit'
+                }, {
+                    name: 'Returned',
+                    value: 'Returned'
+                }, {
+                    name: 'Paid',
+                    value: 'Paid'
+                }, {
+                    name: 'Over Age',
+                    value: 'Over Age'
+                }];
+                $scope.PayStatus = $scope.paystatuslist[3];
         }
 
         //---Past Due Days Calculation ---------
@@ -359,18 +373,190 @@ angular.module('ohanaApp')
 
         $scope.viewexpensedata = function() {
 
-            //console.log("Service to be called", $scope.userChapter);
-            // $scope.lists = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
-            // originalList = $scope.lists.viewExpenseList;
-
             $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
             $scope.$applyAsync();
-            // console.log("Service to be called", $scope.expensedataSet);
-            // angular.forEach($scope.expensedataSet, function(item) {
-            //     console.log("Service to be called");
-            // });
+
+            $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
+            // $scope.$applyAsync();
+
+            $scope.expensedash = [];
+            $scope.expensedash.length = 0;
+            $scope.editstatus = [];
+            $scope.editstatus.length = 0;
+            $scope.pielabels = [];
+            $scope.pielabels.length = 0;
+            $scope.piedata = [];
+            $scope.piedata.length = 0;
+            $scope.piecolor = [];
+            $scope.piecolor.length = 0;
+            $scope.PieDisplay = '';
+
+            var apaid = 0;
+            var apending = 0;
+            var asubmitted = 0;
+            var aresubmit = 0;
+            var areturned = 0;
+            var aoverage = 0;
+            var apaid = 0;
+            var aedit = 0;
+            var pastdue = 0;
+            var editbillid = '';
+            var emailid = '';
+            var daysforoverage = 0;
+            // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
+            $scope.dashlist.$loaded().then(function() {
+
+                angular.forEach($scope.dashlist, function(list) {
+
+                    switch (list.PaymentStatus) {
+                        case 'Paid':
+                            apaid = apaid + 1;
+                            break;
+                        case 'Edit':
+
+                            aedit = aedit + 1;
+                            daysforoverage = 0;
+                            pastdue = expenseservice.getPastDue(list.eventdate);
+                            editbillid = list.BillId;
+                            emailid = list.email;
+                            if (pastdue < 60) {
+                                daysforoverage = 60 - pastdue;
+                            }
+                            if ($scope.useremail == list.email) {
+                                $scope.editstatus.push({
+                                    "OverAge": daysforoverage,
+                                    "BillId": editbillid,
+                                    "EmailID": emailid
+                                });
+
+                                if (daysforoverage > 0) {
+                                    swal('Expense waiting for submission! Over Age in ' + daysforoverage + ' days', '', '');
+                                } else {
+                                    swal('Expense waiting for submission! Over Age TODAY', '', '');
+                                    // UpdatePaymentStatus(editbillid, 'Over Age', 'Expense waited in EDIT status for long')
+                                    //To Do
+                                }
+                            }
+
+                            break;
+                        case 'Over Age':
+                            aoverage = aoverage + 1;
+                            break;
+                        case 'Pending':
+                            apending = apending + 1;
+                            break;
+
+                        case 'Returned':
+                            areturned = areturned + 1;
+                            break;
+                        case 'Resubmit':
+                            aresubmit = aresubmit + 1;
+                            break;
+                        case 'Submitted':
+                            asubmitted = asubmitted + 1;
+                            break;
+                    }
+
+
+
+                });
+                // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
+
+                // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
+                if (apending > 0) {
+                    $scope.piedata.push(apending);
+                    $scope.pielabels.push("Pending");
+                    $scope.piecolor.push("#FFA500");
+                    $scope.expensedash.push({
+                        "Label": "Pending",
+                        "Data": apending
+                    });
+
+                    // $scope.PieDisplay = "Pending(" + apending + ") ";
+                }
+                if (aedit > 0) {
+                    $scope.piedata.push(aedit);
+                    $scope.pielabels.push("Edit");
+                    $scope.piecolor.push("#FF6347");
+                    if (pastdue < 60) {
+                        daysforoverage = 60 - pastdue;
+                    }
+                    // $scope.editstatus = [{
+                    //     "OverAge": daysforoverage,
+                    //     "BillId": editbillid,
+                    //     "EmailID": emailid
+                    // }];
+                    $scope.expensedash.push({
+                        "Label": "Edit",
+                        "Data": aedit
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Edit(" + aedit + ") ";
+                }
+                if (asubmitted > 0) {
+                    $scope.piedata.push(asubmitted);
+                    $scope.pielabels.push("Submitted");
+                    $scope.piecolor.push("#0816ff");
+                    $scope.expensedash.push({
+                        "Label": "Submitted",
+                        "Data": asubmitted
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Submitted(" + asubmitted + ") ";
+                }
+                if (areturned > 0) {
+                    $scope.piedata.push(areturned);
+                    $scope.pielabels.push("Returned");
+                    $scope.piecolor.push("#08ffff");
+                    $scope.expensedash.push({
+                        "Label": "Returned",
+                        "Data": areturned
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Returned(" + areturned + ") ";
+                }
+
+                if (aresubmit > 0) {
+                    $scope.piedata.push(aresubmit);
+                    $scope.pielabels.push("Resubmit");
+                    $scope.piecolor.push("#08ffff");
+                    $scope.expensedash.push({
+                        "Label": "Resubmit",
+                        "Data": aresubmit
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Resubmit(" + aresubmit + ") ";
+                }
+                if (apaid > 0) {
+                    $scope.piedata.push(apaid);
+                    $scope.pielabels.push("Paid");
+                    $scope.piecolor.push("#08ff21");
+                    $scope.expensedash.push({
+                        "Label": "Paid",
+                        "Data": apaid
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Paid(" + apaid + ") ";
+
+                }
+                if (aoverage > 0) {
+                    $scope.piedata.push(aoverage);
+                    $scope.pielabels.push("Over Age");
+                    $scope.piecolor.push("#FF0000");
+                    $scope.expensedash.push({
+                        "Label": "Over Age",
+                        "Data": aoverage
+                    });
+                    // $scope.PieDisplay = $scope.PieDisplay + "Over Age(" + aoverage + ") ";
+                }
+
+            });
+
+
+
+            console.log("Dash -222", $scope.editstatus, $scope.dashlist, $scope.piecolor, $scope.pielabels, $scope.piedata);
+            // if ($scope.expensedash !== undefined) {
+
+
+
 
         }
+
 
         // var rptdata = [];
         var currentdate = new Date();

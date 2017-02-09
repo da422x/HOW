@@ -8,17 +8,18 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewExpenseCtrl', function($scope, userService, expenseservice, commonServices, $location, $q) {
+    .controller('NewExpenseCtrl', function($scope, userService, expenseservice, commonServices, $location, $q, FileUploader) {
 
         var user = this;
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
-
+        expenseservice.deleteExpense("oRa2017126133420299");
+        expenseservice.deleteExpense("aAe201728132644713");
 
         // Initialize FORM field to clear old values in creating new expense.
         $scope.exp.Chapter = "";
-        $scope.exp.email = "";
+        $scope.exp.email = commonServices.getCurrentUserEmail();
         $scope.exp.SubmitDate = "";
         $scope.exp.SubmitBy = "";
         $scope.exp.SubmitAddress = "";
@@ -34,9 +35,8 @@ angular.module('ohanaApp')
         $scope.exp.Line[1].Quantity = 0; //this.exp.trailermiles;
         $scope.exp.Line[1].Rate = 0.4;
         $scope.exp.Line.length = 2;
-        console.log("Exp Line Array len", $scope.exp.Line.length, $scope.exp.Line);
-        // Initialize FORM field 
-        // --- END ---------
+        // console.log("Exp Line Array len", $scope.exp.Line.length, $scope.exp.Line);
+        // Initialize FORM field  --- END ---------
 
         //---To remove the “No file chosen” tooltip from a file input --START
         // $(function() {
@@ -50,27 +50,116 @@ angular.module('ohanaApp')
         //     })
         //---To remove the “No file chosen” tooltip from a file input --END
 
-        $scope.lineamount = 0;
-        $scope.role = "";
-        $scope.exp.email = commonServices.getCurrentUserEmail();
+        //---FILE UPLOADER ---START ---------
 
+        var uploader = $scope.uploader = new FileUploader({
+            // if (!empty($_FILES)) {
+
+            //     $tempPath = $_FILES['file']['tmp_name'];
+            //     $uploadPath = dirname(__FILE__).DIRECTORY_SEPARATOR.
+            //     'uploads'.DIRECTORY_SEPARATOR.$_FILES['file']['name'];
+
+            //     move_uploaded_file($tempPath, $uploadPath);
+
+            //     $answer = array('answer' => 'File transfer completed');
+            //     $json = json_encode($answer);
+
+            //     echo $json;
+
+            // } else {
+
+            //     echo 'No files';
+
+            // }
+        });
+        // var uploader = $scope.uploader = function() {
+        //     // url: 'upload.php'
+        //     var inp = document.getElementById('fileimage');
+        //     for (var i = 0; i < item.length; ++i) {
+        //         var filename = inp.fileimage.item(i).name;
+        //         console.log("Image - ", i, filename);
+        //     };
+
+        // };
+        // FILTERS
+
+        uploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/ , options) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+        });
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/ , filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem.file.name);
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+        };
+
+        // console.info('uploader', uploader);
+        //----FILE UPLOADER ---END------
+
+        $scope.lineamount = 0;
         var userUID = userService.getId();
         var userData = commonServices.getData('/userData/' + userUID);
         $scope.userRole = userService.getRole();
         $scope.userName = userService.getUserData();
         $scope.userChapter = userService.getChapter();
-        console.log("User Name info - ", $scope.userName);
+        $scope.useremail = commonServices.getCurrentUserEmail();
+        console.log("User Name info - ", $scope.userName, $scope.exp.email);
 
-        // var userRquests = commonServices.getData('/roleChangeRequests/');
+        $scope.checkeditexist = function() {
+            var aedit = 0;
+            $scope.Editlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
+            $scope.Editlist.$loaded().then(function() {
 
-        //        $q.all([userData, userRquests]).then(function(data) {
-        //            $scope.profileData
+                angular.forEach($scope.Editlist, function(list) {
+                    if (list.PaymentStatus == 'Edit' && list.email == $scope.useremail) {
+                        aedit = aedit + 1;
+                        $scope.isEditexist = "true";
+                    }
+                    // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.isEditexist);
 
-        // = data[0];
-        //            $scope.profileData.role = $scope.userRole;
-        //            $scope.userUID = userUID;
+                });
+            });
 
-        //        });
+            // console.log("Edit exist", $scope.isEditexist);
+        }
+
+        //if EDIT exist, user can not save new expense in EDIT status - Only 1 Edit allowed per user
+        //SAVE it for later button hidden
+        $scope.checkeditexist();
 
         $scope.fileadded = false;
         $scope.uploadImageFile = function() {
@@ -152,6 +241,7 @@ angular.module('ohanaApp')
 
         $scope.clear = function() {
             $scope.exp.eventdate = new Date();
+            var uploader = $scope.uploader = new FileUploader({});
 
         };
 
@@ -185,7 +275,7 @@ angular.module('ohanaApp')
         $scope.ClearFields = function() {
 
             $scope.exp.Chapter = "";
-            $scope.exp.email = "";
+            $scope.exp.email = commonServices.getCurrentUserEmail();
             $scope.exp.SubmitDate = "";
             $scope.exp.SubmitBy = "";
             $scope.exp.SubmitAddress = "";
@@ -203,22 +293,62 @@ angular.module('ohanaApp')
 
         }
 
+        // -- SAVE THE EXPENSE FOR LATER USE
+        $scope.saveitforlater = function() {
+            var eventdate = $scope.exp.eventdate;
+            var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
+            $scope.exp.email = commonServices.getCurrentUserEmail();
+            $scope.CalculateAmount();
+            // var inp = document.getElementById('fileimage');
+            if ($scope.uploader !== undefined) {
+                console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue);
+                for (var i = 0; i < $scope.uploader.queue.length; ++i) {
+                    var filename = $scope.uploader.queue[i].file.name;
+                    console.log("file name", filename);
+                }
+            }
 
+
+            swal({
+                title: 'Need more time to submit',
+                text: "Expense will be saved in EDIT status!",
+                type: 'info',
+                html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                    '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                    '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, SAVE it!'
+            }).then(function() {
+
+                $scope.createnewexpense("SAVE")
+                window.location.href = "#/expense/viewexpense"
+            })
+
+        }
+
+        // -- CREATE NEW EXPENSE
         $scope.confirmnewexpense = function() {
             var eventdate = $scope.exp.eventdate;
             var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
             $scope.CalculateAmount();
-            var inp = document.getElementById('files');
+            // var inp = document.getElementById('fileimage');
+            console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
+            for (var i = 0; i < $scope.uploader.queue.length; ++i) {
+                var filename = $scope.uploader.queue[i].file.name;
+                console.log("file name", filename);
+            }
 
 
-            if ($scope.exp.Description.length == 0 || inp.files.length == 0) {
+            if ($scope.exp.Description.length == 0 || $scope.uploader.queue.length == 0) {
                 swal({
                     title: 'Required fields Missing',
                     type: 'error',
                     html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
                         '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + inp.files.length + '</b></td> </tr></table>',
-
+                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr></table>',
 
                 })
             } else {
@@ -239,7 +369,7 @@ angular.module('ohanaApp')
                     confirmButtonText: 'Yes, create it!'
                 }).then(function() {
 
-                    $scope.createnewexpense()
+                    $scope.createnewexpense("Pending")
                     window.location.href = "#/expense/viewexpense"
                 })
             }
@@ -271,7 +401,7 @@ angular.module('ohanaApp')
 
         }
 
-        $scope.createnewexpense = function() {
+        $scope.createnewexpense = function(expensetype) {
 
             var Line = [];
             var ImageFile = [];
@@ -290,8 +420,9 @@ angular.module('ohanaApp')
                 }
             }
 
+            $scope.exp.email = commonServices.getCurrentUserEmail();
 
-            var input = document.getElementById('files');
+
             $scope.exp.Chapter = $scope.userChapter;
             $scope.exp.SubmitBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             // $scope.exp.SubmitBy = $scope.profileData.name.first + ' ' + $scope.profileData.name.last;
@@ -300,13 +431,9 @@ angular.module('ohanaApp')
 
             // $scope.profileData.Chapter.charAt(1);
             $scope.exp.BillId = $scope.userName.Region.charAt(1) + $scope.userChapter.charAt(1) + $scope.userName.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
-            // $scope.exp.BillId = $scope.profileData.Region.charAt(1) + $scope.profileData.Chapter.charAt(1) + $scope.profileData.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
 
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             $scope.exp.SubmitAddress = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2 + ' , ' + $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
-            // $scope.exp.Line[0].Amount = $scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate;
-            // $scope.exp.Line[1].Amount = $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate;
-            // $scope.exp.Amount = (($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate) + ($scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate) + (parseFloat($scope.lineamount) * 1));
 
             if ($scope.userRole == 'Chapter Lead') {
                 $scope.exp.PaymentLog[0].PayStatus = "Submitted";
@@ -315,6 +442,16 @@ angular.module('ohanaApp')
                 $scope.exp.PaymentLog[0].PayStatus = "Pending";
                 $scope.exp.PaymentStatus = "Pending";
             }
+
+            //-- Expense entry saved for future submission
+            if (expensetype == 'SAVE') {
+                $scope.exp.PaymentLog[0].PayStatus = "Edit";
+                $scope.exp.PaymentStatus = "Edit";
+                $scope.exp.PaymentLog[0].PayStatusDescription = 'Expense saved for later submission';
+            } else
+                $scope.exp.PaymentLog[0].PayStatusDescription = 'New Expense created';
+
+
             $scope.exp.PaymentLog[0].PayStatusBy = $scope.exp.SubmitBy;
             $scope.exp.PaymentLog[0].PayRole = $scope.userRole;
             if (currentdate.getHours() > 12) {
@@ -324,20 +461,23 @@ angular.module('ohanaApp')
                 $scope.exp.PaymentLog[0].PayStatusDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
 
             }
-            $scope.exp.PaymentLog[0].PayStatusDescription = 'New Expense created';
+            // $scope.exp.PaymentLog[0].PayStatusDescription = 'New Expense created';
 
-            console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy);
+            console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy, $scope.exp.email);
 
             var imageString;
             var imagefilename;
             //alert(jsonString);
 
-            if (input.files.length > 0) {
+            var input = document.getElementById('files');
+            // if (input.files.length > 0) {
+            if ($scope.uploader.queue.length > 0) {
                 // jsonString = jsonString + ', ' + '"ImageURL" :  [  ';
-                for (var x = 0; x < input.files.length; x++) {
+                for (var x = 0; x < $scope.uploader.queue.length; x++) {
 
 
-                    imagefilename = 'images/' + $scope.exp.BillId + "_" + input.files[x].name;
+                    imagefilename = 'images/' + $scope.exp.BillId + "_" + $scope.uploader.queue[x].file.name
+                        //input.files[x].name;
                     expenseservice.addNewImage({
                         ID: (x + 1),
                         ImageUrlLocation: "",
@@ -363,14 +503,21 @@ angular.module('ohanaApp')
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
 
-            if (input.files.length > 0) {
+            if ($scope.uploader !== undefined) {
 
-                LoadImageData($scope.exp.BillId, datalocation);
+                var imageurl = '';
+                if ($scope.uploader.queue.length > 0) {
+                    imageurl = expenseservice.SaveImageData($scope.exp.BillId, $scope.uploader.queue);
 
+                    console.log("save image - ", imageurl);
+                }
             }
 
-            swal('New Expense Created', 'for event ' + this.exp.eventdate, 'success');
-            // alert("Success:  New Expense created for event - " + this.exp.eventdate);
+            if (expensetype == 'SAVE') {
+                swal('Expense is Saved for future submission', 'for event ' + this.exp.eventdate, 'success');
+            } else {
+                swal('New Expense Created', 'for event ' + this.exp.eventdate, 'success');
+            }
 
             $location.path("expense/viewexpense");
 
@@ -380,40 +527,78 @@ angular.module('ohanaApp')
 
     });
 
-function LoadImageData(UniqueBillId, datalocation) {
+// function LoadImageData(UniqueBillId, datalocation, imageinfo) {
+
+//     // $scope.uploader.queue[i].file.name
+
+//     var imageobj = {};
+//     // var inp = document.getElementById('fileimage');
+//     console.log("file image ", imageinfo[0].file.name);
+
+//     for (var i = 0; i < imageinfo.length; ++i) {
+//         var filename = imageinfo[i].file.name
+//             //inp.files.item(i).name;
 
 
-    var imageobj = {};
-    var inp = document.getElementById('files');
+//         var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+//         var blnValid = false;
+//         for (var j = 0; j < _validFileExtensions.length; j++) {
+//             var sCurExtension = _validFileExtensions[j];
 
-    for (var i = 0; i < inp.files.length; ++i) {
-        var filename = inp.files.item(i).name;
+//             if (filename.substr(filename.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
 
+//                 var storage = firebase.storage();
 
-        var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-        var blnValid = false;
-        for (var j = 0; j < _validFileExtensions.length; j++) {
-            var sCurExtension = _validFileExtensions[j];
+//                 var file = imageinfo[i]._file;
+//                 //document.getElementById("fileimage").files[i];
+//                 console.log("load file - ", file);
 
-            if (filename.substr(filename.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+//                 var storageRef = firebase.storage().ref();
+//                 var path = storageRef.fullPath
 
-                var storage = firebase.storage();
+//                 var filelocname = 'images/' + UniqueBillId + '_' + file.name;
 
-                var file = document.getElementById("files").files[i];
-                console.log("load file - ", file);
-
-                var storageRef = firebase.storage().ref();
-                var path = storageRef.fullPath
-
-                var filelocname = 'images/' + UniqueBillId + '_' + file.name;
-
-                storageRef.child(filelocname).put(file).then(function(snapshot) {
-                    console.log('Uploaded a blob or file!');
-                });
+//                 storageRef.child(filelocname).put(file).then(function(snapshot) {
+//                     console.log('Uploaded a blob or file!');
+//                 });
 
 
 
-            }
-        }
-    }
-}
+//             }
+//         }
+//     }
+
+//     // var imageobj = {};
+//     // var inp = document.getElementById('files');
+
+//     // for (var i = 0; i < inp.files.length; ++i) {
+//     //     var filename = inp.files.item(i).name;
+
+
+//     //     var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+//     //     var blnValid = false;
+//     //     for (var j = 0; j < _validFileExtensions.length; j++) {
+//     //         var sCurExtension = _validFileExtensions[j];
+
+//     //         if (filename.substr(filename.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+
+//     //             var storage = firebase.storage();
+
+//     //             var file = document.getElementById("files").files[i];
+//     //             console.log("load file - ", file);
+
+//     //             var storageRef = firebase.storage().ref();
+//     //             var path = storageRef.fullPath
+
+//     //             var filelocname = 'images/' + UniqueBillId + '_' + file.name;
+
+//     //             storageRef.child(filelocname).put(file).then(function(snapshot) {
+//     //                 console.log('Uploaded a blob or file!');
+//     //             });
+
+
+
+//     //         }
+//     //     }
+//     // }
+// }
