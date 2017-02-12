@@ -418,7 +418,7 @@ module.exports = function(grunt) {
                     usemin: 'scripts/scripts.js'
                 },
                 cwd: '<%= yeoman.app %>',
-                src: ['views/{,*/}*.html', 'parts/{,*/}*.html'],
+                src: ['views/{,*/}*.html'],
                 dest: '.tmp/templateCache.js'
             }
         },
@@ -480,6 +480,7 @@ module.exports = function(grunt) {
                         'extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
                         'assets/**/*.*',
+                        'parts/**/*.html',
                         'extensions/bootstrap-editable/css/bootstrap-editable.css',
                         'extensions/hamburgers.min.css'
                         // 'parts/**/*.*'
@@ -643,7 +644,7 @@ module.exports = function(grunt) {
         'copy:dist',
         'cdnify',
         'cssmin',
-        //'uglify',
+        'uglify',
         'filerev',
         'usemin',
         'htmlmin',
