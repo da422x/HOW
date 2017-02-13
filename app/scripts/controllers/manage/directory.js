@@ -445,6 +445,13 @@ angular.module('ohanaApp')
             });
         };
 
+        $scope.chapterStatus = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/chapterStatus.html',
+                controller: 'ChapterStatusCtrl'
+            });
+        };
+
         $scope.remove = function() {
             if ($scope.checkedBoxes.length === 0) {
                 swal('', 'No records selected!', 'warning');

@@ -100,27 +100,27 @@ angular.module('ohanaApp')
 
         this.deleteExpense = function(BillId) {
 
-            var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(BillId);
-            query.on('child_added', function(snap) {
-                var obj = snap.val();
-                // console.log("key ", snap.key);
-                firebase.database().ref('expense/' + snap.key).remove()
-                    .then(function(data) {
-                        console.log('success : - ', BillId, ' data Deleted');
-                        swal('Expense Deleted Successfully!', '', 'success');
-                    })
-                    .catch(function(error) {
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        console.log('ERROR: ' + error.code + ': ' + error.message);
-                        console.log('Expense - ', BillId, ' Removal Failed');
-                    });
-            });
+                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(BillId);
+                query.on('child_added', function(snap) {
+                    var obj = snap.val();
+                    // console.log("key ", snap.key);
+                    firebase.database().ref('expense/' + snap.key).remove()
+                        .then(function(data) {
+                            console.log('success : - ', BillId, ' data Deleted');
+                            swal('Expense Deleted Successfully!', '', 'success');
+                        })
+                        .catch(function(error) {
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            console.log('ERROR: ' + error.code + ': ' + error.message);
+                            console.log('Expense - ', BillId, ' Removal Failed');
+                        });
+                });
 
-        }
-        /******************************************************
-         *        View Expense                                 *
-         *******************************************************/
+            }
+            /******************************************************
+             *        View Expense                                 *
+             *******************************************************/
         this.CheckEditExpense = function(useremail) {
 
             var query = firebase.database().ref('/expense').orderByChild('PaymentStatus').equalTo('Edit');
@@ -619,7 +619,7 @@ angular.module('ohanaApp')
 
             for (var i = 0; i < imageinfo.length; ++i) {
                 var filename = imageinfo[i].file.name
-                //inp.files.item(i).name;
+                    //inp.files.item(i).name;
 
 
                 var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];

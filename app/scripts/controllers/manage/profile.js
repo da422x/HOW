@@ -12,6 +12,12 @@ angular.module('ohanaApp')
     .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal, userService, $filter, $http) {
         'use strict';
 
+        $scope.$on('updateProfile', function(event, arg) {
+            if (arg) {
+                $scope.update();
+            }
+        });
+
         $scope.updateChapterDropdown = function(regionProfileText) {
             var region = $scope.profileData.Region;
             if (regionProfileText)
@@ -179,6 +185,13 @@ angular.module('ohanaApp')
 
             return true;
         }
+
+        $scope.changeChapter = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/changechapter.html',
+                controller: 'ChangeChapterCtrl'
+            });
+        };
 
         $(document).on("focus", ".mask", function() {
             $(this).mask("(999) 999-9999?");
