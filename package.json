@@ -2,11 +2,9 @@
     "name": "ohana",
     "private": true,
     "scripts": {
-        "ready": "grunt jsbeautifier && git merge origin nitenite && git add . && git commit -m ",
-        "postready": "git push && grunt build && npm run surge_test",
+        "ready": "grunt jsbeautifier && git merge origin nitenite && grunt build && git add . && git commit -m ",
         "surge_test": "surge -p dist -d howtest.surge.sh",
-        "surge_prod": "surge -p dist -d howprod.surge.sh",
-        "testery": "echo $port --port process.env.port || 8080"
+        "surge_prod": "surge -p dist -d howprod.surge.sh"
     },
     "devDependencies": {
         "autoprefixer-core": "^5.2.1",
