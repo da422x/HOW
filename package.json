@@ -2,9 +2,11 @@
     "name": "ohana",
     "private": true,
     "scripts": {
-        "ready": "grunt jsbeautifier && git merge origin nitenite && git add .",
+        "ready": "grunt jsbeautifier && git merge origin nitenite && git add . && git commit -m ",
+        "postready": "git push && grunt build && npm run surge_test",
         "surge_test": "surge -p dist -d howtest.surge.sh",
-        "surge_prod": "surge -p dist -d howprod.surge.sh"
+        "surge_prod": "surge -p dist -d howprod.surge.sh",
+        "testery": "echo $port --port process.env.port || 8080"
     },
     "devDependencies": {
         "autoprefixer-core": "^5.2.1",
@@ -33,6 +35,7 @@
         "grunt-replace": "^1.0.1",
         "grunt-sass": "^1.2.0",
         "grunt-serve": "^0.1.6",
+        "grunt-size-report": "^0.1.4",
         "grunt-svgmin": "^2.0.0",
         "grunt-usemin": "^3.0.0",
         "grunt-wiredep": "^2.0.0",

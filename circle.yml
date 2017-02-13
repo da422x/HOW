@@ -27,4 +27,4 @@ deployment:
     branch: nitenite
     commands:
       - grunt build
-      - npm run surge_test
+      #disabling this feature for now. - npm run surge_test
