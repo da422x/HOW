@@ -21,6 +21,7 @@ angular.module('ohanaApp')
         };
 
         $scope.regionUpdate = function(selectedRegion) {
+            // Update chapter drop down based on selected region.
             _.each($scope.regions, function(region) {
                 if (selectedRegion.value === region.value) {
                     $scope.chapters = region.chapters;
@@ -29,9 +30,19 @@ angular.module('ohanaApp')
         };
 
         $scope.updateRegionChapter = function() {
+            // Get new values and update DB.
             var userId = userService.getId();
+            var userData = userService.getUserData();
             commonServices.updateData('/userData/' + userId + '/Region', $scope.newRegion.value);
             commonServices.updateData('/userData/' + userId + '/Chapter', $scope.newChapter.value);
+
+            // Update global variables.
+            userData.Region = $scope.newRegion.value;
+            userData.Chapter = $scope.newChapter.value;
+            userService.setUserData(userData);
+            userService.setChapter($scope.newChapter.value);
+
+            // Close modal with success message.
             $uibModalInstance.dismiss('cancel');
             $rootScope.$broadcast('updateProfile', true);
             swal("Success", "Region/Chapter updated successfully!", "success");

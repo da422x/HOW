@@ -18,26 +18,13 @@ angular.module('ohanaApp')
             }
         });
 
-        $scope.updateChapterDropdown = function(regionProfileText) {
-            var region = $scope.profileData.Region;
-            if (regionProfileText)
-                region = regionProfileText //if the region was updated, then use that new value to update the chapter list
-            var lst = $rootScope.siteData.regionsChapters.filter(function(val, idx) {
-                return val.text === region;
-            });
-            if (regionProfileText) {
-                $scope.saveUserData(lst[0].chapters[0].text, 'Chapter');
-                $scope.profileData.Chapter = lst[0].chapters[0].text;
-            }
-            $scope.chapters = lst[0].chapters;
-        }
-
         $scope.update = function() {
             var userRquests = commonServices.getData('/roleChangeRequests/');
 
             $q.all([userRquests]).then(function(data) {
                 $scope.profileData = userService.getUserData();
                 $scope.profileData.role = userService.getRole();
+                console.log($scope.profileData);
                 $scope.userUID = userService.getId();;
                 $scope.requests = [];
                 _.each(data[0], function(value, key) {
@@ -190,6 +177,13 @@ angular.module('ohanaApp')
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changechapter.html',
                 controller: 'ChangeChapterCtrl'
+            });
+        };
+
+        $scope.editChapters = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/manageadditionalchapters.html',
+                controller: 'ManageAdditionalChapters'
             });
         };
 
