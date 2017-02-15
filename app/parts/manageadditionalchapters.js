@@ -38,11 +38,23 @@ angular.module('ohanaApp')
         };
 
         $scope.addChapter = function() {
+            var canUpdate = true;
             var chapterObj = {
                 region: $scope.newRegion.value,
                 chapter: $scope.newChapter.value
             }
-            $scope.userChapters.push(chapterObj);
+
+            _.each($scope.userChapters, function(n) {
+                if (n.chapter === $scope.newChapter.value) {
+                    canUpdate = false;
+                }
+            });
+
+            if (canUpdate) {
+                $scope.userChapters.push(chapterObj);
+            } else {
+                swal('error', $scope.newChapter.value + ' has already been added to secondary chapters...', 'error');
+            }
         };
 
         $scope.updateChapters = function() {
@@ -50,7 +62,9 @@ angular.module('ohanaApp')
             var userId = userService.getId();
             var userData = userService.getUserData();
 
-            _.each($scope.userChapters, function() {
+            console.log($scope.userChapters)
+
+            _.each($scope.userChapters, function(n) {
                 delete $scope.userChapters[i].$$hashKey;
                 i++
             });
@@ -63,7 +77,7 @@ angular.module('ohanaApp')
             // Close modal with success message.
             $uibModalInstance.dismiss('cancel');
             $rootScope.$broadcast('updateProfile', true);
-            swal("Success", "Region/Chapter updated successfully!", "success");
+            swal('Success', 'Region/Chapter updated successfully!', 'success');
         }
 
         $scope.removeChapter = function() {
