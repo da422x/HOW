@@ -176,14 +176,24 @@ angular.module('ohanaApp')
         $scope.changeChapter = function() {
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changechapter.html',
-                controller: 'ChangeChapterCtrl'
+                controller: 'ChangeChapterCtrl',
+                resolve: {
+                    selectedUID: function() {
+                        return false;
+                    }
+                }
             });
         };
 
         $scope.editChapters = function() {
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/manageadditionalchapters.html',
-                controller: 'ManageAdditionalChapters'
+                controller: 'ManageAdditionalChapters',
+                resolve: {
+                    selectedUID: function() {
+                        return false;
+                    }
+                }
             });
         };
 
