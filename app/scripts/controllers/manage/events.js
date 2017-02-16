@@ -117,29 +117,68 @@ angular.module('ohanaApp')
         $scope.manageEvent = function(index) {
             var selected = allEvents[index];
             console.log('Index is: ' + index);
-            console.log(selected.key);
+            //console.log(selected.key);
 
 
 
-            var getEvents = commonServices.getEvent(selected);
-            console.log(getEvents);
+            //var getEvents = commonServices.getEvent(selected);
+            //console.log('getEvents', getEvents);
+
+            $location.url('details/' + selected.key);
 
             //match event to db
-            $q.all([getEvents]).then(function(data) {
-                if (data[0]) {
-                    _.each(data[0], function(event, key) {
-                        if (selected.key === event.key) {
-                            console.log('Event: ' + event.name);
-                            selected = event;
-                        }
-                    });
-                }
-            });
+            // $q.all([getEvents]).then(function(data) {
+            //     console.log('hello me', data)
+            //     if (data[0]) {
+            //         _.each(data[0], function(event, key) {
+            //             console.log("inside the foreach", selected, event, key)
+            //             if (selected.key === key) {
+            //                 console.log('Event: ' + event.name);
+            //                 selected = event;
+            //                 $location.url('details/' + key);
+            //             }
+            //         });
+            //     } else {
+            //         console.log(data);
+            //     }
+            // }, function(err) {
+            //     console.log('the error is', err);
 
-            DAO.selectedEvent = selected;
-            $location.url('details');
+            // });
+
+            //DAO.selectedEvent = selected;
             //do something
         };
+
+        $scope.viewParticipants = function(eventKey) {
+            $uibModal.open({
+                templateUrl: '/parts/manageParticipants.html',
+                controller: 'ManageParticipantsCtrl',
+                resolve: {
+                    event: function() {
+                        return allEvents[eventKey];
+                    }
+                }
+            });
+        }
+        $scope.viewVolunteers = function(eventKey) {
+            $uibModal.open({
+                templateUrl: '/parts/manageVolunteers.html',
+                controller: 'ManageVolunteersCtrl',
+                resolve: {
+                    event: function() {
+                        return allEvents[eventKey];
+                    }
+                }
+            });
+        }
+
+        $scope.addParticipant = function() {
+            alert('a participant was added');
+        }
+        $scope.addVolunteer = function() {
+            alert('a volunteer was added');
+        }
 
         $scope.deleteEvent = function(index) {
             var selected = allEvents[index];

@@ -1,0 +1,44 @@
+<style>
+#participantsTable_wrapper>div:nth-child(2)>div {
+    margin-right: 3px;
+    overflow-x: auto;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{event.name +"'s Participants"}}</h4>
+</div>
+<!-- end modal-header -->
+<div class="modal-body">
+    <table id="participantsTable" class="display table table-bordered">
+        <tfoot>
+            <tr>
+                <td>
+                    <button ng-click="addParticipant()" type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="new_row.first">
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="new_row.middle">
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="new_row.last">
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="new_row.email">
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="new_row.phone">
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div style="display:flex">
+        <button type="button" class="btn btn-danger">Delete selected participants</button>
+    </div>
+</div>
+<!-- end modal body -->

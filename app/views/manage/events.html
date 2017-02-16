@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+<style>
+.link_padding {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+</style>
 <div class="container" ng-init="update()">
     <h3>Manage Events</h3>
     <div style="clear: left; width: 100%; overflow: auto; margin-bottom:10px">
@@ -15,7 +20,7 @@
         <div class="form-group">
             <label class="control-label" for="fname">Search:</label>
             <div>
-                <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
+                <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 100 }'>
             </div>
         </div>
     </form>
@@ -40,9 +45,11 @@
                         <h4 class="list-group-item-heading">{{event.location}}</h4>
                     </div>
                 </div>
-                <div class="panel-footer" style="height:55px">
-                    <a class="btn btn-danger pull-right" ng-click="deleteEvent($index)" style="margin-left: 8px">Delete</a>
-                    <a class="btn btn-primary pull-right" ng-click="manageEvent($index)"><i class="fa fa-pencil" style="padding-right: 5px"></i>Manage Event</a>
+                <div class="panel-footer">
+                    <a class="btn btn-primary link_padding" ng-click="manageEvent($index)" style="margin-left: 8px;display:inline-block"><i class="fa fa-pencil" style="padding-right: 5px"></i>Manage Event</a>
+                    <a class="btn btn-primary link_padding" ng-click="viewParticipants($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">5</span> Participants</a>
+                    <a class="btn btn-primary link_padding" ng-click="viewVolunteers($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">6</span> Volunteers</a>
+                    <a class="btn btn-danger link_padding" ng-click="deleteEvent($index)" style="margin-left: 8px;display:inline-block">Delete</a>
                 </div>
             </div>
             <!-- end panel -->
