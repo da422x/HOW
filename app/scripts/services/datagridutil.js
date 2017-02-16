@@ -34,8 +34,11 @@ angular.module('ohanaApp')
                 arr.email = results[i].email;
                 arr.phone = results[i].phone;
                 arr.role = results[i].role;
-                arr.region = results[i].Region;
-                arr.chapter = results[i].Chapter;
+                arr.primaryChapter = results[i].Chapter;
+                arr.chapters = [];
+                _.each(results[i].Chapters, function(c) {
+                    arr.chapters.push(c.chapter);
+                });
                 if (results[i].branch) {
                     arr.branch = results[i].branch;
                 } else {
