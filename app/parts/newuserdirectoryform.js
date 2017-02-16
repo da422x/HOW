@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance) {
+    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService) {
         'use strict';
 
         // calendar options
@@ -147,6 +147,7 @@ angular.module('ohanaApp')
                         type: 'success',
                         timer: 2500
                     });
+                    howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                     $uibModalInstance.close();
                 } else {
                     // Do something here when sign in unsuccessful....
