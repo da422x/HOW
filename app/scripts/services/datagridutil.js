@@ -144,40 +144,42 @@ angular.module('ohanaApp')
 
         dataGridUtil.buildChaptersTableData = function(results) {
             var resultsLen = results.length;
+            var regionName = '';
+            var stateName = '';
             var gridData = [];
-            console.log(results);
             // build chapters data table from http response
             for (var i = 0; i < resultsLen; i++) {
-                var arr = {};
-                arr.region = results[i].key;
-                arr.first = results[i].name.first;
-                arr.last = results[i].name.last;
-                var dobparse = new Date(results[i].DOB);
-                var endob = dobparse.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
-                arr.dob = endob;
-                arr.email = results[i].email;
-                arr.phone = results[i].phone;
-                arr.role = results[i].role;
-                arr.region = results[i].Region;
-                arr.chapter = results[i].Chapter;
-                if (results[i].branch) {
-                    arr.branch = results[i].branch;
-                } else {
-                    arr.branch = "";
+                //REGION LEVEL  
+                regionName = results[i].key;
+                delete results[i].key;
+                delete results[i].regions;
+                for (var propName in results[i]) {
+                    if (results[i][propName] === null || results[i][propName] === undefined || results[i][propName] === true) {
+                        delete results[i][propName];
+                    }
                 }
-                if (results[i].notes) {
-                    arr.notes = results[i].notes;
-                } else {
-                    arr.notes = "";
+                for (var stateName in results[i]) {
+                    //STATE LEVEL
+                    for (var chapterName in results[i][stateName]) {
+                        //CHAPTER LEVEL
+                        var arr = {};
+                        arr.region = regionName;
+                        arr.state = stateName;
+                        arr.name = results[i][stateName][chapterName].name;
+                        arr.description = results[i][stateName][chapterName].description;
+                        arr.facebook = results[i][stateName][chapterName].url;
+                        arr.facebook_link = results[i][stateName][chapterName].url_link;
+                        arr.email = results[i][stateName][chapterName].email;
+                        arr.email_link = results[i][stateName][chapterName].email_link;
+                        arr.zip = results[i][stateName][chapterName].zip;
+                        arr.googleMaps = "https://www.google.com/maps/place/" + results[i][stateName][chapterName].lat + "," + results[i][stateName][chapterName].lng;
+                        arr.googleMaps_Link = "<a href='" + arr.googleMaps + "' target='_blank' class='storelocatorlink'>" + arr.googleMaps + "</a><br/>";
+                        gridData.push(arr);
+                    }
                 }
-                gridData.push(arr);
+                results[i].key = regionName;
+
             }
-            console.log(gridData);
             return gridData;
         };
-
     });

@@ -20,6 +20,7 @@ angular.module('ohanaApp')
             var i;
             var packet;
             var dataSet = dataGridUtil.buildChaptersTableData(results);
+            console.log(dataSet);
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 
@@ -42,39 +43,31 @@ angular.module('ohanaApp')
                         title: "KEY",
                         data: "key"
                     }, {
-                        title: "First Name",
-                        data: "first"
+                        title: "Chapter Name",
+                        data: "name"
                     }, {
-                        title: "Last Name",
-                        data: "last"
+                        title: "Description",
+                        data: "description"
                     }, {
-                        title: "DOB",
-                        data: "dob"
+                        title: "Region",
+                        data: "region"
+                    }, {
+                        title: "State",
+                        data: "state"
+                    }, {
+                        title: "Zip",
+                        data: "zip",
+                        orderable: false
                     }, {
                         title: "Email",
                         data: "email",
                         orderable: false
                     }, {
-                        title: "Mobile #",
-                        data: "phone",
-                        orderable: false
+                        title: "Website",
+                        data: "facebook_link"
                     }, {
-                        title: "Role",
-                        data: "role"
-                    }, {
-                        title: "Region",
-                        data: "region"
-                    }, {
-                        title: "Chapter",
-                        data: "chapter"
-                    }, {
-                        title: "Mil. Affil.",
-                        data: "branch",
-                        orderable: false
-                    }, {
-                        title: "Notes",
-                        data: "notes",
-                        orderable: false
+                        title: "Location",
+                        data: "googleMaps_Link"
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -102,17 +95,13 @@ angular.module('ohanaApp')
                     },
                     rowCallback: function(row, data, index) {
                         $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
-                        $(row).children().eq(1).addClass('tdFname');
-                        $(row).children().eq(2).addClass('tdLname');
-                        $(row).children().eq(3).addClass('tdDob');
-                        $(row).children().eq(4).addClass('tdEmail'); // email checking disabled
-                        $(row).children().eq(5).addClass('tdTelly'); // phone # checking disabled
-                        $(row).children().eq(6).addClass('tdSelectRole');
-                        $(row).children().eq(7).addClass('tdSelectRegion');
-                        $(row).children().eq(8).addClass('tdSelectChapter');
-                        $(row).children().eq(9).addClass('tdMil');
-                        $(row).children().eq(10).addClass('tdNotes');
-                        for (i = 1; i < 10; i++) {
+                        $(row).children().eq(1).addClass('tdCName');
+                        $(row).children().eq(2).addClass('tdDescription');
+                        $(row).children().eq(3).addClass('tdSelectRegion');
+                        $(row).children().eq(4).addClass('tdSelectState');
+                        $(row).children().eq(5).addClass('tdSelectZip');
+                        $(row).children().eq(6).addClass('tdEmail'); // email checking disabled
+                        for (i = 1; i < 7; i++) {
                             $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                         }
                         return row;
@@ -134,11 +123,11 @@ angular.module('ohanaApp')
                             }
                         });
                         // editable field definitions and CRUD ops
-                        $('#chaptersTable .tdFname a').editable({
+                        $('#chaptersTable .tdCName a').editable({
                             type: "text",
-                            name: "first",
+                            name: "name",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
                                 var path = '/userData/' + $scope.currId + '/name/first/';
@@ -151,11 +140,11 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#chaptersTable .tdLname a').editable({
+                        $('#chaptersTable .tdDescription a').editable({
                             type: "text",
-                            name: "last",
+                            name: "description",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
                                 var path = '/userData/' + $scope.currId + '/name/last/';
@@ -168,99 +157,11 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#chaptersTable .tdDob a').editable({
-                            type: "combodate",
-                            name: "DOB",
-                            placement: "bottom",
-                            emptytext: "null",
-                            format: 'MM/DD/YYYY',
-                            viewformat: 'MM/DD/YYYY',
-                            template: 'MMM / DD / YYYY',
-                            combodate: {
-                                template: 'MMM / DD / YYYY',
-                                minYear: 1900,
-                                maxYear: 2020
-                            },
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/DOB/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.DOB = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            }
-                        });
-                        $('#chaptersTable .tdEmail a').editable({
-                            type: "email",
-                            name: "email",
-                            placement: "bottom",
-                            emptytext: "null",
-                            url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/email/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.email = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            }
-                        });
-                        $('#chaptersTable .tdTelly a').editable({
-                            type: "text",
-                            name: "phone",
-                            placement: "bottom",
-                            emptytext: "null",
-                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
-                            url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/phone/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.phone = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            }
-                        });
-
-                        angular.element(document).ready(function() {
-                            $("#phonenum").mask("(999)999-9999");
-                        });
-
-                        $('#chaptersTable .tdSelectRole a').editable({
-                            type: "select",
-                            name: "role",
-                            placement: "bottom",
-                            emptytext: "null",
-                            showbuttons: false,
-                            url: function(params) {
-                                var packet = {
-                                    role: params.value
-                                }
-                                var path = '/userRoles/' + $scope.currId;
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    userService.setRole(packet);
-                                }
-                            },
-                            source: function() {
-                                var currentUserRole = $rootScope.userRole;
-                                if (currentUserRole === 'admin') {
-                                    return $rootScope.siteData.roles;
-                                } else {
-                                    var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
-                                    return newRoles;
-                                }
-                            }
-                        });
                         $('#chaptersTable .tdSelectRegion a').editable({
                             type: "select",
                             name: "region",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
                             showbuttons: false,
                             url: function(params) {
                                 var packet = params.value;
@@ -274,75 +175,56 @@ angular.module('ohanaApp')
                             },
                             source: $rootScope.siteData.regions
                         });
-                        $('#chaptersTable .tdSelectChapter a').editable({
+                        $('#chaptersTable .tdSelectState a').editable({
                             type: "select",
-                            name: "chapter",
+                            name: "state",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
                             showbuttons: false,
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Chapter/';
+                                var path = '/userData/' + $scope.currId + '/Region/';
                                 commonServices.updateData(path, packet);
                                 if ($scope.currId === userService.getId()) {
                                     var tempData = userService.getUserData();
-                                    tempData.Chapter = packet;
+                                    tempData.Region = packet;
                                     userService.setUserData(tempData);
-                                    userService.setChapter(packet);
                                 }
                             },
-                            source: function() {
-                                var regionText = $(this).parent().parent().find('.tdSelectRegion').text();
-                                switch (regionText) {
-                                    case 'Midwest Chapters':
-                                        return $rootScope.siteData.regionsChapters[0].chapters;
-                                        break;
-                                    case 'Northeast Chapters':
-                                        return $rootScope.siteData.regionsChapters[1].chapters;
-                                        break;
-                                    case 'Pacific Chapters':
-                                        return $rootScope.siteData.regionsChapters[2].chapters;
-                                        break;
-                                    case 'Rocky Mountain Chapters':
-                                        return $rootScope.siteData.regionsChapters[3].chapters;
-                                        break;
-                                    case 'Southeast Chapters':
-                                        return $rootScope.siteData.regionsChapters[4].chapters;
-                                        break;
-                                    case 'Southwest Region':
-                                        return $rootScope.siteData.regionsChapters[5].chapters;
-                                        break;
-                                    default:
-                                        return [{
-                                            value: '',
-                                            text: ''
-                                        }];
-                                }
-                            }
+                            source: $rootScope.siteData.regions
                         });
-                        $('#chaptersTable .tdMil a').editable({
-                            type: "text",
-                            name: "branch",
+                        $('#chaptersTable .tdSelectZip a').editable({
+                            type: "select",
+                            name: "zip",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
+                            showbuttons: false,
                             url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/branch/';
+                                var packet = params.value;
+                                var path = '/userData/' + $scope.currId + '/Region/';
                                 commonServices.updateData(path, packet);
                                 if ($scope.currId === userService.getId()) {
                                     var tempData = userService.getUserData();
-                                    tempData.branch = packet;
+                                    tempData.Region = packet;
                                     userService.setUserData(tempData);
                                 }
-                            }
+                            },
+                            source: $rootScope.siteData.regions
                         });
-                        $('#chaptersTable .tdNotes a').editable({
-                            type: "textarea",
-                            name: "notes",
+                        $('#chaptersTable .tdEmail a').editable({
+                            type: "email",
+                            name: "email",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "N/A",
                             url: function(params) {
-                                // TO-DO: Set up notes functionality
+                                var packet = params.value
+                                var path = '/userData/' + $scope.currId + '/email/';
+                                commonServices.updateData(path, packet);
+                                if ($scope.currId === userService.getId()) {
+                                    var tempData = userService.getUserData();
+                                    tempData.email = packet;
+                                    userService.setUserData(tempData);
+                                }
                             }
                         });
                     }
@@ -383,10 +265,10 @@ angular.module('ohanaApp')
                     regions = [],
                     keys = [];
                 var i = 0;
-
                 _.each(chapterData[0], function(value, key) {
                     switch (currentUserRole) {
                         case 'admin':
+                        case 'National Staff':
                             regions.push(value);
                             keys.push(key);
                             break;
@@ -397,7 +279,7 @@ angular.module('ohanaApp')
                             }
                             break;
                         default:
-                            console.log('should not be here');
+                            console.log('Not an admin, staff, or chapter ltm. Should not load data.');
                     }
                 });
 
@@ -405,12 +287,6 @@ angular.module('ohanaApp')
                     _.each(chapterData[0], function(value, key) {
                         switch (currentUserRole) {
                             case 'admin':
-                                if (keys[i] === key) {
-                                    value.key = key;
-                                    value.regions = regions[i];
-                                    chapters.push(value);
-                                }
-                                break;
                             case 'National Staff':
                                 if (keys[i] === key) {
                                     value.key = key;
@@ -426,12 +302,12 @@ angular.module('ohanaApp')
                                 }
                                 break;
                             default:
-                                console.log('should not be here');
+                                console.log('Not an admin, staff, or chapter ltm. Should not load data.');
                         }
                     });
                     i++;
                 });
-                $scope.buildTable(users);
+                $scope.buildTable(chapters);
             });
         }; // end $scope.update
 

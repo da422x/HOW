@@ -147,6 +147,9 @@ angular.module('ohanaApp')
                     state: "#/dash/broadcasts",
                     text: "Broadcasts"
                 }, {
+                    state: "#/manage/chadmin",
+                    text: "Chapter Administration"
+                }, {
                     state: "#/manage/chapterchat",
                     text: "Chapter Chat"
                 }, {

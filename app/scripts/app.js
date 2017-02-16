@@ -242,7 +242,7 @@ angular.module('ohanaApp', [
                 });
             });
 
-            console.log($rootScope.siteData);
+            //console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
