@@ -20,7 +20,6 @@ angular.module('ohanaApp')
             var i;
             var packet;
             var dataSet = dataGridUtil.buildChaptersTableData(results);
-            console.log(dataSet);
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 
@@ -41,7 +40,7 @@ angular.module('ohanaApp')
                     data: dataSet,
                     columns: [{}, {
                         title: "KEY",
-                        data: "key"
+                        data: "zip"
                     }, {
                         title: "Chapter Name",
                         data: "name"
@@ -101,8 +100,10 @@ angular.module('ohanaApp')
                         $(row).children().eq(4).addClass('tdSelectState');
                         $(row).children().eq(5).addClass('tdSelectZip');
                         $(row).children().eq(6).addClass('tdEmail'); // email checking disabled
-                        for (i = 1; i < 7; i++) {
-                            $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
+                        for (i = 2; i < 7; i++) {
+                            if (i != 3 && i != 4) {
+                                $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
+                            }
                         }
                         return row;
                     },
@@ -111,7 +112,7 @@ angular.module('ohanaApp')
                         $('#chaptersTable').off('click', 'tr');
                         $('#chaptersTable').on('click', 'tr', function() {
                             $scope.currId = $(this).find('input[type="checkbox"]').val();
-
+                            $scope.editValue = $(this)[0].cells;
                             if ($(this).find('input[type="checkbox"]').is(':checked')) {
                                 $scope.checkedBoxes.push($scope.currId);
                             } else {
@@ -123,23 +124,6 @@ angular.module('ohanaApp')
                             }
                         });
                         // editable field definitions and CRUD ops
-                        $('#chaptersTable .tdCName a').editable({
-                            type: "text",
-                            name: "name",
-                            placement: "bottom",
-                            emptytext: "N/A",
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/name/first/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.name.first = packet;
-                                    userService.setUserData(tempData);
-                                    userService.setUserName(tempData.name.first, tempData.name.last);
-                                }
-                            }
-                        });
                         $('#chaptersTable .tdDescription a').editable({
                             type: "text",
                             name: "description",
@@ -147,69 +131,20 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/name/last/';
+                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/description';
                                 commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.name.last = packet;
-                                    userService.setUserData(tempData);
-                                    userService.setUserName(tempData.name.first, tempData.name.last);
-                                }
                             }
                         });
-                        $('#chaptersTable .tdSelectRegion a').editable({
-                            type: "select",
-                            name: "region",
-                            placement: "bottom",
-                            emptytext: "N/A",
-                            showbuttons: false,
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Region/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.Region = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            },
-                            source: $rootScope.siteData.regions
-                        });
-                        $('#chaptersTable .tdSelectState a').editable({
-                            type: "select",
-                            name: "state",
-                            placement: "bottom",
-                            emptytext: "N/A",
-                            showbuttons: false,
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Region/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.Region = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            },
-                            source: $rootScope.siteData.regions
-                        });
                         $('#chaptersTable .tdSelectZip a').editable({
-                            type: "select",
+                            type: "text",
                             name: "zip",
                             placement: "bottom",
                             emptytext: "N/A",
-                            showbuttons: false,
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Region/';
+                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/zip';
                                 commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.Region = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            },
-                            source: $rootScope.siteData.regions
+                            }
                         });
                         $('#chaptersTable .tdEmail a').editable({
                             type: "email",
@@ -218,13 +153,8 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/email/';
+                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/email';
                                 commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.email = packet;
-                                    userService.setUserData(tempData);
-                                }
                             }
                         });
                     }
