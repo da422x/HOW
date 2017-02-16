@@ -18,6 +18,19 @@ angular.module('ohanaApp')
         $scope.filterTypes = ["All", "Past", "Upcoming"];
         $scope.filter = {};
 
+        var canvas = document.getElementById('signatureCanvas');
+        var signaturePad = new SignaturePad(canvas);
+
+        $scope.clearCanvas = function() {
+            signaturePad.clear();
+            $scope.msg = "";
+        }
+
+        $scope.saveCanvas = function() {
+            var sigImg = signaturePad.toDataURL();
+            $scope.signature = sigImg;
+        }
+
 
         var loadAll = function() {
             var getEvents = commonServices.getPublicEvents();

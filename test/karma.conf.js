@@ -48,7 +48,7 @@ module.exports = function(config) {
             'bower_components/datatables.net/js/jquery.dataTables.js',
             'bower_components/datatables.net-bs/js/dataTables.bootstrap.js',
             'bower_components/datatables.net-autofill/js/dataTables.autoFill.js',
-            'bower_components/datatables-autofill-bootstrap/js/dataTables.autoFill.js',
+            'bower_components/datatables-autofill-bootstrap/js/autoFill.bootstrap.js',
             'bower_components/datatables.net-buttons/js/dataTables.buttons.js',
             'bower_components/datatables.net-buttons/js/buttons.colVis.js',
             'bower_components/datatables.net-buttons/js/buttons.flash.js',
@@ -89,6 +89,7 @@ module.exports = function(config) {
             'bower_components/angular-xeditable/dist/js/xeditable.js',
             'bower_components/chart.js/dist/Chart.js',
             'bower_components/angular-chart.js/dist/angular-chart.js',
+            'bower_components/signature_pad/signature_pad.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'app/scripts/**/*.js',
