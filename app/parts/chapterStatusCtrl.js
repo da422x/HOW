@@ -13,7 +13,7 @@ angular.module('ohanaApp')
         'use strict';
 
         $scope.update = function() {
-            // TODO
+
         }
 
         $scope.cancel = function() {

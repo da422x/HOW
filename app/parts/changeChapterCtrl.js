@@ -9,8 +9,8 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ChangeChapterCtrl', ['selectedUID', '$scope', '$rootScope', '$q', 'commonServices', 'userService', '$uibModalInstance',
-        function(selectedUID, $scope, $rootScope, $q, commonServices, userService, $uibModalInstance) {
+    .controller('ChangeChapterCtrl', ['selectedUID', '$scope', '$rootScope', '$q', 'commonServices', 'userService', '$uibModalInstance', 'howLogService',
+        function(selectedUID, $scope, $rootScope, $q, commonServices, userService, $uibModalInstance, howLogService) {
             'use strict';
 
             $scope.chapters = [];
@@ -32,21 +32,37 @@ angular.module('ohanaApp')
             $scope.updateRegionChapter = function(region, chapter) {
                 if (selectedUID) {
 
-                    // Get new values and update DB.
-                    commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
-                    commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.value);
+                    var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
+                    $q.all([getSelectedUser]).then(function(data) {
 
-                    // Close modal with success message.
-                    $uibModalInstance.dismiss('cancel');
-                    $rootScope.$broadcast('modalClosing');
-                    swal("Success", "Region/Chapter updated successfully!", "success");
+                        // Logg changes.
+                        howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                            data[0].Chapter, chapter.value);
 
+                        // Get new values and update DB.
+                        commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
+                        commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.value);
+
+                        // Close modal with success message.
+                        $uibModalInstance.dismiss('cancel');
+                        $rootScope.$broadcast('modalClosing');
+                        swal("Success", "Region/Chapter updated successfully!", "success");
+
+                    });
 
                 } else {
 
-                    // Get new values and update DB.
+                    // Get new values.
                     var userId = userService.getId();
                     var userData = userService.getUserData();
+                    var currentChapter = userService.getChapter();
+                    var currentUserName = userService.getUserName();
+
+                    // Logg changes.
+                    howLogService.logPrimaryChapterChange(currentUserName, currentUserName,
+                        currentChapter, chapter.value);
+
+                    // update DB.
                     commonServices.updateData('/userData/' + userId + '/Region', region.value);
                     commonServices.updateData('/userData/' + userId + '/Chapter', chapter.value);
 
