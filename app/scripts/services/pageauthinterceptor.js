@@ -15,7 +15,7 @@ angular.module('ohanaApp')
             request: function(config) {
                 switch (config.url) {
                     case 'views/manage/directory.html':
-                        if ($rootScope.userRole === 'National Staff' || $rootScope.userRole === 'Chapter Lead' || $rootScope.userRole === 'admin') {
+                        if ($rootScope.userRole === 'National Staff' || $rootScope.userRole === 'Chapter Lead') {
                             console.log('Authorized')
                         } else {
                             window.location.replace('#/home');

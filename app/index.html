@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
     <link rel="stylesheet" href="bower_components/yadcf/jquery.dataTables.yadcf.css" />
     <link rel="stylesheet" href="bower_components/chosen/chosen.css" />
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -42,6 +43,7 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="extensions/bootstrap-editable/css/bootstrap-editable.css">
     <link rel="stylesheet" href="extensions/hamburgers.min.css">
+    <link rel="stylesheet" href="styles/expense.css">
     <!-- endinjector -->
     <!-- endbuild -->
 </head>
@@ -137,6 +139,9 @@
     <script src="bower_components/ng-flow/dist/ng-flow.js"></script>
     <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="bower_components/format-as-currency/dist/format-as-currency.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/chart.js/dist/Chart.js"></script>
+    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -149,7 +154,6 @@
     <script src="scripts/controllers/home.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/chapters.js"></script>
-    <script src="scripts/controllers/FileLoad.js"></script>
     <script src="scripts/controllers/whoweare.js"></script>
     <script src="scripts/controllers/getinvolved.js"></script>
     <script src="scripts/controllers/public.events.js"></script>
@@ -183,6 +187,9 @@
     <script src="parts/events.add.volunteers.js"></script>
     <script src="parts/events.add.inventory.js"></script>
     <script src="parts/passwordreset.js"></script>
+    <script src="parts/chapterstatusctrl.js"></script>
+    <script src="parts/changeChapterCtrl.js"></script>
+    <script src="parts/manageadditionalchapters.js"></script>
     <script src="scripts/services/commonservices.js"></script>
     <script src="scripts/services/dao.js"></script>
     <script src="scripts/services/pageauthinterceptor.js"></script>
@@ -197,6 +204,7 @@
     <script src="scripts/controllers/manage/chapterchat.js"></script>
     <script src="scripts/services/userservice.js"></script>
     <script src="scripts/directives/angfileupload.js"></script>
+    <script src="scripts/controllers/expense/overview.js"></script>
     <!-- endbuild -->
 </body>
 

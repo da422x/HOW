@@ -184,27 +184,6 @@ angular.module('ohanaApp')
                 }, {
                     state: "#/manage/chapterchat",
                     text: "Chapter Chat"
-                }, {
-                    state: "donors",
-                    text: "Donor Management"
-                }, {
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/inventory",
-                    text: "Inventory"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
                 }];
 
                 $scope.showDonate = function() {

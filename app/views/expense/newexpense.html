@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="assets/expense.css">
 <div class="container">
     <form id="newExpenseform" name="newExpenseform" method="post" class="form-inline" novalidate>
         <div class="panel panel-default  ">
@@ -105,14 +104,29 @@
                     <input ng-hide="!LineDetails.length" type="button" class="btn btn-danger btnalign " ng-click="remove()" value="Remove">
                 </div>
             </div>
-            <div class="form-group row btnalign">
-                <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
-                <input type="file" id="files" name="files" multiple accept="image/*" ng-model="noblankfile" ng-change="uploadImageFile(); " required title="" class="fullwidth input rqd" ng-style="noblankfile?{'color':'#333'}:{'color':'transparent'}" />
-                <br />
-                <p>Multiple image files can be loaded in single load/click. 'Click' on the loaded image will remove the image from the list. </p>
-                <div id="selectedFiles"></div>
-                <input type="submit " hidden>
-                <!-- <onchange="angular.element(this).scope().uploadImageFile(this.files)" > handleFileSelect($evt); -->
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title pull-left">Bill Receipts</h3>
+                </div>
+                <div id="imagedisplay" class="form-group col-xs-12">
+                    <div class="content panel-body-exp">
+                        <!--   <div class="row">
+                <div class="form-group row btnalign"> -->
+                        <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
+                        <input id="fileimage" name="fileimage" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
+                        <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
+                        <div ng-repeat="item in uploader.queue">
+                            <strong>{{ item.file.name }}</strong>
+                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, width: 350,height: 350 }"></div>
+                            <span ng-show="item.isSuccess "><i class="glyphicon glyphicon-ok "></i></span>
+                            <span ng-show="item.isCancel "><i class="glyphicon glyphicon-ban-circle "></i></span>
+                            <span ng-show="item.isError "><i class="glyphicon glyphicon-remove "></i></span>
+                            <button type="button " class="btn btn-danger btn-xs " ng-click="item.remove() ">
+                                <span class="glyphicon glyphicon-trash "></span> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
@@ -125,22 +139,10 @@
                 </div>
             </div>
             <div class="panel-body-exp row btnalign">
-                <button class="btn btn-primary ur_format_button " ng-click="confirmnewexpense() " type="submit ">Add New Expense</button>
-                <!-- <data-ng-disabled="!fileadded || newExpenseform.$invalid ">Add New Expense</button>  class="custom-file-input"  createnewexpense()-->
-                <input type="button" class="btn btn-primary" ng-click="ClearFields
-()" value="Clear">
-                    <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
+                <button class="btn btn-primary ur_format_button " ng-click="confirmnewexpense() " type="submit ">Submit Expense</button>
+                <input type="button" class="btn btn-primary" ng-click="saveitforlater()" ng-hide="isEditexist=='true'" title="Save current expense enteries for later submission" value="Save it for Later">
+                <input type="button" class="btn btn-primary" ng-click="ClearFields()" value="Clear">
+                <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
             </div>
     </form>
-    <script>
-    $(document).ready(function() {
-
-        $("#files ").on("change ", handleFileSelect);
-
-        selDiv = $("#selectedFiles ");
-        $("#myForm ").on("submit ", handleForm);
-
-        $("body ").on("click ", ".selFile ", removeFile);
-    });
-    </script>
     </div>

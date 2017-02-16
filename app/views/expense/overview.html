@@ -1,0 +1,29 @@
+<div class="container" ng-init="viewexpensedash()" ng-controller="ExpenseOverviewCtrl">
+    <form id="expense" name="expense" method="post" class="tab-form-demo">
+        <div class="form-group row expense_pad1">
+            <input type="button" class="btn btn-primary" ng-click="ViewExpenseList()" value="Go to Expense Detail List">
+        </div>
+        <div>
+            <div class="form-group row  ">
+                <label for="DateFilter" class="col-xs-6 col-form-label">Expense by Event Month</label>
+                <div class="col-xs-10">
+                    <canvas id="line" class="chart chart-line" chart-data="data1" chart-labels="labels2" chart-series="series1" chart-options="options1" height="100px">
+                    </canvas>
+                </div>
+            </div <div class="form-group row  ">
+            <label for="DateFilter" class="col-xs-6 col-form-label">Expense by Payment Status</label>
+            <div class="col-xs-10">
+                <canvas id="doughnut" class="chart chart-doughnut" chart-data="piedata" chart-labels="pielabels" chart-colors="piecolor " height="100px">
+                </canvas>
+            </div>
+        </div>
+        <div class="form-group row  ">
+            <label for="DateFilter" class="col-xs-6 col-form-label">Expense Amount by Event Month</label>
+            <div class="col-xs-10">
+                <canvas id="line1" class="chart chart-line" chart-data="data2" chart-labels="labels1" chart-series="series1" chart-options="options1" height="100px">
+                </canvas>
+            </div>
+        </div>
+</div>
+</form>
+</div>

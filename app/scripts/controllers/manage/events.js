@@ -15,6 +15,9 @@ angular.module('ohanaApp')
         $scope.newQuery = {};
         var allEvents = [];
 
+        $scope.filterTypes = ["All", "Past", "Upcoming"];
+        $scope.filter = {};
+
 
         var loadAll = function() {
             var getEvents = commonServices.getPublicEvents();
@@ -33,6 +36,41 @@ angular.module('ohanaApp')
         };
 
         loadAll();
+
+        $scope.changeFilter = function() {
+            var getEvents = commonServices.getPublicEvents();
+            allEvents = [];
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        var dateToday = new Date();
+                        switch ($scope.filter) {
+                            case 'All':
+                                event.key = key;
+                                allEvents.push(event);
+                                break;
+                            case 'Past':
+                                if (event.startTime < dateToday.getTime()) {
+                                    event.key = key;
+                                    allEvents.push(event);
+                                }
+                                break;
+                            case 'Upcoming':
+                                if (event.startTime > dateToday.getTime()) {
+                                    event.key = key;
+                                    allEvents.push(event);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                    $scope.eventList = allEvents;
+                } else {
+                    console.log('Failed to get Events...');
+                }
+            });
+        };
 
         $scope.search = function() {
             if (allEvents.length > 0) {

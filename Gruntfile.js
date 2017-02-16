@@ -177,7 +177,7 @@ module.exports = function(grunt) {
             }
         },
 
-        // Empties folders to start fresh
+        // Empties the .tmp temporary folder to start fresh
         clean: {
             dist: {
                 files: [{
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
         injector: {
             options: {
                 template: 'app/index.html'
-                // Task-specific options go here.
+                    // Task-specific options go here.
             },
             local_dependencies: {
                 files: {
@@ -287,6 +287,7 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                    '<%= yeoman.dist %>/parts/{,*/}*.js',
                     '<%= yeoman.dist %>/styles/{,*/}*.css',
                     '<%= yeoman.dist %>/extensions/{,*/}*.css',
                     '<%= yeoman.dist %>/assets/{,*/}*.css',
@@ -317,12 +318,18 @@ module.exports = function(grunt) {
 
         // Performs rewrites based on filerev and the useminPrepare configuration
         usemin: {
-            html: ['<%= yeoman.dist %>/{,*/}*.html'],
+            html: ['<%= yeoman.dist %>/parts/*.html',
+                '<%= yeoman.dist %>/views/*.html',
+                '<%= yeoman.dist %>/*.html'
+            ],
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css',
                 '<%= yeoman.dist %>/extensions/{,*/}*.css',
                 '<%= yeoman.dist %>/assets/{,*/}*.css'
             ],
-            js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
+            js: [
+                '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                '<%= yeoman.dist %>/parts/{,*/}*.js'
+            ],
             options: {
                 assetsDirs: [
                     '<%= yeoman.dist %>',
@@ -474,9 +481,10 @@ module.exports = function(grunt) {
                         'extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
                         'assets/**/*.*',
+                        'parts/**/*.html',
                         'extensions/bootstrap-editable/css/bootstrap-editable.css',
-                        'extensions/hamburgers.min.css',
-                        'parts/**/*.*'
+                        'extensions/hamburgers.min.css'
+                        // 'parts/**/*.*'
                     ]
                 }, {
                     expand: true,

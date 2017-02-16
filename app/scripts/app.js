@@ -27,7 +27,9 @@ angular.module('ohanaApp', [
         // 'uiGmapgoogle-maps',
         'firebase',
         'angularFileUpload',
-        'bcherny/formatAsCurrency'
+        'bcherny/formatAsCurrency',
+        'xeditable',
+        'chart.js'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
         $httpProvider.interceptors.push('pageAuthInterceptor');
@@ -93,7 +95,7 @@ angular.module('ohanaApp', [
             })
             .when("/inventory", {
                 templateUrl: 'views/manage/event.details.equipment.html',
-                controller: 'EventdetailequipmentCtrl as eventEquipment'
+                controller: 'InventoryCtrl as inventory'
             })
             .when("/notifications", {
                 templateUrl: 'views/manage/event.details.notifications.html',
@@ -127,7 +129,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                //              controller: 'ChadminCtrl as chadmin'
+                    //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -167,12 +169,19 @@ angular.module('ohanaApp', [
                 controller: 'ExpenseCustomdaterangeCtrl',
                 controllerAs: 'expense/CustomDateRange'
             })
+            .when('/expense/overview', {
+                templateUrl: 'views/expense/overview.html',
+                controller: 'ExpenseOverviewCtrl',
+                controllerAs: 'expense/overview'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
 
-    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService) {
-
+    }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService, editableOptions) {
+        //changing jquery editable to angular editable
+        editableOptions.theme = 'bs3';
+        //end changing jquery editable to angular editable
         var config = {
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
             authDomain: "herosonthewater-55a79.firebaseapp.com",
@@ -285,7 +294,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-    .filter('unique', function() {
+.filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique
