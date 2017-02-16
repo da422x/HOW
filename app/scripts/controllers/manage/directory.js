@@ -253,7 +253,7 @@ angular.module('ohanaApp')
                         $('#membersTable').on('click', '.tdPrimaryChapter a', function() {
                             var self = this;
                             var modalInstance = $uibModal.open({
-                                templateUrl: '/parts/changechapter.html',
+                                templateUrl: '/parts/changeChapter.html',
                                 controller: 'ChangeChapterCtrl',
                                 resolve: {
                                     selectedUID: function() {

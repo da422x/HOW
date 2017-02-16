@@ -175,7 +175,7 @@ angular.module('ohanaApp')
 
         $scope.changeChapter = function() {
             var modalInstance = $uibModal.open({
-                templateUrl: '/parts/changechapter.html',
+                templateUrl: '/parts/changeChapter.html',
                 controller: 'ChangeChapterCtrl',
                 resolve: {
                     selectedUID: function() {
