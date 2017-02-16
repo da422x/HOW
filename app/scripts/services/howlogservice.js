@@ -14,6 +14,7 @@ angular.module('ohanaApp')
         this.logPrimaryChapterChange = function(userName, authUserName, oldChapter, newChapter) {
             var ts = Date.now();
             var logObj = {
+                type: 'primary',
                 timeStamp: ts,
                 userName: userName,
                 changedBy: authUserName,
@@ -24,9 +25,18 @@ angular.module('ohanaApp')
             commonServices.pushData('/logs/chapterChanges/', logObj);
         };
 
-        this.logSecondaryChapterChange = function(userName) {
-            $rootScope.userId = data;
-            localStorage.setItem('userId', data);
+        this.logSecondaryChapterChange = function(userName, authUserName, oldChapters, newChapters) {
+            var ts = Date.now();
+            var logObj = {
+                type: 'secondary',
+                timeStamp: ts,
+                userName: userName,
+                changedBy: authUserName,
+                oldChapters: oldChapters,
+                newChapters: newChapters
+            };
+
+            commonServices.pushData('/logs/chapterChanges/', logObj);
         };
 
     });

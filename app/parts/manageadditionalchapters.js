@@ -9,8 +9,8 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ManageAdditionalChapters', ['selectedUID', '$q', 'commonServices', 'userService', '$scope', '$rootScope', '$uibModalInstance',
-        function(selectedUID, $q, commonServices, userService, $scope, $rootScope, $uibModalInstance) {
+    .controller('ManageAdditionalChapters', ['selectedUID', '$q', 'commonServices', 'userService', '$scope', '$rootScope', '$uibModalInstance', 'howLogService',
+        function(selectedUID, $q, commonServices, userService, $scope, $rootScope, $uibModalInstance, howLogService) {
             'use strict';
 
             $scope.initialize = function() {
@@ -18,6 +18,8 @@ angular.module('ohanaApp')
                 $scope.userChapters = [];
                 $scope.chapters = [];
                 $scope.regions = $rootScope.siteData.regionsChapters;
+                $scope.chaptersRemoved = [];
+                $scope.chaptersAdded = [];
 
                 if (selectedUID) {
                     var selectedUserData = commonServices.getData('/userData/' + selectedUID);
@@ -65,31 +67,54 @@ angular.module('ohanaApp')
 
                 if (canUpdate) {
                     $scope.userChapters.push(chapterObj);
+                    $scope.chaptersAdded.push(chapterObj.chapter);
+                    $scope.chaptersRemoved = _.filter($scope.chaptersRemoved, function(n) {
+                        return n !== chapterObj.chapter;
+                    });
                 } else {
                     swal('error', $scope.newChapter.value + ' has already been added to secondary chapters...', 'error');
                 }
             };
 
             $scope.updateChapters = function() {
-                var i = 0;
-                _.each($scope.userChapters, function(n) {
-                    delete $scope.userChapters[i].$$hashKey;
-                    i++
-                });
 
                 if (selectedUID) {
 
-                    // Update global variables, and Database.
-                    commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
+                    var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
+                    $q.all([getSelectedUser]).then(function(data) {
 
-                    // Close modal with success message.
-                    $uibModalInstance.dismiss('cancel');
-                    $rootScope.$broadcast('modalClosing');
-                    swal('Success', 'Region/Chapter updated successfully!', 'success');
+                        $scope.userChapters = _.each($scope.userChapters, function(n) {
+                            delete n.$$hashKey;
+                        });
+
+                        // Logg changes.
+                        howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                            $scope.chaptersRemoved, $scope.chaptersAdded);
+
+                        // Update global variables, and Database.
+                        commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
+
+                        // Close modal with success message.
+                        $uibModalInstance.dismiss('cancel');
+                        $rootScope.$broadcast('modalClosing');
+                        swal('Success', 'Region/Chapter updated successfully!', 'success');
+
+                    });
 
                 } else {
+
                     var userId = userService.getId();
                     var userData = userService.getUserData();
+                    var currentChapter = userService.getChapter();
+                    var currentUserName = userService.getUserName();
+
+                    $scope.userChapters = _.each($scope.userChapters, function(n) {
+                        delete n.$$hashKey;
+                    });
+
+                    // Logg changes.
+                    howLogService.logSecondaryChapterChange(currentUserName, false,
+                        $scope.chaptersRemoved, $scope.chaptersAdded);
 
                     // Update global variables, and Database.
                     commonServices.updateData('/userData/' + userId + '/Chapters/', $scope.userChapters);
@@ -105,9 +130,17 @@ angular.module('ohanaApp')
             }
 
             $scope.removeChapter = function() {
+
                 $scope.userChapters = _.filter($scope.userChapters, function(n) {
                     return n.chapter !== $scope.currentChapter[0].chapter;
                 });
+
+                $scope.chaptersAdded = _.filter($scope.chaptersAdded, function(n) {
+                    return n !== $scope.currentChapter[0].chapter;
+                });
+
+                $scope.chaptersRemoved.push($scope.currentChapter[0].chapter);
+
                 $scope.submitFlag = true;
             }
 

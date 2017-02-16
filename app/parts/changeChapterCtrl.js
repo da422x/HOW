@@ -59,7 +59,7 @@ angular.module('ohanaApp')
                     var currentUserName = userService.getUserName();
 
                     // Logg changes.
-                    howLogService.logPrimaryChapterChange(currentUserName, currentUserName,
+                    howLogService.logPrimaryChapterChange(currentUserName, false,
                         currentChapter, chapter.value);
 
                     // update DB.
