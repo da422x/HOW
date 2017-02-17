@@ -74,16 +74,13 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/publicevents.html',
                 controller: 'PubliceventsCtrl as publicEvents'
             })
-            .when("/details", {
+            .when("/details/:id", {
                 templateUrl: 'views/manage/event.details.html',
                 controller: 'DetailsCtrl as eventDetail'
             })
             .when("/description", {
                 templateUrl: 'views/manage/event.details.description.html',
-                controller: 'EventdetaildescriptionCtrl as eventDescription',
-                //              params: {
-                //                  event_id: id
-                //              },
+                controller: 'EventdetaildescriptionCtrl as eventDescription'
             })
             .when("/volunteers", {
                 templateUrl: 'views/manage/event.details.volunteers.html',
