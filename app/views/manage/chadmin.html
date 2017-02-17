@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<div class="container">
+<div class="container" ng-init="update()">
     <h3>Chapter Administration</h3>
     <p>
         On the page, Chapter Managers can create reports for:
@@ -20,4 +20,14 @@
             These reports should have a link to export to excel for more functionality.
         </p>
     </p>
+
+    <div style="clear: left; width: 100%; overflow: auto; margin-bottom: 5px">
+        <div class="toolbar-left" style="float: left">
+            <button class="btn btn-primary" ng-click="addChapter()">Add New Chapter</button>
+            <button class="btn btn-primary" ng-click="removeChapter()">Delete Chapter</button>
+        </div>
+    </div>
+    <div style="margin: auto; display: block; padding-top: 10px" max-width="100%">
+        <table id="chaptersTable" class="display table table-bordered responsive" cellspacing="0" width="100%"></table>
+    </div>
 </div>
