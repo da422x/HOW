@@ -74,16 +74,13 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/publicevents.html',
                 controller: 'PubliceventsCtrl as publicEvents'
             })
-            .when("/details", {
+            .when("/details/:id", {
                 templateUrl: 'views/manage/event.details.html',
                 controller: 'DetailsCtrl as eventDetail'
             })
             .when("/description", {
                 templateUrl: 'views/manage/event.details.description.html',
-                controller: 'EventdetaildescriptionCtrl as eventDescription',
-                //              params: {
-                //                  event_id: id
-                //              },
+                controller: 'EventdetaildescriptionCtrl as eventDescription'
             })
             .when("/volunteers", {
                 templateUrl: 'views/manage/event.details.volunteers.html',
@@ -125,8 +122,10 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/profile.html',
                 controller: 'ProfileCtrl as profile'
             })
-            .when('/manage/chAdmin', {
+            .when('/manage/chadmin', {
                 templateUrl: 'views/manage/chadmin.html',
+                controller: 'ChadminCtrl',
+                controllerAs: 'manage/chadmin'
                 //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
@@ -240,7 +239,7 @@ angular.module('ohanaApp', [
                 });
             });
 
-            console.log($rootScope.siteData);
+            //console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
@@ -292,7 +291,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-.filter('unique', function() {
+    .filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique

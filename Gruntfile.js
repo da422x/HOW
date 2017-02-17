@@ -53,7 +53,7 @@ module.exports = function(grunt) {
                 tasks: ['wiredep']
             },
             js: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+                files: ['<%= yeoman.app %>/scripts/**/*.js'],
                 //tasks: ['newer:jshint:all', 'newer:jscs:all', 'jsbeautifier'],
                 tasks: ['jsbeautifier'],
                 options: {
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
         injector: {
             options: {
                 template: 'app/index.html'
-                    // Task-specific options go here.
+                // Task-specific options go here.
             },
             local_dependencies: {
                 files: {
