@@ -133,9 +133,9 @@ angular.module('ohanaApp')
                 confirmButtonText: 'Yes, delete it!'
             }).then(function() {
                 expenseservice.deleteImage(imgname, $scope.vImageList)
-                // alert(expenseservice.deleteImagearray($scope.vImageList, imgname))
-                // $scope.applyAsync();
-                // console.log("Image List - 0 ", $scope.vImageList);
+                    // alert(expenseservice.deleteImagearray($scope.vImageList, imgname))
+                    // $scope.applyAsync();
+                    // console.log("Image List - 0 ", $scope.vImageList);
             }, function(dismiss) {
                 // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
                 if (dismiss === 'cancel') {
@@ -460,7 +460,7 @@ angular.module('ohanaApp')
             $scope.url = refspaedtServ.once("value").then(function(rootSnapshot) {
                 var lafoto = rootSnapshot.val().foto;
                 console.log("Inside image ", lafoto)
-                // var starsRef = firebase.storage().ref('fotos' + lafoto);
+                    // var starsRef = firebase.storage().ref('fotos' + lafoto);
                 var storageRef = firebase.storage().ref();
                 return storageRef.child(storageloc).getDownloadURL().then(function(url) {
                     // return starsRef.getDownloadURL().then(function(url) {
@@ -486,36 +486,36 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
-            var bill = $routeParams.BillId;
-            console.log('Data Delete Request SWAL ', $routeParams.BillId);
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function() {
-                expenseservice.deleteExpense(bill)
-                swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-                window.location.href = "#/expense/viewexpense"
-            }, function(dismiss) {
-                // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-                if (dismiss === 'cancel') {
+                var bill = $routeParams.BillId;
+                console.log('Data Delete Request SWAL ', $routeParams.BillId);
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function() {
+                    expenseservice.deleteExpense(bill)
                     swal(
-                        'Cancelled',
-                        'Your expense is safe',
-                        'error'
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
                     )
-                }
-            })
-        }
-        //-----Delete Expenses Created by the User ---END----------//
+                    window.location.href = "#/expense/viewexpense"
+                }, function(dismiss) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'Your expense is safe',
+                            'error'
+                        )
+                    }
+                })
+            }
+            //-----Delete Expenses Created by the User ---END----------//
 
         //Update Expense - SAVE  and SUBMIT - Parameter value 'update' or 'submit'
         $scope.updateexpense = function(updatetype) {

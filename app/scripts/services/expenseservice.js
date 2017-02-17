@@ -117,10 +117,10 @@ angular.module('ohanaApp')
                         });
                 });
 
-        }
-        /******************************************************
-         *        View Expense                                 *
-         *******************************************************/
+            }
+            /******************************************************
+             *        View Expense                                 *
+             *******************************************************/
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
             var expenselist = [];
@@ -648,7 +648,7 @@ angular.module('ohanaApp')
 
 
                                     })
-                               // console.log('Uploaded a blob or file!');
+                                    // console.log('Uploaded a blob or file!');
                             }
 
                         });

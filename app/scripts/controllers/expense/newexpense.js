@@ -249,7 +249,7 @@ angular.module('ohanaApp')
             }).then(function() {
 
                 $scope.createnewexpense("SAVE")
-                // window.location.href = "#/expense/viewexpense"
+                    // window.location.href = "#/expense/viewexpense"
                 $location.path('/expense/viewexpense')
             })
 
@@ -295,7 +295,7 @@ angular.module('ohanaApp')
                 }).then(function() {
 
                     $scope.createnewexpense("Pending")
-                    // window.location.href = "#/expense/viewexpense"
+                        // window.location.href = "#/expense/viewexpense"
                     $location.path('/expense/viewexpense')
                 })
             }
