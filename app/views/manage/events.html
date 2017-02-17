@@ -47,8 +47,9 @@
                 </div>
                 <div class="panel-footer">
                     <a class="btn btn-primary link_padding" ng-click="manageEvent($index)" style="margin-left: 8px;display:inline-block"><i class="fa fa-pencil" style="padding-right: 5px"></i>Manage Event</a>
-                    <a class="btn btn-primary link_padding" ng-click="viewParticipants($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">5</span> Participants</a>
-                    <a class="btn btn-primary link_padding" ng-click="viewVolunteers($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">6</span> Volunteers</a>
+                    <a class="btn btn-primary link_padding" ng-click="viewParticipants($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
+                    <!--Object.keys(event.participants).length-->
+                    <a class="btn btn-primary link_padding" ng-click="viewVolunteers($index)" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
                     <a class="btn btn-danger link_padding" ng-click="deleteEvent($index)" style="margin-left: 8px;display:inline-block">Delete</a>
                 </div>
             </div>
@@ -56,15 +57,15 @@
         </div>
         <!-- end event list -->
 
-        <canvas id='signatureCanvas' width='300' height='180' style='border: 1px solid black;'></canvas>
+        <!--<canvas id='signatureCanvas' width='300' height='180' style='border: 1px solid black;'></canvas>
         <div class='button-bar'>
             <a class='button button-energized' ng-click='clearCanvas()'>Clear</a>
             <a class='button button-balanced' ng-click='saveCanvas()'>Sign</a>
         </div>
         <br>
-        <h3>{{msg}}</h3>
-        <br>
-        <img ng-src='{{signature}}' /> {{id}}
+        <h3>{{msg}}</h3>-->
+        <!--<br>
+        <img ng-src='{{signature}}' /> {{id}}-->
     </div>
     <!-- end row -->
 </div>

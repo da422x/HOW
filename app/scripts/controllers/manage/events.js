@@ -18,18 +18,18 @@ angular.module('ohanaApp')
         $scope.filterTypes = ["All", "Past", "Upcoming"];
         $scope.filter = {};
 
-        var canvas = document.getElementById('signatureCanvas');
-        var signaturePad = new SignaturePad(canvas);
+        // var canvas = document.getElementById('signatureCanvas');
+        // var signaturePad = new SignaturePad(canvas);
 
-        $scope.clearCanvas = function() {
-            signaturePad.clear();
-            $scope.msg = "";
-        }
+        // $scope.clearCanvas = function() {
+        //     signaturePad.clear();
+        //     $scope.msg = "";
+        // }
 
-        $scope.saveCanvas = function() {
-            var sigImg = signaturePad.toDataURL();
-            $scope.signature = sigImg;
-        }
+        // $scope.saveCanvas = function() {
+        //     var sigImg = signaturePad.toDataURL();
+        //     $scope.signature = sigImg;
+        // }
 
 
         var loadAll = function() {
@@ -191,6 +191,10 @@ angular.module('ohanaApp')
         }
         $scope.addVolunteer = function() {
             alert('a volunteer was added');
+        }
+
+        $scope.getKeyLength = function(obj) {
+            return (obj) ? Object.keys(obj).length : 0;
         }
 
         $scope.deleteEvent = function(index) {

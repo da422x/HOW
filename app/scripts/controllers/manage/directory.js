@@ -420,6 +420,6 @@ angular.module('ohanaApp')
                 });
             } // end else
 
-        }; // end $scope.remove
+        }; // end $scope.remove 
 
     });
