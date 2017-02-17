@@ -142,4 +142,44 @@ angular.module('ohanaApp')
             return gridData;
         };
 
+        dataGridUtil.buildChaptersTableData = function(results) {
+            var resultsLen = results.length;
+            var regionName = '';
+            var stateName = '';
+            var gridData = [];
+            // build chapters data table from http response
+            for (var i = 0; i < resultsLen; i++) {
+                //REGION LEVEL  
+                regionName = results[i].key;
+                delete results[i].key;
+                delete results[i].regions;
+                for (var propName in results[i]) {
+                    if (results[i][propName] === null || results[i][propName] === undefined || results[i][propName] === true) {
+                        delete results[i][propName];
+                    }
+                }
+                for (var stateName in results[i]) {
+                    //STATE LEVEL
+                    for (var chapterName in results[i][stateName]) {
+                        //CHAPTER LEVEL
+                        var arr = {};
+                        arr.region = regionName;
+                        arr.state = stateName;
+                        arr.name = results[i][stateName][chapterName].name;
+                        arr.description = results[i][stateName][chapterName].description;
+                        arr.facebook = results[i][stateName][chapterName].url;
+                        arr.facebook_link = results[i][stateName][chapterName].url_link;
+                        arr.email = results[i][stateName][chapterName].email;
+                        arr.email_link = results[i][stateName][chapterName].email_link;
+                        arr.zip = results[i][stateName][chapterName].zip;
+                        arr.googleMaps = "https://www.google.com/maps/place/" + results[i][stateName][chapterName].lat + "," + results[i][stateName][chapterName].lng;
+                        arr.googleMaps_Link = "<a href='" + arr.googleMaps + "' target='_blank' class='storelocatorlink'>" + arr.googleMaps + "</a><br/>";
+                        gridData.push(arr);
+                    }
+                }
+                results[i].key = regionName;
+
+            }
+            return gridData;
+        };
     });

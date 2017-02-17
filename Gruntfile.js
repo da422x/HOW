@@ -194,7 +194,7 @@ module.exports = function(grunt) {
         injector: {
             options: {
                 template: 'app/index.html'
-                    // Task-specific options go here.
+                // Task-specific options go here.
             },
             local_dependencies: {
                 files: {

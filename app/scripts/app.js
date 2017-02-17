@@ -122,8 +122,10 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/profile.html',
                 controller: 'ProfileCtrl as profile'
             })
-            .when('/manage/chAdmin', {
+            .when('/manage/chadmin', {
                 templateUrl: 'views/manage/chadmin.html',
+                controller: 'ChadminCtrl',
+                controllerAs: 'manage/chadmin'
                 //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
@@ -237,7 +239,7 @@ angular.module('ohanaApp', [
                 });
             });
 
-            console.log($rootScope.siteData);
+            //console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
@@ -289,7 +291,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-.filter('unique', function() {
+    .filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique
