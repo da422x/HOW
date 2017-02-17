@@ -8,6 +8,7 @@
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
     <h4 class="modal-title">{{event.name +"'s Participants"}}</h4>
 </div>
+
 <!-- end modal-header -->
 <div class="modal-body">
     <table id="participantsTable" class="display table table-bordered">
@@ -38,7 +39,7 @@
     </table>
 
     <div style="display:flex">
-        <button type="button" class="btn btn-danger">Delete selected participants</button>
+        <button type="button" ng-click="deleteParticipants()" class="btn btn-danger">Delete selected participants</button>
     </div>
 </div>
 <!-- end modal body -->
