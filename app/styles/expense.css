@@ -149,11 +149,11 @@
          background-color: red !important;
      }
      
-     input:invalid {
+     input.expenseInput:invalid {
          border: 2px solid red;
      }
      
-     input:valid {
+     input.expenseInput:valid {
          border: 2px solid green;
      }
      

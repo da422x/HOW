@@ -62,6 +62,7 @@ angular.module('ohanaApp')
         $scope.postUser = function() {
             var i;
 
+            console.log('SUCCESS');
 
             console.log($scope.newUserDirectory);
             console.log('SUCCESS');
