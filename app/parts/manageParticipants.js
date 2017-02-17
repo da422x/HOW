@@ -24,20 +24,20 @@ angular.module('ohanaApp')
             var i;
             var packet;
             var dataSet = [{
-                key: 'hai',
-                first: 'Thaddeus',
-                middle: 'Ivan',
-                last: 'Madison',
-                email: 'thaddeus.madison@gmail.com',
-                phone: '5044604713'
-            }, {
-                key: 'hai2',
-                first: 'Bobby',
-                middle: '',
-                last: 'Salas',
-                email: 'bobby.salas@gmail.com',
-                phone: '9874563814'
-            }] //dataGridUtil.buildMembersTableData(results);
+                    key: 'hai',
+                    first: 'Thaddeus',
+                    middle: 'Ivan',
+                    last: 'Madison',
+                    email: 'thaddeus.madison@gmail.com',
+                    phone: '5044604713'
+                }, {
+                    key: 'hai2',
+                    first: 'Bobby',
+                    middle: '',
+                    last: 'Salas',
+                    email: 'bobby.salas@gmail.com',
+                    phone: '9874563814'
+                }] //dataGridUtil.buildMembersTableData(results);
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 

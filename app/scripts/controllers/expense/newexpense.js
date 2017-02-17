@@ -163,15 +163,15 @@ angular.module('ohanaApp')
 
         $scope.fileadded = false;
         $scope.uploadImageFile = function() {
-            var input = document.getElementById('files');
-            if (input.files.length > 0) {
-                $scope.fileadded = true;
-            } else {
-                $scope.fileadded = false;
+                var input = document.getElementById('files');
+                if (input.files.length > 0) {
+                    $scope.fileadded = true;
+                } else {
+                    $scope.fileadded = false;
+                }
+                console.log("File status check - ", input.files.length, $scope.fileadded)
             }
-            console.log("File status check - ", input.files.length, $scope.fileadded)
-        }
-        //------------Addition Line Items--------------//
+            //------------Addition Line Items--------------//
         $scope.LineDetails = [];
         $scope.LineDetails.length = 0;
         $scope.LineDetails = expenseservice.LineDetails;
@@ -477,7 +477,7 @@ angular.module('ohanaApp')
 
 
                     imagefilename = 'images/' + $scope.exp.BillId + "_" + $scope.uploader.queue[x].file.name
-                    //input.files[x].name;
+                        //input.files[x].name;
                     expenseservice.addNewImage({
                         ID: (x + 1),
                         ImageUrlLocation: "",
