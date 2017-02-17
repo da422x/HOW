@@ -46,12 +46,7 @@
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Orginization Data: </h6>
-                <h4 class="list-group-item-heading">
-                    <a href="#" id="user_region" editable-select="profileData.Region" e-ng-options="s.value as s.text for s in $root.siteData.regions" onbeforesave="saveUserData($data, 'Region')">{{profileData.Region|| ""}}</a>
-                </h4>
-                <h4 class="list-group-item-heading">
-                    <a href="#" editable-select="profileData.Chapter" onbeforesave="saveUserData($data, 'Chapter')" onshow="updateChapterDropdown()" e-ng-options="s.value as s.text for s in chapters"> {{ profileData.Chapter|| "" }}</a>
-                </h4>
+                <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter: {{ profileData.Chapter|| "" }}</h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Military Data: </h6>
