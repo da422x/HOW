@@ -144,17 +144,14 @@
                     <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password.</p>
                 </div>
             </div>
-
+            <!-- Button - Submit -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="submit"></label>
+                <div class="col-md-7">
+                    <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
+                </div>
+            </div>
         </fieldset>
     </form>
 </div>
 <!-- end modal body -->
-<div class="modal-footer">
-    <!-- Button - Submit -->
-    <div class="form-group">
-        <label class="col-md-4 control-label" for="submit"></label>
-        <div class="col-md-7">
-            <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
-        </div>
-    </div>
-</div>
