@@ -64,19 +64,22 @@
                 </div>
                 <div class="form-actions">
                     <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
-                    <input type="button" class="btn btn-primary " ng-click="neweexpense()" ng-show="userRole!='National Staff'" value="New Expense">
+                    <input type="button" class="btn btn-primary " ng-click="neweexpense()" value="New Expense">
                     <button class="btn btn-primary btn-danger" ng-show="userRole=='National Staff' || userRole=='Chapter Lead'" ng-click="filterPastDue()" title="Filters expenses that were submitted 30 days prior to date and still Overdue">Overdue Expenses</button>
-                    <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
+                    <!--  <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
                         <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
-                    </a>
+                    </a> -->
                     <img class="  " src="/assets/images/expense/Pie.png" width="40" height="40" title="Quick Expense Overview" ng-click="openExpenseDash()" ng-mouseover="showPopover()" ng-mouseleave="hidePopover()">
-                    <div class="form-group row btnalignmore " ng-repeat="dash in editstatus " ng-show=" userRole!='National Staff' && useremail != editstatus.EmailID">
+                    <div class="form-group row btnalignmore " ng-repeat="dash in editstatus " ng-show="useremail != editstatus.EmailID">
                         <a class="blinkinfo   btn-danger  btn      " ng-show="dash.OverAge > 0" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
                         <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- <div class="form-group row col-lg-12">
+            <input id=viewrow type="button" class="btn btn-primary " ng-click="ViewSelectedRow()" value="Pay Submitted Expense">
+        </div> -->
         <div class="form-group row col-lg-12">
             <table id="expenseTable" class="display table table-bordered responsive" cellspacing="0" width="80%">
             </table>

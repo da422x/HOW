@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ExpenseOverviewCtrl', function($scope, userService, expenseservice, commonServices, $window) {
+    .controller('ExpenseOverviewCtrl', function($scope, userService, expenseservice, commonServices, $window, $location, $q) {
 
         $scope.userRole = userService.getRole();
         $scope.userName = userService.getUserData();
@@ -42,18 +42,13 @@ angular.module('ohanaApp')
         $scope.labels1 = [];
         $scope.labels1.length = 0;
         $scope.labels1 = expenseservice.getlast12month();
-        // console.log("Label ", $scope.labels1);
         $scope.labels2 = expenseservice.getlast12monthyear();
 
-        // console.log("Label ", $scope.labels1, $scope.labels2);
-        // $scope.series1 = ['Series A', 'Series B'];
+
         $scope.series1 = [];
         $scope.data1 = [];
         $scope.data2 = [];
-        // $scope.data1 = [
-        //     [65, 59, 80, 81, 56, 55, 40],
-        //     [28, 48, 40, 19, 86, 27, 90]
-        // ];
+
 
         $scope.options1 = {
             scales: {
@@ -65,6 +60,49 @@ angular.module('ohanaApp')
                 }]
             }
         };
+
+        $scope.viewchapter = function() {
+            $scope.getSiteData = commonServices.getData('/siteData/');
+            // $scope.getSiteData = $rootScope.siteData.regionsChapters;
+            $scope.gettabledata = [];
+            $q.all([$scope.getSiteData]).then(function(data) {
+                _.each(data[0].regions, function(regions) {
+                    var chapters = [];
+                    _.each(regions.chapters, function(newChapters) {
+                        $scope.gettabledata.push({
+                            "Region": regions.value,
+                            "Chapter": newChapters.value,
+                            "Edit": 0,
+                            "Pending": 0,
+                            "Submitted": 0,
+                            "Resubmit": 0,
+                            "Returned": 0,
+                            "Paid": 0,
+                            "OverAge": 0
+
+                        })
+
+                    });
+
+                });
+                // console.log("Region Date in ", $scope.getSiteData);
+                // console.log("Array in", $scope.gettabledata);
+            })
+        }
+        $scope.viewchapter();
+        // console.log("Region Date outa ", $scope.getSiteData);
+        // console.log("Array out", $scope.gettabledata);
+
+        //Filter the list on expense in EDIT status
+        $scope.Showmeedit = function(BillId) {
+            $location.path('/expense/expensedetail/' + BillId);
+        }
+
+        //Go to View Expense list Page
+        $scope.ViewExpenseList = function() {
+
+            $location.path('/expense/viewexpense');
+        }
 
 
         $scope.viewexpensedash = function() {
@@ -85,38 +123,24 @@ angular.module('ohanaApp')
             $scope.PieDisplay = '';
 
             // var apaid = 0;
+            $scope.gettotaldata = {
+                "Edit": 0,
+                "Pending": 0,
+                "Submitted": 0,
+                "Resubmit": 0,
+                "Returned": 0,
+                "Paid": 0,
+                "OverAge": 0
+            };
+
             var apending = 0;
             var arrpending = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             var arrpendingamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            // var apending1 = 0;
-            // var apending2 = 0;
-            // var apending3 = 0;
-            // var apending4 = 0;
-            // var apending5 = 0;
-            // var apending6 = 0;
-            // var apending7 = 0;
-            // var apending8 = 0;
-            // var apending9 = 0;
-            // var apending10 = 0;
-            // var apending11 = 0;
-            // var apending12 = 0;
+
 
             var asubmitted = 0;
             var arrsubmitted = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             var arrsubmittedamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            // var asubmitted1 = 0;
-            // var asubmitted2 = 0;
-            // var asubmitted3 = 0;
-            // var asubmitted4 = 0;
-            // var asubmitted5 = 0;
-            // var asubmitted6 = 0;
-            // var asubmitted7 = 0;
-            // var asubmitted8 = 0;
-            // var asubmitted9 = 0;
-            // var asubmitted10 = 0;
-            // var asubmitted11 = 0;
-            // var asubmitted12 = 0;
-
 
 
             var aresubmit = 0;
@@ -143,12 +167,14 @@ angular.module('ohanaApp')
             var pastdue = 0;
             var editbillid = '';
 
+
             var getmonthstr = '';
             var getmonthname = '';
             var months = ["", "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
 
+            $scope.resubmitcnt = 0;
             // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
             $scope.dashlist.$loaded().then(function() {
 
@@ -158,6 +184,68 @@ angular.module('ohanaApp')
                     getmonthname = months[parseInt(getmonthstr[0], 10)];
                     // console.log(Date.parse(list.eventdate));
                     // console.log("The current month is " + months[parseInt(getmonthstr[0], 10)], list.eventdate, getmonthname, list.PaymentStatus);
+                    for (var i = 0; i < $scope.gettabledata.length; i++) {
+                        if ($scope.gettabledata[i].Chapter === list.Chapter) {
+                            switch (list.PaymentStatus) {
+                                case 'Edit':
+                                    $scope.gettabledata[i].Edit = $scope.gettabledata[i].Edit + 1;
+                                    $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
+                                    break;
+                                case 'Pending':
+                                    $scope.gettabledata[i].Pending = $scope.gettabledata[i].Pending + 1;
+                                    $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
+                                    break;
+                                case 'Resubmit':
+                                    $scope.gettabledata[i].Resubmit = $scope.gettabledata[i].Resubmit + 1;
+                                    $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
+                                    break;
+                                case 'Submitted':
+                                    $scope.gettabledata[i].Submitted = $scope.gettabledata[i].Submitted + 1;
+                                    $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
+                                    break;
+                                case 'Returned':
+                                    $scope.gettabledata[i].Returned = $scope.gettabledata[i].Returned + 1;
+                                    $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
+                                    break;
+                                case 'Paid':
+                                    $scope.gettabledata[i].Paid = $scope.gettabledata[i].Paid + 1;
+                                    $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
+                                    break;
+                                case 'Over Age':
+                                    $scope.gettabledata[i].OverAge = $scope.gettabledata[i].OverAge + 1;
+                                    $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
+                                    break;
+                            }
+
+
+                        }
+
+                        // switch (list.PaymentStatus) {
+                        //     case 'Edit':
+                        //         $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
+                        //         break;
+                        //     case 'Pending':
+                        //         $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
+                        //         break;
+                        //     case 'Resubmit':
+                        //         $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
+                        //         break;
+                        //     case 'Submitted':
+                        //         $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
+                        //         break;
+                        //     case 'Returned':
+                        //         $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
+                        //         break;
+                        //     case 'Paid':
+                        //         $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
+                        //         break;
+                        //     case 'Over Age':
+                        //         $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
+                        //         break;
+                        // }
+                    }
+                    // console.log("Chapter match", $scope.gettabledata);
+
                     switch (list.PaymentStatus) {
                         case 'Paid':
                             apaid = apaid + 1;
@@ -216,6 +304,7 @@ angular.module('ohanaApp')
                             break;
                         case 'Edit':
                             aedit = aedit + 1;
+                            editbillid = list.BillId;
                             if ($scope.labels1[0] == getmonthname) {
                                 arredit[0] = arredit[0] + 1;
                                 arreditamt[0] = arreditamt[0] + list.Amount;
@@ -481,7 +570,9 @@ angular.module('ohanaApp')
                                 arrresubmitamt[11] = arrresubmitamt[11] + list.Amount;
 
                             }
-
+                            if ($scope.useremail == list.email) {
+                                $scope.resubmitcnt = $scope.resubmitcnt + 1;
+                            }
                             //console.log("resubmit - ", list.Amount, arrresubmit, arrresubmitamt);
                             break;
                         case 'Submitted':
@@ -542,7 +633,7 @@ angular.module('ohanaApp')
                 });
                 // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
                 var daysforoverage = 0;
-
+                $scope.TotalExpenseCount = apending + aedit + asubmitted + areturned + aresubmit + apaid + aoverage;
                 if (apending > 0) {
                     $scope.piedata.push(apending);
                     $scope.pielabels.push("Pending");
@@ -572,7 +663,9 @@ angular.module('ohanaApp')
                     }
                     $scope.editstatus = [{
                         "OverAge": daysforoverage,
-                        "BillId": editbillid
+                        "BillId": editbillid,
+                        "EmailID": $scope.useremail
+
                     }];
                     $scope.expensedash.push({
                         "Label": "Edit",
@@ -622,6 +715,8 @@ angular.module('ohanaApp')
                         "Label": "Resubmit",
                         "Data": aresubmit
                     });
+
+
                     // $scope.PieDisplay = $scope.PieDisplay + "Resubmit(" + aresubmit + ") ";
                 }
                 if (apaid > 0) {
