@@ -9,8 +9,7 @@
                     <label for="exp.eventdate" class="col-xs-6 col-form-label">Event Date</label>
                     <div class=" col-xs-10">
                         <div class="input-group  ">
-                            <input id="exp.eventdate" type="text" class="form-control" ng-model="exp.eventdate
-" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
+                            <input id="exp.eventdate" type="text" class="form-control expenseInput" ng-model="exp.eventdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="dateopen()" title="Event Date - Expenses can only be created for events 60 days prior to current date"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -22,7 +21,7 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-6 col-form-label">Miles Driven</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
                         <p ng-if="newExpenseform.miles.$error.pattern" class="field-feedback">
                             Enter miles driven > 0
                         </p>
@@ -45,7 +44,7 @@
                 <div class="form-group row">
                     <label for="" class="col-xs-8 col-form-label">Trailer Miles</label>
                     <div class="col-xs-10">
-                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
                         <p ng-if="newExpenseform.trailermiles.$error.pattern" class="field-feedback">
                             Enter trailer hauling miles > 0
                         </p>
@@ -84,7 +83,7 @@
                                 <input type="checkbox" ng-model="Line.selected" />
                             </td>
                             <td>
-                                <input type="text" size="80" class="form-control" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
+                                <input type="text" size="80" class="form-control expenseInput" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
                             </td>
                             <td>
                                 <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" type="text" format-as-currency>
@@ -104,7 +103,7 @@
                 <div id="imagedisplay" class="form-group col-xs-12">
                     <div class="content panel-body-exp">
                         <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
-                        <input id="fileimage" name="fileimage" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
+                        <input id="fileimage" name="fileimage" class="expenseInput" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
                         <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
                         <div ng-repeat="item in uploader.queue">
                             <strong>{{ item.file.name }}</strong>
@@ -122,7 +121,7 @@
             <div class="form-group row btnalign">
                 <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
                 <div class="col-md-12 ">
-                    <input name="Description" ng-model="exp.Description" type="text" class="form-control" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required ng-minlength="3">
+                    <input name="Description" ng-model="exp.Description" type="text" class="form-control expenseInput" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required ng-minlength="3">
                     <p ng-if="newExpenseform.Description.$invalid" class="field-feedback">
                         Enter description for your expense
                     </p>

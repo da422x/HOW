@@ -47,6 +47,14 @@
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Orginization Data: </h6>
                 <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter: {{ profileData.Chapter|| "" }}</h4>
+                <h4 class="list-group-item-heading">Secondary Chapter(s):
+                    <h6 class="list-group-item-heading" ng-repeat="Chapters in profileData.Chapters">
+                        {{Chapters.chapter}}
+                    </h6>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="editChapters()">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </button>
+                </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Military Data: </h6>

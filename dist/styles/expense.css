@@ -148,14 +148,13 @@
      .pastdue {
          background-color: red !important;
      }
-     
-     input:invalid {
+     /* input:invalid {
          border: 2px solid red;
      }
      
-     input:valid {
+     input.expenseInput:valid {
          border: 2px solid green;
-     }
+     }*/
      
      .field-feedback {
          color: #a94442;
@@ -256,14 +255,17 @@
          -o-animation: glowing 1500ms infinite;
          animation: glowing 1500ms infinite;
          background-color: #004A7F;
-         -webkit-border-radius: 10px;
-         border-radius: 10px;
-         border: none;
-         color: #FFFFFF;
-         cursor: pointer;
+         height: 34px;
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: normal;
+         line-height: 1.42857143;
+         text-align: center;
+         white-space: nowrap;
+         vertical-align: middle;
          display: inline-block;
          font-family: Arial;
-         padding: 5px 10px;
+         padding: 6px 12px;
          text-align: center;
          text-decoration: none;
      }

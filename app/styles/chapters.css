@@ -5,3 +5,27 @@
 .infoWindow {
     width: 250px;
 }
+
+.additonal-chapter-btn-green {
+    width: 100%;
+    background-color: #2D8633;
+    margin-top: 5px;
+}
+
+.additonal-chapter-btn-red {
+    width: 100%;
+    background-color: #AA3939;
+    margin-top: 5px;
+}
+
+.region-dd {
+    margin-bottom: 9px;
+}
+
+.chapter-dd {
+    margin-bottom: 5px;
+}
+
+#manage-additional-chapters {
+    float: left;
+}

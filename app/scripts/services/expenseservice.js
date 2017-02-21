@@ -186,6 +186,7 @@ angular.module('ohanaApp')
         /******************************************************
          *        View Expense                                 *
          *******************************************************/
+
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
             var expenselist = [];
@@ -426,7 +427,6 @@ angular.module('ohanaApp')
                             });
                             console.log('Uploaded file!', imagefilerec);
                         })
-
 
                     }
                 }

@@ -139,7 +139,6 @@ angular.module('ohanaApp')
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
         };
-
         // Adds a key and sets the data to the key based on where the path is.
         this.pushData = function(path, data) {
             return firebase.database().ref(path).push(data)
