@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<!-- start modal-header -->
+<div class="modal-header" ng-init="initialize()">
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Chapter Status</h4>
+</div>
+<!-- end modal-header -->
+
+<!-- start modal body -->
+<div class="modal-body" style="height: 500px; overflow-y: auto; overflow-x: hidden;">
+    <div ng-repeat="log in currentLog">
+        <label>{{log.ts | date: "medium"}}:</label>
+        <p>{{log.msg}}</p>
+    </div>
+</div>
+<!-- end modal body -->

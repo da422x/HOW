@@ -1,0 +1,224 @@
+/* getinvolved styling */
+
+
+/* hero image and text */
+
+#herodesc2 {
+    margin: auto;
+    margin-top: 50px;
+    width: 70%;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#herodesc2 h3 {
+    font-size: 16px;
+}
+
+#desctextbg2 {
+    display: none;
+    width: 400px;
+    height: 80px;
+    margin: auto;
+}
+
+#how-logomark2 {
+    position: absolute;
+    top: 56vw;
+    left: 50%;
+    margin-left: -90px;
+    width: 180px;
+}
+
+
+/* body */
+
+.getinvolved-body {
+    width: 100%;
+    background-color: #e9e9e9;
+}
+
+.getinvolved-body hr {
+    display: block;
+    background-color: black;
+    width: 60px;
+    height: 4px;
+    border-radius: 4px;
+    margin: auto;
+}
+
+#getinvolved-text {
+    width: 80%;
+    max-width: 700px;
+    margin: auto;
+    padding-top: 3vw;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+#getinvolved-text p,
+#getinvolved-text h6 {
+    font-size: 20px;
+    line-height: 1.15em;
+    display: inline;
+}
+
+
+/* donatebanner */
+
+.donatebanner {
+    height: 35vw;
+    min-height: 250px;
+    overflow: hidden;
+    margin-top: -24px;
+}
+
+.donatedescoverlay {
+    position: relative;
+    top: -34vw;
+    height: 0;
+}
+
+#donatedesc {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+.donatebanner h2 {
+    font-size: 20px;
+    display: inline;
+}
+
+.donatebanner h4 {
+    font-size: 22px;
+    color: white;
+}
+
+#donatebg {
+    height: auto;
+    width: 100%;
+}
+
+.donatebanner #showDonateModal {
+    width: 200px;
+    height: 50px;
+    border: solid 2px white;
+    color: white;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.donatebanner #showDonateModal:hover {
+    background-color: white;
+    color: black;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+
+/* MEDIA QUERIES */
+
+@media only screen and (max-width: 720px) {
+    #herodesc2 {
+        margin-top: 30px;
+        padding-top: 20px;
+    }
+    #getinvolved-text {
+        padding-top: 30px;
+    }
+    .donatedescoverlay {
+        width: 80%;
+        position: relative;
+        top: 20%;
+        left: 50%;
+        margin-left: -40%;
+    }
+    #donatedesc {
+        width: 100%;
+        position: absolute;
+    }
+    #donatebg {
+        float: right;
+        width: 720px;
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    #how-logomark2 {
+        top: 60vw;
+        margin-left: -70px;
+        width: 140px;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    /* For desktop screens: */
+    #herodesc2 {
+        margin-top: -21%;
+        width: 65%;
+    }
+    #herodesc2 .desctext {
+        margin-top: -60px;
+        width: 100%;
+    }
+    #desctextbg2 {
+        display: block;
+    }
+    #how-logomark2 {
+        top: 57vw;
+    }
+    .getinvolved-body hr {
+        display: none;
+    }
+    #getinvolved-text {
+        padding-top: 16vw;
+    }
+    #donatedesc {
+        width: 50%;
+        max-width: 480px;
+    }
+    .donatebanner {
+        margin-top: 0px;
+    }
+    .donatebanner h4 {
+        font-size: 26px;
+    }
+    .donatedescoverlay {
+        top: -38vw;
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    /* For desktop screens: */
+    #herodesc2 {
+        margin-top: -18%;
+        max-width: 400px;
+    }
+    #how-logomark {
+        top: 57vw;
+        margin-left: -110px;
+        width: 220px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    /* For desktop screens: */
+    #herodesc2 {
+        margin-top: -26vw;
+    }
+    #how-logomark2 {
+        top: 46vw;
+        margin-left: -120px;
+        width: 240px;
+    }
+    #getinvolved-text {
+        padding-top: 24vw;
+    }
+}
