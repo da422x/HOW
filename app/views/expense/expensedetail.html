@@ -206,28 +206,7 @@
                 </div>
                 <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back" ng-show="( iseditexist =='true' && (userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Submitted' || paystat=='Returned' || paystat=='Pending' ))">
             </div>
-            <!--           <div class=" panel panel-default " ng-hide="(userRole=='Participant' || userRole=='Volunteer' ) || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Returned' ||paystat=='Edit' ) && useremail==expenseemail) || paystat=='Over Age' || paystat=='Paid' || (userRole=='National Staff'   && useremail==expenseemail)"> -->
-            <!-- <div class="panel panel-default "> -->
-            <!-- <div class="panel-heading clearfix ">
-    <h3 class="panel-title pull-left ">Payment Status Review</h3>
-</div>
-<div class="content panel-body-exp " class="form-group col-xs-12 ">
-    <fieldset id="payment_status ">
-        <div ng-repeat="paystatus in paystatuslist " class="radiofieldgroup ">
-            <input type="radio " ng-model="dexedit.PaymentStatus " value="{{paystatus.name}} " required /> {{paystatus.name}}
-        </div>
-    </fieldset>
-    <div class="form-group row ">
-        <label for="lpaystatusdescription " class="col-xs-12 col-form-label ">Payment Status NOTES:</label>
-        <div class="col-md-12 inputtextpad ">
-            <input id="lpaystatusdescription " ng-model="dexedit.PayStatusDescription " type="text " class="form-control " title="Payment Status NOTES - Explain the reason for changing payment status " size="120 " placeholder="Explain the reason for changing payment status " required>
-        </div>
-    </div>
-    <input id="paymentstatusbtn " name="paymentstatusbtn " type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus, dexedit.PayStatusDescription) " class="btn btn-primary " value="Status Update " />
-    <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Cancel ">
-</div>
-</div>
- -->
+
             <div ng-show="userRole=='National Staff'   &&  useremail!=expenseemail && (paystat=='Pending' || paystat=='Edit' || paystat=='Resubmit')">
                 <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Go Back ">
             </div>

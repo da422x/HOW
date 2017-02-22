@@ -186,6 +186,7 @@ angular.module('ohanaApp')
                 case 'Past Year':
                     var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
+
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
@@ -462,7 +463,7 @@ angular.module('ohanaApp')
 
                         angular.forEach(expensearray, function(obj) {
 
-                            var receivedDate = obj.SubmitDate;
+                            var receivedDate = obj.eventdate; // filter is based on Event Date not on Submit Date .SubmitDate;
 
                             if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
                                 retArray.push(obj);
