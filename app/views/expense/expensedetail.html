@@ -161,12 +161,14 @@
                     <div id="imagedisplay" class="form-group col-xs-12">
                         <div class="content panel-body-exp">
                             <div ng-repeat="vimage in vImageList">
+                                <!-- <div ng-repeat="vimage in vimageurl"> -->
                                 <img id="image0" width="40%" height="40%" class="imagedisplay" ng-src="{{vimage.ImageSrc}}" ng-click="viewImage(vimage.ImageSrc);" />
-                                <button type="button " class="btn btn-danger btn-xs " ng-click="removeImage(vimage.ImageName); ">
-                                    <span class="glyphicon glyphicon-trash "></span> Remove
+                                <button type="button " class="btn btn-danger btn-xs " ng-click="removeImage($index); ">
+                                    <!-- <button type="button " class="btn btn-danger btn-xs " ng-click="removeImage(vimage.ImageName); "> -->
+                                    <span class="glyphicon glyphicon-trash "></span> Remove{{$index}}
                                 </button>
                             </div>
-                            <div class="form-group row btnalign" ng-show="(paystat=='Pending' || paystat=='Edit'  || paystat=='Submitted' || paystat=='Returned' || paystat=='Resubmit')">
+                            <div class="form-group row btnalign" ng-show=" ((userRole=='Participant' || userRole=='Volunteer') && (paystat=='Edit'  || paystat=='Resubmit')) || ((userRole=='Chapter Lead' || userRole=='National Staff')  && (paystat=='Edit'  || paystat=='Returned' ||  paystat=='Submitted')) && useremail==expenseemail">
                                 <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load Additional supporting documents (images only)</label>
                                 <input id="fileimage" name="fileimage" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
                                 <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
@@ -189,43 +191,75 @@
                 </div>
             </fieldset>
             <!-- </div> -->
-            <div ng-show="((userRole=='Participant' || userRole=='Volunteer' || userRole=='Chapter Lead') && (useremail==expenseemail) )" class="form-group col-xs-12 expense_pad">
-                <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Pending' || paystat=='Edit' ||paystat=='Resubmit')) || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Edit' || paystat=='Returned') ) ">
-                    <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" value="Save Expense">
+            <!-- {{userRole}} {{useremail}}{{expenseemail}}{{paystat}}{{iseditexist}} -->
+            <div ng-show="(useremail==expenseemail )" class="form-group col-xs-12 expense_pad">
+                <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  ( paystat=='Edit' ||paystat=='Resubmit')) || ((userRole=='Chapter Lead' || userRole=='National Staff') && (paystat=='Submitted' || paystat=='Edit' || paystat=='Returned') ) ">
+                    <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-hide="paystat=='Resubmit'" value="Save Expense">
+                    <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-show="paystat=='Resubmit'" value="Resubmit Expense">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('submit')" ng-show="(paystat=='Edit') " value=" Submit Expense">
                     <input type="button" class="btn btn-primary" ng-click="deleteexp()" ng-show="( paystat=='Pending' || paystat=='Edit') " value="Delete Expense">
                     <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                 </div>
-                <div class="form-group row col-xs-6" ng-show="iseditexist =='false' && (paystat=='Pending' || paystat=='Edit'  || paystat=='Submitted' || paystat=='Returned')">
+                <div class="form-group row col-xs-6" ng-show="iseditexist =='false' && (paystat=='Pending' || paystat=='Resubmit'  || paystat=='Submitted' || paystat=='Returned')">
                     <input type="button" class="btn btn-primary" value=" Recall Expense" title="Recall expense for Edit" ng-click="RecallExpense(dexedit.BillId, 'Edit', 'Expense recalled by Orignator')">
+                    <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back">
                 </div>
+                <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back" ng-show="( iseditexist =='true' && (userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Submitted' || paystat=='Returned' || paystat=='Pending' ))">
             </div>
-            <div class="panel panel-default " ng-hide="(userRole=='Participant' || userRole == 'Volunteer')   || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Returned' ||paystat== 'Edit') && useremail==expenseemail) ||  paystat=='Over Age' || paystat=='Paid' ">
-                <!-- <div class="panel panel-default "> -->
-                <div class="panel-heading clearfix ">
-                    <h3 class="panel-title pull-left ">Payment Status Review</h3>
-                </div>
-                <div class="content panel-body-exp " class="form-group col-xs-12 ">
-                    <fieldset id="payment_status">
+            <!--           <div class=" panel panel-default " ng-hide="(userRole=='Participant' || userRole=='Volunteer' ) || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Returned' ||paystat=='Edit' ) && useremail==expenseemail) || paystat=='Over Age' || paystat=='Paid' || (userRole=='National Staff'   && useremail==expenseemail)"> -->
+            <!-- <div class="panel panel-default "> -->
+            <!-- <div class="panel-heading clearfix ">
+    <h3 class="panel-title pull-left ">Payment Status Review</h3>
+</div>
+<div class="content panel-body-exp " class="form-group col-xs-12 ">
+    <fieldset id="payment_status ">
+        <div ng-repeat="paystatus in paystatuslist " class="radiofieldgroup ">
+            <input type="radio " ng-model="dexedit.PaymentStatus " value="{{paystatus.name}} " required /> {{paystatus.name}}
+        </div>
+    </fieldset>
+    <div class="form-group row ">
+        <label for="lpaystatusdescription " class="col-xs-12 col-form-label ">Payment Status NOTES:</label>
+        <div class="col-md-12 inputtextpad ">
+            <input id="lpaystatusdescription " ng-model="dexedit.PayStatusDescription " type="text " class="form-control " title="Payment Status NOTES - Explain the reason for changing payment status " size="120 " placeholder="Explain the reason for changing payment status " required>
+        </div>
+    </div>
+    <input id="paymentstatusbtn " name="paymentstatusbtn " type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus, dexedit.PayStatusDescription) " class="btn btn-primary " value="Status Update " />
+    <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Cancel ">
+</div>
+</div>
+ -->
+            <div ng-show="userRole=='National Staff'   &&  useremail!=expenseemail && (paystat=='Pending' || paystat=='Edit' || paystat=='Resubmit')">
+                <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Go Back ">
+            </div>
+            <div ng-hide="useremail==expenseemail || paystat=='Edit'  ">
+                <div class=" panel panel-default " ng-hide="(userRole=='Participant' || userRole=='Volunteer' ) || (userRole=='Chapter Lead' && (paystat=='Submitted' || paystat=='Returned' ||paystat=='Edit' ) && useremail==expenseemail)  || paystat=='Over Age' || paystat=='Paid' || (userRole=='National Staff'   && (useremail==expenseemail || paystat=='Pending' || paystat=='Resubmit'))">
+                    <!-- <div class="panel panel-default "> -->
+                    <div class="panel-heading clearfix ">
+                        <h3 class="panel-title pull-left ">Payment Status Review</h3>
+                    </div>
+                    <!-- <ng-show="(userRole=='Chapter Lead' && (paystat=='Pending' || paystat=='Returned')) " > -->
+                    <div class="content panel-body-exp " class="form-group col-xs-12 ">
+                        <!-- <fieldset id="payment_status"> -->
                         <div ng-repeat="paystatus in paystatuslist" class="radiofieldgroup">
                             <input type="radio" ng-model="dexedit.PaymentStatus" name="name" value="{{paystatus.name}} " required /> {{paystatus.name}}
                         </div>
-                    </fieldset>
-                    <div class="form-group row">
-                        <label for="lpaystatusdescription" class="col-xs-12 col-form-label">Payment Status NOTES:</label>
-                        <div class="col-md-12 inputtextpad">
-                            <input id="lpaystatusdescription" ng-model="dexedit.PayStatusDescription" type="text" class="form-control" title="Payment Status NOTES - Explain the reason for changing payment status " size="120" placeholder="Explain the reason for changing payment status" required>
+                        <!-- </fieldset> -->
+                        <div class="form-group row">
+                            <label for="lpaystatusdescription" class="col-xs-12 col-form-label">Payment Status NOTES:</label>
+                            <div class="col-md-12 inputtextpad">
+                                <input id="lpaystatusdescription" ng-model="dexedit.PayStatusDescription" type="text" class="form-control" title="Payment Status NOTES - Explain the reason for changing payment status " size="120" placeholder="Explain the reason for changing payment status" required>
+                            </div>
                         </div>
+                        <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus, dexedit.PayStatusDescription)" class="btn btn-primary  " value="Status Update" />
+                        <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                     </div>
-                    <input id="paymentstatusbtn" name="paymentstatusbtn" type=button ng-click="UpdatePaymentStatus(dexedit.BillId, dexedit.PaymentStatus, dexedit.PayStatusDescription)" class="btn btn-primary  " value="Status Update" />
-                    <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                 </div>
             </div>
-            <div class="panel panel-default" ng-show="(paystat=='Over Age' || paystat=='Paid')">
-                <h3 class="modal-title" id="modal-title">Payment Status Log</h3>
-                <div class="modal-body" id="modal-body">
+            <div class="panel panel-default " ng-show="(paystat=='Over Age' || paystat=='Paid' ) ">
+                <h3 class="modal-title " id="modal-title ">Payment Status Log</h3>
+                <div class="modal-body " id="modal-body ">
                     <div>
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered ">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -236,7 +270,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in  PayStatusLogList">
+                                <tr ng-repeat="item in PayStatusLogList ">
                                     <td>
                                         {{item.PayStatusDate}}
                                     </td>
@@ -257,19 +291,19 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group row  col-xs-4 divhide" id="divgoback">
-                    <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back">
+                <div class="form-group row col-xs-4 divhide " id="divgoback ">
+                    <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Go Back ">
                 </div>
             </div>
     </form>
     </div>
-    <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">Payment Status Log</h3>
+    <script type="text/ng-template " id="myModalContent.html ">
+        <div class="modal-header ">
+            <h3 class="modal-title " id="modal-title ">Payment Status Log</h3>
         </div>
-        <div class="modal-body" id="modal-body">
+        <div class="modal-body " id="modal-body ">
             <div>
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered ">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -280,7 +314,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in  PayStatusLogList">
+                        <tr ng-repeat="item in PayStatusLogList ">
                             <td>
                                 {{item.PayStatusDate}}
                             </td>
@@ -301,7 +335,7 @@
                 </table>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="ok()">CLOSE</button>
+        <div class="modal-footer ">
+            <button class="btn btn-primary " type="button " ng-click="ok() ">CLOSE</button>
         </div>
     </script>

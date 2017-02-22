@@ -14,8 +14,6 @@ angular.module('ohanaApp')
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
-        expenseservice.deleteExpense("oRa2017126133420299");
-        expenseservice.deleteExpense("aAe201728132644713");
 
         // Initialize FORM field to clear old values in creating new expense.
         $scope.exp.Chapter = "";
@@ -261,7 +259,7 @@ angular.module('ohanaApp')
             var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
             $scope.CalculateAmount();
             // var inp = document.getElementById('fileimage');
-            console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
+            // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
             for (var i = 0; i < $scope.uploader.queue.length; ++i) {
                 var filename = $scope.uploader.queue[i].file.name;
                 // console.log("file name", filename);
@@ -300,6 +298,7 @@ angular.module('ohanaApp')
                 })
             }
         }
+
 
         $scope.CalculateAmount = function() {
 
@@ -361,7 +360,7 @@ angular.module('ohanaApp')
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             $scope.exp.SubmitAddress = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2 + ' , ' + $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
 
-            if ($scope.userRole == 'Chapter Lead') {
+            if ($scope.userRole == 'Chapter Lead' || $scope.userRole == 'National Staff') {
                 $scope.exp.PaymentLog[0].PayStatus = "Submitted";
                 $scope.exp.PaymentStatus = "Submitted";
             } else {
