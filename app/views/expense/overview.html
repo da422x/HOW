@@ -20,6 +20,8 @@
                     </div>
                 </div>
             </div>
+            <table id="ChapterViewTable" class="display table table-bordered responsive  " cellspacing="0" width="100%">
+            </table>
             <div class="row">
                 <uib-tabset active="activeJustified" justified="true" width="600px">
                     <uib-tab index="0" heading="Payment Status Summary">
@@ -71,13 +73,18 @@
                         </div>
                     </uib-tab>
                     <uib-tab index="1" heading="Payment Status By Chapter">
+                        <div class="form-group row col-lg-12">
+                            <!-- <table id="ChapterViewTable" class="display table table-bordered responsive  " cellspacing="0" width="100%">
+</table> | unique: 'Chapter' | unique: 'Region'
+ -->
+                        </div>
                         <div ng-show="userRole=='National Staff'" class="form-group row-fluid col-lg-12">
                             <div class="form-group row">
                                 <label for="selectedchapter" class="col-xs-6 col-form-label">Chapter List</label>
                                 <div class="input-group">
                                     <select class="form-control col-md-6" ng-model="listS" id="selectedchapter" name="selectedchapter" title="Select Chapter Name">
                                         <option value="" selected="true">All Chapters</option>
-                                        <option ng-repeat="chapter in  gettabledata | unique: 'Chapter'" value="{{chapter.Chapter}}">{{chapter.Chapter}}</option>
+                                        <option ng-repeat="chapter in  gettabledata  " value="{{chapter.Chapter}}">{{chapter.Chapter}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +93,7 @@
                                 <div class="input-group">
                                     <select class="form-control col-md-6" ng-model="region" id="selectedregion" name="selectedregion" title="Select Chapter Name">
                                         <option value="" selected="true">All Regions</option>
-                                        <option ng-repeat="chapter in  gettabledata | unique: 'Region'" value="{{chapter.Region}}">{{chapter.Region}}</option>
+                                        <option ng-repeat="chapter in  gettabledata  " value="{{chapter.Region}}">{{chapter.Region}}</option>
                                     </select>
                                 </div>
                             </div>

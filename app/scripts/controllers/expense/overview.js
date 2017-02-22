@@ -61,33 +61,56 @@ angular.module('ohanaApp')
             }
         };
 
+        $scope.getSiteData = [];
+        $scope.getSiteData.length = 0;
+        $scope.gettabledata = [];
+        $scope.gettabledata.length = 0;
+
         $scope.viewchapter = function() {
             $scope.getSiteData = commonServices.getData('/siteData/');
-            // $scope.getSiteData = $rootScope.siteData.regionsChapters;
-            $scope.gettabledata = [];
+
             $q.all([$scope.getSiteData]).then(function(data) {
                 _.each(data[0].regions, function(regions) {
                     var chapters = [];
                     _.each(regions.chapters, function(newChapters) {
-                        $scope.gettabledata.push({
-                            "Region": regions.value,
-                            "Chapter": newChapters.value,
-                            "Edit": 0,
-                            "Pending": 0,
-                            "Submitted": 0,
-                            "Resubmit": 0,
-                            "Returned": 0,
-                            "Paid": 0,
-                            "OverAge": 0
 
-                        })
+                        if ($scope.userRole == "Chapter Lead" && $scope.userChapter == newChapters.value) {
+                            $scope.gettabledata.push({
+                                "Region": regions.value,
+                                "Chapter": newChapters.value,
+                                "Edit": 0,
+                                "Pending": 0,
+                                "Submitted": 0,
+                                "Resubmit": 0,
+                                "Returned": 0,
+                                "Paid": 0,
+                                "OverAge": 0
+
+                            })
+                        } else {
+                            if ($scope.userRole == "National Staff") {
+                                $scope.gettabledata.push({
+                                    "Region": regions.value,
+                                    "Chapter": newChapters.value,
+                                    "Edit": 0,
+                                    "Pending": 0,
+                                    "Submitted": 0,
+                                    "Resubmit": 0,
+                                    "Returned": 0,
+                                    "Paid": 0,
+                                    "OverAge": 0
+
+                                })
+                            }
+                        }
 
                     });
 
                 });
                 // console.log("Region Date in ", $scope.getSiteData);
-                // console.log("Array in", $scope.gettabledata);
+                // console.log("Array in", $scope.gettabledata); 
             })
+
         }
         $scope.viewchapter();
         // console.log("Region Date outa ", $scope.getSiteData);
@@ -106,6 +129,7 @@ angular.module('ohanaApp')
 
 
         $scope.viewexpensedash = function() {
+
 
             $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
             // $scope.$applyAsync();
@@ -219,32 +243,18 @@ angular.module('ohanaApp')
 
 
                         }
-
-                        // switch (list.PaymentStatus) {
-                        //     case 'Edit':
-                        //         $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
-                        //         break;
-                        //     case 'Pending':
-                        //         $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
-                        //         break;
-                        //     case 'Resubmit':
-                        //         $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
-                        //         break;
-                        //     case 'Submitted':
-                        //         $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
-                        //         break;
-                        //     case 'Returned':
-                        //         $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
-                        //         break;
-                        //     case 'Paid':
-                        //         $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
-                        //         break;
-                        //     case 'Over Age':
-                        //         $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
-                        //         break;
-                        // }
                     }
                     // console.log("Chapter match", $scope.gettabledata);
+                    if ($scope.gettabledata !== undefined) {
+                        $scope.buildChapterStatusData();
+                    }
+                    // else {
+                    //     $scope.viewchapter();
+                    //     if ($scope.gettabledata !== undefined) {
+                    //         $scope.buildChapterStatusData();
+                    //     }
+                    // }
+
 
                     switch (list.PaymentStatus) {
                         case 'Paid':
@@ -755,10 +765,173 @@ angular.module('ohanaApp')
 
 
             // console.log("Dash -overview", $scope.data1, $scope.series1, $scope.piecolor, $scope.pielabels, $scope.piedata);
-            // if ($scope.expensedash !== undefined) {
+            // if ($scope.expensedash !== undefined) { 
+        }
+
+        //Build Data Table for viewing expense
+        $scope.buildChapterStatusData = function() {
+
+            // tabledata.$loaded(function(list) {
+            // console.log("table - ", $scope.gettabledata);
+            angular.element(document).ready(function() {
+                //toggle `popup` / `inline` mode
+                $.fn.editable.defaults.mode = 'popup';
+                $.fn.editable.defaults.ajaxOptions = {
+                    type: 'PUT'
+                };
+                //if exists, destroy instance of table
+                if ($.fn.DataTable.isDataTable($('#ChapterViewTable'))) {
+                    $('#ChapterViewTable').DataTable().destroy();
+                }
+                // var selected = [];
+                var table = $('#ChapterViewTable').removeAttr('width').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    data: $scope.gettabledata, // tabledata,
+                    scrollY: "200px",
+                    // scrollX: false,
+                    scrollCollapse: true,
+                    paging: false,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'csv', 'excel', 'pdf', 'print'
+                    ],
+                    // fixedColumns: true,
+                    // "pagingType": "full_numbers",
+                    columns: [{
+                        data: "Region",
+                        title: "Region",
+                        width: "80px"
+                    }, {
+                        data: "Chapter",
+                        title: "Chapter",
+                        width: "120px",
+
+                    }, {
+                        data: "Edit",
+                        title: "Edit",
+                        width: "40px"
+                    }, {
+                        data: "Pending",
+                        title: "Pending",
+                        width: "40px"
+                    }, {
+                        data: "Resubmit",
+                        title: "Resubmit",
+                        width: "40px"
+                    }, {
+                        data: "Submitted",
+                        title: "Submitted",
+                        width: "40px",
+
+                    }, {
+                        data: "Returned",
+                        title: "Returned",
+                        width: "40px"
+                    }, {
+                        data: "Paid",
+                        title: "Paid",
+                        width: "40px"
+                    }, {
+                        data: "OverAge",
+                        title: "Over Age",
+                        width: "40px",
+
+                    }, ],
+                    'columnDefs': [{
+                            targets: 0,
+                            width: "25%"
+                        }, {
+                            targets: 1,
+                            width: "35%"
+
+                        }, {
+                            targets: 2,
+                            // width: "5%"
+
+                        }, {
+                            targets: 3,
+                            // width: "5%"
+
+                        }
+
+
+                    ],
+                    'order': [
+                        [2, 'desc']
+                    ],
 
 
 
+                });
+
+
+                // $('#ChapterViewTable').dataTable().yadcf([
+
+                //     {
+                //         column_number: 0,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Region",
+                //         width: "60px"
+
+                //     }, {
+                //         column_number: 1,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Chapter",
+                //         width: "100px"
+
+                //     }, {
+                //         column_number: 2,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Edit",
+                //         width: "40px"
+
+                //     }, {
+                //         column_number: 3,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Pending",
+                //         width: "40px"
+                //     }, {
+
+                //         column_number: 4,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Resubmit",
+                //         width: "40px"
+
+                //     }, {
+
+                //         column_number: 5,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Submitted",
+                //         width: "40px"
+                //     }, {
+
+                //         column_number: 6,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Returned",
+                //         width: "40px"
+
+                //     }, {
+
+                //         column_number: 7,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Paid",
+                //         width: "40px"
+                //     },
+
+                //     {
+                //         column_number: 8,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Over Age",
+                //         width: "40px"
+
+                //     }
+                // ]);
+
+                // });
+
+
+            });
 
         }
 
