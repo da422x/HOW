@@ -9,9 +9,10 @@
  * Controller of management console - events
  */
 angular.module('ohanaApp')
-    .controller('PublicEventsCtrl', function($q, commonServices, $scope, $uibModal, Api, selectValues) {
+    .controller('PublicEventsCtrl', function($q, commonServices, $scope, $uibModal, Api, selectValues, userService) {
         'use strict';
         $scope.newQuery = {};
+        $scope.userService = userService;
         var allEvents = [];
 
 
