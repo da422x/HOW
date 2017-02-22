@@ -186,7 +186,6 @@ angular.module('ohanaApp')
         /******************************************************
          *        View Expense                                 *
          *******************************************************/
-
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
             var expenselist = [];
