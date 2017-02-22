@@ -2,7 +2,7 @@
     "name": "ohana",
     "private": true,
     "scripts": {
-        "ready": "grunt jsbeautifier && git merge origin nitenite && grunt build && git add . && git commit -m ",
+        "ready": "grunt jsbeautifier && git pull origin nitenite && grunt build && git add . && git commit -m ",
         "postready": "git push",
         "surge_test": "surge -p dist -d howtest.surge.sh",
         "surge_prod": "surge -p dist -d howprod.surge.sh"

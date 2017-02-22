@@ -6,3 +6,4 @@
 /app/data/env
 **/*.bowerrc
 **/npm-debug.log
+**/.DS_Store
