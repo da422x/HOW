@@ -14,25 +14,16 @@
         <tfoot>
             <tr>
                 <td>
-                    <button ng-click="addVolunteer()" type="button" class="btn btn-primary">
+                    <button ng-click="addVolunteer(new_row.email, event.key)" type="button" class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>
                 </td>
                 <td>
-                    <input class="form-control" type="text" ng-model="new_row.first">
-                </td>
-                <td>
-                    <input class="form-control" type="text" ng-model="new_row.middle">
-                </td>
-                <td>
-                    <input class="form-control" type="text" ng-model="new_row.last">
-                </td>
-                <td>
                     <input class="form-control" type="text" ng-model="new_row.email">
                 </td>
-                <td>
-                    <input class="form-control" type="text" ng-model="new_row.phone">
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         </tfoot>
     </table>

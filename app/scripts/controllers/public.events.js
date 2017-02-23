@@ -16,7 +16,9 @@ angular.module('ohanaApp')
         var allEvents = [];
 
 
+
         var loadAll = function() {
+            console.log("I'm here:", commonServices.getUserByEmail('hai'))
             var getEvents = commonServices.getPublicEvents();
             allEvents = [];
             $q.all([getEvents]).then(function(data) {

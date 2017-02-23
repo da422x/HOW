@@ -196,6 +196,30 @@ angular.module('ohanaApp')
                 });
         };
 
+        // Gets user based on email
+        this.getUserByEmail = function(email) {
+
+            return firebase.database().ref('userData')
+                .orderByChild('email')
+                .equalTo(email)
+                .once('value')
+                .then(function(snapshot) {
+                    return snapshot.val();
+                });
+        };
+
+        // Gets user based on email with path(only for verification of volunteers, participants, guest and w/e else)
+        this.getUserByEmailAtPath = function(email, path) {
+
+            return firebase.database().ref(path)
+                .orderByChild('email')
+                .equalTo(email)
+                .once('value')
+                .then(function(snapshot) {
+                    return snapshot.val();
+                });
+        };
+
         // Gets all Public events from database.
         this.getPublicEvents = function() {
             return firebase.database().ref('events')
