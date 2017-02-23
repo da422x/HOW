@@ -61,37 +61,324 @@ angular.module('ohanaApp')
             }
         };
 
+        // ---Check box
+        // Fruits
+        $scope.paystatuslist = ['Edit', 'Pending', 'Resubmit', 'Submitted', 'Returned', 'Paid', 'Over Age'];
+
+        // Selected fruits
+        $scope.selectedpaystatus = ['Paid'];
+
+        // Toggle selection for a given fruit by name
+        $scope.paystatusSelection = function paystatusSelection(paystatus) {
+            var idx = $scope.selectedpaystatus.indexOf(paystatus);
+
+            // Is currently selected
+            if (idx > -1) {
+                $scope.selectedpaystatus.splice(idx, 1);
+            }
+            // Is newly selected
+            else {
+                $scope.selectedpaystatus.push(paystatus);
+            }
+            $scope.getExpensebyStatus();
+            console.log("Expense ", $scope.ExpensebyStatusData);
+        };
+        // console.log("check box", $scope.selectedpaystatus);
+
+        // -----
+
+        $scope.getSiteData = [];
+        $scope.getSiteData.length = 0;
+        $scope.PayStatusCountData = [];
+        $scope.PayStatusCountData.length = 0;
+        $scope.ExpensebyStatusData = [];
+        $scope.ExpensebyStatusData.length = 0;
+
         $scope.viewchapter = function() {
             $scope.getSiteData = commonServices.getData('/siteData/');
-            // $scope.getSiteData = $rootScope.siteData.regionsChapters;
-            $scope.gettabledata = [];
+
             $q.all([$scope.getSiteData]).then(function(data) {
                 _.each(data[0].regions, function(regions) {
                     var chapters = [];
                     _.each(regions.chapters, function(newChapters) {
-                        $scope.gettabledata.push({
-                            "Region": regions.value,
-                            "Chapter": newChapters.value,
-                            "Edit": 0,
-                            "Pending": 0,
-                            "Submitted": 0,
-                            "Resubmit": 0,
-                            "Returned": 0,
-                            "Paid": 0,
-                            "OverAge": 0
 
-                        })
+                        if ($scope.userRole == "Chapter Lead" && $scope.userChapter == newChapters.value) {
+                            $scope.PayStatusCountData.push({
+                                "Region": regions.value,
+                                "Chapter": newChapters.value,
+                                "Edit": 0,
+                                "Pending": 0,
+                                "Submitted": 0,
+                                "Resubmit": 0,
+                                "Returned": 0,
+                                "Paid": 0,
+                                "OverAge": 0
+                            })
+
+                            $scope.ExpensebyStatusData.push({
+                                "Region": regions.value,
+                                "Chapter": newChapters.value,
+                                "OriginatorName": '',
+
+                                "PastWeek": 0,
+                                "PastMonth": 0,
+                                "Past3Month": 0,
+                                "Past1Year": 0,
+                                "ALL": 0
+                            })
+
+                        } else {
+                            if ($scope.userRole == "National Staff") {
+                                $scope.PayStatusCountData
+                                    .push({
+                                        "Region": regions.value,
+                                        "Chapter": newChapters.value,
+                                        "Edit": 0,
+                                        "Pending": 0,
+                                        "Submitted": 0,
+                                        "Resubmit": 0,
+                                        "Returned": 0,
+                                        "Paid": 0,
+                                        "OverAge": 0
+
+                                    })
+
+                                $scope.ExpensebyStatusData.push({
+                                    "Region": regions.value,
+                                    "Chapter": newChapters.value,
+                                    "OriginatorName": '',
+
+                                    "PastWeek": 0,
+                                    "PastMonth": 0,
+                                    "Past3Month": 0,
+                                    "Past1Year": 0,
+                                    "ALL": 0
+                                })
+                            }
+                        }
 
                     });
 
                 });
                 // console.log("Region Date in ", $scope.getSiteData);
-                // console.log("Array in", $scope.gettabledata);
+                // console.log("Array in", $scope.PayStatusCountData); 
             })
+
         }
         $scope.viewchapter();
+
+        //
+        $scope.getExpensebyStatus = function() {
+
+            var currentdate = new Date();
+
+            var startdate_p1w = new Date(currentdate - (1000 * 60 * 60 * 24 * 7));
+            var startdate_p30w = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
+            var startdate_p90w = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
+            var startdate_p1yr = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
+            var enddate_p1w = currentdate;
+            // console.log("Dash List   ", $scope.dashlist);
+            $scope.dashlist.$loaded().then(function() {
+
+                $scope.ExpensebyStatusData = [];
+                var newExpenseList = [];
+                angular.forEach($scope.dashlist, function(list) {
+
+                    $scope.ExpensebyStatusData.push({
+                        "Region": '',
+                        "Chapter": list.Chapter,
+                        "OriginatorName": list.SubmitBy,
+
+                        "PastWeek": 0,
+                        "PastMonth": 0,
+                        "Past3Month": 0,
+                        "Past1Year": 0,
+                        "ALL": 0
+                    })
+                })
+                var arr = {};
+                for (var i = 0, len = $scope.ExpensebyStatusData.length; i < len; i++)
+                    arr[$scope.ExpensebyStatusData[i]['OriginatorName']] = $scope.ExpensebyStatusData[i];
+
+                $scope.ExpensebyStatusData = new Array();
+                for (var key in arr)
+                    $scope.ExpensebyStatusData.push(arr[key]);
+                // if ($scope.ExpensebyStatusData !== undefined) {
+                //     for (var x = 0; x < $scope.ExpensebyStatusData.length; x++) {
+
+                //         if ($scope.ExpensebyStatusData[x].OriginatorName != list.SubmitBy) {
+                //             newExpenseList.push($scope.vimageurl[x]);
+                //         }
+
+                //         for (var y = 0; y < $scope.PayStatusCountData; y++) {
+                //             if ($scope.PayStatusCountData[y].Chapter == $scope.ExpensebyStatusData[x].Chapter) {
+                //                 $scope.ExpensebyStatusData[x].Region = $scope.PayStatusCountData[y].Region
+                //             }
+                //         }
+                //     }
+
+                //     $scope.ExpensebyStatusData = newExpenseList;
+                // }
+                // newExpenseList = $scope.ExpensebyStatusData.filter(function(elem, index, self) {
+                //     return index == self.indexOf(elem);
+                // })
+                // $scope.ExpensebyStatusData = _.uniq($scope.ExpensebyStatusData, 'OriginatorName');
+                // $scope.ExpensebyStatusData = newExpenseList;
+                angular.forEach($scope.dashlist, function(list) {
+
+
+                    var mdyy = list.eventdate.toString().split('/');
+                    var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
+                    // console.log("Dash List expense ", list, $scope.ExpensebyStatusData, receivedDate, startdate_p1w, enddate_p1w);
+
+
+                    //Pay Expense by Status count
+                    for (var i = 0; i < $scope.ExpensebyStatusData.length; i++) {
+                        if (($scope.ExpensebyStatusData[i].Chapter === list.Chapter) &&
+                            ($scope.ExpensebyStatusData[i].OriginatorName = list.SubmitBy))
+                        // {}
+                        {
+                            // if ($scope.ExpensebyStatusData[i].Chapter === list.Chapter) {
+                            console.log("Dash List 1 ", list, list.SubmitBy, list.Amount, list.PaymentStatus);
+
+
+                            if ($scope.selectedpaystatus.includes(list.PaymentStatus)) {
+                                console.log("Dash List expense 2 ", $scope.selectedpaystatus, list.Chapter, list.SubmitBy, list.Amount, list.PaymentStatus);
+                                // $scope.ExpensebyStatusData[i].OriginatorName = list.SubmitBy;
+                                switch (list.PaymentStatus) {
+                                    case 'Edit':
+
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+                                        console.log("Dash List expense 3", list.Chapter, list.SubmitBy, list.Amount, list.PaymentStatus);
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                    case 'Pending':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+                                        console.log("Dash ListPending 3", list.Chapter, list.SubmitBy, list.Amount, list.PaymentStatus);
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                    case 'Resubmit':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                        break;
+                                    case 'Submitted':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                    case 'Returned':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                    case 'Paid':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                    case 'Over Age':
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                                        }
+                                        if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
+                                            $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                                        }
+
+                                        $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                                        break;
+                                }
+                            }
+
+                        }
+                    }
+                });
+
+                $scope.buildExpenseData();
+                console.log("Dash List expense ", $scope.ExpensebyStatusData);
+
+            });
+
+
+
+        }
+
+
         // console.log("Region Date outa ", $scope.getSiteData);
-        // console.log("Array out", $scope.gettabledata);
+        // console.log("Array out", $scope.PayStatusCountData);
 
         //Filter the list on expense in EDIT status
         $scope.Showmeedit = function(BillId) {
@@ -107,8 +394,10 @@ angular.module('ohanaApp')
 
         $scope.viewexpensedash = function() {
 
+
             $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
             // $scope.$applyAsync();
+
 
             $scope.expensedash = [];
             $scope.expensedash.length = 0;
@@ -177,74 +466,61 @@ angular.module('ohanaApp')
             $scope.resubmitcnt = 0;
             // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
             $scope.dashlist.$loaded().then(function() {
-
+                // $scope.getExpensebyStatus();
+                // console.log("Expense ", $scope.ExpensebyStatusData);
                 angular.forEach($scope.dashlist, function(list) {
                     getmonthstr = list.eventdate.split("/");
                     getmonthname = '';
                     getmonthname = months[parseInt(getmonthstr[0], 10)];
-                    // console.log(Date.parse(list.eventdate));
-                    // console.log("The current month is " + months[parseInt(getmonthstr[0], 10)], list.eventdate, getmonthname, list.PaymentStatus);
-                    for (var i = 0; i < $scope.gettabledata.length; i++) {
-                        if ($scope.gettabledata[i].Chapter === list.Chapter) {
+
+                    // Pay Status Count
+                    for (var i = 0; i < $scope.PayStatusCountData.length; i++) {
+                        if ($scope.PayStatusCountData[i].Chapter === list.Chapter) {
                             switch (list.PaymentStatus) {
                                 case 'Edit':
-                                    $scope.gettabledata[i].Edit = $scope.gettabledata[i].Edit + 1;
+                                    $scope.PayStatusCountData[i].Edit = $scope.PayStatusCountData[i].Edit + 1;
                                     $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
                                     break;
                                 case 'Pending':
-                                    $scope.gettabledata[i].Pending = $scope.gettabledata[i].Pending + 1;
+                                    $scope.PayStatusCountData[i].Pending = $scope.PayStatusCountData[i].Pending + 1;
                                     $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
                                     break;
                                 case 'Resubmit':
-                                    $scope.gettabledata[i].Resubmit = $scope.gettabledata[i].Resubmit + 1;
+                                    $scope.PayStatusCountData[i].Resubmit = $scope.PayStatusCountData[i].Resubmit + 1;
                                     $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
                                     break;
                                 case 'Submitted':
-                                    $scope.gettabledata[i].Submitted = $scope.gettabledata[i].Submitted + 1;
+                                    $scope.PayStatusCountData[i].Submitted = $scope.PayStatusCountData[i].Submitted + 1;
                                     $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
                                     break;
                                 case 'Returned':
-                                    $scope.gettabledata[i].Returned = $scope.gettabledata[i].Returned + 1;
+                                    $scope.PayStatusCountData[i].Returned = $scope.PayStatusCountData[i].Returned + 1;
                                     $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
                                     break;
                                 case 'Paid':
-                                    $scope.gettabledata[i].Paid = $scope.gettabledata[i].Paid + 1;
+                                    $scope.PayStatusCountData[i].Paid = $scope.PayStatusCountData[i].Paid + 1;
                                     $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
                                     break;
                                 case 'Over Age':
-                                    $scope.gettabledata[i].OverAge = $scope.gettabledata[i].OverAge + 1;
+                                    $scope.PayStatusCountData[i].OverAge = $scope.PayStatusCountData[i].OverAge + 1;
                                     $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
                                     break;
                             }
 
 
                         }
-
-                        // switch (list.PaymentStatus) {
-                        //     case 'Edit':
-                        //         $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
-                        //         break;
-                        //     case 'Pending':
-                        //         $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
-                        //         break;
-                        //     case 'Resubmit':
-                        //         $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
-                        //         break;
-                        //     case 'Submitted':
-                        //         $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
-                        //         break;
-                        //     case 'Returned':
-                        //         $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
-                        //         break;
-                        //     case 'Paid':
-                        //         $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
-                        //         break;
-                        //     case 'Over Age':
-                        //         $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
-                        //         break;
-                        // }
                     }
-                    // console.log("Chapter match", $scope.gettabledata);
+                    // console.log("Chapter match", $scope.PayStatusCountData);
+                    // if ($scope.PayStatusCountData !== undefined) {
+                    // $scope.buildChapterStatusData();
+                    // }
+                    // else {
+                    //     $scope.viewchapter();
+                    //     if ($scope.PayStatusCountData !== undefined) {
+                    //         $scope.buildChapterStatusData();
+                    //     }
+                    // }
+
 
                     switch (list.PaymentStatus) {
                         case 'Paid':
@@ -749,17 +1025,295 @@ angular.module('ohanaApp')
                     // $scope.PieDisplay = $scope.PieDisplay + "Over Age(" + aoverage + ") ";
                 }
                 // console.log("Dash -ov ew", $scope.data1, $scope.piecolor, $scope.pielabels, $scope.piedata);
-
+                if ($scope.PayStatusCountData !== undefined) {
+                    $scope.buildChapterStatusData();
+                }
             });
 
 
 
             // console.log("Dash -overview", $scope.data1, $scope.series1, $scope.piecolor, $scope.pielabels, $scope.piedata);
-            // if ($scope.expensedash !== undefined) {
+            // if ($scope.expensedash !== undefined) { 
+        }
+
+        //Build Data Table for viewing expense
+        $scope.buildChapterStatusData = function() {
+
+            // tabledata.$loaded(function(list) {
+            console.log("table - ", $scope.PayStatusCountData);
+            angular.element(document).ready(function() {
+                //toggle `popup` / `inline` mode
+                $.fn.editable.defaults.mode = 'popup';
+                $.fn.editable.defaults.ajaxOptions = {
+                    type: 'PUT'
+                };
+                //if exists, destroy instance of table
+                if ($.fn.DataTable.isDataTable($('#ChapterViewTable'))) {
+                    $('#ChapterViewTable').DataTable().destroy();
+                }
+                // var selected = [];
+                var table = $('#ChapterViewTable').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    data: $scope.PayStatusCountData, // tabledata,
+                    scrollY: "200px",
+                    // scrollX: false,
+                    scrollCollapse: true,
+                    paging: false,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'csv', 'excel', 'pdf', 'print'
+                    ],
+                    // fixedColumns: true,
+                    // "pagingType": "full_numbers",
+                    columns: [{
+                        data: "Region",
+                        title: "Region",
+                        width: "80px"
+                    }, {
+                        data: "Chapter",
+                        title: "Chapter",
+                        width: "120px",
+
+                    }, {
+                        data: "Edit",
+                        title: "Edit",
+                        width: "40px"
+                    }, {
+                        data: "Pending",
+                        title: "Pending",
+                        width: "40px"
+                    }, {
+                        data: "Resubmit",
+                        title: "Resubmit",
+                        width: "40px"
+                    }, {
+                        data: "Submitted",
+                        title: "Submitted",
+                        width: "40px",
+
+                    }, {
+                        data: "Returned",
+                        title: "Returned",
+                        width: "40px"
+                    }, {
+                        data: "Paid",
+                        title: "Paid",
+                        width: "40px"
+                    }, {
+                        data: "OverAge",
+                        title: "Over Age",
+                        width: "40px",
+
+                    }, ],
+                    'columnDefs': [{
+                            targets: 0,
+                            width: "25%"
+                        }, {
+                            targets: 1,
+                            width: "35%"
+
+                        }, {
+                            targets: 2,
+                            // width: "5%"
+
+                        }, {
+                            targets: 3,
+                            // width: "5%"
+
+                        }
+
+
+                    ],
+                    'order': [
+                        [2, 'desc']
+                    ],
 
 
 
+                });
+
+
+                // $('#ChapterViewTable').dataTable().yadcf([
+
+                //     {
+                //         column_number: 0,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Region",
+                //         width: "60px"
+
+                //     }, {
+                //         column_number: 1,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Chapter",
+                //         width: "100px"
+
+                //     }, {
+                //         column_number: 2,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Edit",
+                //         width: "40px"
+
+                //     }, {
+                //         column_number: 3,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Pending",
+                //         width: "40px"
+                //     }, {
+
+                //         column_number: 4,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Resubmit",
+                //         width: "40px"
+
+                //     }, {
+
+                //         column_number: 5,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Submitted",
+                //         width: "40px"
+                //     }, {
+
+                //         column_number: 6,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Returned",
+                //         width: "40px"
+
+                //     }, {
+
+                //         column_number: 7,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Paid",
+                //         width: "40px"
+                //     },
+
+                //     {
+                //         column_number: 8,
+                //         select_type: 'chosen',
+                //         filter_default_label: "Over Age",
+                //         width: "40px"
+
+                //     }
+                // ]);
+
+                // });
+
+
+
+            });
 
         }
+
+        //Build Expense Amount Data Table for viewing expense
+        $scope.buildExpenseData = function() {
+
+            angular.element(document).ready(function() {
+                //toggle `popup` / `inline` mode
+                $.fn.editable.defaults.mode = 'popup';
+                $.fn.editable.defaults.ajaxOptions = {
+                    type: 'PUT'
+                };
+                //if exists, destroy instance of table
+                if ($.fn.DataTable.isDataTable($('#ExpenseViewTable'))) {
+                    $('#ExpenseViewTable').DataTable().destroy();
+                }
+                // var selected = [];
+                var table = $('#ExpenseViewTable').removeAttr('width').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    data: $scope.ExpensebyStatusData, // tabledata,
+                    scrollY: "200px",
+                    // scrollX: false,
+                    scrollCollapse: true,
+                    paging: false,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'csv', 'excel', 'pdf', 'print'
+                    ],
+                    // fixedColumns: true,
+                    // "pagingType": "full_numbers",
+                    columns: [{
+                            data: "Region",
+                            title: "Region",
+                            width: "70px"
+                        }, {
+                            data: "Chapter",
+                            title: "Chapter",
+                            width: "90px",
+
+                        }, {
+                            data: "OriginatorName",
+                            title: "Originator Name",
+                            width: "120px",
+
+                        }, {
+                            data: "PastWeek",
+                            title: "Past Week",
+                            width: "50px",
+
+                        },
+
+                        {
+                            data: "PastMonth",
+                            title: "Past Month",
+                            width: "50px",
+
+                        },
+
+                        {
+                            data: "Past3Month",
+                            title: "Past 3 Month",
+                            width: "50px",
+
+                        },
+
+
+                        {
+                            data: "Past1Year",
+                            title: "Past 1 Year",
+                            width: "50px",
+
+                        },
+
+                        {
+                            data: "ALL",
+                            title: "ALL",
+                            width: "40px"
+                        }
+                    ],
+                    'columnDefs': [{
+                            targets: 0,
+                            width: "25%"
+                        }, {
+                            targets: 1,
+                            width: "35%"
+
+                        }, {
+                            targets: 2,
+                            // width: "5%"
+
+                        }, {
+                            targets: 3,
+                            // width: "5%"
+
+                        }
+
+
+                    ],
+                    'order': [
+                        [2, 'desc']
+                    ],
+
+
+
+                });
+
+
+
+
+            });
+
+        }
+
 
     });
