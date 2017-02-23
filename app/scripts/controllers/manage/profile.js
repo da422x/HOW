@@ -23,6 +23,7 @@ angular.module('ohanaApp')
 
             $q.all([userRquests]).then(function(data) {
                 $scope.profileData = userService.getUserData();
+                $scope.profileData.years = parseInt($scope.profileData.years);
                 $scope.profileData.role = userService.getRole();
                 $scope.userUID = userService.getId();;
                 $scope.requests = [];

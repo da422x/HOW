@@ -121,71 +121,71 @@ angular.module('ohanaApp')
 
         this.updatePaymentStatus = function(updatelist, StatusChangedBy) {
 
-            var billkey = "";
-            var currentdate = new Date();
-            var StatusChangedDate = "";
-            if (currentdate.getHours() > 12) {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
+                var billkey = "";
+                var currentdate = new Date();
+                var StatusChangedDate = "";
+                if (currentdate.getHours() > 12) {
+                    StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
 
-            } else {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+                } else {
+                    StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
 
-            };
+                };
 
-            for (var i = 0; i < updatelist.length; i++) {
-                // console.log("Update service", updatelist[i]);
-                var paymentstatuslog = [];
-                //var expensedata = this.getEditExpenseData(updatelist[0]);
-                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(updatelist[i]);
-                query.on('child_added', function(snap) {
-                    var expensedata = snap.val();
-                    // console.log("Update service data", expensedata);
-                    billkey = snap.key;
-                    if (expensedata.PaymentLog.length) {
+                for (var i = 0; i < updatelist.length; i++) {
+                    // console.log("Update service", updatelist[i]);
+                    var paymentstatuslog = [];
+                    //var expensedata = this.getEditExpenseData(updatelist[0]);
+                    var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(updatelist[i]);
+                    query.on('child_added', function(snap) {
+                            var expensedata = snap.val();
+                            // console.log("Update service data", expensedata);
+                            billkey = snap.key;
+                            if (expensedata.PaymentLog.length) {
 
-                        for (var x = 0; x < expensedata.PaymentLog.length; x++) {
+                                for (var x = 0; x < expensedata.PaymentLog.length; x++) {
+                                    paymentstatuslog.push({
+                                        'PayStatus': expensedata.PaymentLog[x].PayStatus,
+                                        'PayStatusBy': expensedata.PaymentLog[x].PayStatusBy,
+                                        'PayStatusDate': expensedata.PaymentLog[x].PayStatusDate,
+                                        'PayRole': expensedata.PaymentLog[x].PayRole,
+                                        'PayStatusDescription': expensedata.PaymentLog[x].PayStatusDescription
+                                    });
+
+                                }
+
+                            }
                             paymentstatuslog.push({
-                                'PayStatus': expensedata.PaymentLog[x].PayStatus,
-                                'PayStatusBy': expensedata.PaymentLog[x].PayStatusBy,
-                                'PayStatusDate': expensedata.PaymentLog[x].PayStatusDate,
-                                'PayRole': expensedata.PaymentLog[x].PayRole,
-                                'PayStatusDescription': expensedata.PaymentLog[x].PayStatusDescription
+                                "PayStatus": "Paid",
+                                "PayStatusBy": StatusChangedBy,
+                                "PayStatusDate": StatusChangedDate,
+                                "PayRole": "National Staff",
+                                "PayStatusDescription": "Agree with Chapter Lead. Expense Paid"
                             });
+                        })
+                        // console.log("Scope Payment Status", paymentstatuslog, billkey);
+                    for (var x = 0; x < paymentstatuslog.length; x++) {
 
+                        if (paymentstatuslog[x] != null) {
+                            delete paymentstatuslog[x].$$hashKey;
                         }
 
                     }
-                    paymentstatuslog.push({
-                        "PayStatus": "Paid",
-                        "PayStatusBy": StatusChangedBy,
-                        "PayStatusDate": StatusChangedDate,
-                        "PayRole": "National Staff",
-                        "PayStatusDescription": "Agree with Chapter Lead. Expense Paid"
-                    });
-                })
-                // console.log("Scope Payment Status", paymentstatuslog, billkey);
-                for (var x = 0; x < paymentstatuslog.length; x++) {
 
-                    if (paymentstatuslog[x] != null) {
-                        delete paymentstatuslog[x].$$hashKey;
-                    }
+                    var ePaymentLog = {
+                        "PaymentStatus": "Paid",
+                        "PaymentLog": paymentstatuslog
+                    };
+
+                    firebase.database().ref('expense/' + billkey).update(ePaymentLog);
 
                 }
-
-                var ePaymentLog = {
-                    "PaymentStatus": "Paid",
-                    "PaymentLog": paymentstatuslog
-                };
-
-                firebase.database().ref('expense/' + billkey).update(ePaymentLog);
+                swal('Payment Status Updated Successfully!', '', 'success');
 
             }
-            swal('Payment Status Updated Successfully!', '', 'success');
-
-        }
-        /******************************************************
-         *        View Expense                                 *
-         *******************************************************/
+            /******************************************************
+             *        View Expense                                 *
+             *******************************************************/
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
             var expenselist = [];
@@ -393,7 +393,7 @@ angular.module('ohanaApp')
 
             for (var i = 0; i < imageinfo.length; ++i) {
                 var filename = imageinfo[i].file.name
-                //inp.files.item(i).name;
+                    //inp.files.item(i).name;
 
 
                 var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
