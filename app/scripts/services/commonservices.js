@@ -260,29 +260,4 @@ angular.module('ohanaApp')
          *           DAO object container - end             *
          *******************************************************/
 
-        /******************************************************
-         *      Expense Service object container - start      *
-         *******************************************************/
-        this.expenseservice = expenseservice;
-
-        // Gets user chapter and address information 
-        this.getUserChapter = function() {
-            var expemail = this.getCurrentUserEmail();
-            // alert(expemail);
-
-            var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
-            var viewuserdata = $firebaseArray(ref);
-
-            console.log("Get User Data ", viewuserdata);
-            return {
-                viewuserdata: viewuserdata,
-
-            }
-
-        }
-
-        /******************************************************
-         *   Expense Service object container - start         *
-         ******************************************************/
-
     }]);

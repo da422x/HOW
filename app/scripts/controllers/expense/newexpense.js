@@ -14,8 +14,6 @@ angular.module('ohanaApp')
 
         $scope.exp = {};
         $scope.exp = expenseservice.expense;
-        expenseservice.deleteExpense("oRa2017126133420299");
-        expenseservice.deleteExpense("aAe201728132644713");
 
         // Initialize FORM field to clear old values in creating new expense.
         $scope.exp.Chapter = "";
@@ -35,53 +33,13 @@ angular.module('ohanaApp')
         $scope.exp.Line[1].Quantity = 0; //this.exp.trailermiles;
         $scope.exp.Line[1].Rate = 0.4;
         $scope.exp.Line.length = 2;
-        // console.log("Exp Line Array len", $scope.exp.Line.length, $scope.exp.Line);
-        // Initialize FORM field  --- END ---------
-
-        //---To remove the “No file chosen” tooltip from a file input --START
-        // $(function() {
-        //         $('input[type="file"]').change(function() {
-        //             if ($(this).val() != "") {
-        //                 $(this).css('color', '#333');
-        //             } else {
-        //                 $(this).css('color', 'transparent');
-        //             }
-        //         });
-        //     })
-        //---To remove the “No file chosen” tooltip from a file input --END
 
         //---FILE UPLOADER ---START ---------
 
         var uploader = $scope.uploader = new FileUploader({
-            // if (!empty($_FILES)) {
 
-            //     $tempPath = $_FILES['file']['tmp_name'];
-            //     $uploadPath = dirname(__FILE__).DIRECTORY_SEPARATOR.
-            //     'uploads'.DIRECTORY_SEPARATOR.$_FILES['file']['name'];
-
-            //     move_uploaded_file($tempPath, $uploadPath);
-
-            //     $answer = array('answer' => 'File transfer completed');
-            //     $json = json_encode($answer);
-
-            //     echo $json;
-
-            // } else {
-
-            //     echo 'No files';
-
-            // }
         });
-        // var uploader = $scope.uploader = function() {
-        //     // url: 'upload.php'
-        //     var inp = document.getElementById('fileimage');
-        //     for (var i = 0; i < item.length; ++i) {
-        //         var filename = inp.fileimage.item(i).name;
-        //         console.log("Image - ", i, filename);
-        //     };
 
-        // };
-        // FILTERS
 
         uploader.filters.push({
             name: 'imageFilter',
@@ -91,43 +49,7 @@ angular.module('ohanaApp')
             }
         });
 
-        // CALLBACKS
 
-        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/ , filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        uploader.onAfterAddingFile = function(fileItem) {
-            console.info('onAfterAddingFile', fileItem.file.name);
-        };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
-        uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
-        };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
-        };
-
-        // console.info('uploader', uploader);
         //----FILE UPLOADER ---END------
 
         $scope.lineamount = 0;
@@ -137,7 +59,7 @@ angular.module('ohanaApp')
         $scope.userName = userService.getUserData();
         $scope.userChapter = userService.getChapter();
         $scope.useremail = commonServices.getCurrentUserEmail();
-        console.log("User Name info - ", $scope.userName, $scope.exp.email);
+        // console.log("User Name info - ", $scope.userName, $scope.exp.email);
 
         $scope.checkeditexist = function() {
             var aedit = 0;
@@ -268,7 +190,8 @@ angular.module('ohanaApp')
         //------------UI Bootstrap Date -----END--------------//
         //Go Back to View Expense Page
         $scope.GoBack = function() {
-            window.location = "#/expense/viewexpense";
+            // window.location = "#/expense/viewexpense";
+            $location.path('/expense/viewexpense');
         }
 
         //Clear value in Expense Page
@@ -324,7 +247,8 @@ angular.module('ohanaApp')
             }).then(function() {
 
                 $scope.createnewexpense("SAVE")
-                window.location.href = "#/expense/viewexpense"
+                // window.location.href = "#/expense/viewexpense"
+                $location.path('/expense/viewexpense')
             })
 
         }
@@ -335,21 +259,20 @@ angular.module('ohanaApp')
             var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
             $scope.CalculateAmount();
             // var inp = document.getElementById('fileimage');
-            console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
+            // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
             for (var i = 0; i < $scope.uploader.queue.length; ++i) {
                 var filename = $scope.uploader.queue[i].file.name;
-                console.log("file name", filename);
+                // console.log("file name", filename);
             }
 
-
-            if ($scope.exp.Description.length == 0 || $scope.uploader.queue.length == 0) {
+            if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.uploader.queue.length == 0 || $scope.exp.Amount == 0) {
                 swal({
                     title: 'Required fields Missing',
                     type: 'error',
                     html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
                         '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr></table>',
-
+                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr> ' +
+                        '<tr><td class="swaltdl ">Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
                 })
             } else {
                 swal({
@@ -370,10 +293,12 @@ angular.module('ohanaApp')
                 }).then(function() {
 
                     $scope.createnewexpense("Pending")
-                    window.location.href = "#/expense/viewexpense"
+                    // window.location.href = "#/expense/viewexpense"
+                    $location.path('/expense/viewexpense')
                 })
             }
         }
+
 
         $scope.CalculateAmount = function() {
 
@@ -435,7 +360,7 @@ angular.module('ohanaApp')
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             $scope.exp.SubmitAddress = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2 + ' , ' + $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
 
-            if ($scope.userRole == 'Chapter Lead') {
+            if ($scope.userRole == 'Chapter Lead' || $scope.userRole == 'National Staff') {
                 $scope.exp.PaymentLog[0].PayStatus = "Submitted";
                 $scope.exp.PaymentStatus = "Submitted";
             } else {
@@ -526,79 +451,3 @@ angular.module('ohanaApp')
 
 
     });
-
-// function LoadImageData(UniqueBillId, datalocation, imageinfo) {
-
-//     // $scope.uploader.queue[i].file.name
-
-//     var imageobj = {};
-//     // var inp = document.getElementById('fileimage');
-//     console.log("file image ", imageinfo[0].file.name);
-
-//     for (var i = 0; i < imageinfo.length; ++i) {
-//         var filename = imageinfo[i].file.name
-//             //inp.files.item(i).name;
-
-
-//         var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-//         var blnValid = false;
-//         for (var j = 0; j < _validFileExtensions.length; j++) {
-//             var sCurExtension = _validFileExtensions[j];
-
-//             if (filename.substr(filename.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-
-//                 var storage = firebase.storage();
-
-//                 var file = imageinfo[i]._file;
-//                 //document.getElementById("fileimage").files[i];
-//                 console.log("load file - ", file);
-
-//                 var storageRef = firebase.storage().ref();
-//                 var path = storageRef.fullPath
-
-//                 var filelocname = 'images/' + UniqueBillId + '_' + file.name;
-
-//                 storageRef.child(filelocname).put(file).then(function(snapshot) {
-//                     console.log('Uploaded a blob or file!');
-//                 });
-
-
-
-//             }
-//         }
-//     }
-
-//     // var imageobj = {};
-//     // var inp = document.getElementById('files');
-
-//     // for (var i = 0; i < inp.files.length; ++i) {
-//     //     var filename = inp.files.item(i).name;
-
-
-//     //     var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-//     //     var blnValid = false;
-//     //     for (var j = 0; j < _validFileExtensions.length; j++) {
-//     //         var sCurExtension = _validFileExtensions[j];
-
-//     //         if (filename.substr(filename.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-
-//     //             var storage = firebase.storage();
-
-//     //             var file = document.getElementById("files").files[i];
-//     //             console.log("load file - ", file);
-
-//     //             var storageRef = firebase.storage().ref();
-//     //             var path = storageRef.fullPath
-
-//     //             var filelocname = 'images/' + UniqueBillId + '_' + file.name;
-
-//     //             storageRef.child(filelocname).put(file).then(function(snapshot) {
-//     //                 console.log('Uploaded a blob or file!');
-//     //             });
-
-
-
-//     //         }
-//     //     }
-//     // }
-// }

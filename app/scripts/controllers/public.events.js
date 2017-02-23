@@ -13,20 +13,20 @@ angular.module('ohanaApp')
         'use strict';
         $scope.newQuery = {};
         $scope.userService = userService;
-        var allEvents = [];
+        //var allEvents = [];
 
 
 
         var loadAll = function() {
-            console.log("I'm here:", commonServices.getUserByEmail('hai'))
             var getEvents = commonServices.getPublicEvents();
-            allEvents = [];
+            // allEvents = [];
             $q.all([getEvents]).then(function(data) {
                 if (data[0]) {
-                    _.each(data[0], function(event) {
-                        allEvents.push(event);
-                    });
-                    $scope.eventList = allEvents;
+                    // _.each(data[0], function(event) {
+                    //     allEvents.push(event);
+                    // });
+                    console.log(data[0])
+                    $scope.eventList = data[0];
                 } else {
                     console.log('Failed to get Events...');
                 }
@@ -36,14 +36,14 @@ angular.module('ohanaApp')
         loadAll();
 
         $scope.search = function() {
-            if (allEvents.length > 0) {
+            if ($scope.eventList.length > 0) {
                 $scope.empty = false;
 
                 if ($scope.newQuery.search == '*' || !($scope.newQuery.search)) {
                     loadAll();
                 } else {
                     var eventsFound = [];
-                    _.each(allEvents, function(event) {
+                    _.each($scope.eventList, function(event) {
                         _.each(event, function(attribute) {
                             if (angular.isString(attribute) && angular.isString($scope.newQuery.search)) {
                                 if (_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())) {
@@ -79,7 +79,7 @@ angular.module('ohanaApp')
         };
 
         $scope.showDescription = function(index) {
-            $scope.selected = allEvents[index];
+            $scope.selected = $scope.eventList[index];
             console.log('Index is: ' + index);
             var getEvents = commonServices.getEvent($scope.selected);
 
@@ -106,6 +106,65 @@ angular.module('ohanaApp')
             }
         };
 
+        $scope.addVolunteer = function(key) {
+            //email = email.trim();
+            var email = $scope.userService.getUserData()["email"];
+            //check to see if the volunteer is a user at all. 
+            commonServices.getUserByEmail(email)
+                .then(function(data) {
+                    if (data) {
+                        var temp_key;
+                        _.each(data, function(val, idx) {
+                            temp_key = idx;
+                            data[idx]["key"] = idx;
+                        });
+
+                        commonServices.getData('userRoles/' + temp_key)
+                            .then(function(role) {
+                                if (role["role"] !== "Participant") {
+                                    //check to see if the volunteer exists per this event
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                        .then(function(vol) {
+                                            console.log(vol);
+                                            if (!vol) {
+                                                commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                            } else {
+                                                swal(
+                                                    'Oops...',
+                                                    "That volunteer has already been added",
+                                                    'error'
+                                                );
+                                            }
+
+                                        })
+                                } else {
+                                    swal(
+                                        'Oops...',
+                                        "User not authorized to be added as a volunteer.",
+                                        'error'
+                                    );
+                                }
+
+                            })
+
+                    } else {
+                        swal(
+                            'Oops...',
+                            "That user doesn\'t exists",
+                            'error'
+                        );
+                    }
+
+                }, function(err) {
+                    swal(
+                        'Oops...',
+                        "Unknown Error",
+                        'error'
+                    );
+                });
+
+
+        }
         // Api.events.query().$promise.then(
         // 	function (response) { // on success
         // 		$scope.eventList = response;

@@ -118,69 +118,74 @@ angular.module('ohanaApp')
             });
 
         }
+
+        this.updatePaymentStatus = function(updatelist, StatusChangedBy) {
+
+            var billkey = "";
+            var currentdate = new Date();
+            var StatusChangedDate = "";
+            if (currentdate.getHours() > 12) {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
+
+            } else {
+                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+
+            };
+
+            for (var i = 0; i < updatelist.length; i++) {
+                // console.log("Update service", updatelist[i]);
+                var paymentstatuslog = [];
+                //var expensedata = this.getEditExpenseData(updatelist[0]);
+                var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo(updatelist[i]);
+                query.on('child_added', function(snap) {
+                    var expensedata = snap.val();
+                    // console.log("Update service data", expensedata);
+                    billkey = snap.key;
+                    if (expensedata.PaymentLog.length) {
+
+                        for (var x = 0; x < expensedata.PaymentLog.length; x++) {
+                            paymentstatuslog.push({
+                                'PayStatus': expensedata.PaymentLog[x].PayStatus,
+                                'PayStatusBy': expensedata.PaymentLog[x].PayStatusBy,
+                                'PayStatusDate': expensedata.PaymentLog[x].PayStatusDate,
+                                'PayRole': expensedata.PaymentLog[x].PayRole,
+                                'PayStatusDescription': expensedata.PaymentLog[x].PayStatusDescription
+                            });
+
+                        }
+
+                    }
+                    paymentstatuslog.push({
+                        "PayStatus": "Paid",
+                        "PayStatusBy": StatusChangedBy,
+                        "PayStatusDate": StatusChangedDate,
+                        "PayRole": "National Staff",
+                        "PayStatusDescription": "Agree with Chapter Lead. Expense Paid"
+                    });
+                })
+                // console.log("Scope Payment Status", paymentstatuslog, billkey);
+                for (var x = 0; x < paymentstatuslog.length; x++) {
+
+                    if (paymentstatuslog[x] != null) {
+                        delete paymentstatuslog[x].$$hashKey;
+                    }
+
+                }
+
+                var ePaymentLog = {
+                    "PaymentStatus": "Paid",
+                    "PaymentLog": paymentstatuslog
+                };
+
+                firebase.database().ref('expense/' + billkey).update(ePaymentLog);
+
+            }
+            swal('Payment Status Updated Successfully!', '', 'success');
+
+        }
         /******************************************************
          *        View Expense                                 *
          *******************************************************/
-        this.CheckEditExpense = function(useremail) {
-
-            var query = firebase.database().ref('/expense').orderByChild('PaymentStatus').equalTo('Edit');
-
-            // firebase.database().ref('/expense').orderByChild('PaymentStatus')
-            //     .startAt('Edit').endAt('Edit')
-            //     .on('value', function(snapshot) {
-            //         snapshot.forEach(function(userSnapshot) {
-            //             var movie = snapshot.val();
-            //             console.log(" 1 ", movie, movie.email, userSnapshot.key, userSnapshot.val().email, useremail);
-
-
-            //             // // var ddd = firebase.database().ref('expense/' + snapshot.key + '/email');
-            //             if (userSnapshot.val().email == useremail) {
-            //                 console.log("2  ", movie);
-            //                 return userSnapshot.val().email;
-            //             }
-
-            //             // console.log("3  ", movie, ddd);
-            //         });
-            //     });
-
-            var EditExpenseRec = $firebaseArray(query);
-            EditExpenseRec.$loaded(function(list) {
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i].email == useremail) {
-                        console.log("array", list[i].email);
-                        return 1;
-                    }
-                    console.log("array 1", list[i].email, useremail);
-                }
-            });
-            // // return EditExpenseRec;
-            // var matchcount = 0;
-            // console.log("Match record 111", EditExpenseRec, useremail);
-            // EditExpenseRec.$loaded(function(list) {
-            //     angular.forEach(EditExpenseRec, function(list) {
-            //         console.log("list check - 1 ", list.email, '2', useremail);
-
-            //         if (list.email == useremail) {
-            //             matchcount = matchcount + 1;
-            //             console.log("Match record 1xx", list.email, useremail);
-
-            //         }
-
-            //     });
-            //     if (matchcount > 0) {
-            //         console.log("Match 1", matchcount);
-            //         return "true";
-            //     } else {
-            //         console.log("Match email No 1", matchcount);
-            //         return "false";
-            //     }
-            // });
-
-            return EditExpenseRec;
-
-
-        }
-
         this.getViewExpenseData = function(useremail, userRole, Chapter) {
 
             var expenselist = [];
@@ -202,8 +207,6 @@ angular.module('ohanaApp')
             var viewExpenseList = $firebaseArray(ref);
 
             return viewExpenseList;
-
-
         }
 
         //expense dash data 
@@ -269,7 +272,22 @@ angular.module('ohanaApp')
             return pastdue;
         }
 
-        this.buildExpenseTableData = function(useremail, userRole, Chapter, startdate, enddate, paystatus, searchtype) {
+        this.getEditStatusrec = function() {
+
+            var ref = firebase.database().ref('/expense').orderByChild("PaymentStatus").equalTo("Edit");
+            var editExpenseList = $firebaseArray(ref);
+            return editExpenseList;
+        }
+
+        this.getEditExpenseData = function(billid) {
+
+            var ref = firebase.database().ref('/expense').orderByChild("BillId").equalTo(billid);
+            var expense = $firebaseArray(ref);
+            return expense;
+        }
+
+
+        this.GetViewExpenseTableData = function(useremail, userRole, Chapter) {
 
             // console.log("Get Data", useremail, userRole, Chapter, startdate, enddate, paystatus);
             var expenselist = [];
@@ -286,226 +304,17 @@ angular.module('ohanaApp')
                     console.log("ref-2");
                     break;
                 case 'National Staff':
+                case 'admin':
                     ref = firebase.database().ref('/expense'); //.orderByChild("SubmitDate");\
                     console.log("ref-3");
                     break;
             }
 
             var viewExpenseList = [];
-            var expensearray = [];
 
-            // var ref = firebase.database().ref('/expense').orderByChild("SubmitDate");
             viewExpenseList = $firebaseArray(ref);
-            // console.log("view ", viewExpenseList, ref);
-            var currentdate = new Date();
 
-            viewExpenseList.$loaded(function(list) {
-                    // viewExpenseList.$loaded().then(function(list) {
-                    expensearray = [];
-
-                    // console.log("key ", list, list.length, expensearray);
-                    for (var i = 0; i < list.length; i++) {
-                        // console.log("SubmitDate - ", list[i].SubmitDate);
-                        var mdyy = list[i].SubmitDate.toString().split('/');
-                        var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
-                        var pastdue = 0;
-
-                        // get current date with 12AM .setHours(0, 0, 0, 0)
-                        if (list[i].PaymentStatus != 'Paid' && list[i].PaymentStatus != 'Over Age') {
-                            pastdue = Math.round((currentdate.setHours(0, 0, 0, 0) - receivedDate) / (1000 * 60 * 60 * 24));
-                        } else
-                            pastdue = '';
-
-                        if (searchtype == 'edit' && list[i].PaymentStatus == 'Edit') {
-                            // && list[i].PaymentStatus != 'Over Age') {
-
-                            expensearray.push({
-                                "SubmitDate": list[i].SubmitDate,
-                                "SubmitBy": list[i].SubmitBy,
-                                "eventdate": list[i].eventdate,
-                                "Chapter": list[i].Chapter,
-                                "Amount": list[i].Amount,
-                                "PaymentStatus": list[i].PaymentStatus,
-                                "pastdue": pastdue,
-                                "BillId": list[i].BillId
-                            });
-                            // console.log("Edit - ", expensearray, searchtype, list[i].PaymentStatus);
-                        } else {
-                            if (searchtype != 'edit') {
-                                expensearray.push({
-                                    "SubmitDate": list[i].SubmitDate,
-                                    "SubmitBy": list[i].SubmitBy,
-                                    "eventdate": list[i].eventdate,
-                                    "Chapter": list[i].Chapter,
-                                    "Amount": list[i].Amount,
-                                    "PaymentStatus": list[i].PaymentStatus,
-                                    "pastdue": pastdue,
-                                    "BillId": list[i].BillId
-                                });
-                                // console.log("Non-Edit - ", expensearray, searchtype, list[i].PaymentStatus);
-                            }
-                        }
-                    }
-
-                    //date filter
-                    // var ViewExpenseFilter = datefilter(expensearray, startdate, enddate, paystatus);
-                    //use other methods for the $firebaseArray object
-                    var retArray = [];
-                    if (expensearray != null && startdate != null && enddate != null) {
-
-                        angular.forEach(expensearray, function(obj) {
-
-                            var receivedDate = obj.SubmitDate;
-
-                            if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
-                                retArray.push(obj);
-                                // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate, retArray);
-                            }
-                        });
-                    }
-                    var retResults = [];
-                    if (paystatus != null && retArray != null && paystatus != '') {
-                        angular.forEach(retArray, function(obj) {
-
-                            var tpaystatus = obj.PaymentStatus;
-
-                            if (tpaystatus == paystatus) {
-                                retResults.push(obj);
-                                //console.log("paystatus ", retArray, retResults, paystatus, tpaystatus);
-                            }
-
-                        });
-                    } else
-                        retResults = retArray;
-                    // console.log("key expe array", expensearray, retArray, retResults);
-
-
-                    angular.element(document).ready(function() {
-                        //toggle `popup` / `inline` mode
-                        $.fn.editable.defaults.mode = 'popup';
-                        $.fn.editable.defaults.ajaxOptions = {
-                            type: 'PUT'
-                        };
-                        //if exists, destroy instance of table
-                        if ($.fn.DataTable.isDataTable($('#expenseTable'))) {
-                            $('#expenseTable').DataTable().destroy();
-                        }
-
-                        var table = $('#expenseTable').DataTable({
-                            responsive: true,
-                            autoWidth: false,
-                            data: retResults,
-                            "fnRowCallback": function(nRow, data, iDisplayIndex, iDisplayIndexFull) {
-                                if ((data.pastdue > 30 && data.pastdue < 45) && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
-                                    $(nRow).css('color', 'red')
-                                }
-
-
-                                if (data.pastdue > 44 && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
-                                    $(nRow).css('color', 'red')
-                                    $(nRow).css('font-weight', 'bold');
-                                    $(nRow).css('background-color', 'yellow');
-                                    $(nRow).css('font-size', '16px');
-                                }
-                            },
-                            "pagingType": "full_numbers",
-                            columns: [{
-                                data: "Chapter",
-                                width: "60px"
-                            }, {
-                                data: "SubmitDate",
-                                width: "50px"
-                            }, {
-                                data: "SubmitBy",
-                                width: "60px"
-                            }, {
-                                data: "eventdate",
-                                width: "60px"
-                            }, {
-                                data: "Amount",
-                                width: "60px",
-                                render: $.fn.dataTable.render.number(',', '.', 2)
-                            }, {
-                                data: "PaymentStatus",
-                                width: "60px"
-                            }, {
-                                data: "pastdue",
-                                width: "60px",
-
-                            }],
-                            'columnDefs': [{
-                                targets: 0,
-                                visible: userRole == 'National Staff'
-                            }, {
-                                targets: 3,
-                                width: '50px'
-                            }, {
-                                targets: 5,
-                                width: '90px'
-                            }],
-                            'order': [
-                                [6, 'desc']
-                            ],
-                        });
-
-
-                        $('#expenseTable').dataTable().yadcf([{
-
-                                column_number: 0,
-                                select_type: 'chosen',
-                                filter_default_label: "Chapter"
-
-                            }, {
-
-                                column_number: 1,
-                                select_type: 'chosen',
-                                filter_default_label: "Submit Date"
-
-                            }, {
-                                column_number: 2,
-                                select_type: 'chosen',
-                                filter_default_label: "Expense Originator Name"
-                            },
-
-                            {
-                                column_number: 3,
-                                select_type: 'chosen',
-                                filter_default_label: "Event Date"
-
-                            }, {
-                                column_number: 4,
-                                select_type: 'chosen',
-                                filter_default_label: "Amount"
-
-                            }, {
-                                column_number: 5,
-                                select_type: 'chosen',
-                                filter_default_label: "Payment Status"
-
-                            }, {
-                                column_number: 6,
-                                select_type: 'chosen',
-                                filter_default_label: "Past Due"
-
-                            }
-                        ]);
-
-                        // var table = $('#expenseTable').DataTable();
-
-                        $('#expenseTable tbody').on('click', 'tr', function() {
-                            var data = table.row(this).data();
-                            // alert('You clicked on ' + data.BillId + '\'s row');
-                            window.location = "#/expense/expensedetail/" + data.BillId;
-                        });
-
-
-
-                    });
-
-                })
-                .catch(function(error) {
-                    console.error("error", error);
-                });
+            return viewExpenseList;
 
 
         };
@@ -564,19 +373,6 @@ angular.module('ohanaApp')
                     'Your supporting document file has been removed.',
                     'success'
                 );
-                // console.log('ImageList: 2 -' + Imagelist);
-                angular.forEach(Imagearray, function(item) {
-                    if (item.length) {
-                        var i = 0;
-
-                        for (var x = 0; x < item.length; x++) {
-                            if (item[x].ImageName != Imagename) {
-                                newDataList.push(item[x]);
-                            }
-                        }
-                    }
-                });
-                console.log("Image Aarray -  1 ", Imagearray, newDataList);
 
             }).catch(function(error) {
                 var errorCode = error.code;
@@ -586,34 +382,12 @@ angular.module('ohanaApp')
             });
         }
 
-        this.deleteImagearray = function(Imagearray, imgname) {
-
-            // Create a reference to the file to delete
-
-            var newDataList = [];
-            angular.forEach(Imagearray, function(item) {
-                if (item.length) {
-                    var i = 0;
-
-                    for (var x = 0; x < item.length; x++) {
-                        if (item[x].ImageName != imgname) {
-                            newDataList.push(item[x]);
-                        }
-                    }
-                }
-            });
-            console.log("Image Aarray - ", Imagearray, newDataList);
-
-            return newDataList;
-
-        }
-
-
         this.SaveImageData = function(UniqueBillId, imageinfo) {
 
             // $scope.uploader.queue[i].file.name
 
             var imageobj = {};
+            var imagefilerec = [];
             // var inp = document.getElementById('fileimage');
             console.log("file image ", imageinfo[0].file.name);
 
@@ -640,23 +414,18 @@ angular.module('ohanaApp')
 
                         var filelocname = 'images/' + UniqueBillId + '_' + file.name;
 
-                        storageRef.child(filelocname).put(file).then(function(snapshot) {
-                            if (snapshot !== undefined) {
-
-
-
-                                return storageRef.child(filelocname).getDownloadURL()
-                                    .then(function(url) {
-                                        console.log("Image func - ", url);
-                                        return url;
-
-
-
-                                    })
-                                console.log('Uploaded a blob or file!');
-                            }
-
-                        });
+                        var storageRef = firebase.storage().ref(filelocname);
+                        var uploadTask = storageRef.put(file);
+                        uploadTask.on('state_changed', null, null, function() {
+                            var downloadUrl = uploadTask.snapshot.downloadURL;
+                            // userInfo[pic.name] = downloadUrl;
+                            imagefilerec.push({
+                                ID: (j + 1),
+                                ImageUrlLocation: downloadUrl,
+                                FileName: filelocname
+                            });
+                            console.log('Uploaded file!', imagefilerec);
+                        })
 
                     }
                 }
@@ -669,6 +438,7 @@ angular.module('ohanaApp')
 
 
         this.buildTableBody = function(data, columns) {
+
             var body = [];
             body.push(columns);
 
@@ -676,6 +446,7 @@ angular.module('ohanaApp')
                 var dataRow = [];
 
                 columns.forEach(function(column) {
+
                     dataRow.push(row[column].toString());
                 })
 
@@ -685,7 +456,7 @@ angular.module('ohanaApp')
         }
 
         this.table = function(data, columns) {
-            console.log("Table Function inside", data, columns);
+
             return {
                 style: 'demoTable',
                 widths: ['60', '150', '60', '60', '60', '60', '60', '60', '200'],
@@ -695,5 +466,91 @@ angular.module('ohanaApp')
                     body: this.buildTableBody(data, columns)
                 }
             };
+        }
+
+        this.createPDFReport = function(rptdata, reportDate, name, address, cityinfo, Chaptername, email, sdate, edate) {
+
+            var docDefinition = {
+                pageOrientation: 'landscape',
+                header: {
+                    margin: 10,
+                    columns: [{
+                        margin: [10, 0, 0, 0],
+                        text: 'HOW Expense Report',
+                        fontSize: 14,
+                        bold: true,
+                        alignment: 'center'
+                    }, ]
+                },
+                footer: {
+                    columns: [
+                        reportDate,
+
+                        {
+                            text: 'AT&T     ',
+                            alignment: 'right'
+                        }
+                    ]
+                },
+                styles: {
+                    header: {
+                        bold: true,
+                        color: '#000',
+                        fontSize: 11
+                    },
+                    demoTable: {
+                        color: '#666',
+                        fontSize: 10
+                    }
+                },
+                content: [{
+                        canvas: [{
+                            type: 'line',
+                            x1: 0,
+                            y1: 5,
+                            x2: 750,
+                            y2: 5,
+                            lineWidth: 0.5
+                        }]
+                    }, {
+                        text: '\n'
+                    }, {
+                        columns: [{
+                            stack: [
+                                // second column consists of paragraphs
+                                'Payable To: ' + name,
+                                'Address : ' + address,
+                                'City/State/Zip : ' + cityinfo
+                            ],
+                            fontSize: 11
+                        }, {
+                            stack: [
+                                // second column consists of paragraphs
+                                'Chapter Name : ' + Chaptername,
+                                'Email Id :' + email
+                            ],
+                            fontSize: 11
+                        }, {
+                            stack: [
+                                // second column consists of paragraphs
+                                'Expense From : ' + sdate,
+                                'Expense To : ' + edate
+                            ],
+                            fontSize: 11
+                        }]
+                    }, {
+                        text: '\n'
+                    }, {
+                        width: '',
+                        text: ''
+                    },
+
+                    this.table(rptdata, ['Event Date', 'Business Purpose, Origin & Destination', 'Miles Driven', 'Travel @ .25/mile', 'Trailer Miles', 'Trailer Hauling @ .40/mile', 'Other Expenses', 'Total', 'Explanation of Other Expense'])
+
+                ],
+
+            };
+            // console.log("PDF report created", docDefinition);
+            pdfMake.createPdf(docDefinition).download('ExpenseReport.pdf');
         }
     });

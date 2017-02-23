@@ -148,14 +148,13 @@
      .pastdue {
          background-color: red !important;
      }
-     
-     input.expenseInput:invalid {
+     /* input:invalid {
          border: 2px solid red;
      }
      
      input.expenseInput:valid {
          border: 2px solid green;
-     }
+     }*/
      
      .field-feedback {
          color: #a94442;
@@ -178,6 +177,15 @@
          width: auto;
          margin-left: 3em;
          font-size: 20px;
+         padding-top: 5px;
+         padding-bottom: 5px;
+     }
+     
+     .checkboxgroup {
+         float: left;
+         width: auto;
+         margin-left: 3em;
+         font-size: 15px;
          padding-top: 5px;
          padding-bottom: 5px;
      }
@@ -248,6 +256,7 @@
      
      .swaltdr {
          float: right;
+         padding-right: 10px;
      }
      
      .blinkinfo {
@@ -256,14 +265,18 @@
          -o-animation: glowing 1500ms infinite;
          animation: glowing 1500ms infinite;
          background-color: #004A7F;
-         -webkit-border-radius: 10px;
-         border-radius: 10px;
-         border: none;
-         color: #FFFFFF;
-         cursor: pointer;
+         height: 34px;
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: normal;
+         line-height: 1.42857143;
+         text-align: center;
+         white-space: nowrap;
+         vertical-align: middle;
          display: inline-block;
          font-family: Arial;
-         padding: 5px 10px;
+         padding: 6px 12px;
+         padding-left: 15px;
          text-align: center;
          text-decoration: none;
      }
@@ -346,4 +359,39 @@
          margin: 20px 20px;
          height: 600px;
          width: 600px;
+     }
+     
+     .fixed-panel {
+         height: auto;
+         width: auto;
+         overflow-y: hidden;
+     }
+     
+     .scroll-panel {
+         max-height: 100;
+         /*height: auto;*/
+         /*width: 800px;*/
+         overflow-y: scroll;
+     }
+     
+     .chapter-panel {
+         width: auto;
+     }
+     
+     .swalgreen {
+         color: green;
+         font-size: 16px;
+         text-align: left;
+         font-weight: bolder;
+     }
+     
+     .swalred {
+         color: red;
+         font-size: 16px;
+         text-align: left;
+         font-weight: bolder;
+     }
+     
+     .tblcontainer {
+         width: 80%;
      }

@@ -62,8 +62,10 @@ angular.module('ohanaApp')
         $scope.postUser = function() {
             var i;
 
-            console.log('SUCCESS');
-
+            //push to db kept breaking due to null value
+            if ($scope.newUserDirectory.address.line2 == null) {
+                $scope.newUserDirectory.address.line2 = '';
+            }
             console.log($scope.newUserDirectory);
             console.log('SUCCESS');
 
