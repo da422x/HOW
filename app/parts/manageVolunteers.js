@@ -218,8 +218,6 @@ angular.module('ohanaApp')
             })
         }
 
-        $scope.buildTable();
-
         $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
