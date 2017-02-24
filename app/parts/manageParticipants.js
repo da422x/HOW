@@ -121,7 +121,8 @@ angular.module('ohanaApp')
                 $scope.event.participants[val]["key"] = val;
                 dataSet.push($scope.event.participants[val]);
             }) : [];
-            //dataGridUtil.buildMembersTableData(results);
+            console.log('the dataset is ', dataSet)
+                //dataGridUtil.buildMembersTableData(results);
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 
