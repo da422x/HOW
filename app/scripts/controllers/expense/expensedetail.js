@@ -40,25 +40,25 @@ angular.module('ohanaApp')
 
         //check edit
         $scope.checkeditexist = function() {
-            $scope.editExpenseList = expenseservice.getEditStatusrec();
+                $scope.editExpenseList = expenseservice.getEditStatusrec();
 
-            var aedit = 0;
-            $scope.iseditexist = 'false';
-            $scope.editExpenseList.$loaded().then(function() {
-                angular.forEach($scope.editExpenseList, function(list) {
-                    // console.log("list ", list)
-                    if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
-                        aedit = aedit + 1;
-                        $scope.iseditexist = "true";
-                    }
-                    // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.iseditexist);
+                var aedit = 0;
+                $scope.iseditexist = 'false';
+                $scope.editExpenseList.$loaded().then(function() {
+                    angular.forEach($scope.editExpenseList, function(list) {
+                        // console.log("list ", list)
+                        if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
+                            aedit = aedit + 1;
+                            $scope.iseditexist = "true";
+                        }
+                        // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.iseditexist);
+                    });
                 });
-            });
 
-            // console.log("Edit exist", $scope.isEditexist);
-        }
-        //if EDIT exist, user can not recall expense to EDIT status - Only 1 Edit allowed per user
-        //Recall Expense button hidden
+                // console.log("Edit exist", $scope.isEditexist);
+            }
+            //if EDIT exist, user can not recall expense to EDIT status - Only 1 Edit allowed per user
+            //Recall Expense button hidden
         $scope.checkeditexist();
 
         // Initialize FORM field to clear old values in creating new expense.  
@@ -501,7 +501,7 @@ angular.module('ohanaApp')
             $scope.url = refspaedtServ.once("value").then(function(rootSnapshot) {
                 var lafoto = rootSnapshot.val().foto;
                 console.log("Inside image ", lafoto)
-                // var starsRef = firebase.storage().ref('fotos' + lafoto);
+                    // var starsRef = firebase.storage().ref('fotos' + lafoto);
                 var storageRef = firebase.storage().ref();
                 return storageRef.child(storageloc).getDownloadURL().then(function(url) {
                     // return starsRef.getDownloadURL().then(function(url) {
@@ -519,39 +519,39 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
-            var bill = $routeParams.BillId;
-            console.log('Data Delete Request SWAL ', $routeParams.BillId);
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function() {
-                expenseservice.deleteExpense(bill)
-                swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-                // window.location.href = "#/expense/viewexpense"
-                $location.path('/expense/viewexpense');
-
-            }, function(dismiss) {
-                // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-                if (dismiss === 'cancel') {
+                var bill = $routeParams.BillId;
+                console.log('Data Delete Request SWAL ', $routeParams.BillId);
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function() {
+                    expenseservice.deleteExpense(bill)
                     swal(
-                        'Cancelled',
-                        'Your expense is safe',
-                        'error'
-                    )
-                }
-            })
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                        // window.location.href = "#/expense/viewexpense"
+                    $location.path('/expense/viewexpense');
 
-        }
-        //-----Delete Expenses Created by the User ---END----------//
+                }, function(dismiss) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'Your expense is safe',
+                            'error'
+                        )
+                    }
+                })
+
+            }
+            //-----Delete Expenses Created by the User ---END----------//
 
         $scope.setexpensedata = function(updatetype) {
             var self = this;

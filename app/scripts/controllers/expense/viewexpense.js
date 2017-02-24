@@ -94,20 +94,20 @@ angular.module('ohanaApp')
         //Filter the list on expense in EDIT status
         $scope.Showmeedit = function(BillId) {
 
-            // switch ($scope.userRole) {
-            //     case 'Volunteer':
-            //     case 'Participant':
-            //     case 'Chapter Lead':
-            // window.location = "#/expense/expensedetail/" + BillId;
-            $location.path('/expense/expensedetail/' + BillId);
-            //     break;
-            // default:
-            //     $scope.PayStatus = $scope.paystatuslist[1];
-            //     $scope.ExpenseSearch("edit");
-            //     break;
-            // }
-        }
-        //---select
+                // switch ($scope.userRole) {
+                //     case 'Volunteer':
+                //     case 'Participant':
+                //     case 'Chapter Lead':
+                // window.location = "#/expense/expensedetail/" + BillId;
+                $location.path('/expense/expensedetail/' + BillId);
+                //     break;
+                // default:
+                //     $scope.PayStatus = $scope.paystatuslist[1];
+                //     $scope.ExpenseSearch("edit");
+                //     break;
+                // }
+            }
+            //---select
         $scope.selectedRow = null; // initialize our variable to null
         $scope.setClickedRow = function(index) { //function that sets the value of selectedRow to current index
             $scope.selectedRow = index;

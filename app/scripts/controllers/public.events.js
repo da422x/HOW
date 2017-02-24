@@ -155,81 +155,81 @@ angular.module('ohanaApp')
         };
 
         $scope.addVolunteer = function(key) {
-            //email = email.trim();
-            var email = $scope.userService.getUserData()["email"];
-            //check to see if the volunteer is a user at all. 
-            commonServices.getUserByEmail(email)
-                .then(function(data) {
-                    if (data) {
-                        var temp_key;
-                        _.each(data, function(val, idx) {
-                            temp_key = idx;
-                            data[idx]["key"] = idx;
-                        });
+                //email = email.trim();
+                var email = $scope.userService.getUserData()["email"];
+                //check to see if the volunteer is a user at all. 
+                commonServices.getUserByEmail(email)
+                    .then(function(data) {
+                        if (data) {
+                            var temp_key;
+                            _.each(data, function(val, idx) {
+                                temp_key = idx;
+                                data[idx]["key"] = idx;
+                            });
 
-                        commonServices.getData('userRoles/' + temp_key)
-                            .then(function(role) {
-                                if (role["role"] !== "Participant") {
-                                    //check to see if the volunteer exists per this event
-                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
-                                        .then(function(vol) {
-                                            console.log(vol);
-                                            if (!vol) {
-                                                commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                                            } else {
-                                                swal(
-                                                    'Oops...',
-                                                    "That volunteer has already been added",
-                                                    'error'
-                                                );
-                                            }
+                            commonServices.getData('userRoles/' + temp_key)
+                                .then(function(role) {
+                                    if (role["role"] !== "Participant") {
+                                        //check to see if the volunteer exists per this event
+                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                            .then(function(vol) {
+                                                console.log(vol);
+                                                if (!vol) {
+                                                    commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                } else {
+                                                    swal(
+                                                        'Oops...',
+                                                        "That volunteer has already been added",
+                                                        'error'
+                                                    );
+                                                }
 
-                                        })
-                                } else {
-                                    swal(
-                                        'Oops...',
-                                        "User not authorized to be added as a volunteer.",
-                                        'error'
-                                    );
-                                }
+                                            })
+                                    } else {
+                                        swal(
+                                            'Oops...',
+                                            "User not authorized to be added as a volunteer.",
+                                            'error'
+                                        );
+                                    }
 
-                            })
+                                })
 
-                    } else {
+                        } else {
+                            swal(
+                                'Oops...',
+                                "That user doesn\'t exists",
+                                'error'
+                            );
+                        }
+
+                    }, function(err) {
                         swal(
                             'Oops...',
-                            "That user doesn\'t exists",
+                            "Unknown Error",
                             'error'
                         );
-                    }
-
-                }, function(err) {
-                    swal(
-                        'Oops...',
-                        "Unknown Error",
-                        'error'
-                    );
-                });
+                    });
 
 
-        }
-        // Api.events.query().$promise.then(
-        // 	function (response) { // on success
-        // 		$scope.eventList = response;
-        // 		if (response.length === 0) {
-        // 			swal({
-        // 				text: "No events exist.",
-        // 				type: 'warning',
-        // 				timer: 2500
-        // 			});
-        // 		}
-        // 		
-        // 	},
-        // 	function (response) { // on error
-        // 		swal({
-        // 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
-        // 			type: 'warning',
-        // 			timer: 2500
-        // 		});
-        // 	});
+            }
+            // Api.events.query().$promise.then(
+            // 	function (response) { // on success
+            // 		$scope.eventList = response;
+            // 		if (response.length === 0) {
+            // 			swal({
+            // 				text: "No events exist.",
+            // 				type: 'warning',
+            // 				timer: 2500
+            // 			});
+            // 		}
+            // 		
+            // 	},
+            // 	function (response) { // on error
+            // 		swal({
+            // 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
+            // 			type: 'warning',
+            // 			timer: 2500
+            // 		});
+            // 	});
     });

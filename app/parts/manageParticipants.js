@@ -22,9 +22,81 @@ angular.module('ohanaApp')
             phone: ""
         }
 
-        $scope.addParticipant = function() {
-            commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
-            $scope.reloadData();
+        // $scope.addParticipant = function() {
+        //     commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
+        //     $scope.reloadData();
+        // }
+
+        $scope.addParticipant = function(email, key) {
+            email = email.trim();
+            //check to see if the participant is a user at all. 
+            commonServices.getUserByEmail(email)
+                .then(function(data) {
+                    if (data) {
+                        var temp_key;
+                        _.each(data, function(val, idx) {
+                            temp_key = idx;
+                            data[idx]["key"] = idx;
+                        });
+
+                        // commonServices.getData('userRoles/' + temp_key)
+                        //     .then(function(role) {
+                        // if (role["role"] !== "Participant") {
+                        //check to see if the volunteer exists per this event
+                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                            .then(function(vol) {
+                                console.log(vol);
+                                if (!vol) {
+                                    commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
+                                    $scope.reloadData();
+                                } else {
+                                    swal(
+                                        'Oops...',
+                                        "That participant has already been added",
+                                        'error'
+                                    );
+                                }
+
+                            })
+                            // } else {
+                            //     swal(
+                            //         'Oops...',
+                            //         "User not authorized to be added as a volunteer.",
+                            //         'error'
+                            //     );
+                            // }
+
+                        //})
+
+                    } else {
+                        if ($scope.new_row.first && $scope.new_row.last && $scope.new_row.email && $scope.new_row.phone) {
+                            commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
+                            swal(
+                                'Success',
+                                "The guest has been added successfully!",
+                                'success'
+                            );
+                        } else {
+                            swal(
+                                'Oops...',
+                                "First name, Last name, email, and phone is required to register a guest",
+                                'error'
+                            );
+                        }
+
+                        $scope.reloadData();
+                    }
+
+                }, function(err) {
+                    swal(
+                        'Oops...',
+                        "Unknown Error",
+                        'error'
+                    );
+                    $scope.reloadData();
+                });
+
+
         }
         $scope.reloadData = function() {
             commonServices.getData('/events/' + $scope.event.key + '/participants')
