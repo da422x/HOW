@@ -13,7 +13,9 @@ angular.module('ohanaApp')
         'use strict';
         $scope.newQuery = {};
         $scope.userService = userService;
-        //var allEvents = [];
+        // $scope.volunteerIsDisabled = false;
+        $scope.allVolunteerIsDisableds = [];
+        $scope.allParticipantIsDisableds = [];
 
 
 
@@ -25,6 +27,16 @@ angular.module('ohanaApp')
                     // _.each(data[0], function(event) {
                     //     allEvents.push(event);
                     // });
+                    var count = 0;
+                    _.each(data[0], function(val, idx) {
+                        $scope.allVolunteerIsDisableds.push({
+                            key: idx,
+                            isDisabled: false
+                        });
+                        $scope.checkAllVolunteerIsDisableds(idx, count);
+                        $scope.checkAllParticipantIsDisableds(idx, count);
+                        count++;
+                    });
                     console.log(data[0])
                     $scope.eventList = data[0];
                 } else {
@@ -34,6 +46,42 @@ angular.module('ohanaApp')
         };
 
         loadAll();
+
+        $scope.checkAllVolunteerIsDisableds = function(key, idx) {
+
+            commonServices.getUserByEmailAtPath($scope.userService.getUserData()["email"], '/events/' + key + '/volunteers')
+                .then(function(vol) {
+                    if (vol) {
+                        $scope.allVolunteerIsDisableds.some(function(val, i) {
+
+                            if (val["key"] == key) {
+                                console.log($scope.allVolunteerIsDisableds, val, key, i, idx);
+                                $scope.allVolunteerIsDisableds[idx]["isDisabled"] = true;
+                                $scope.$apply();
+                                return true;
+                            }
+                        })
+                    }
+                });
+        }
+
+        $scope.checkAllParticipantIsDisableds = function(key, idx) {
+
+            commonServices.getUserByEmailAtPath($scope.userService.getUserData()["email"], '/events/' + key + '/participants')
+                .then(function(vol) {
+                    if (vol) {
+                        $scope.allParticipantIsDisableds.some(function(val, i) {
+
+                            if (val["key"] == key) {
+                                console.log($scope.allParticipantIsDisableds, val, key, i, idx);
+                                $scope.allParticipantIsDisableds[idx]["isDisabled"] = true;
+                                $scope.$apply();
+                                return true;
+                            }
+                        })
+                    }
+                });
+        }
 
         $scope.search = function() {
             if ($scope.eventList.length > 0) {
