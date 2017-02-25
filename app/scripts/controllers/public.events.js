@@ -33,6 +33,10 @@ angular.module('ohanaApp')
                             key: idx,
                             isDisabled: false
                         });
+                        $scope.allParticipantIsDisableds.push({
+                            key: idx,
+                            isDisabled: false
+                        });
                         $scope.checkAllVolunteerIsDisableds(idx, count);
                         $scope.checkAllParticipantIsDisableds(idx, count);
                         count++;
@@ -55,7 +59,6 @@ angular.module('ohanaApp')
                         $scope.allVolunteerIsDisableds.some(function(val, i) {
 
                             if (val["key"] == key) {
-                                console.log($scope.allVolunteerIsDisableds, val, key, i, idx);
                                 $scope.allVolunteerIsDisableds[idx]["isDisabled"] = true;
                                 $scope.$apply();
                                 return true;
@@ -71,9 +74,7 @@ angular.module('ohanaApp')
                 .then(function(vol) {
                     if (vol) {
                         $scope.allParticipantIsDisableds.some(function(val, i) {
-
                             if (val["key"] == key) {
-                                console.log($scope.allParticipantIsDisableds, val, key, i, idx);
                                 $scope.allParticipantIsDisableds[idx]["isDisabled"] = true;
                                 $scope.$apply();
                                 return true;
@@ -155,6 +156,67 @@ angular.module('ohanaApp')
         };
 
         $scope.addVolunteer = function(key) {
+            //email = email.trim();
+            var email = $scope.userService.getUserData()["email"];
+            //check to see if the volunteer is a user at all. 
+            commonServices.getUserByEmail(email)
+                .then(function(data) {
+                    if (data) {
+                        var temp_key;
+                        _.each(data, function(val, idx) {
+                            temp_key = idx;
+                            data[idx]["key"] = idx;
+                        });
+
+                        commonServices.getData('userRoles/' + temp_key)
+                            .then(function(role) {
+                                if (role["role"] !== "Participant") {
+                                    //check to see if the volunteer exists per this event
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                        .then(function(vol) {
+                                            console.log(vol);
+                                            if (!vol) {
+                                                commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                $scope.$apply();
+                                            } else {
+                                                swal(
+                                                    'Oops...',
+                                                    "That volunteer has already been added",
+                                                    'error'
+                                                );
+                                            }
+
+                                        })
+                                } else {
+                                    swal(
+                                        'Oops...',
+                                        "User not authorized to be added as a volunteer.",
+                                        'error'
+                                    );
+                                }
+
+                            })
+
+                    } else {
+                        swal(
+                            'Oops...',
+                            "That user doesn\'t exists",
+                            'error'
+                        );
+                    }
+
+                }, function(err) {
+                    swal(
+                        'Oops...',
+                        "Unknown Error",
+                        'error'
+                    );
+                });
+
+
+        }
+
+        $scope.addParticipant = function(key) {
                 //email = email.trim();
                 var email = $scope.userService.getUserData()["email"];
                 //check to see if the volunteer is a user at all. 
@@ -169,29 +231,30 @@ angular.module('ohanaApp')
 
                             commonServices.getData('userRoles/' + temp_key)
                                 .then(function(role) {
-                                    if (role["role"] !== "Participant") {
-                                        //check to see if the volunteer exists per this event
-                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
-                                            .then(function(vol) {
-                                                console.log(vol);
-                                                if (!vol) {
-                                                    commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                                                } else {
-                                                    swal(
-                                                        'Oops...',
-                                                        "That volunteer has already been added",
-                                                        'error'
-                                                    );
-                                                }
+                                    // if (role["role"] !== "Participant") {
+                                    //check to see if the volunteer exists per this event
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                        .then(function(vol) {
+                                            console.log(vol);
+                                            if (!vol) {
+                                                commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
+                                                $scope.$apply();
+                                            } else {
+                                                swal(
+                                                    'Oops...',
+                                                    "That participant has already been added",
+                                                    'error'
+                                                );
+                                            }
 
-                                            })
-                                    } else {
-                                        swal(
-                                            'Oops...',
-                                            "User not authorized to be added as a volunteer.",
-                                            'error'
-                                        );
-                                    }
+                                        })
+                                        // } else {
+                                        //     swal(
+                                        //         'Oops...',
+                                        //         "User not authorized to be added as a volunteer.",
+                                        //         'error'
+                                        //     );
+                                        // }
 
                                 })
 

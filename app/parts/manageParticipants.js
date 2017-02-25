@@ -28,6 +28,13 @@ angular.module('ohanaApp')
         // }
 
         $scope.addParticipant = function(email, key) {
+            if (!email) {
+                swal(
+                    'Oops...',
+                    "The email field is required.",
+                    'error'
+                );
+            }
             email = email.trim();
             //check to see if the participant is a user at all. 
             commonServices.getUserByEmail(email)
@@ -45,7 +52,7 @@ angular.module('ohanaApp')
                         //check to see if the volunteer exists per this event
                         commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
                             .then(function(vol) {
-                                console.log(vol);
+                                // console.log(vol);
                                 if (!vol) {
                                     commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
                                     $scope.reloadData();
@@ -55,6 +62,7 @@ angular.module('ohanaApp')
                                         "That participant has already been added",
                                         'error'
                                     );
+                                    $scope.reloadData();
                                 }
 
                             })
@@ -69,20 +77,38 @@ angular.module('ohanaApp')
                         //})
 
                     } else {
-                        if ($scope.new_row.first && $scope.new_row.last && $scope.new_row.email && $scope.new_row.phone) {
-                            commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
-                            swal(
-                                'Success',
-                                "The guest has been added successfully!",
-                                'success'
-                            );
-                        } else {
-                            swal(
-                                'Oops...',
-                                "First name, Last name, email, and phone is required to register a guest",
-                                'error'
-                            );
-                        }
+                        //query for this event 
+                        //if true, then say the guest has already been added
+                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                            .then(function(vol) {
+                                console.log(vol);
+                                if (!vol) {
+                                    //if false, check if all the fields have been filled out.
+                                    if ($scope.new_row.first && $scope.new_row.last && $scope.new_row.email && $scope.new_row.phone) {
+                                        commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
+                                        swal(
+                                            'Success',
+                                            "The guest has been added successfully!",
+                                            'success'
+                                        );
+                                        $scope.reloadData();
+                                    } else {
+                                        swal(
+                                            'Oops...',
+                                            "First name, Last name, email, and phone is required to register a guest",
+                                            'error'
+                                        );
+                                        $scope.reloadData();
+                                    }
+                                } else {
+                                    swal(
+                                        'Oops...',
+                                        "That guest has already been added",
+                                        'error'
+                                    );
+                                    $scope.reloadData();
+                                }
+                            });
 
                         $scope.reloadData();
                     }
