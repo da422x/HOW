@@ -261,7 +261,7 @@ angular.module('ohanaApp')
 
                 $scope.PayStatusCountData = outputstat;
                 $scope.ExpensebyStatusData = outputexp;
-                // console.log("Array1 ", $scope.ExpensebyStatusData, $scope.PayStatusCountData);
+                console.log("Array1 ", $scope.ExpensebyStatusData, $scope.PayStatusCountData);
 
                 angular.forEach($scope.dashlist, function(list) {
 
@@ -443,6 +443,11 @@ angular.module('ohanaApp')
                     }
                 });
 
+                // console.log("table - ", $scope.PayStatusCountData);
+                if ($scope.PayStatusCountData !== undefined) {
+
+                    $scope.buildChapterStatusData();
+                }
                 $scope.buildExpenseData();
                 // console.log("Dash List expense ", $scope.ExpensebyStatusData);
 
@@ -941,10 +946,6 @@ angular.module('ohanaApp')
                 });
                 // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
 
-                if ($scope.PayStatusCountData !== undefined) {
-
-                    $scope.buildChapterStatusData();
-                }
                 var daysforoverage = 0;
                 $scope.TotalExpenseCount = apending + aedit + asubmitted + areturned + aresubmit + apaid + aoverage;
                 if (apending > 0) {
