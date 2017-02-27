@@ -97,9 +97,9 @@ angular.module('ohanaApp')
                 $scope.selectedpaystatus.push(paystatus);
             }
             $scope.getExpensebyStatus();
-            // console.log("Expense ", $scope.ExpensebyStatusData);
+
         };
-        // console.log("check box", $scope.selectedpaystatus);
+
 
         // -----
         //Over Age Expense Config settings
@@ -117,7 +117,8 @@ angular.module('ohanaApp')
                                 $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
                             }
                         }
-                        console.log("OverageDays includes", $scope.expenseconfig, $scope.OverAgeDays);
+                        // console.log("OverageDays includes", $scope.expenseconfig, $scope.OverAgeDays);
+                        $scope.getOverAgeData(); //Get Past due-Over Age data
                     }
                 });
 
@@ -125,7 +126,7 @@ angular.module('ohanaApp')
 
 
 
-        $scope.viewchapter = function() {
+        $scope.getOverAgeData = function() {
             $scope.PayStatusCountData = [];
             $scope.PayStatusCountData.length = 0;
 
@@ -162,7 +163,7 @@ angular.module('ohanaApp')
                             if (pastdue > $scope.OverAgeDays) {
                                 $scope.daysforoverage = pastdue - $scope.OverAgeDays;
                             }
-                            // console.log("pastdd", pastdue, $scope.daysforoverage);
+                            // console.log("pastdd", pastdue, $scope.daysforoverage, $scope.OverAgeDays);
 
                             $scope.editstatus.push({
                                 "OverAge": $scope.daysforoverage,
@@ -191,10 +192,6 @@ angular.module('ohanaApp')
 
 
         }
-
-
-
-        // $scope.viewchapter();
 
         //
         $scope.getExpensebyStatus = function() {
@@ -264,7 +261,7 @@ angular.module('ohanaApp')
 
                 $scope.PayStatusCountData = outputstat;
                 $scope.ExpensebyStatusData = outputexp;
-                console.log("Array1 ", $scope.ExpensebyStatusData, $scope.PayStatusCountData);
+                // console.log("Array1 ", $scope.ExpensebyStatusData, $scope.PayStatusCountData);
 
                 angular.forEach($scope.dashlist, function(list) {
 
@@ -408,7 +405,7 @@ angular.module('ohanaApp')
 
                     //Status count
                     for (var i = 0; i < $scope.PayStatusCountData.length; i++) {
-                        console.log($scope.PayStatusCountData.length, list.PaymentStatus, $scope.PayStatusCountData[i].Chapter, list.Chapter);
+                        // console.log($scope.PayStatusCountData.length, list.PaymentStatus, $scope.PayStatusCountData[i].Chapter, list.Chapter);
                         if ($scope.PayStatusCountData[i].Chapter === list.Chapter) {
                             switch (list.PaymentStatus) {
                                 case 'Edit':
@@ -478,13 +475,8 @@ angular.module('ohanaApp')
             $scope.useremail = commonServices.getCurrentUserEmail();
             $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
 
-            // $scope.viewchapter();
-            // $scope.$apply(function() {});
-
             $scope.expensedash = [];
             $scope.expensedash.length = 0;
-            // $scope.editstatus = [];
-            // $scope.editstatus.length = 0;
             $scope.pielabels = [];
             $scope.pielabels.length = 0;
             $scope.piedata = [];
@@ -551,64 +543,15 @@ angular.module('ohanaApp')
             // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
             $scope.dashlist.$loaded().then(function() {
 
-                $scope.viewchapter(); //Create Chapter list data
-                $scope.checkedOverageDays(); //Get Over Age Days
-                $scope.getExpensebyStatus();
 
+                $scope.checkedOverageDays(); //Get Over Age Days 
+                $scope.getExpensebyStatus();
 
                 // console.log("Expense ", $scope.PayStatusCountData, $scope.ExpensebyStatusData, $scope.dashlist);
                 angular.forEach($scope.dashlist, function(list) {
                     getmonthstr = list.eventdate.split("/");
                     getmonthname = '';
                     getmonthname = months[parseInt(getmonthstr[0], 10)];
-
-                    // $scope.checkedOverageDays(); //Get Over Age Days
-                    // $scope.viewchapter(); //Create Chapter list data
-                    // $scope.getExpensebyStatus();
-                    // $timeout(function() {
-                    // console.log("Expense ", $scope.PayStatusCountData, $scope.ExpensebyStatusData, $scope.dashlist);
-                    // // console.log($scope.PayStatusCountData.length, list.PaymentStatus, list.Chapter);
-                    // // }, 0);
-                    // // Pay Status Count
-                    // console.log("What", $scope.PayStatusCountData.length, list.PaymentStatus, list.Chapter);
-
-                    // for (var i = 0; i < $scope.PayStatusCountData.length; i++) {
-                    //     console.log($scope.PayStatusCountData.length, list.PaymentStatus, $scope.PayStatusCountData[i].Chapter, list.Chapter);
-                    //     if ($scope.PayStatusCountData[i].Chapter === list.Chapter) {
-                    //         switch (list.PaymentStatus) {
-                    //             case 'Edit':
-                    //                 $scope.PayStatusCountData[i].Edit = $scope.PayStatusCountData[i].Edit + 1;
-                    //                 $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
-                    //                 break;
-                    //             case 'Pending':
-                    //                 $scope.PayStatusCountData[i].Pending = $scope.PayStatusCountData[i].Pending + 1;
-                    //                 $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
-                    //                 break;
-                    //             case 'Resubmit':
-                    //                 $scope.PayStatusCountData[i].Resubmit = $scope.PayStatusCountData[i].Resubmit + 1;
-                    //                 $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
-                    //                 break;
-                    //             case 'Submitted':
-                    //                 $scope.PayStatusCountData[i].Submitted = $scope.PayStatusCountData[i].Submitted + 1;
-                    //                 $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
-                    //                 break;
-                    //             case 'Returned':
-                    //                 $scope.PayStatusCountData[i].Returned = $scope.PayStatusCountData[i].Returned + 1;
-                    //                 $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
-                    //                 break;
-                    //             case 'Paid':
-                    //                 $scope.PayStatusCountData[i].Paid = $scope.PayStatusCountData[i].Paid + 1;
-                    //                 $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
-                    //                 break;
-                    //             case 'Over Age':
-                    //                 $scope.PayStatusCountData[i].OverAge = $scope.PayStatusCountData[i].OverAge + 1;
-                    //                 $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
-                    //                 break;
-                    //         }
-
-
-                    //     }
-                    // }
 
                     switch (list.PaymentStatus) {
                         case 'Paid':
@@ -669,45 +612,6 @@ angular.module('ohanaApp')
                         case 'Edit':
                             aedit = aedit + 1;
                             editbillid = list.BillId;
-
-                            // // pastdue = expenseservice.getPastDue(list.eventdate);
-                            // var currentdate = new Date();
-                            // var mdyy = list.eventdate.toString().split('/');
-                            // var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
-                            // pastdue = 0;
-                            // pastdue = Math.round((currentdate.setHours(0, 0, 0, 0) - Date.parse(receivedDate)));
-                            // // / (1000 * 60 * 60 * 24));
-                            // if (pastdue < $scope.OverAgeDays) {
-                            //     $scope.daysforoverage = $scope.OverAgeDays - pastdue; //60 -
-                            // }
-                            // if (pastdue = $scope.OverAgeDays) {
-                            //     $scope.daysforoverage = 0; //60 -
-                            // }
-                            // if (pastdue > $scope.OverAgeDays) {
-                            //     $scope.daysforoverage = pastdue - $scope.OverAgeDays;
-                            // }
-
-                            // $scope.editstatus.push({
-                            //     "OverAge": $scope.daysforoverage,
-                            //     "BillId": editbillid,
-                            //     "EmailID": list.email //$scope.useremail
-
-                            // });
-                            // console.log("past 0 ", currentdate.setHours(0, 0, 0, 0), Date.parse(receivedDate));
-                            // console.log("past", pastdue, mdyy, receivedDate, list.eventdate, $scope.OverAgeDays, $scope.daysforoverage, $scope.editstatus);
-
-                            // // console.log("Get Edit Data", $scope.daysforoverage, pastdue, $scope.OverAgeDays);
-                            // if ($scope.useremail == list.email) {
-                            //     if ($scope.daysforoverage > 0) {
-                            //         swal('Expense waiting for submission! Over Age in ' + $scope.daysforoverage + ' days', '', '');
-                            //     } else if ($scope.daysforoverage == 0) {
-                            //         swal('Expense waiting for submission! Over Age TODAY', '', '');
-
-                            //     } else {
-                            //         swal('Expense waiting for submission! Over Aged', '', '');
-                            //     }
-                            // }
-
 
                             if ($scope.labels1[0] == getmonthname) {
                                 arredit[0] = arredit[0] + 1;
@@ -812,7 +716,7 @@ angular.module('ohanaApp')
 
                             }
 
-                            // console.log("overage - ", list.Amount, arroverage, arroverageamt);
+                            // console. log("overage - ", list.Amount, arroverage, arroverageamt);
                             break;
                         case 'Pending':
                             apending = apending + 1;
@@ -1038,7 +942,7 @@ angular.module('ohanaApp')
                 // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
 
                 if ($scope.PayStatusCountData !== undefined) {
-                    console.log("Dash -ov ew", $scope.PayStatusCountData);
+
                     $scope.buildChapterStatusData();
                 }
                 var daysforoverage = 0;
@@ -1064,32 +968,6 @@ angular.module('ohanaApp')
                     $scope.data1.push(arredit);
                     $scope.data2.push(arreditamt);
 
-                    // if (pastdue < $scope.OverAgeDays) {
-                    //     $scope.daysforoverage = $scope.OverAgeDays - pastdue; //60 -
-                    // }
-                    // if (pastdue = $scope.OverAgeDays) {
-                    //     $scope.daysforoverage = 0; //60 -
-                    // }
-                    // if (pastdue > $scope.OverAgeDays) {
-                    //     $scope.daysforoverage = pastdue - $scope.OverAgeDays;
-                    // }
-
-                    // $scope.editstatus.push({
-                    //     "OverAge": $scope.daysforoverage,
-                    //     "BillId": editbillid,
-                    //     "EmailID": $scope.useremail
-                    // });
-
-                    // console.log("past", pastdue, $scope.OverAgeDays, $scope.daysforoverage, $scope.editstatus);
-                    // if (pastdue < 60) {
-                    //     daysforoverage = 60 - pastdue;
-                    // }
-                    // $scope.editstatus = [{
-                    //     "OverAge": daysforoverage,
-                    //     "BillId": editbillid,
-                    //     "EmailID": $scope.useremail
-
-                    // }];
                     $scope.expensedash.push({
                         "Label": "Edit",
                         "Data": aedit
@@ -1103,8 +981,6 @@ angular.module('ohanaApp')
                     $scope.series1.push("Submitted");
                     $scope.data1.push(arrsubmitted);
                     $scope.data2.push(arrsubmittedamt);
-                    // [asubmitted1, asubmitted2, asubmitted3, asubmitted4, asubmitted5, asubmitted6, asubmitted7, asubmitted8, asubmitted9, asubmitted10, asubmitted11, asubmitted12]);
-
                     $scope.expensedash.push({
                         "Label": "Submitted",
                         "Data": asubmitted
@@ -1118,7 +994,6 @@ angular.module('ohanaApp')
                     $scope.series1.push("Returned");
                     $scope.data1.push(arrreturned);
                     $scope.data2.push(arrreturnedamt);
-                    // [areturned1, areturned2, areturned3, areturned4, areturned5, areturned6, areturned7, areturned8, areturned9, areturned10, areturned11, areturned12]);
                     $scope.expensedash.push({
                         "Label": "Returned",
                         "Data": areturned
@@ -1133,7 +1008,6 @@ angular.module('ohanaApp')
                     $scope.series1.push("Resubmit");
                     $scope.data1.push(arrresubmit);
                     $scope.data2.push(arrresubmitamt);
-                    // [aresubmit1, aresubmit2, aresubmit3, aresubmit4, aresubmit5, aresubmit6, aresubmit7, aresubmit8, aresubmit9, aresubmit10, aresubmit11, aresubmit12]);
                     $scope.expensedash.push({
                         "Label": "Resubmit",
                         "Data": aresubmit
@@ -1147,7 +1021,6 @@ angular.module('ohanaApp')
                     $scope.pielabels.push("Paid");
                     $scope.piecolor.push("#08ff21");
                     $scope.series1.push("Paid");
-                    // $scope.data1.push([apaid1, apaid2, apaid3, apaid4, apaid5, apaid6, apaid7, apaid8, apaid9, apaid10, apaid11, apaid12]);
                     $scope.data1.push(arrpaid);
                     $scope.data2.push(arrpaidamt);
                     $scope.expensedash.push({
@@ -1164,7 +1037,6 @@ angular.module('ohanaApp')
                     $scope.series1.push("Over Age");
                     $scope.data1.push(arroverage);
                     $scope.data2.push(arroverageamt);
-                    // [aoverage1, aoverage2, aoverage3, aoverage4, aoverage5, aoverage6, aoverage7, aoverage8, aoverage9, aoverage10, aoverage11, aoverage12]);
                     $scope.expensedash.push({
                         "Label": "Over Age",
                         "Data": aoverage
@@ -1173,18 +1045,13 @@ angular.module('ohanaApp')
                 }
 
             });
-
-
-
-            // console.log("Dash -overview", $scope.data1, $scope.series1, $scope.piecolor, $scope.pielabels, $scope.piedata);
-            // if ($scope.expensedash !== undefined) { 
         }
 
         //Build Data Table for viewing expense
         $scope.buildChapterStatusData = function() {
 
-            // tabledata.$loaded(function(list) {
-            console.log("table - ", $scope.PayStatusCountData);
+
+            // console.log("table - ", $scope.PayStatusCountData);
             angular.element(document).ready(function() {
                 //toggle `popup` / `inline` mode
                 $.fn.editable.defaults.mode = 'popup';

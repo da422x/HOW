@@ -86,7 +86,7 @@ angular.module('ohanaApp')
                     'Description': "",
                     'Amount': 0
                 });
-                console.log($scope.LineDetails);
+                // console.log($scope.LineDetails);
             }
 
         };
@@ -120,7 +120,7 @@ angular.module('ohanaApp')
 
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
                     vTotalLineCost = vTotalLineCost + parseFloat($scope.LineDetails[x].Amount);
-                    console.log("line amount change", x, vTotalLineCost, $scope.LineDetails[x].Amount, parseFloat($scope.LineDetails[x].Amount));
+                    // console.log("line amount change", x, vTotalLineCost, $scope.LineDetails[x].Amount, parseFloat($scope.LineDetails[x].Amount));
 
                 }
             }
@@ -225,7 +225,7 @@ angular.module('ohanaApp')
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key image ", snap.key);
+                // console.log("key image ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(expenseupdate);
                 // swal('Expense Updated Successfully!', '', 'success');
             });
@@ -254,7 +254,7 @@ angular.module('ohanaApp')
             $scope.expense.$loaded().then(function() {
                 angular.forEach($scope.expense, function(item) {
 
-                    console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
+                    // console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
                     var img = document.createElement('img');
                     var storage = firebase.storage();
                     var storageRef = firebase.storage().ref();
@@ -397,7 +397,7 @@ angular.module('ohanaApp')
                             break;
 
                     }
-                    console.log(" status check - ", $scope.useremail, $scope.expenseemail, item.PaymentStatus);
+                    // console.log(" status check - ", $scope.useremail, $scope.expenseemail, item.PaymentStatus);
 
                     var storageRefPic = '';
                     $scope.vimageurl = item.ImageURL;
@@ -500,12 +500,12 @@ angular.module('ohanaApp')
             $scope.spaedServ = $firebaseObject(refspaedtServ);
             $scope.url = refspaedtServ.once("value").then(function(rootSnapshot) {
                 var lafoto = rootSnapshot.val().foto;
-                console.log("Inside image ", lafoto)
+                // console.log("Inside image ", lafoto)
                 // var starsRef = firebase.storage().ref('fotos' + lafoto);
                 var storageRef = firebase.storage().ref();
                 return storageRef.child(storageloc).getDownloadURL().then(function(url) {
                     // return starsRef.getDownloadURL().then(function(url) {
-                    console.log("la url ", url);
+                    // console.log("la url ", url);
                     $scope.returnurl = url;
                     return url;
                 }).catch(function(error) {
@@ -519,6 +519,7 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
+            var bill = $routeParams.BillId;
             var bill = $routeParams.BillId;
             console.log('Data Delete Request SWAL ', $routeParams.BillId);
             swal({
@@ -551,7 +552,9 @@ angular.module('ohanaApp')
             })
 
         }
+
         //-----Delete Expenses Created by the User ---END----------//
+
 
         $scope.setexpensedata = function(updatetype) {
             var self = this;
@@ -625,7 +628,7 @@ angular.module('ohanaApp')
                 }
             }
 
-            console.log("eee1", $scope.PayStatusLogList);
+            // console.log("eee1", $scope.PayStatusLogList);
             //Code added to remove $$HashKey in the array
             for (var x = 0; x < $scope.PayStatusLogList.length; x++) {
                 if ($scope.PayStatusLogList[x] != null) {
@@ -658,7 +661,7 @@ angular.module('ohanaApp')
                 ImageURL: []
             };
 
-            console.log(expenseupdate, $scope.vimageurl);
+            // console.log(expenseupdate, $scope.vimageurl);
 
             var oldimagecount = 0;
 
@@ -685,7 +688,7 @@ angular.module('ohanaApp')
 
             }
             expenseupdate.ImageURL = $scope.vimageurl;
-            console.log(expenseupdate, $scope.vimageurl);
+            // console.log(expenseupdate, $scope.vimageurl);
 
             var imagefilename = "";
 
@@ -695,7 +698,7 @@ angular.module('ohanaApp')
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
 
                     lineamount = parseFloat(lineamount) + parseFloat($scope.LineDetails[x].Amount);
-                    console.log("Update-", x, expenseupdate.Line, $scope.LineDetails, lineamount, totalamt);
+                    // console.log("Update-", x, expenseupdate.Line, $scope.LineDetails, lineamount, totalamt);
 
                     expenseupdate.Line.push({
                         "ID": i,
@@ -716,19 +719,19 @@ angular.module('ohanaApp')
             var imageurl = '';
             if ($scope.uploader.queue.length > 0) {
                 imageurl = expenseservice.SaveImageData($routeParams.BillId, $scope.uploader.queue);
-                console.log("save image - ", imageurl);
+                // console.log("save image - ", imageurl);
             }
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key ", snap.key);
+                // console.log("key ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(expenseupdate);
                 // alert("Expense Successfully Updated ");
 
 
 
             });
-            console.log("eee3");
+            // console.log("eee3");
         }
 
         //Update Expense - SAVE  and SUBMIT - Parameter value 'update' or 'submit'        
@@ -785,7 +788,7 @@ angular.module('ohanaApp')
                             supportinfo + documentcount + '</b></td> </tr> ' +
                             amountinfo + totalamt + '</b></td></tr></table>',
                     })
-                    console.log("eee0")
+                    // console.log("eee0")
                 } else {
                     swal({
                         title: 'Confirm New Expense',
@@ -865,6 +868,9 @@ angular.module('ohanaApp')
 
 
         }
+
+
+
 
         $scope.UpdatePaymentStatus = function(billid, paymentstat, statreason) {
 

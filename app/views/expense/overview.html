@@ -10,13 +10,6 @@
                 <div class="btnalignmore form-group row" ng-repeat="dash in editstatus ">
                     <a class="blinkinfo   btn-danger      " ng-show="useremail == dash.EmailID" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
                 </div>
-                <!--      <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1 && useremail != editstatus.EmailID" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a>
-                </div> -->
-                <!-- <div class="form-group row btnalignmore " ng-repeat="dash in editstatus " ng-show="useremail == editstatus.EmailID">
-                    <a class="blinkinfo   btn-danger  btn      " ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
-                      <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a> -->
-                <!-- </div> -->
-                <!-- <div class="form-group row  " ng-show="useremail == editstatus.EmailID"> -->
                 <a class="blinkinfo   btn-danger  btn  btnalignmore   " ng-show="resubmitcnt > 0" ng-click="Showresubmit()">Re-Submit - {{resubmitcnt}}</a>
                 <!-- </div> -->
             </div>

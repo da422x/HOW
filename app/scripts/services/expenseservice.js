@@ -278,7 +278,7 @@ angular.module('ohanaApp')
                 pastdue = (Date.parse(receivedDate) - Date.parse(currentdate) / (1000 * 60 * 60 * 24));
             }
 
-            console.log("due", pastdue, currentdate, receivedDate);
+            // console.log("due", pastdue, currentdate, receivedDate);
             return pastdue;
         }
 
@@ -424,19 +424,37 @@ angular.module('ohanaApp')
 
                         var filelocname = 'images/' + UniqueBillId + '_' + file.name;
 
+
+                        storageRef.child(filelocname).put(file).then(function(snapshot) {
+                            if (snapshot !== undefined) {
+
+
+
+                                return storageRef.child(filelocname).getDownloadURL()
+                                    .then(function(url) {
+                                        console.log("Image func - ", url);
+                                        return url;
+
+
+
+                                    })
+                                // console.log('Uploaded a blob or file!');
+                            }
+
+                        });
                         var storageRef = firebase.storage().ref(filelocname);
                         var uploadTask = storageRef.put(file);
                         uploadTask.on('state_changed', null, null, function() {
                             var downloadUrl = uploadTask.snapshot.downloadURL;
                             // userInfo[pic.name] = downloadUrl;
-                            imagefilerec.push({
-                                ID: (j + 1),
-                                ImageUrlLocation: downloadUrl,
-                                FileName: filelocname
-                            });
+                            imagefilerec
+                                .push({
+                                    ID: (j + 1),
+                                    ImageUrlLocation: downloadUrl,
+                                    FileName: filelocname
+                                });
                             console.log('Uploaded file!', imagefilerec);
                         })
-
                     }
                 }
             }

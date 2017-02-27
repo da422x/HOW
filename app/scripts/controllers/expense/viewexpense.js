@@ -106,7 +106,8 @@ angular.module('ohanaApp')
 
                             });
                         });
-                        // console.log("list out", $scope.useremail, $scope.iseditexist)
+                        // console.log
+                        ("list out", $scope.useremail, $scope.iseditexist)
                     }
 
                 });
@@ -119,7 +120,7 @@ angular.module('ohanaApp')
             $scope.iseditexist = 'false';
             $scope.editExpenseList.$loaded().then(function() {
                 angular.forEach($scope.editExpenseList, function(list) {
-                    console.log("list ", list)
+                    // console.log("list ", list)
 
                     if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
 
@@ -859,6 +860,100 @@ angular.module('ohanaApp')
                 }
 
             });
+
+
+            // console.log("Dash -222", $scope.editstatus, $scope.dashlist, $scope.piecolor, $scope.pielabels, $scope.piedata);
+            // if ($scope.expensedash !== undefined) { 
+        }
+
+
+        // var rptdata = [];
+        var currentdate = new Date();
+        var reportDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
+
+        var GetTableData;
+
+
+
+        //Get Report Data - Data fileterd based on Dropdown/Date value
+
+        var GetJsonData = function() {
+            var rptdata = [];
+            var useremail = commonServices.getCurrentUserEmail();
+            // $scope.userRole = $rootScope.userRole;
+            // $scope.userName = $rootScope.userName;
+            // $scope.userChapter = $rootScope.userChapter;
+            angular.forEach($scope.lists, function(value, index) {
+
+                for (var i = 0; i < value.length; i++) {
+                    // console.log("first list length", $scope.listS.length);
+                    //$scope.listS === value[i].Chapter || $scope.listS === "") &&
+
+                    // console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
+                    // console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
+                    // console.log("third check - ", $scope.userRole, value[i].email, useremail);
+
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
+
+                        rptdata.push(reportdata);
+                    }
+
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
+
+                        rptdata.push(reportdata);
+                    }
+
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        $scope.userRole == 'National Staff') {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
+
+                        rptdata.push(reportdata);
+                    }
+
+                    console.log("report", i, rptdata);
+                } //for loop 
+            }) //for each
+
+
+            return rptdata;
+
 
         }
 
