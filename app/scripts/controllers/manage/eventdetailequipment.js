@@ -28,12 +28,12 @@ angular.module('ohanaApp')
         };
 
         $scope.add = function() {
-                $scope.m = $uibModal.open({
-                    scope: $scope,
-                    templateUrl: '/parts/addInventoryToEvent.html',
-                    controller: 'EventaddinventoryCtrl'
-                });
-            } // end $scope.add
+            $scope.m = $uibModal.open({
+                scope: $scope,
+                templateUrl: '/parts/addInventoryToEvent.html',
+                controller: 'EventaddinventoryCtrl'
+            });
+        } // end $scope.add
 
         $scope.removed = function(item) {
             var itemNum = $scope.selectedInventory.indexOf(item);
