@@ -21,7 +21,7 @@ angular.module('ohanaApp')
         var uploader = $scope.uploader = new FileUploader({});
         //----Modal -- Payment Status Log  ---------//
         var $ctrl = this;
-        expenseservice.deleteExpense("oRa20172131228451485");
+
         $scope.openPaymentStatusLog = function() {
             $scope.$modalInstance = $uibModal.open({
                 scope: $scope,
@@ -462,13 +462,13 @@ angular.module('ohanaApp')
 
 
                     if (item.ImageURL) {
-                        console.log("Hello Image check", item.ImageURL, $scope.vImageList);
+                        // console.log("Hello Image check", item.ImageURL, $scope.vImageList);
                         $scope.vImageList = [];
                         var storageloc = '';
                         var urlinfo = '';
                         $scope.vImageList.length = 0;
                         for (var i = 0; i < item.ImageURL.length; i++) {
-                            console.log("Hello Image ", item.ImageURL[i].FileName, $scope.vImageList);
+                            // console.log("Hello Image ", item.ImageURL[i].FileName, $scope.vImageList);
 
                             storageloc = item.ImageURL[i].FileName;
 
@@ -559,14 +559,14 @@ angular.module('ohanaApp')
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             var currentdate = new Date();
             var StatusChangedDate = "";
+
             if (currentdate.getHours() > 12) {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
-
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + (currentdate.getHours() - 12)).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' PM';
             } else {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + currentdate.getHours()).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' AM';
 
-            };
-            console.log("eee11", $scope.PayStatusLogList);
+            }
+            // console.log("eee11", $scope.PayStatusLogList);
 
             //Re-Submit for Participant/Volunteer - so when they update - status changes to Pending
             //Returned for Chapter Lead - Only Payment Status update  not here
@@ -791,12 +791,12 @@ angular.module('ohanaApp')
                         title: 'Confirm New Expense',
                         text: "Created Expense will be reviewed!",
                         type: 'info',
-                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
-                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + this.dexedit.Description + '</td></tr> ' +
-                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + lineamount + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + totalamt + '</b></td></tr></table>',
+                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                            '<tr><td class="swaltdl ">Description : </td><td class="swalgreen "><b>' + this.dexedit.Description + '</td></tr> ' +
+                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swalgreen "><b>$ ' + Math.round((this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swalgreen "><b>$ ' + Math.round((this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swalgreen "><b>$ ' + Math.round((lineamount) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swalgreen "><b>$ ' + Math.round((totalamt) * 100) / 100 + '</b></td></tr></table>',
 
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -829,7 +829,7 @@ angular.module('ohanaApp')
             console.log('Recall Expense request for  ', $routeParams.BillId);
 
             if ($scope.iseditexist == 'true') {
-                swal('Recall not allowed! Only 1 Expense in EDIT status', '', 'info');
+                swal('Recall not allowed! You have 1 Expense in EDIT status', '', 'info');
             } else {
                 swal({
                     title: 'Are you sure?',
@@ -875,10 +875,9 @@ angular.module('ohanaApp')
             var StatusChangedDate = "";
 
             if (currentdate.getHours() > 12) {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
-
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + (currentdate.getHours() - 12)).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' PM';
             } else {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + currentdate.getHours()).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' AM';
 
             }
 
@@ -907,8 +906,8 @@ angular.module('ohanaApp')
             var query = firebase.database().ref('expense').orderByChild("BillId").equalTo(billid);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key ", snap.key, ePaymentLog);
-                //commonServices.updateData('expense/' + snap.key, ePaymentLog);
+                // console.log("key ", snap.key, ePaymentLog);
+                // commonServices.updateData('expense/' + snap.key, ePaymentLog);
                 // console.log(ePaymentLog);
                 firebase.database().ref('expense/' + snap.key).update(ePaymentLog);
 

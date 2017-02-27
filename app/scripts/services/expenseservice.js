@@ -12,6 +12,7 @@ angular.module('ohanaApp')
         this.expense = {
             BillId: "",
             Chapter: "",
+            Region: "",
             eventdate: "",
             email: "",
             SubmitDate: "",
@@ -205,7 +206,6 @@ angular.module('ohanaApp')
             }
 
             var viewExpenseList = $firebaseArray(ref);
-
             return viewExpenseList;
         }
 
@@ -266,9 +266,19 @@ angular.module('ohanaApp')
             var currentdate = new Date();
             var mdyy = eventdate.toString().split('/');
             var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
-            var pastdue = Math.round((currentdate.setHours(0, 0, 0, 0) - receivedDate) / (1000 * 60 * 60 * 24));
-            // console.log("Past Due result", pastdue);
-            //console.log("due", pastdue, currentdate, receivedDate);
+            // var pastdue = Math.round((currentdate.setHours(0, 0, 0, 0) - receivedDate) / (1000 * 60 * 60 * 24));
+            var pastdue = 0;
+            if (Date.parse(currentdate) == Date.parse(receivedDate)) {
+                pastdue = 0;
+            }
+            if (Date.parse(currentdate) > Date.parse(receivedDate)) {
+                pastdue = Math.round((Date.parse(currentdate) - Date.parse(receivedDate)) / (1000 * 60 * 60 * 24));
+            }
+            if (Date.parse(currentdate) < Date.parse(receivedDate)) {
+                pastdue = (Date.parse(receivedDate) - Date.parse(currentdate) / (1000 * 60 * 60 * 24));
+            }
+
+            console.log("due", pastdue, currentdate, receivedDate);
             return pastdue;
         }
 

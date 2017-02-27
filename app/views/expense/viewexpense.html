@@ -74,6 +74,9 @@
                         <a class="blinkinfo   btn-danger  btn      " ng-show="dash.OverAge > 0" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
                         <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a>
                     </div>
+                    <a class="swaltdr" title="Expense Configuration" ng-show="userRole=='National Staff'">
+                        <img src="/assets/images/expense/config.png" width="50" height="40" title="Go to Expense Configuration Page" ng-click="ExpenseConfig()" />
+                    </a>
                 </div>
             </div>
         </div>

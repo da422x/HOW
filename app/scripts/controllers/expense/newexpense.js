@@ -27,12 +27,48 @@ angular.module('ohanaApp')
         // $scope.handleFileSelect = handleFileSelect();
 
         $scope.exp.ImageURL = [];
-
         $scope.exp.Line[0].Quantity = 0; // this.exp.miles;
         $scope.exp.Line[0].Rate = 0.25;
         $scope.exp.Line[1].Quantity = 0; //this.exp.trailermiles;
         $scope.exp.Line[1].Rate = 0.4;
         $scope.exp.Line.length = 2;
+
+
+        // Getting Expense Configuration value
+        //Initial Config Load
+        $scope.expenseconfig = [];
+        $scope.expenseconfig.length = 0;
+
+        //Over Age Expense Config settings
+        $scope.checkedOverageDays = function() {
+            commonServices.getData('/Config/Expense')
+                .then(function(data) {
+                    if (data) {
+                        $scope.expenseconfig = data;
+                        for (var x = 0; x < $scope.expenseconfig.length; x++) {
+                            if (Date.parse(currentdate) >= Date.parse($scope.expenseconfig[x].startdate) && Date.parse(currentdate) <= Date.parse($scope.expenseconfig[x].enddate)) {
+                                $scope.exp.Line[0].Rate = $scope.expenseconfig[x].MileRate;
+                                $scope.exp.Line[1].Rate = $scope.expenseconfig[x].TrailerRate;
+                                $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
+                            }
+                        }
+                        $scope.$apply(function() {});
+                        console.log("Overage config ", $scope.OverAgeDays);
+
+                        var priorDate = new Date().setDate(currentdate.getDate() - $scope.OverAgeDays); //60 -
+                        $scope.dateOptions = {
+                            'year-format': "'yyyy'",
+                            'starting-day': 1,
+                            minDate: priorDate,
+                            maxDate: new Date()
+
+                        };
+
+                    }
+                });
+        }
+
+        $scope.checkedOverageDays();
 
         //---FILE UPLOADER ---START ---------
 
@@ -148,7 +184,12 @@ angular.module('ohanaApp')
 
         //------------UI Bootstrap Date -----START--------------//
         var currentdate = new Date();
-        var priorDate = new Date().setDate(currentdate.getDate() - 60);
+        var priorDate = new Date();
+
+        if ($scope.OverAgeDays !== undefined) {
+            priorDate = new Date().setDate(currentdate.getDate() - $scope.OverAgeDays); //60 -
+        }
+        console.log("age days", priorDate, $scope.OverAgeDays);
         $scope.exp.eventdate = currentdate;
 
         $scope.today = function() {
@@ -206,9 +247,15 @@ angular.module('ohanaApp')
             $scope.exp.PaymentStatus = "Pending";
             $scope.exp.ImageURL = [];
             $scope.exp.Line[0].Quantity = 0;
-            $scope.exp.Line[0].Rate = 0.25;
+            if ($scope.expenseconfig !== undefined) {
+                $scope.exp.Line[0].Rate = $scope.expenseconfig.MileRate;
+                $scope.exp.Line[1].Rate = $scope.expenseconfig.TrailerRate;
+            } else {
+                $scope.exp.Line[0].Rate = 0.25;
+                $scope.exp.Line[1].Rate = 0.4;
+            }
             $scope.exp.Line[1].Quantity = 0;
-            $scope.exp.Line[1].Rate = 0.4;
+
             $scope.exp.Line.length = 2;
             $scope.LineDetails = [];
             $scope.LineDetails.length = 0;
@@ -350,6 +397,7 @@ angular.module('ohanaApp')
 
             $scope.exp.Chapter = $scope.userChapter;
             $scope.exp.SubmitBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+            $scope.exp.Region = $scope.userName.Region;
             // $scope.exp.SubmitBy = $scope.profileData.name.first + ' ' + $scope.profileData.name.last;
 
             var currentdate = new Date();
