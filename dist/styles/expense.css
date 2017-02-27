@@ -181,6 +181,15 @@
          padding-bottom: 5px;
      }
      
+     .checkboxgroup {
+         float: left;
+         width: auto;
+         margin-left: 3em;
+         font-size: 15px;
+         padding-top: 5px;
+         padding-bottom: 5px;
+     }
+     
      .imagedisplay {
          padding: 20px;
          width: 300px;
@@ -247,6 +256,7 @@
      
      .swaltdr {
          float: right;
+         padding-right: 10px;
      }
      
      .blinkinfo {
@@ -266,6 +276,7 @@
          display: inline-block;
          font-family: Arial;
          padding: 6px 12px;
+         padding-left: 15px;
          text-align: center;
          text-decoration: none;
      }
@@ -348,4 +359,39 @@
          margin: 20px 20px;
          height: 600px;
          width: 600px;
+     }
+     
+     .fixed-panel {
+         height: auto;
+         width: auto;
+         overflow-y: hidden;
+     }
+     
+     .scroll-panel {
+         max-height: 100;
+         /*height: auto;*/
+         /*width: 800px;*/
+         overflow-y: scroll;
+     }
+     
+     .chapter-panel {
+         width: auto;
+     }
+     
+     .swalgreen {
+         color: green;
+         font-size: 16px;
+         text-align: left;
+         font-weight: bolder;
+     }
+     
+     .swalred {
+         color: red;
+         font-size: 16px;
+         text-align: left;
+         font-weight: bolder;
+     }
+     
+     .tblcontainer {
+         width: 80%;
      }

@@ -7,8 +7,9 @@
  * # ExpensedetailCtrl
  * Controller of the ohanaApp
  */
+
 angular.module('ohanaApp')
-    .controller('ExpenseDetailsCtrl', function($firebaseObject, $scope, userService, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document, FileUploader) {
+    .controller('ExpenseDetailsCtrl', function($firebaseObject, $scope, $route, userService, $routeParams, commonServices, expenseservice, $location, $uibModal, $log, $document, FileUploader) {
 
         $scope.expense = {};
         $scope.expense = expenseservice.expense;
@@ -20,7 +21,7 @@ angular.module('ohanaApp')
         var uploader = $scope.uploader = new FileUploader({});
         //----Modal -- Payment Status Log  ---------//
         var $ctrl = this;
-
+        expenseservice.deleteExpense("oRa20172131228451485");
         $scope.openPaymentStatusLog = function() {
             $scope.$modalInstance = $uibModal.open({
                 scope: $scope,
@@ -37,6 +38,28 @@ angular.module('ohanaApp')
             $scope.$modalInstance.dismiss('cancel');
         };
 
+        //check edit
+        $scope.checkeditexist = function() {
+            $scope.editExpenseList = expenseservice.getEditStatusrec();
+
+            var aedit = 0;
+            $scope.iseditexist = 'false';
+            $scope.editExpenseList.$loaded().then(function() {
+                angular.forEach($scope.editExpenseList, function(list) {
+                    // console.log("list ", list)
+                    if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
+                        aedit = aedit + 1;
+                        $scope.iseditexist = "true";
+                    }
+                    // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.iseditexist);
+                });
+            });
+
+            // console.log("Edit exist", $scope.isEditexist);
+        }
+        //if EDIT exist, user can not recall expense to EDIT status - Only 1 Edit allowed per user
+        //Recall Expense button hidden
+        $scope.checkeditexist();
 
         // Initialize FORM field to clear old values in creating new expense.  
         $scope.LineDetails = [];
@@ -57,7 +80,8 @@ angular.module('ohanaApp')
 
         //------------Addition Line Items--------------//
         $scope.addNew = function(LineDetails) {
-            if ($scope.userRole == 'Volunteer' || $scope.userRole == 'Participant') {
+            if ($scope.expenseemail == $scope.useremail) {
+                // $scope.userRole == 'Volunteer' || $scope.userRole == 'Participant') {
                 $scope.LineDetails.push({
                     'Description': "",
                     'Amount': 0
@@ -110,19 +134,22 @@ angular.module('ohanaApp')
 
         //Go Back to View Expense Page
         $scope.GoBack = function() {
-            window.location = "#/expense/viewexpense";
+            // window.location = "#/expense/viewexpense";
+            $location.path('/expense/viewexpense');
         }
 
-        //View Image - Bigger size - in New Page  
+        //View Image - Bigger size - more readable - in New Page  
         $scope.viewImage = function(img) {
             window.open(img, "Expense Image - " + $routeParams.BillId, "height=600,width=400");
         }
 
         //DELETE Selected Image  
         $scope.removeImage = function(imgname) {
-            // window.open(img, "Expense Image - " + $routeParams.BillId, "height=600,width=400");
-            alert(imgname);
-            console.log('Image Delete Request SWAL ', imgname);
+
+            var filearray = [];
+            var filename = $scope.vimageurl[imgname].FileName;
+
+            // console.log('Image Delete Request SWAL ', imgname);
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -132,46 +159,38 @@ angular.module('ohanaApp')
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then(function() {
-                expenseservice.deleteImage(imgname, $scope.vImageList)
-                // alert(expenseservice.deleteImagearray($scope.vImageList, imgname))
-                // $scope.applyAsync();
-                // console.log("Image List - 0 ", $scope.vImageList);
+                expenseservice.deleteImage(filename, $scope.vimageurl)
+                $scope.fiximagearray(filename)
+
             }, function(dismiss) {
                 // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
                 if (dismiss === 'cancel') {
                     swal(
-                        'Cancelled',
-                        'Your document file is safe',
+                        'Image Delete Cancelled',
+                        'Your supporting document file is safe',
                         'error'
                     )
                 }
             })
-
-            console.log("Image List -  1 ", $scope.vImageList);
-            var newDataList = [];
-            newDataList.length = 0;
-            angular.forEach($scope.vImageList, function(item) {
-                if (item.length) {
-                    var i = 0;
-
-                    for (var x = 0; x < item.length; x++) {
-                        console.log("Image Value Data - ", item[x].ImageName, x);
-                        if (item[x].ImageName != imgname) {
-                            newDataList.push(item[x]);
-                        }
-                    }
-                }
-            });
-
-            console.log('ImageList: 2 -' + $scope.vImageList);
-            $scope.vImageList = newDataList;
-            console.log('ImageList: 3 -' + $scope.vImageList);
-            $scope.updateImageInfo();
-
-
         }
 
+        $scope.fiximagearray = function(filename) {
 
+            var newDataList = [];
+
+            if ($scope.vimageurl !== undefined) {
+                for (var x = 0; x < $scope.vimageurl.length; x++) {
+
+                    if ($scope.vimageurl[x].FileName != filename) {
+                        newDataList.push($scope.vimageurl[x]);
+                    }
+                }
+            }
+            $scope.vimageurl = newDataList;
+            $scope.updateImageInfo();
+            loadexpensedata();
+            $route.reload(); //reload current page 
+        }
 
         //Update Supporting Image File Changes 
         $scope.updateImageInfo = function() {
@@ -179,20 +198,29 @@ angular.module('ohanaApp')
             var expenseupdate = {
                 ImageURL: []
             };
+            var oldimagecount = 0;
 
-
-            if ($scope.vImageList.length) {
-
-                for (var x = 0; x < $scope.vImageList.length; x++) {
-                    console.log("Update- image ", x, expenseupdate.ImageURL, $scope.vImageList);
-                    expenseupdate.ImageURL.push({
-                        "FileName": $scope.vImageList[x].ImageName,
-                        "ID": x,
-                        "ImageUrlLocation": $scope.vImageList[x].ImageSrc,
-                    });
-                }
-
+            if ($scope.vimageurl !== undefined) {
+                oldimagecount = $scope.vimageurl.length;
+            } else {
+                $scope.vimageurl = [];
+                $scope.vimageurl.length = 0;
             }
+            if ($scope.uploader !== undefined) {
+                if ($scope.uploader.queue.length > 0) {
+                    for (var x = 0; x < $scope.uploader.queue.length; x++) {
+                        imagefilename = 'images/' + $routeParams.BillId + "_" + $scope.uploader.queue[x].file.name;
+
+                        $scope.vimageurl.push({
+                            "FileName": imagefilename,
+                            "ID": (x + 1 + oldimagecount),
+                            "ImageUrlLocation": ""
+                        })
+                    }
+                }
+            }
+
+            expenseupdate.ImageURL = $scope.vimageurl;
 
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
@@ -207,27 +235,23 @@ angular.module('ohanaApp')
         function loadexpensedata() {
 
             $scope.EditMode = " - EDIT mode";
-            var ref = firebase.database().ref('expense').orderByChild("BillId").equalTo($routeParams.BillId);
-            //alert($routeParams.BillId);   
+            $scope.checkeditexist(); //Check if user already have expense in EDIT status
+
             $scope.vimageurl = [];
             $scope.isdisabled = false;
             $scope.PayStatusLogList = [];
+            $scope.PayStatusLogList.length = 0;
             $scope.vImageList = [];
             $scope.vImageList.length = 0;
             //Code added to remove $$HashKey in the array
             for (var x = 0; x < $scope.vImageList.length; x++) {
-                // console.log("array ", x, $scope.PayStatusLogList.length);
                 if ($scope.vImageList[x] != null) {
                     delete $scope.vImageList[x].$$hashKey;
                 }
-
             }
+            $scope.expense = expenseservice.getEditExpenseData($routeParams.BillId);
 
-            ref.on('value', function(snapshot) {
-                //  $scope.$apply(function(){
-                $scope.expense = snapshot.val();
-                $scope.$applyAsync();
-
+            $scope.expense.$loaded().then(function() {
                 angular.forEach($scope.expense, function(item) {
 
                     console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
@@ -236,18 +260,14 @@ angular.module('ohanaApp')
                     var storageRef = firebase.storage().ref();
                     $scope.paystat = item.PaymentStatus;
                     $scope.expenseemail = item.email;
-                    // if (document.getElementById) {
-                    //     document.getElementById('OtherExpensebtn').style.visibility = 'visible';
-                    // }
-                    // document.getElementById('OtherExpensebtn').style.display = 'block';
+
                     $scope.OverageDisable = false;
                     if (item.PaymentStatus == 'Over Age') {
                         swal('Overage Expense - Not editable! ', '', 'error');
 
                         $scope.OverageDisable = true;
                         $scope.EditMode = " - READ-ONLY";
-                        // document.getElementById('OtherExpensebtn').style.display = 'none';
-                        // alert("1");
+
                     } else {
                         $scope.OverageDisable = false;
                         $scope.EditMode = " - EDIT ";
@@ -256,8 +276,7 @@ angular.module('ohanaApp')
                     if ($scope.useremail != $scope.expenseemail) {
                         $scope.EditMode = " - READ-ONLY";
                         $scope.OverageDisable = true;
-                        // document.getElementById('OtherExpensebtn').style.display = 'none';
-                        // alert("2");
+
                     }
 
                     //---Payment Status Change Option for Chapter Lead and National Staff
@@ -265,24 +284,19 @@ angular.module('ohanaApp')
                     switch ($scope.userRole) {
                         case 'Participant':
                         case 'Volunteer':
-                            if (item.PaymentStatus == 'Submitted' || item.PaymentStatus == 'Returned' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
+                            if ((item.PaymentStatus == 'Pending') || item.PaymentStatus == 'Submitted' || item.PaymentStatus == 'Returned' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
                                 $scope.OverageDisable = true;
                                 $scope.EditMode = " - READ-ONLY mode";
-                                // document.getElementById('OtherExpensebtn').style.display = 'none';
-                                // document.getElementById('OtherExpensebtn').style.visibility = 'hidden';
-                                // alert("3");
                                 break;
                             }
-                            if ((item.PaymentStatus == 'Pending') || (item.PaymentStatus == 'Edit') || (item.PaymentStatus == 'ReSubmit')) {
+                            if ((item.PaymentStatus == 'Edit') || (item.PaymentStatus == 'ReSubmit')) {
                                 $scope.OverageDisable = false;
                                 $scope.EditMode = " - EDIT mode";
-                                // document.getElementById('OtherExpensebtn').style.visibility = 'visible';
-                                // alert("3 p R");
                             }
                             break;
 
                         case 'Chapter Lead':
-                            if (item.PaymentStatus == 'Pending') {
+                            if (item.PaymentStatus == 'Pending' || item.PaymentStatus == 'Submitted') {
 
                                 $scope.paystatuslist = [{
                                     name: 'Pending',
@@ -298,7 +312,7 @@ angular.module('ohanaApp')
                                     value: 'Over Age'
                                 }];
                             }
-                            if (item.PaymentStatus == 'Returned') {
+                            if (item.PaymentStatus == 'Returned' || item.PaymentStatus == 'Resubmit') {
 
                                 $scope.paystatuslist = [{
                                     name: 'Returned',
@@ -314,25 +328,31 @@ angular.module('ohanaApp')
                             if (($scope.useremail != $scope.expenseemail) && (item.PaymentStatus == 'Pending' || item.PaymentStatus == 'Returned')) {
                                 $scope.EditMode = " - PAYMENT STATUS UPDATE ONLY";
                                 $scope.OverageDisable = true;
-                                // document.getElementById('divgoback').style.display = 'none';
-                            }
-                            if (($scope.useremail == $scope.expenseemail) && (item.PaymentStatus == 'Submitted' || (item.PaymentStatus == 'Edit') || item.PaymentStatus == 'Returned')) {
+
+                            } //item.PaymentStatus == 'Submitted' || (
+                            if (($scope.useremail == $scope.expenseemail) && (item.PaymentStatus == 'Edit') || item.PaymentStatus == 'Returned') {
                                 $scope.EditMode = " - EDIT mode";
                                 $scope.OverageDisable = false;
                                 // document.getElementById('OtherExpensebtn').style.display = 'block';
                             }
 
+                            if ($scope.useremail == $scope.expenseemail && item.PaymentStatus == 'Submitted') {
+                                $scope.EditMode = " - READ-ONLY";
+                                $scope.OverageDisable = true;
+                                // document.getElementById('OtherExpensebtn').style.display = 'block';
+                            }
+
+
                             if (item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
                                 $scope.EditMode = " - READ-ONLY";
-                                $scope.Overage
-                                Disable = true;
+                                $scope.OverageDisable = true;
 
                             }
 
                             // alert("4");
                             break;
                         case 'National Staff':
-                            if (item.PaymentStatus == 'Submitted') {
+                            if (item.PaymentStatus == 'Submitted' || item.PaymentStatus == 'Returned') {
 
                                 $scope.paystatuslist = [{
                                     name: 'Submitted',
@@ -353,19 +373,35 @@ angular.module('ohanaApp')
                             if (($scope.useremail != $scope.expenseemail) && (item.PaymentStatus == 'Submitted')) {
                                 $scope.EditMode = " - PAYMENT STATUS UPDATE ONLY";
                                 $scope.OverageDisable = true;
-                                // document.getElementById('divgoback').style.display = 'none';
+
+                            }
+                            //item.PaymentStatus == 'Submitted' ||
+                            if ($scope.useremail == $scope.expenseemail && (item.PaymentStatus == 'Edit' || item.PaymentStatus == 'Returned')) {
+                                $scope.EditMode = " - EDIT mode";
+                                $scope.OverageDisable = false;
+                                // document.getElementById('OtherExpensebtn').style.display = 'block';
                             }
 
-                            // alert("5");
+                            if ($scope.useremail == $scope.expenseemail && item.PaymentStatus == 'Submitted') {
+                                $scope.EditMode = " - READ-ONLY";
+                                $scope.OverageDisable = true;
+                                // document.getElementById('OtherExpensebtn').style.display = 'block';
+                            }
+
+                            if (item.PaymentStatus == 'Paid' || item.PaymentStatus == 'Over Age') {
+                                $scope.EditMode = " - READ-ONLY";
+                                $scope.OverageDisable = true;
+
+                            }
+
                             break;
 
                     }
                     console.log(" status check - ", $scope.useremail, $scope.expenseemail, item.PaymentStatus);
-                    // alert($scope.useremail);
+
                     var storageRefPic = '';
                     $scope.vimageurl = item.ImageURL;
                     var vTotalLineCost = 0;
-                    //alert(item.ImageURL[0].FileName);
 
                     // --- clear $scope.LineDetails Array
                     $scope.LineDetails = [];
@@ -399,6 +435,14 @@ angular.module('ohanaApp')
 
                     }
 
+                    for (var x = 0; x < $scope.LineDetails.length; x++) {
+                        if ($scope.LineDetails[x] != null) {
+                            delete $scope.LineDetails[x].$$hashKey;
+                        }
+
+                    }
+
+
                     if (item.PaymentLog.length) {
 
                         for (var x = 0; x < item.PaymentLog.length; x++) {
@@ -418,39 +462,36 @@ angular.module('ohanaApp')
 
 
                     if (item.ImageURL) {
-                        console.log("Hello Image check", item.ImageURL);
+                        console.log("Hello Image check", item.ImageURL, $scope.vImageList);
+                        $scope.vImageList = [];
+                        var storageloc = '';
+                        var urlinfo = '';
+                        $scope.vImageList.length = 0;
                         for (var i = 0; i < item.ImageURL.length; i++) {
-                            console.log("Hello Image ", item.ImageURL[i].FileName);
-                            var storageloc = '';
-                            var urlinfo = '';
-                            // imageList[i] = item.ImageURL[i].FileName;
+                            console.log("Hello Image ", item.ImageURL[i].FileName, $scope.vImageList);
+
                             storageloc = item.ImageURL[i].FileName;
 
                             storageRef.child(storageloc).getDownloadURL().then(function(url) {
 
                                 $scope.vImageList.push({
+                                    'ID': i,
                                     'ImageSrc': url,
                                     'ImageName': storageloc
                                 });
-                                console.log("Image Source - ", $scope.vImageList);
+
+                                // console.log("Image Source -a - ", $scope.vImageList, storageloc, $scope.vimageurl);
                                 $scope.$applyAsync();
 
                             }).catch(function(error) {
                                 // Handle any errors
+                                console.log("Image Source url - error", error);
                             });
-
-
-
-
                         }
                     }
-
                 })
 
-
-                //})
             })
-
         }
 
         $scope.getImageURL = function(storageloc) {
@@ -474,18 +515,11 @@ angular.module('ohanaApp')
 
 
 
-            // var storageRef = firebase.storage().ref();
-            // return storageRef.child(storageloc).getDownloadURL().then(function(url) {
-
-            //     $scope.returnurl = url;
-            //     console.log("Image func - 0  ", $scope.returnurl);
-            //     // return url;
-            //     return $scope.returnurl
-            // })
         }
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
+            var bill = $routeParams.BillId;
             var bill = $routeParams.BillId;
             console.log('Data Delete Request SWAL ', $routeParams.BillId);
             swal({
@@ -503,7 +537,9 @@ angular.module('ohanaApp')
                     'Your file has been deleted.',
                     'success'
                 )
-                window.location.href = "#/expense/viewexpense"
+                // window.location.href = "#/expense/viewexpense"
+                $location.path('/expense/viewexpense');
+
             }, function(dismiss) {
                 // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
                 if (dismiss === 'cancel') {
@@ -514,20 +550,15 @@ angular.module('ohanaApp')
                     )
                 }
             })
+
         }
+
         //-----Delete Expenses Created by the User ---END----------//
 
-        //Update Expense - SAVE  and SUBMIT - Parameter value 'update' or 'submit'
-        $scope.updateexpense = function(updatetype) {
 
-            var billid = $routeParams.BillId;
+        $scope.setexpensedata = function(updatetype) {
             var self = this;
-
-            //var totalamt = (($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate) + ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
-            var totalamt = ((self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate) + (self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate));
-
-            // var totalamt = ($scope.ExpDetail.dexedit.Line[0].Quantity * $scope.ExpDetail.dexedit.Line[0].Rate);
-            //+ ($scope.ExpDetail.dexedit.Line[1].Quantity * $scope.ExpDetail.dexedit.Line[1].Rate));
+            var totalamt = (($scope.expense[0].Line[0].Quantity * $scope.expense[0].Line[0].Rate) + ($scope.expense[0].Line[1].Quantity * $scope.expense[0].Line[1].Rate));
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             var currentdate = new Date();
             var StatusChangedDate = "";
@@ -538,6 +569,7 @@ angular.module('ohanaApp')
                 StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
 
             };
+            console.log("eee11", $scope.PayStatusLogList);
 
             //Re-Submit for Participant/Volunteer - so when they update - status changes to Pending
             //Returned for Chapter Lead - Only Payment Status update  not here
@@ -582,6 +614,7 @@ angular.module('ohanaApp')
                         });
                         break;
                     case 'Chapter Lead':
+                    case 'National Staff':
                         $scope.paystat = 'Submitted';
                         $scope.PayStatusLogList.push({
                             "PayStatus": 'Submitted',
@@ -595,76 +628,69 @@ angular.module('ohanaApp')
                 }
             }
 
+            console.log("eee1", $scope.PayStatusLogList);
             //Code added to remove $$HashKey in the array
             for (var x = 0; x < $scope.PayStatusLogList.length; x++) {
-                // console.log("array ", x, $scope.PayStatusLogList.length);
                 if ($scope.PayStatusLogList[x] != null) {
                     delete $scope.PayStatusLogList[x].$$hashKey;
                 }
 
             }
 
+
             var expenseupdate = {
-                "Description": self.dexedit.Description,
+                "Description": $scope.expense[0].Description,
                 "Amount": totalamt,
                 "PaymentStatus": $scope.paystat,
                 "PaymentLog": $scope.PayStatusLogList,
                 "Line": [{
                         "ID": "0",
-                        "Description": self.dexedit.Line[0].Description,
-                        "Quantity": self.dexedit.Line[0].Quantity, // this.exp.miles,
-                        "Rate": self.dexedit.Line[0].Rate,
-                        "Amount": self.dexedit.Line[0].Quantity * self.dexedit.Line[0].Rate //(this.exp.miles * .25)
+                        "Description": $scope.expense[0].Line[0].Description,
+                        "Quantity": $scope.expense[0].Line[0].Quantity, // this.exp.miles,
+                        "Rate": $scope.expense[0].Line[0].Rate,
+                        "Amount": $scope.expense[0].Line[0].Quantity * $scope.expense[0].Line[0].Rate //(this.exp.miles * .25)
                     }, {
                         "ID": "1",
-                        "Description": self.dexedit.Line[1].Description,
-                        "Quantity": self.dexedit.Line[1].Quantity, //this.exp.trailermiles,
-                        "Rate": self.dexedit.Line[1].Rate,
-                        "Amount": self.dexedit.Line[1].Quantity * self.dexedit.Line[1].Rate //(this.exp.trailermiles * .4)
+                        "Description": $scope.expense[0].Line[1].Description,
+                        "Quantity": $scope.expense[0].Line[1].Quantity, //this.exp.trailermiles,
+                        "Rate": $scope.expense[0].Line[1].Rate,
+                        "Amount": $scope.expense[0].Line[1].Quantity * $scope.expense[0].Line[1].Rate //(this.exp.trailermiles * .4)
                     }
 
                 ],
                 ImageURL: []
             };
 
+            console.log(expenseupdate, $scope.vimageurl);
 
             var oldimagecount = 0;
-            if ($scope.vImageList !== undefined) {
-                if ($scope.vImageList.length) {
-                    oldimagecount = $scope.vImageList.length;
-                    for (var x = 0; x < $scope.vImageList.length; x++) {
-                        console.log("Update- image ", x, expenseupdate.ImageURL, $scope.vImageList);
-                        expenseupdate.ImageURL.push({
-                            "FileName": $scope.vImageList[x].ImageName,
-                            "ID": x,
-                            "ImageUrlLocation": $scope.vImageList[x].ImageSrc,
-                        });
-                    }
-                }
+
+            if ($scope.vimageurl !== undefined) {
+                oldimagecount = $scope.vimageurl
+                    .length;
+            } else {
+                $scope.vimageurl = [];
+                $scope.vimageurl.length = 0;
             }
-
-
-            var imagefilename = "";
 
             if ($scope.uploader !== undefined) {
                 if ($scope.uploader.queue.length > 0) {
                     for (var x = 0; x < $scope.uploader.queue.length; x++) {
                         imagefilename = 'images/' + $routeParams.BillId + "_" + $scope.uploader.queue[x].file.name;
 
-                        expenseupdate.ImageURL.push({
+                        $scope.vimageurl.push({
                             "FileName": imagefilename,
                             "ID": (x + 1 + oldimagecount),
                             "ImageUrlLocation": ""
                         })
                     }
                 }
-                var imageurl = '';
-                if ($scope.uploader.queue.length > 0) {
-                    imageurl = expenseservice.SaveImageData($routeParams.BillId, $scope.uploader.queue);
 
-                    console.log("save image - ", imageurl);
-                }
             }
+            expenseupdate.ImageURL = $scope.vimageurl;
+            console.log(expenseupdate, $scope.vimageurl);
+
+            var imagefilename = "";
 
             var lineamount = 0;
             if ($scope.LineDetails.length) {
@@ -689,21 +715,161 @@ angular.module('ohanaApp')
 
             // var totalamt = totalamt + lineamount;
             console.log("Update", expenseupdate, totalamt);
-            // alert(expenseupdate);
+
+            var imageurl = '';
+            if ($scope.uploader.queue.length > 0) {
+                imageurl = expenseservice.SaveImageData($routeParams.BillId, $scope.uploader.queue);
+                console.log("save image - ", imageurl);
+            }
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
                 console.log("key ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(expenseupdate);
                 // alert("Expense Successfully Updated ");
-                swal('Expense Updated Successfully!', '', 'success');
+
 
 
             });
+            console.log("eee3");
+        }
 
-            $location.path("expense/viewexpense");
+        //Update Expense - SAVE  and SUBMIT - Parameter value 'update' or 'submit'        
+        $scope.updateexpense = function(updatetype) {
+            // var self = this;
+            var billid = $routeParams.BillId;
+            var totalamt = ((this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate) + (this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate));
+            var lineamount = 0;
+            if ($scope.LineDetails.length) {
+                var i = 2;
+                for (var x = 0; x < $scope.LineDetails.length; x++) {
+                    lineamount = parseFloat(lineamount) + parseFloat($scope.LineDetails[x].Amount);
+                }
+            }
+            totalamt = totalamt + lineamount;
+
+            var descinfo = '';
+            var supportinfo = '';
+            var amountinfo = '';
+            var documentcount = 0;
+            if ($scope.vimageurl === undefined) {
+                documentcount = $scope.uploader.queue.length;
+            } else {
+                documentcount = $scope.uploader.queue.length + $scope.vimageurl.length;
+            }
+            // var swalmessage = '';
+
+            if (this.dexedit.Description === undefined || this.dexedit.Description.length == 0) {
+                descinfo = '<tr><td class="swalred ">Description : </td><td class="swalred "><b>';
+            } else {
+                descinfo = '<tr><td class="swalgreen ">Description : </td><td class="swalgreen "><b>';
+            }
+
+            if (documentcount == 0) {
+                supportinfo = '<tr><td class="swalred  ">No. of supporting documents Loaded : </td><td class="swalred  "><b> ';
+
+            } else {
+                supportinfo = '<tr><td class="swalgreen ">No. of supporting documents Loaded : </td><td class="swalgreen  "><b> ';
+            }
+
+            if (totalamt == 0) {
+                amountinfo = '<tr><td class="swalred ">Expense Amount : </td><td class="swalred "><b>$ ';
+            } else {
+                amountinfo = '<tr><td class="swalgreen ">Expense Amount : </td><td class="swalgreen "><b>$ ';
+            }
+
+            if (updatetype == 'submit') {
+                if (this.dexedit.Description === undefined || this.dexedit.Description.length == 0 || documentcount == 0 || totalamt == 0) {
+                    swal({
+                        title: 'Required fields Missing',
+                        type: 'error',
+                        html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                            descinfo + this.dexedit.Description + '</td></tr> ' +
+                            supportinfo + documentcount + '</b></td> </tr> ' +
+                            amountinfo + totalamt + '</b></td></tr></table>',
+                    })
+                    console.log("eee0")
+                } else {
+                    swal({
+                        title: 'Confirm New Expense',
+                        text: "Created Expense will be reviewed!",
+                        type: 'info',
+                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + this.dexedit.Description + '</td></tr> ' +
+                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + lineamount + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + totalamt + '</b></td></tr></table>',
+
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, create it!'
+                    }).then(function() {
+                        $scope.setexpensedata(updatetype)
+                        swal('Expense Submitted Successfully!', '', 'success')
+                        $location.path('/expense/viewexpense')
+                    })
+
+                }
+
+
+            } else {
+                $scope.setexpensedata(updatetype);
+                swal('Expense Successfully Saved!', '', 'success');
+                $location.path('/expense/viewexpense');
+
+            }
+
+
 
         }
+
+        //Recall Expense 
+        $scope.RecallExpense = function(billid, paymentstat, statreason) {
+
+            var bill = $routeParams.BillId;
+            console.log('Recall Expense request for  ', $routeParams.BillId);
+
+            if ($scope.iseditexist == 'true') {
+                swal('Recall not allowed! Only 1 Expense in EDIT status', '', 'info');
+            } else {
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, recall this expense!'
+                }).then(function() {
+                    // expenseservice.deleteExpense(bill)
+                    $scope.UpdatePaymentStatus(billid, paymentstat, statreason)
+                    swal(
+                        'Recalled!',
+                        'Your expense was recalled.',
+                        'success'
+                    )
+                    loadexpensedata()
+
+                }, function(dismiss) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'Your recall request cancelled',
+                            'info'
+                        )
+
+                    }
+                })
+
+            }
+
+
+        }
+
+
 
 
         $scope.UpdatePaymentStatus = function(billid, paymentstat, statreason) {
@@ -739,8 +905,6 @@ angular.module('ohanaApp')
 
             }
 
-            // console.log($scope.PayStatusLogList, $scope.PayStatusLogList.length);
-            // var jsondata = angular.toJson($scope.PayStatusLogList);
             var ePaymentLog = {
                 "PaymentStatus": paymentstat,
                 "PaymentLog": $scope.PayStatusLogList
@@ -758,12 +922,16 @@ angular.module('ohanaApp')
 
             });
 
-
-            $location.path("expense/viewexpense");
-
+            //This allow the user to recall expenses created by themselves 
+            if (paymentstat == 'Edit') {
+                $location.path("/expense/expensedetail/" + billid);
+                // window.location = "#/expense/expensedetail/" + billid;
+            } else {
+                $location.path("expense/viewexpense");
+            }
         }
 
         loadexpensedata();
-        $scope.$applyAsync();
+        // $scope.$applyAsync();
 
     });

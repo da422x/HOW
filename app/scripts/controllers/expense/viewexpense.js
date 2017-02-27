@@ -8,7 +8,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('ViewExpenseController', function($scope, userService, $filter, $uibModal, expenseservice, commonServices, $q) {
+    .controller('ViewExpenseController', function($scope, userService, $filter, $uibModal, expenseservice, commonServices, $q, $location) {
 
         var self = this;
         var originalList = [];
@@ -22,17 +22,42 @@ angular.module('ohanaApp')
         $scope.userChapter = userService.getChapter();
         $scope.useremail = commonServices.getCurrentUserEmail();
 
-        $scope.orderByField = 'SubmitDate';
-        $scope.reverseSort = false;
+        // $scope.orderByField = 'SubmitDate';
+        // $scope.reverseSort = false;
 
-        $scope.pageTitle = 'Search & Sort Table Records';
-        $scope.sortType = 'SubmitDate'; // set the default sort type
-        $scope.sortReverse = true; // set the default sort order
-        $scope.searchText = ''; // set the default search/filter term
+        // $scope.pageTitle = 'Search & Sort Table Records';
+        // $scope.sortType = 'SubmitDate'; // set the default sort type
+        // $scope.sortReverse = true; // set the default sort order
+        // $scope.searchText = ''; // set the default search/filter term
 
-        //Go to New Expense Page
+        //Go to New Expense Page - EDIT status checked first 
         $scope.neweexpense = function() {
-            window.location = "#/expense/newexpense";
+
+            $scope.editExpenseList = expenseservice.getEditStatusrec();
+
+            $scope.iseditexist = 'false';
+            $scope.editExpenseList.$loaded().then(function() {
+                angular.forEach($scope.editExpenseList, function(list) {
+                    console.log("list ", list)
+
+                    if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
+
+                        $scope.iseditexist = "true";
+                    }
+
+                });
+
+                if ($scope.iseditexist == "true") {
+                    swal(
+                        'You cant create new expense',
+                        'Previous expense must be submitted',
+                        'warning'
+                    )
+                } else {
+                    $location.path('/expense/newexpense');
+                }
+            });
+
         }
 
         //pop dash
@@ -69,6 +94,7 @@ angular.module('ohanaApp')
         //Filter the list on expense in EDIT status
         $scope.Showmeedit = function(BillId) {
 
+
             switch ($scope.userRole) {
                 case 'Volunteer':
                 case 'Participant':
@@ -78,7 +104,20 @@ angular.module('ohanaApp')
                 default:
                     $scope.PayStatus = $scope.paystatuslist[1];
                     $scope.ExpenseSearch("edit");
-                    break;
+
+                    // switch ($scope.userRole) {
+                    //     case 'Volunteer':
+                    //     case 'Participant':
+                    //     case 'Chapter Lead':
+                    // window.location = "#/expense/expensedetail/" + BillId;
+                    $location.path('/expense/expensedetail/' + BillId);
+                    //     break;
+                    // default:
+                    //     $scope.PayStatus = $scope.paystatuslist[1];
+                    //     $scope.ExpenseSearch("edit");
+                    //     break;
+                    // }
+
             }
         }
         //---select
@@ -160,6 +199,7 @@ angular.module('ohanaApp')
                 case 'Past Year':
                     var currentdate = new Date();
                     $scope.startdate = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
+
                     $scope.enddate = currentdate;
                     $scope.disp_startdate = ($scope.startdate.getMonth() + 1) + '/' + +$scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
                     $scope.disp_enddate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
@@ -208,7 +248,7 @@ angular.module('ohanaApp')
                     name: 'Over Age',
                     value: 'Over Age'
                 }];
-                $scope.PayStatus = $scope.paystatuslist[2];
+                $scope.PayStatus = $scope.paystatuslist[0];
                 break;
 
             case 'Chapter Lead':
@@ -238,7 +278,7 @@ angular.module('ohanaApp')
                     name: 'Over Age',
                     value: 'Over Age'
                 }];
-                $scope.PayStatus = $scope.paystatuslist[2];
+                $scope.PayStatus = $scope.paystatuslist[0];
                 break;
 
             default:
@@ -267,18 +307,7 @@ angular.module('ohanaApp')
                     name: 'Over Age',
                     value: 'Over Age'
                 }];
-                $scope.PayStatus = $scope.paystatuslist[3];
-        }
-
-        //---Past Due Days Calculation ---------
-        $scope.getPastDue = function(submitdate) {
-            var currentdate = new Date();
-            var mdyy = submitdate.split('/');
-            var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
-            var pastdue = Math.round((currentdate - receivedDate) / (1000 * 60 * 60 * 24));
-
-            //console.log("due", pastdue, currentdate, receivedDate);
-            return pastdue;
+                $scope.PayStatus = $scope.paystatuslist[0];
         }
 
         //------------UI Bootstrap Date -----START--------------//
@@ -364,18 +393,263 @@ angular.module('ohanaApp')
         }
 
         //----Past Due - Expense list function -------END -----------//
-        $scope.ExpenseSearch = function(searchtype) {
-            console.log("SEARCH - ", $scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
-            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value, searchtype);
-            $scope.$applyAsync();
+
+
+        // View Expense entery point
+        $scope.viewexpensedata = function() {
+
+            $scope.ExpenseSearch("normal");
+            $scope.GetQuickOverviewData();
 
         }
 
-        $scope.viewexpensedata = function() {
-
-            $scope.expensedataSet = expenseservice.buildExpenseTableData($scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+        $scope.ExpenseSearch = function(searchtype) {
+            console.log("SEARCH - ", $scope.useremail, $scope.userRole, $scope.userChapter, $scope.startdate, $scope.enddate, $scope.PayStatus.value);
+            $scope.lists = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
             $scope.$applyAsync();
+            $scope.buildExpenseDataTable($scope.lists, $scope.userRole, $scope.startdate, $scope.enddate, $scope.PayStatus.value, searchtype);
 
+
+        }
+
+        //Build Data Table for viewing expense
+        $scope.buildExpenseDataTable = function(viewExpenseList, userRole, startdate, enddate, paystatus, searchtype) {
+
+            var currentdate = new Date();
+            var expensearray = [];
+            $scope.selectedbills = [];
+            $scope.selectedbills.length = 0;
+
+            viewExpenseList.$loaded(function(list) {
+                    // viewExpenseList.$loaded().then(function(list) {
+                    expensearray = [];
+
+                    // console.log("key ", list, list.length, expensearray);
+                    for (var i = 0; i < list.length; i++) {
+
+                        var mdyy = list[i].eventdate.toString().split('/');
+                        var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
+                        var pastdue = 0;
+
+                        // get current date with 12AM .setHours(0, 0, 0, 0)
+                        if (list[i].PaymentStatus != 'Paid' && list[i].PaymentStatus != 'Over Age') {
+                            pastdue = Math.round((currentdate.setHours(0, 0, 0, 0) - receivedDate) / (1000 * 60 * 60 * 24));
+                        } else
+                            pastdue = '';
+
+                        if (searchtype == 'edit' && list[i].PaymentStatus == 'Edit') {
+                            // && list[i].PaymentStatus != 'Over Age') {
+
+                            expensearray.push({
+                                "SubmitDate": list[i].SubmitDate,
+                                "SubmitBy": list[i].SubmitBy,
+                                "eventdate": list[i].eventdate,
+                                "Chapter": list[i].Chapter,
+                                "Amount": list[i].Amount,
+                                "PaymentStatus": list[i].PaymentStatus,
+                                "pastdue": pastdue,
+                                "BillId": list[i].BillId
+                            });
+                            // console.log("Edit - ", expensearray, searchtype, list[i].PaymentStatus);
+                        } else {
+                            if (searchtype != 'edit') {
+                                expensearray.push({
+                                    "SubmitDate": list[i].SubmitDate,
+                                    "SubmitBy": list[i].SubmitBy,
+                                    "eventdate": list[i].eventdate,
+                                    "Chapter": list[i].Chapter,
+                                    "Amount": list[i].Amount,
+                                    "PaymentStatus": list[i].PaymentStatus,
+                                    "pastdue": pastdue,
+                                    "BillId": list[i].BillId
+                                });
+                                // console.log("Non-Edit - ", expensearray, searchtype, list[i].PaymentStatus);
+                            }
+                        }
+                    }
+
+                    //date filter
+                    // var ViewExpenseFilter = datefilter(expensearray, startdate, enddate, paystatus);
+                    //use other methods for the $firebaseArray object
+                    var retArray = [];
+                    if (expensearray != null && startdate != null && enddate != null) {
+
+                        angular.forEach(expensearray, function(obj) {
+
+                            var receivedDate = obj.eventdate; // filter is based on Event Date not on Submit Date .SubmitDate;
+
+                            if (Date.parse(receivedDate) >= Date.parse(startdate) && Date.parse(receivedDate) <= Date.parse(enddate)) {
+                                retArray.push(obj);
+                                // console.log("Date ", Date.parse(receivedDate), receivedDate, startdate, enddate, retArray);
+                            }
+                        });
+                    }
+                    var retResults = [];
+                    if (paystatus != null && retArray != null && paystatus != '') {
+                        angular.forEach(retArray, function(obj) {
+
+                            var tpaystatus = obj.PaymentStatus;
+
+                            if (tpaystatus == paystatus) {
+                                retResults.push(obj);
+                                //console.log("paystatus ", retArray, retResults, paystatus, tpaystatus);
+                            }
+
+                        });
+                    } else
+                        retResults = retArray;
+                    // console.log("key expe array", expensearray, retArray, retResults);
+
+
+                    angular.element(document).ready(function() {
+                        //toggle `popup` / `inline` mode
+                        $.fn.editable.defaults.mode = 'popup';
+                        $.fn.editable.defaults.ajaxOptions = {
+                            type: 'PUT'
+                        };
+                        //if exists, destroy instance of table
+                        if ($.fn.DataTable.isDataTable($('#expenseTable'))) {
+                            $('#expenseTable').DataTable().destroy();
+                        }
+                        // var selected = [];
+                        var table = $('#expenseTable').DataTable({
+                            responsive: true,
+                            autoWidth: false,
+                            data: retResults,
+                            // select: {
+                            //     style: 'single',
+                            //     selector: ':not(td:first-child)'
+                            // },
+                            "fnRowCallback": function(nRow, data, iDisplayIndex, iDisplayIndexFull) {
+                                if ((data.pastdue > 30 && data.pastdue < 45) && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
+                                    $(nRow).css('color', 'red')
+                                }
+
+
+                                if (data.pastdue > 44 && (data.PaymentStatus != 'Paid' && data.PaymentStatus != 'Over Age')) {
+                                    $(nRow).css('color', 'red')
+                                    $(nRow).css('font-weight', 'bold');
+                                    $(nRow).css('background-color', 'yellow');
+                                    $(nRow).css('font-size', '16px');
+                                }
+                            },
+                            "pagingType": "full_numbers",
+                            columns: [{
+                                data: "eventdate",
+                                width: "60px"
+                            }, {
+                                data: "Amount",
+                                width: "60px",
+                                render: $.fn.dataTable.render.number(',', '.', 2)
+                            }, {
+                                data: "PaymentStatus",
+                                width: "60px"
+                            }, {
+                                data: "SubmitBy",
+                                width: "60px"
+                            }, {
+                                data: "Chapter",
+                                width: "60px"
+                            }, {
+                                data: "SubmitDate",
+                                width: "50px",
+                                visible: false
+                            }, {
+                                data: "pastdue",
+                                width: "60px",
+
+                            }],
+                            'columnDefs': [{
+                                targets: 0,
+                            }, {
+                                targets: 4,
+                                visible: userRole == 'National Staff'
+                            }, {
+                                targets: 6,
+                                width: '90px'
+                            }],
+                            'order': [
+                                [6, 'desc']
+                            ],
+                            headerCallback: function(thead) {
+                                if (userRole == 'National Staff') {
+                                    // $(thead).find('th').eq(0).html('<input type="checkbox" id="expenseTable-select-all">');
+                                }
+                            },
+
+
+                        });
+
+
+                        $('#expenseTable').dataTable().yadcf([{
+                                column_number: 3,
+                                select_type: 'chosen',
+                                filter_default_label: "Expense Originator Name"
+                            }, {
+
+                                column_number: 4,
+                                select_type: 'chosen',
+                                filter_default_label: "Chapter"
+
+                            }, {
+
+                                column_number: 5,
+                                select_type: 'chosen',
+                                filter_default_label: "Submit Date"
+
+                            },
+
+                            {
+                                column_number: 0,
+                                select_type: 'chosen',
+                                filter_default_label: "Event Date"
+
+                            }, {
+                                column_number: 1,
+                                select_type: 'chosen',
+                                filter_default_label: "Amount"
+
+                            }, {
+                                column_number: 2,
+                                select_type: 'chosen',
+                                filter_default_label: "Payment Status"
+
+                            }, {
+                                column_number: 6,
+                                select_type: 'chosen',
+                                filter_default_label: "Past Due"
+
+                            }
+                        ]);
+
+                        // var table = $('#expenseTable').DataTable();
+
+                        $('#expenseTable tbody').on('click', 'tr', function() {
+                            var data = table.row(this).data();
+                            // alert('You clicked on ' + data.BillId + '\'s row');
+                            window.location = "#/expense/expensedetail/" + data.BillId;
+                        });
+
+                    });
+
+                })
+                .catch(function(error) {
+                    console.error("error", error);
+                });
+
+
+        }
+
+        // $scope.ViewSelectedRow = function() {
+        //     var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
+        //     expenseservice.updatePaymentStatus($scope.selectedbills, StatusChangedBy);
+        //     // console.log("button clicked", $scope.selectedbills);
+        //     $scope.ExpenseSearch("normal");
+        // };
+
+
+        //Get Quick Over view Data - Pie Chart and Table Data
+        $scope.GetQuickOverviewData = function() {
             $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
             // $scope.$applyAsync();
 
@@ -460,9 +734,9 @@ angular.module('ohanaApp')
 
 
                 });
-                // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
 
-                // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
+                $scope.TotalExpenseCount = apending + aedit + asubmitted + areturned + aresubmit + apaid + aoverage;
+
                 if (apending > 0) {
                     $scope.piedata.push(apending);
                     $scope.pielabels.push("Pending");
@@ -471,9 +745,8 @@ angular.module('ohanaApp')
                         "Label": "Pending",
                         "Data": apending
                     });
-
-                    // $scope.PieDisplay = "Pending(" + apending + ") ";
                 }
+
                 if (aedit > 0) {
                     $scope.piedata.push(aedit);
                     $scope.pielabels.push("Edit");
@@ -481,17 +754,13 @@ angular.module('ohanaApp')
                     if (pastdue < 60) {
                         daysforoverage = 60 - pastdue;
                     }
-                    // $scope.editstatus = [{
-                    //     "OverAge": daysforoverage,
-                    //     "BillId": editbillid,
-                    //     "EmailID": emailid
-                    // }];
+
                     $scope.expensedash.push({
                         "Label": "Edit",
                         "Data": aedit
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Edit(" + aedit + ") ";
                 }
+
                 if (asubmitted > 0) {
                     $scope.piedata.push(asubmitted);
                     $scope.pielabels.push("Submitted");
@@ -500,8 +769,8 @@ angular.module('ohanaApp')
                         "Label": "Submitted",
                         "Data": asubmitted
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Submitted(" + asubmitted + ") ";
                 }
+
                 if (areturned > 0) {
                     $scope.piedata.push(areturned);
                     $scope.pielabels.push("Returned");
@@ -510,7 +779,6 @@ angular.module('ohanaApp')
                         "Label": "Returned",
                         "Data": areturned
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Returned(" + areturned + ") ";
                 }
 
                 if (aresubmit > 0) {
@@ -521,8 +789,8 @@ angular.module('ohanaApp')
                         "Label": "Resubmit",
                         "Data": aresubmit
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Resubmit(" + aresubmit + ") ";
                 }
+
                 if (apaid > 0) {
                     $scope.piedata.push(apaid);
                     $scope.pielabels.push("Paid");
@@ -531,9 +799,8 @@ angular.module('ohanaApp')
                         "Label": "Paid",
                         "Data": apaid
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Paid(" + apaid + ") ";
-
                 }
+
                 if (aoverage > 0) {
                     $scope.piedata.push(aoverage);
                     $scope.pielabels.push("Over Age");
@@ -542,11 +809,9 @@ angular.module('ohanaApp')
                         "Label": "Over Age",
                         "Data": aoverage
                     });
-                    // $scope.PieDisplay = $scope.PieDisplay + "Over Age(" + aoverage + ") ";
                 }
 
             });
-
 
 
             console.log("Dash -222", $scope.editstatus, $scope.dashlist, $scope.piecolor, $scope.pielabels, $scope.piedata);
@@ -646,15 +911,17 @@ angular.module('ohanaApp')
             return rptdata;
 
 
-
         }
 
+        // Create PDF Report
         $scope.CreateExpenseReport = function() {
             var t = 0;
 
-
+            //Get Report Data - Data fileterd based on Dropdown/Date value
+            $scope.ExpenseSearch("normal"); //populate $scope.lists data
             console.log("Get Report Data", $scope.lists, $scope.startdate, $scope.enddate);
-
+            var currentdate = new Date();
+            var reportDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             var Chaptername = $scope.userChapter;
             var sdate = ($scope.startdate.getMonth() + 1) + '/' + $scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
             var edate = ($scope.enddate.getMonth() + 1) + '/' + $scope.enddate.getDate() + '/' + $scope.enddate.getFullYear();
@@ -663,114 +930,77 @@ angular.module('ohanaApp')
             var address = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2;
             var cityinfo = $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
 
-            // var address = $scope.profileData.address.line1 + ', ' + $scope.profileData.address.line2;
-            // var cityinfo = $scope.profileData.address.city + ', ' + $scope.profileData.address.state + ', ' + $scope.profileData.address.zip;
-            $scope.expenseservice = expenseservice;
-            console.log("Get Report Data", $scope.listS, $scope.startdate, $scope.enddate);
-            console.log("1report entery", $scope.userRole, $scope.userChapter);
+            $scope.rptdata = [];
 
-            var datatest = GetJsonData();
-            console.log("check data old", datatest);
+            var useremail = commonServices.getCurrentUserEmail();
 
-            var docDefinition = {
-                pageOrientation: 'landscape',
-                header: {
-                    margin: 10,
-                    columns: [
+            $scope.lists.$loaded().then(function(value) {
+                for (var i = 0; i < value.length; i++) {
+                    // console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
+                    // console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
+                    // console.log("third check - ", $scope.userRole, value[i].email, useremail);
 
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
+                        var reportdata = {
+                            "Event Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
-                        {
-                            margin: [10, 0, 0, 0],
-                            text: 'HOW Expense Report',
-                            fontSize: 14,
-                            bold: true,
-                            alignment: 'center'
-                        },
-                    ]
-                },
-                footer: {
-                    columns: [
-                        reportDate,
-
-                        {
-                            text: 'AT&T',
-                            alignment: 'right'
-                        }
-                    ]
-                },
-
-
-                styles: {
-                    header: {
-                        bold: true,
-                        color: '#000',
-                        fontSize: 11
-                    },
-                    demoTable: {
-                        color: '#666',
-                        fontSize: 10
+                        $scope.rptdata.push(reportdata);
                     }
-                },
-                content: [
 
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
+                        var reportdata = {
+                            "Event Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
+                        $scope.rptdata.push(reportdata);
+                    }
 
-                    {
-                        canvas: [{
-                            type: 'line',
-                            x1: 0,
-                            y1: 5,
-                            x2: 750,
-                            y2: 5,
-                            lineWidth: 0.5
-                        }]
-                    }, {
-                        text: '\n'
-                    }, {
-                        columns: [{
-                            stack: [
-                                // second column consists of paragraphs
-                                'Payable To: ' + name,
-                                'Address : ' + address,
-                                'City/State/Zip : ' + cityinfo
-                            ],
-                            fontSize: 11
-                        }, {
-                            stack: [
-                                // second column consists of paragraphs
-                                'Chapter Name : ' + Chaptername,
-                                'Email Id :' + email
-                            ],
-                            fontSize: 11
-                        }, {
-                            stack: [
-                                // second column consists of paragraphs
-                                'Expense From : ' + sdate,
-                                'Expense To : ' + edate
-                            ],
-                            fontSize: 11
-                        }]
-                    }, {
-                        text: '\n'
-                    },
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        $scope.userRole == 'National Staff') {
+                        var reportdata = {
+                            "Event Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": '$ ' + numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
-                    {
-                        width: '',
-                        text: ''
-                    },
+                        $scope.rptdata.push(reportdata);
+                    }
 
-                    expenseservice.table(datatest, ['Date', 'Business Purpose, Origin & Destination', 'Miles Driven', 'Travel @ .25/mile', 'Trailer Miles', 'Trailer Hauling @ .40/mile', 'Other Expenses', 'Total', 'Explanation of Other Expense'])
+                    // console.log("report - ", i, $scope.rptdata);
+                } //for loop 
 
-                ],
+                // console.log("report", $scope.rptdata);
+                expenseservice.createPDFReport($scope.rptdata, reportDate, name, address, cityinfo, Chaptername, email, sdate, edate);
 
-            };
-
-            //alert(docDefinition);
-            //table( datatest, ['EventDate', 'Description', 'MilesDriven','MileageAmount', 'TrailerMile', 'TrailerAmount','OtherExpense', 'ExpenseAmount','OtherExpenseDesc'])
-            //  table( datatest, ['Event Date', 'Description', 'Miles Driven','Mileage Amount', 'Trailer Mile', 'Trailer Amount','Other Expense', 'Expense Amount','Other Expense Desc'])
-
-            //console.log("PDF", docDefinition, GetTableData());
-            pdfMake.createPdf(docDefinition).download('ExpenseReport.pdf');
+            });
 
         }
 
@@ -778,13 +1008,11 @@ angular.module('ohanaApp')
         $scope.setSelected = function(idSelectedBill) {
             $scope.idSelectedBill = idSelectedBill;
             // alert("expense/expensedetail/" + $scope.idSelectedBill);
-            window.location = "#/expense/expensedetail/" + $scope.idSelectedBill;
+            // window.location = "#/expense/expensedetail/" + $scope.idSelectedBill;
+            $location.path('/expense/expensedetail/' + $scope.idSelectedBill);
 
             // $location.path("#/expense/expensedetail/" + $scope.idSelectedBill);
         };
-
-
-
 
     });
 
