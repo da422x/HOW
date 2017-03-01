@@ -188,7 +188,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdTelly a', 'span.dtr-data').editable({
+                        $('#membersTable .tdTelly a').editable({
                             type: "text",
                             name: "phone",
                             placement: "bottom",
@@ -325,15 +325,43 @@ angular.module('ohanaApp')
 
                 // Handle edit for mobile view
                 $('td.dt-body-center').on('click', function() {
-                    var self = this;
-                    var user_key = $(self).children().attr('value');
-                    var user_row_id = $(self).children().attr('data-row-id');
+                    var user_key = $(this).children().attr('value');
+                    var user_row_id = $(this).children().attr('data-row-id');
                     $(document).off('click', 'ul[data-dtr-index="' + user_row_id + '"]');
-                    $(document).on('click', 'ul[data-dtr-index="' + user_row_id + '"]', function() {
+                    $(document).on('click', 'ul[data-dtr-index="' + user_row_id + '"]', function(view) {
                         var currentRowId = $(this).data('dtr-index');
-                        console.log($(this).parent().parent().parent().find('input[data-row-id="' + currentRowId + '"]').val());
+                        $scope.currId = $(this).parent().parent().parent().find('input[data-row-id="' + currentRowId + '"]').val();
+                        _.each($(this).children(), function(n) {
+                            $(n).find('span.dtr-data').addClass('editable editable-click');
+                        });
+
+
+
+                        $('li[data-dtr-index="6"] span.dtr-data').editable({
+                            type: "text",
+                            name: "phone",
+                            placement: "bottom",
+                            emptytext: "null",
+                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
+                            url: function(params) {
+                                console.log($scope.currId);
+                                // var packet = params.value
+                                // var path = '/userData/' + $scope.currId + '/phone/';
+                                // commonServices.updateData(path, packet);
+                                // if ($scope.currId === userService.getId()) {
+                                //     var tempData = userService.getUserData();
+                                //     tempData.phone = packet;
+                                //     userService.setUserData(tempData);
+                                // }
+                            }
+                        });
                     });
+                    $(document).trigger('click', 'ul[data-dtr-index="' + user_row_id + '"]');
                 });
+
+                var setMobileClickEvents = new function() {
+
+                }
 
             }); // end document ready
         }; // end $scope.buildTable
