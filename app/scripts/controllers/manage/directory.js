@@ -71,10 +71,6 @@ angular.module('ohanaApp')
                         title: "Mil. Affil.",
                         data: "branch",
                         orderable: false
-                    }, {
-                        title: "Notes",
-                        data: "notes",
-                        orderable: false
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -101,7 +97,8 @@ angular.module('ohanaApp')
                         $(thead).find('th').eq(0).html('<input type="checkbox" id="membersTable-select-all">');
                     },
                     rowCallback: function(row, data, index) {
-                        $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
+                        $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key);
+                        $(row).find('input[type="checkbox"]').eq(0).attr('data-row-id', data.row_id);
                         $(row).children().eq(1).addClass('tdFname');
                         $(row).children().eq(2).addClass('tdLname');
                         $(row).children().eq(3).addClass('tdDob');
@@ -111,7 +108,6 @@ angular.module('ohanaApp')
                         $(row).children().eq(7).addClass('tdPrimaryChapter');
                         $(row).children().eq(8).addClass('tdChapters');
                         $(row).children().eq(9).addClass('tdMil');
-                        $(row).children().eq(10).addClass('tdNotes');
                         for (i = 1; i < 10; i++) {
                             $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                         }
@@ -192,7 +188,7 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdTelly a').editable({
+                        $('#membersTable .tdTelly a', 'span.dtr-data').editable({
                             type: "text",
                             name: "phone",
                             placement: "bottom",
@@ -326,6 +322,19 @@ angular.module('ohanaApp')
                         }
                     }
                 });
+
+                // Handle edit for mobile view
+                $('td.dt-body-center').on('click', function() {
+                    var self = this;
+                    var user_key = $(self).children().attr('value');
+                    var user_row_id = $(self).children().attr('data-row-id');
+                    $(document).off('click', 'ul[data-dtr-index="' + user_row_id + '"]');
+                    $(document).on('click', 'ul[data-dtr-index="' + user_row_id + '"]', function() {
+                        var currentRowId = $(this).data('dtr-index');
+                        console.log($(this).parent().parent().parent().find('input[data-row-id="' + currentRowId + '"]').val());
+                    });
+                });
+
             }); // end document ready
         }; // end $scope.buildTable
 

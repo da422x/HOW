@@ -31,11 +31,11 @@ angular.module('ohanaApp')
         $scope.resetPassword = function() {
             var pr = commonServices.sendPasswordReset($scope.userEmail);
             $q.all([pr]).then(function(data) {
+                console.log(data);
                 if (data[0]) {
                     $uibModalInstance.dismiss('cancel');
                     swal("Request sent!", "Check your email for instructions to reset your password", "success");
                 } else {
-                    console.log('wrong wrong wrong!');
                     swal("Request Failed...", "Email does not exist", "error");
                 }
             });

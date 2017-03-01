@@ -151,6 +151,7 @@ angular.module('ohanaApp')
                     });
                     howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                     $uibModalInstance.close();
+                    window.location.replace('#/home');
                 } else {
                     // Do something here when sign in unsuccessful....
                     swal({
