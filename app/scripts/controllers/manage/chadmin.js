@@ -48,6 +48,9 @@ angular.module('ohanaApp')
                         title: "Description",
                         data: "description"
                     }, {
+                        title: "Chapter Admin",
+                        data: "chadmin"
+                    }, {
                         title: "Region",
                         data: "region"
                     }, {
@@ -67,6 +70,9 @@ angular.module('ohanaApp')
                     }, {
                         title: "Location",
                         data: "googleMaps_Link"
+                    }, {
+                        title: "Donations",
+                        data: "donation_link"
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -131,7 +137,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/description';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/description';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -142,7 +148,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/zip';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/zip';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -153,7 +159,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/email';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
                                 commonServices.updateData(path, packet);
                             }
                         });
