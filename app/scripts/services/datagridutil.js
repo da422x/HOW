@@ -22,6 +22,7 @@ angular.module('ohanaApp')
             for (var i = 0; i < resultsLen; i++) {
                 var arr = {};
                 arr.key = results[i].key;
+                arr.row_id = i;
                 arr.first = results[i].name.first;
                 arr.last = results[i].name.last;
                 var dobparse = new Date(results[i].DOB);
