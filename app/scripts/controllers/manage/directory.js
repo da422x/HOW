@@ -37,6 +37,7 @@ angular.module('ohanaApp')
 
                 $scope.membersTable = $('#membersTable').DataTable({
                     // ajax: 'testData/members.json',
+                    responsive: true,
                     data: dataSet,
                     columns: [{}, {
                         title: "KEY",
@@ -299,6 +300,212 @@ angular.module('ohanaApp')
                     }
                 });
 
+                // Handle Mobile Events.
+                $scope.membersTable.on('responsive-display', function(e, datatable, row, showHide, update) {
+                    $scope.currId = row.data().key;
+                    var currentElement = $(this).find('ul[data-dtr-index="' + row.index() + '"]').children();
+                    if (showHide) {
+                        _.each(currentElement, function(n) {
+                            switch ($(n).data('dt-column')) {
+                                case 2:
+                                    // First Name
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="2"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value;
+                                            var path = '/userData/' + params.name + '/name/first/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.name.first = packet;
+                                                userService.setUserData(tempData);
+                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    // Last Name
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="3"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/name/last/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.name.last = packet;
+                                                userService.setUserData(tempData);
+                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    // DOB
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="4"]>span.dtr-data').editable({
+                                        type: "combodate",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        format: 'MM/DD/YYYY',
+                                        viewformat: 'MM/DD/YYYY',
+                                        template: 'MMM / DD / YYYY',
+                                        combodate: {
+                                            template: 'MMM / DD / YYYY',
+                                            minYear: 1900,
+                                            maxYear: 2020
+                                        },
+                                        url: function(params) {
+                                            var packet = params.value;
+                                            var path = '/userData/' + params.name + '/DOB/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.DOB = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    // email
+                                    break;
+                                case 6:
+                                    // Mobile
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="6"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/phone/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.phone = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 7:
+                                    // Role
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="7"]>span.dtr-data').editable({
+                                        type: "select",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        showbuttons: false,
+                                        url: function(params) {
+                                            var currentUserUID = userService.getId();
+                                            if ($scope.currId !== currentUserUID) {
+                                                var packet = {
+                                                    role: params.value
+                                                }
+                                                var path = '/userRoles/' + params.name;
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    userService.setRole(packet);
+                                                }
+                                            } else {
+                                                swal(
+                                                    'Alert',
+                                                    'You cannot edit your own role!',
+                                                    'error'
+                                                )
+                                            }
+                                        },
+                                        source: function() {
+                                            var currentUserRole = userService.getRole();
+                                            if (currentUserRole === 'National Staff') {
+                                                return $rootScope.siteData.roles;
+                                            } else {
+                                                var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
+                                                return newRoles;
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 8:
+                                    // Primary Chapter
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('#membersTable').off('click', 'ul>li[data-dtr-index="8"]>span.dtr-data');
+                                    $('#membersTable').on('click', 'ul>li[data-dtr-index="8"]>span.dtr-data', function() {
+                                        var self = this;
+                                        var modalInstance = $uibModal.open({
+                                            templateUrl: '/parts/changeChapter.html',
+                                            controller: 'ChangeChapterCtrl',
+                                            resolve: {
+                                                selectedUID: function() {
+                                                    var tempRowId = $(self).parent().data('dt-row');
+                                                    var curKey = $(self).parent().parent().parent().parent().parent().find('input[data-row-id="' + tempRowId + '"]').val();
+                                                    return curKey;
+                                                }
+                                            }
+                                        });
+                                    });
+                                    break;
+                                case 9:
+                                    // Secondary Chapter
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('#membersTable').off('click', 'ul>li[data-dtr-index="9"]>span.dtr-data');
+                                    $('#membersTable').on('click', 'ul>li[data-dtr-index="9"]>span.dtr-data', function() {
+                                        var self = this;
+                                        var modalInstance = $uibModal.open({
+                                            templateUrl: '/parts/manageadditionalchapters.html',
+                                            controller: 'ManageAdditionalChapters',
+                                            resolve: {
+                                                selectedUID: function() {
+                                                    var tempRowId = $(self).parent().data('dt-row');
+                                                    var curKey = $(self).parent().parent().parent().parent().parent().find('input[data-row-id="' + tempRowId + '"]').val();
+                                                    return curKey;
+                                                }
+                                            }
+                                        });
+                                    });
+                                    break;
+                                case 10:
+                                    // Mil Affil
+                                    $('ul>li[data-dtr-index="10"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/branch/';
+                                            commonServices.updateData(path, packet);
+                                            if ($scope.currId === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.branch = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                default:
+                                    // Do nothing
+                                    console.log('Should not be here');
+                                    break;
+                            }
+                        });
+                    }
+                });
+
                 // Handle click on "Select all" control
                 $('#membersTable-select-all').on('click', function() {
                     // Get all rows with search applied
@@ -322,47 +529,6 @@ angular.module('ohanaApp')
                         }
                     }
                 });
-
-                // Handle edit for mobile view
-                $('td.dt-body-center').on('click', function() {
-                    var user_key = $(this).children().attr('value');
-                    var user_row_id = $(this).children().attr('data-row-id');
-                    $(document).off('click', 'ul[data-dtr-index="' + user_row_id + '"]');
-                    $(document).on('click', 'ul[data-dtr-index="' + user_row_id + '"]', function(view) {
-                        var currentRowId = $(this).data('dtr-index');
-                        $scope.currId = $(this).parent().parent().parent().find('input[data-row-id="' + currentRowId + '"]').val();
-                        _.each($(this).children(), function(n) {
-                            $(n).find('span.dtr-data').addClass('editable editable-click');
-                        });
-
-
-
-                        $('li[data-dtr-index="6"] span.dtr-data').editable({
-                            type: "text",
-                            name: "phone",
-                            placement: "bottom",
-                            emptytext: "null",
-                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
-                            url: function(params) {
-                                console.log($scope.currId);
-                                // var packet = params.value
-                                // var path = '/userData/' + $scope.currId + '/phone/';
-                                // commonServices.updateData(path, packet);
-                                // if ($scope.currId === userService.getId()) {
-                                //     var tempData = userService.getUserData();
-                                //     tempData.phone = packet;
-                                //     userService.setUserData(tempData);
-                                // }
-                            }
-                        });
-                    });
-                    $(document).trigger('click', 'ul[data-dtr-index="' + user_row_id + '"]');
-                });
-
-                var setMobileClickEvents = new function() {
-
-                }
-
             }); // end document ready
         }; // end $scope.buildTable
 
