@@ -8,10 +8,57 @@
 <!-- end modal-header -->
 
 <!-- start modal body -->
-<div class="modal-body" style="height: 500px; overflow-y: auto; overflow-x: hidden;">
-    <div ng-repeat="log in currentLog">
-        <label>{{log.ts | date: "medium"}}:</label>
-        <p>{{log.msg}}</p>
+<div class="modal-body" style="height: 500px;">
+
+    <!-- This section is available only too National Staff -->
+    <div class="form-group" ng-show="$root.userRole === 'National Staff'">
+        <div class="row" style="margin-bottom: 10px;">
+            <label class="col-md-2 control-label" for="logLevel">Log level*</label>
+            <div class="col-md-3">
+                <input name="logLevel" type="radio" ng-model="logLevel" ng-click="levelChanged(logLevel)" value="National" style="margin-right: 5px;">National
+                <input name="logLevel" type="radio" ng-model="logLevel" ng-click="levelChanged(logLevel)" value="Chapter">Chapter
+            </div>
+        </div>
+        <div class="row" ng-show="logLevel === 'Chapter'" style="margin-bottom: 10px;">
+            <label class="col-md-2 control-label" for="region">Region*</label>
+            <div class="col-md-3">
+                <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="selectedRegion" ng-change="regionUpdate(selectedRegion)" required>
+                </select>
+            </div>
+        </div>
+        <div class="row" ng-show="logLevel === 'Chapter'" style="margin-bottom: 10px;">
+            <label class="col-md-2 control-label" for="chapter">Chapter*</label>
+            <div class="col-md-3">
+                <select id="chapter" name="chapter" class="form-control" ng-model="selectedChapter" ng-options="chapter as chapter.value for chapter in chapters" ng-change="chapterChanged()" required>
+                </select>
+            </div>
+        </div>
+        <div class="row" ng-show="logLevel === 'National' || selectedChapter" style="margin-bottom: 10px;">
+            <label class="col-md-2 control-label">Log Type*</label>
+            <div class="col-md-3">
+                <select class="form-control" ng-options="type as type.text for type in logType" ng-model="selectedOption" ng-change="selectedLogOption(selectedOption)" required></select>
+            </div>
+        </div>
+    </div>
+    <!-- This section is available only too National Staff -->
+
+    <!-- This section is available only too Chapter Lead -->
+    <div class="form-group" ng-show="$root.userRole === 'Chapter Lead'">
+        <div class="row" style="margin-bottom: 10px;">
+            <label class="col-md-2 control-label">Log Type*</label>
+            <div class="col-md-3">
+                <select class="form-control" ng-options="type as type.text for type in logType" ng-model="selectedOption" ng-change="selectedLogOption(selectedOption)" required></select>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="logContainer">
+        <div ng-repeat="log in currentLog ">
+            <label>{{log.ts | date:'medium'}}:</label>
+            <p>{{log.msg}}</p>
+        </div>
     </div>
 </div>
 <!-- end modal body -->
