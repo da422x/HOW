@@ -21,14 +21,14 @@ angular.module('ohanaApp')
 
         $scope.postChapter = function() {
             // submit form
-            /*var result = commonServices.pushData('/events/', $scope.newChapter);
+            var result = commonServices.pushData('/Regions/' + newChapter.region + '/' + newChapter.state + '/' + $scope.editValue[1].name, $scope.newChapter);
 
             $q.all([result]).then(function(data) {
                 if (data[0]) {
                     console.log(data[0]);
                     $uibModalInstance.close();
                     swal({
-                        text: "Adding Event",
+                        text: "Adding Chapter",
                         type: 'success',
                         timer: 2500
                     });
@@ -39,7 +39,7 @@ angular.module('ohanaApp')
                         timer: 2500
                     });
                 }
-            });*/
+            });
         };
 
         $scope.cancel = function() {

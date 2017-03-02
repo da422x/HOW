@@ -160,7 +160,7 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "N/A",
                             url: function(params) {
-                                var packet = params.value
+                                var packet = params.value;
                                 var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
                                 commonServices.updateData(path, packet);
                             }
@@ -271,8 +271,10 @@ angular.module('ohanaApp')
                     confirmButtonText: 'Yes, delete it!'
                 }).then(function() {
                     _.each($scope.checkedBoxes, function(userKey) {
-                        commonServices.removeData('/userData/' + userKey);
-                        commonServices.removeData('/userRoles/' + userKey);
+                        console.log(userKey);
+                        console.log($scope);
+                        //commonServices.removeData('/userData/' + userKey);
+                        //commonServices.removeData('/userRoles/' + userKey);
                     });
                     swal('Deleted!', 'Your file has been deleted.', 'success');
                     $scope.update();
