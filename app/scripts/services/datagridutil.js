@@ -167,6 +167,7 @@ angular.module('ohanaApp')
                         arr.state = stateName;
                         arr.name = results[i][stateName][chapterName].name;
                         arr.description = results[i][stateName][chapterName].description;
+                        arr.chadmin = (results[i][stateName][chapterName].chadmin ? results[i][stateName][chapterName].chadmin : " ");
                         arr.facebook = results[i][stateName][chapterName].url;
                         arr.facebook_link = results[i][stateName][chapterName].url_link;
                         arr.email = results[i][stateName][chapterName].email;
@@ -174,6 +175,8 @@ angular.module('ohanaApp')
                         arr.zip = results[i][stateName][chapterName].zip;
                         arr.googleMaps = "https://www.google.com/maps/place/" + results[i][stateName][chapterName].lat + "," + results[i][stateName][chapterName].lng;
                         arr.googleMaps_Link = "<a href='" + arr.googleMaps + "' target='_blank' class='storelocatorlink'>" + arr.googleMaps + "</a><br/>";
+                        arr.donation = (results[i][stateName][chapterName].donation ? results[i][stateName][chapterName].donation : "https://www.paypal.com/donate/?token=3TyOO6taytT0isxzdLwbDz8GvB6JtWLIzuZy0fjN3K4-PihZMiVhpPbECt0JiW7IkR8mfG");
+                        arr.donation_link = "<a href='" + arr.donation + "' target='_blank' class='storelocatorlink'>" + arr.donation + "</a><br/>";
                         gridData.push(arr);
                     }
                 }
