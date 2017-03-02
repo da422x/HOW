@@ -40,15 +40,18 @@ angular.module('ohanaApp')
                 _.each(results[i].Chapters, function(c) {
                     arr.chapters.push(c.chapter);
                 });
+                if (!results[i].Chapters) {
+                    arr.chapters.push('none');
+                }
                 if (results[i].branch) {
                     arr.branch = results[i].branch;
                 } else {
-                    arr.branch = "";
+                    arr.branch = 'none';
                 }
                 if (results[i].notes) {
                     arr.notes = results[i].notes;
                 } else {
-                    arr.notes = "";
+                    arr.notes = 'none';
                 }
 
                 // NOTE FOR IF THE DATA IS STORED IN ARRAYS NOT OBJECTS LIKE ABOVE

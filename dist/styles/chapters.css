@@ -29,3 +29,12 @@
 #manage-additional-chapters {
     float: left;
 }
+
+.logContainer {
+    height: 250px;
+    width: 100%;
+    max-width: 550px;
+    padding: 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -31,52 +31,73 @@ angular.module('ohanaApp')
 
             $scope.updateRegionChapter = function(region, chapter) {
                 if (selectedUID) {
-
                     var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
                     $q.all([getSelectedUser]).then(function(data) {
+                        swal({
+                            title: 'Are you sure?',
+                            text: 'Changing ' + data[0].name.first + ' ' + data[0].name.last + ' chapter will revert their role to Participant...',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, please continue!'
+                        }).then(function() {
+                            // Logg changes.
+                            howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                                data[0].Chapter, chapter.value);
+                            howLogService.logUserAddedToChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), chapter.value);
+                            howLogService.logUserRemovedFromChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), data[0].Chapter);
+
+                            // Get new values and update DB.
+                            commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
+                            commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.value);
+                            commonServices.updateData('/userRoles/' + selectedUID + '/role', 'Participant');
+
+                            // Close modal with success message.
+                            $uibModalInstance.dismiss('cancel');
+                            $rootScope.$broadcast('modalClosing');
+                            swal('Success', 'Region/Chapter updated successfully!', 'success');
+                        });
+                    });
+                } else {
+                    swal({
+                        title: 'Are you sure?',
+                        text: 'Your role will be changed to Participant if you change your PRIMARY CHAPTER',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, please continue!'
+                    }).then(function() {
+                        // Get new values.
+                        var userId = userService.getId();
+                        var userData = userService.getUserData();
+                        var currentChapter = userService.getChapter();
+                        var currentUserName = userService.getUserName();
 
                         // Logg changes.
-                        howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
-                            data[0].Chapter, chapter.value);
+                        howLogService.logPrimaryChapterChange(currentUserName, false,
+                            currentChapter, chapter.value);
+                        howLogService.logUserAddedToChapter(currentUserName, false, chapter.value);
+                        howLogService.logUserRemovedFromChapter(currentUserName, false, currentChapter);
 
-                        // Get new values and update DB.
-                        commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
-                        commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.value);
+                        // update DB.
+                        commonServices.updateData('/userData/' + userId + '/Region', region.value);
+                        commonServices.updateData('/userData/' + userId + '/Chapter', chapter.value);
+                        commonServices.updateData('/userRoles/' + userId + '/role', 'Participant');
+
+                        // Update global variables.
+                        userData.Region = region.value;
+                        userData.Chapter = chapter.value;
+                        userService.setUserData(userData);
+                        userService.setChapter(chapter.value);
+                        userService.setRole('Participant');
 
                         // Close modal with success message.
                         $uibModalInstance.dismiss('cancel');
-                        $rootScope.$broadcast('modalClosing');
-                        swal("Success", "Region/Chapter updated successfully!", "success");
-
+                        $rootScope.$broadcast('updateProfile', true);
+                        swal('Success', 'Region/Chapter updated successfully!', 'success');
                     });
-
-                } else {
-
-                    // Get new values.
-                    var userId = userService.getId();
-                    var userData = userService.getUserData();
-                    var currentChapter = userService.getChapter();
-                    var currentUserName = userService.getUserName();
-
-                    // Logg changes.
-                    howLogService.logPrimaryChapterChange(currentUserName, false,
-                        currentChapter, chapter.value);
-
-                    // update DB.
-                    commonServices.updateData('/userData/' + userId + '/Region', region.value);
-                    commonServices.updateData('/userData/' + userId + '/Chapter', chapter.value);
-
-                    // Update global variables.
-                    userData.Region = region.value;
-                    userData.Chapter = chapter.value;
-                    userService.setUserData(userData);
-                    userService.setChapter(chapter.value);
-
-                    // Close modal with success message.
-                    $uibModalInstance.dismiss('cancel');
-                    $rootScope.$broadcast('updateProfile', true);
-                    swal("Success", "Region/Chapter updated successfully!", "success");
-
                 }
             }
         }

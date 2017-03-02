@@ -90,6 +90,8 @@ angular.module('ohanaApp')
                         // Logg changes.
                         howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
                             $scope.chaptersRemoved, $scope.chaptersAdded);
+                        howLogService.logUserAddedToSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersAdded);
+                        howLogService.logUserRemovedFromSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersRemoved);
 
                         // Update global variables, and Database.
                         commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
@@ -115,6 +117,8 @@ angular.module('ohanaApp')
                     // Logg changes.
                     howLogService.logSecondaryChapterChange(currentUserName, false,
                         $scope.chaptersRemoved, $scope.chaptersAdded);
+                    howLogService.logUserAddedToSecondaryChapter(currentUserName, false, $scope.chaptersAdded);
+                    howLogService.logUserRemovedFromSecondaryChapter(currentUserName, false, $scope.chaptersRemoved);
 
                     // Update global variables, and Database.
                     commonServices.updateData('/userData/' + userId + '/Chapters/', $scope.userChapters);

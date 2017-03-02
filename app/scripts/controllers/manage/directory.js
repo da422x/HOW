@@ -53,12 +53,10 @@ angular.module('ohanaApp')
                         data: "dob"
                     }, {
                         title: "Email",
-                        data: "email",
-                        orderable: false
+                        data: "email"
                     }, {
                         title: "Mobile #",
-                        data: "phone",
-                        orderable: false
+                        data: "phone"
                     }, {
                         title: "Role",
                         data: "role"
@@ -70,8 +68,7 @@ angular.module('ohanaApp')
                         data: "chapters[, ]"
                     }, {
                         title: "Mil. Affil.",
-                        data: "branch",
-                        orderable: false
+                        data: "branch"
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -286,15 +283,6 @@ angular.module('ohanaApp')
                                     tempData.branch = packet;
                                     userService.setUserData(tempData);
                                 }
-                            }
-                        });
-                        $('#membersTable .tdNotes a').editable({
-                            type: "textarea",
-                            name: "notes",
-                            placement: "bottom",
-                            emptytext: "null",
-                            url: function(params) {
-                                // TO-DO: Set up notes functionality
                             }
                         });
                     }

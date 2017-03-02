@@ -66,7 +66,8 @@ angular.module('ohanaApp')
                             delete request.$$hashKey;
                             request.reviewer = userService.getUserName();
                             request.reviewers_comment = message;
-                            request.request_update = ts;
+                            request.request_updated = ts;
+                            request.request_closed = ts;
                             request.request_status = 'Declined';
                             commonServices.updateData('/roleChangeRequests/' + key, request);
                             $scope.update();
@@ -116,7 +117,8 @@ angular.module('ohanaApp')
                             delete request.$$hashKey;
                             request.reviewer = userService.getUserName();
                             request.reviewers_comment = message;
-                            request.request_update = ts;
+                            request.request_updated = ts;
+                            request.request_closed = ts;
                             request.request_status = 'Approved';
                             commonServices.updateData('/roleChangeRequests/' + key, request);
                             commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
@@ -132,7 +134,7 @@ angular.module('ohanaApp')
                         if (dismiss === 'cancel') {
                             swal(
                                 'Cancelled',
-                                'Your imaginary file is safe :)',
+                                'No change made to request',
                                 'error'
                             );
                         }
