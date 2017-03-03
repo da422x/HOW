@@ -250,10 +250,14 @@ angular.module('ohanaApp')
         }; // end $scope.update
 
         $scope.addChapter = function() {
-            console.log();
+            console.log($scope.chaptersTable);
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/chapterAdd.html',
                 controller: 'ChapterAddCtrl'
+            });
+
+            modalInstance.result.then(function(parameter) {
+                $scope.chaptersTable.row.add(parameter);
             });
         };
 
@@ -271,8 +275,8 @@ angular.module('ohanaApp')
                     confirmButtonText: 'Yes, delete it!'
                 }).then(function() {
                     _.each($scope.checkedBoxes, function(userKey) {
-                        console.log(userKey);
-                        console.log($scope);
+                        console.log($scope.checkedBoxes);
+
                         //commonServices.removeData('/userData/' + userKey);
                         //commonServices.removeData('/userRoles/' + userKey);
                     });
