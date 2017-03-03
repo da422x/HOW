@@ -50,13 +50,19 @@ angular.module('ohanaApp')
             return firebase.auth().signInWithEmailAndPassword(user.email, user.password)
                 .then(function(data) {
                     console.log('success : ' + firebase.auth().currentUser.email + ' signed In');
-                    return true;
+                    return {
+                        type: 'SUCCESS'
+                    };
                 })
                 .catch(function(error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
                     console.log('ERROR: ' + error.code + ': ' + error.message);
-                    return false;
+                    return {
+                        type: 'ERROR',
+                        code: error.code,
+                        message: error.message
+                    };
                 });
 
         };

@@ -9,10 +9,12 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('RoleRequestChangeFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, userInfo) {
+    .controller('RoleRequestChangeFormCtrl', function($rootScope, $q, userService, commonServices, $scope, $uibModalInstance) {
         'use strict';
 
-        $scope.userData = userInfo;
+        $scope.userData = userService.getUserData();
+        $scope.currentUID = userService.getId();
+        $scope.currentUserRole = userService.getRole();
 
         $scope.formData = {
             role: '',
@@ -27,33 +29,48 @@ angular.module('ohanaApp')
 
         $scope.submitForm = function() {
             if ($scope.formData.role.value) {
+                var userRequests = commonServices.getData('/roleChangeRequests/');
+                var canContinue = true;
+                var errorMessage = '';
+                $q.all([userRequests]).then(function(data) {
 
-                var newKey = commonServices.getNewKey('/roleChangeRequests/');
+                    if ($scope.currentUserRole !== $scope.formData.role.value) {
+                        _.each(data[0], function(value) {
+                            if (value.uid === $scope.currentUID && value.request_status === 'pending') {
+                                canContinue = false;
+                                errorMessage = 'You can only have one pending request at a time, you need to wait or delete current pending request...';
+                            }
+                        });
+                    } else {
+                        canContinue = false;
+                        errorMessage = 'You are not allowed to make a request for a role you already have...';
+                    }
 
-                $q.all([newKey]).then(function(data) {
-
-                    var newTS = Date.now();
-                    var packet = {
-                        uid: $scope.userData.uid,
-                        name: ($scope.userData.data.name.first + ' ' + $scope.userData.data.name.last),
-                        email: $scope.userData.data.email,
-                        current_role: $scope.userData.data.role,
-                        request_role: $scope.formData.role.value,
-                        user_comment: $scope.formData.comment,
-                        admin_comment: '',
-                        request_status: 'pending',
-                        request_created: newTS,
-                        request_updated: newTS,
-                        request_closed: ''
-                    };
-
-                    commonServices.updateData('/roleChangeRequests/' + data[0], packet);
-                    $rootScope.$broadcast('modalClosing');
-                    $uibModalInstance.dismiss('cancel');
+                    if (canContinue) {
+                        var newTS = Date.now();
+                        var packet = {
+                            uid: $scope.currentUID,
+                            name: ($scope.userData.name.first + ' ' + $scope.userData.name.last),
+                            email: $scope.userData.email,
+                            current_role: $scope.currentUserRole,
+                            request_role: $scope.formData.role.value,
+                            user_comment: $scope.formData.comment || 'none',
+                            admin_comment: '',
+                            request_status: 'pending',
+                            request_created: newTS,
+                            request_updated: newTS,
+                            request_closed: ''
+                        };
+                        commonServices.pushData('/roleChangeRequests/', packet);
+                        $rootScope.$broadcast('modalClosing');
+                        $uibModalInstance.dismiss('cancel');
+                        swal('Success', 'Role Change Request created successfully', 'success');
+                    } else {
+                        swal('Error', errorMessage, 'error');
+                    }
                 });
-
             } else {
-                console.log('select role...');
+                swal('Error', 'Role Change Request was not created...', 'error');
             }
         }
 
