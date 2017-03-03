@@ -190,10 +190,3 @@ a:visited {
 #rcr-alert {
     background-color: #9F6000;
 }
-
-
-/*Bootstrap 3*/
-
-.modal-dialog {
-    width: 65%;
-}
