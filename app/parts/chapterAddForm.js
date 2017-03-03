@@ -11,7 +11,7 @@
 angular.module('ohanaApp')
     .controller('ChapterAddCtrl', function($q, $scope, $uibModalInstance, commonServices, $rootScope) {
         'use strict';
-
+        var submitChapter = {};
         //Form data
         $scope.regions = $rootScope.siteData.regions;
         $scope.states = $rootScope.siteData.states;
@@ -19,27 +19,51 @@ angular.module('ohanaApp')
         // empty submit object
         $scope.newChapter = {};
 
-        $scope.postChapter = function() {
-            // submit form
-            /*var result = commonServices.pushData('/events/', $scope.newChapter);
+        //Submit Form
+        $scope.postChapter = function(newChapter) {
+            //KNOWN DATA MANIPULATION
+            submitChapter = angular.copy(newChapter);
+            submitChapter.region = submitChapter.region.value;
+            submitChapter.state = submitChapter.state.id;
+            submitChapter.url = submitChapter.facebook;
+            delete submitChapter.facebook;
+            submitChapter.email_link = "<a href=\"" + submitChapter.email + "\" target=\"_blank\" id=\"slp_marker_email\" class=\"storelocatorlink\"><nobr>Email</nobr></a>";
+            submitChapter.web_link = "<a href='" + submitChapter.url + "' target='_blank' class='storelocatorlink'>" + submitChapter.url + "</a><br/>";
+            submitChapter.url_link = "<a href='" + submitChapter.url + "' target='_blank' class='storelocatorlink'>" + submitChapter.url + "</a><br/>";
+
+            //TODO: UNKNOWN DATA
+            submitChapter.lat = 0;
+            submitChapter.lng = 0;
+            submitChapter.address = "";
+            submitChapter.address2 = "";
+            submitChapter.attributes = "";
+            submitChapter.city = "";
+            submitChapter.country = "";
+            submitChapter.distance = "";
+            submitChapter.fax = "";
+            submitChapter.featured = "";
+            submitChapter.hours = "";
+            submitChapter.icon = "";
+            submitChapter.id = "";
+            submitChapter.image = "";
+            submitChapter.linked_postid = "0";
+            submitChapter.neat_title = "";
+            submitChapter.option_value = "";
+            submitChapter.phone = "";
+            submitChapter.rank = "";
+            submitChapter.sl_pages_url = "";
+            submitChapter.tags = "";
+            //Post Chapter Data
+            var result = commonServices.setData('/Regions/' + submitChapter.region + '/' + submitChapter.state + '/' + submitChapter.name, submitChapter);
 
             $q.all([result]).then(function(data) {
-                if (data[0]) {
-                    console.log(data[0]);
-                    $uibModalInstance.close();
-                    swal({
-                        text: "Adding Event",
-                        type: 'success',
-                        timer: 2500
-                    });
-                } else {
-                    swal({
-                        text: "Something happened....",
-                        type: 'error',
-                        timer: 2500
-                    });
-                }
-            });*/
+                $uibModalInstance.close(submitChapter);
+                swal({
+                    text: "Adding Chapter",
+                    type: 'success',
+                    timer: 2500
+                });
+            });
         };
 
         $scope.cancel = function() {

@@ -17,9 +17,9 @@
             </div>
             <!-- Text - Manager Name -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="chadmin">Assigned Chapter Manager*</label>
+                <label class="col-md-4 control-label" for="lead">Assigned Chapter Manager*</label>
                 <div class="col-md-7">
-                    <input id="manager" name="manager" type="text" class="form-control input-md" ng-model="newChapter.chadmin" ng-required="true">
+                    <input id="manager" name="manager" type="text" class="form-control input-md" ng-model="newChapter.lead" ng-required="true">
                     <p ng-show="chapterForm.manager.$invalid && !chapterForm.manager.$pristine" class="help-block">Enter a valid manager's name.</p>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="facebook">Facebook URL*</label>
                 <div class="col-md-7">
-                    <input id="facebook" name="facebook" type="url" placeholder="facebook.com" class="form-control input-md" ng-model="newChapter.facebook" ng-required="true">
+                    <input id="facebook" name="facebook" type="url" placeholder="http://www.facebook.com" class="form-control input-md" ng-model="newChapter.facebook" ng-required="true">
                     <p ng-show="chapterForm.facebook.$invalid && !chapterForm.facebook.$pristine" class="help-block">Enter a valid facebook address.</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="donation">Donation URL*</label>
                 <div class="col-md-7">
-                    <input id="donation" name="donation" type="url" placeholder="paypal.com" class="form-control input-md" ng-model="newChapter.donation" ng-required="true">
+                    <input id="donation" name="donation" type="url" placeholder="http://www.paypal.com" class="form-control input-md" ng-model="newChapter.donation" ng-required="true">
                     <p ng-show="chapterForm.donation.$invalid && !chapterForm.donation.$pristine" class="help-block">Enter a valid donation address.</p>
                 </div>
             </div>
@@ -88,10 +88,10 @@
 <!-- end modal body -->
 <div class="modal-footer">
     <!-- Button - Submit -->
-    <div class="form-group ">
-        <label class="col-md-4 control-label " for="submit "></label>
-        <div class="col-md-7 ">
-            <button id="submit " name="submit " class="btn btn-primary " ng-disabled="chapterForm.$invalid ">Submit</button>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-7">
+            <button id="submit" name="submit" class="btn btn-primary" ng-disabled="chapterForm.$invalid" ng-click="postChapter(newChapter)">Submit</button>
         </div>
     </div>
 </div>

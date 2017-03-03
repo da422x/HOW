@@ -160,7 +160,7 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "N/A",
                             url: function(params) {
-                                var packet = params.value
+                                var packet = params.value;
                                 var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
                                 commonServices.updateData(path, packet);
                             }
@@ -250,10 +250,14 @@ angular.module('ohanaApp')
         }; // end $scope.update
 
         $scope.addChapter = function() {
-            console.log();
+            console.log($scope.chaptersTable);
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/chapterAdd.html',
                 controller: 'ChapterAddCtrl'
+            });
+
+            modalInstance.result.then(function(parameter) {
+                $scope.chaptersTable.row.add(parameter);
             });
         };
 
@@ -271,8 +275,10 @@ angular.module('ohanaApp')
                     confirmButtonText: 'Yes, delete it!'
                 }).then(function() {
                     _.each($scope.checkedBoxes, function(userKey) {
-                        commonServices.removeData('/userData/' + userKey);
-                        commonServices.removeData('/userRoles/' + userKey);
+                        console.log($scope.checkedBoxes);
+
+                        //commonServices.removeData('/userData/' + userKey);
+                        //commonServices.removeData('/userRoles/' + userKey);
                     });
                     swal('Deleted!', 'Your file has been deleted.', 'success');
                     $scope.update();
