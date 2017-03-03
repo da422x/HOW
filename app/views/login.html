@@ -4,7 +4,7 @@
     <div class="" style="margin: auto; max-width: 350px">
         <h3>Login</h3>
         <form name="loginForm" style="margin-bottom:20px;" ng-controller="LoginCtrl" ng-submit="loginForm.$valid && checkLogin(logObj)" novalidate>
-            <div ng-show="loginForm.$invalid && loginForm.$submitted" class="alert alert-danger">FAIL.</div>
+            <div ng-show="loginForm.$invalid && loginForm.$submitted" class="alert alert-danger">Username/Email and password is required</div>
             <div class="form-group well">
                 <label>Username/Email</label>
                 <input type="text" name="email" class="form-control" placeholder="email@address.com" ng-model="logObj.email" required/>

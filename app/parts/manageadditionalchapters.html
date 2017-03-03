@@ -8,36 +8,31 @@
 <!-- end modal-header -->
 
 <!-- start modal body -->
-<div class="modal-body">
-    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">
-        <div class="form-group">
-            <div id="manage-additional-chapters" class="col-md-5">
+<div id="manage-additional-chapters" class="modal-body">
+    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate>
+        <div class="row">
+            <div style="margin-top: 10px;">
                 <div>
-                    <div>
-                        <select id="secondaryRegion" name="region" class="form-control region-dd" ng-options="region as region.text for region in regions" ng-model="newRegion" ng-change="regionUpdate(newRegion)" required>
-                        </select>
-                    </div>
+                    <select id="secondaryRegion" name="region" class="form-control region-dd" ng-options="region as region.text for region in regions" ng-model="newRegion" ng-change="regionUpdate(newRegion)" required>
+                    </select>
                 </div>
                 <div>
-                    <div>
-                        <select id="secondaryChapter" name="chapter" class="form-control chapter-dd" ng-model="newChapter" ng-options="chapter as chapter.value for chapter in chapters" required>
-                        </select>
-                    </div>
+                    <select id="secondaryChapter" name="chapter" class="form-control chapter-dd" ng-model="newChapter" ng-options="chapter as chapter.value for chapter in chapters" required>
+                    </select>
                 </div>
                 <div>
                     <button id="add" name="add" class="btn btn-primary additonal-chapter-btn-green" ng-disabled="userForm.chapter.$invalid" ng-click="addChapter()">Add Chapter</button>
                 </div>
             </div>
-            <div id="manage-additional-chapters" class="col-md-7">
+            <div style="margin-top: 10px;">
                 <select name="currentChapters" multiple class="form-control" ng-model="currentChapter" ng-options="chapter as chapter.chapter for chapter in userChapters" required></select>
                 <button id="remove" name="remove" class="btn btn-primary additonal-chapter-btn-red" ng-disabled="userForm.currentChapters.$invalid" ng-click="removeChapter()">Remove Chapter</button>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="submit"></label>
-            <div class="col-md-7">
-                <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.chapter.$invalid && !submitFlag" ng-click="updateChapters()">Submit</button>
+        <div class="row" style="text-align: center; margin-top: 10px;">
+            <div>
+                <button id="submit" name="submit" class="btn btn-primary" ng-disabled="!submitFlag" ng-click="updateChapters()">Submit</button>
                 <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()">Cancel</button>
             </div>
         </div>
