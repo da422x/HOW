@@ -10,11 +10,29 @@
         </div>
     </div>
     <div class="row">
+        <h3>
+            <span class="label label-primary">Description: </span>{{selectedEvent.description}}</h3>
+        <h3>
+            <span class="label label-primary">Coordinator: </span>{{selectedEvent.eventManager}}</h3>
+        <h3>
+            <span class="label label-primary">Coordinator email: </span>{{selectedEvent.email}}</h3>
+        <h3>
+            <span class="label label-primary">Coordinator cell: </span>{{selectedEvent.mobileNumber}}</h3>
+        <h3>
+            <span class="label label-primary">Event Start Time: </span>{{selectedEvent.startTime | date:shortTime}}</h3>
+        <!--<ul>
+            thad: active was removed until proper actions are taken ui-sref-active="active"
+            <li class="active"><a ng-href="#/description" data-toggle="tab">Description</a></li>
+            <li><a ng-href="#/volunteers" data-toggle="tab">Volunteers</a></li>
+            <li><a ng-href="#/participants" data-toggle="tab">Participants</a></li>
+            <li><a ng-href="#/inventory" data-toggle="tab">Inventory</a></li>
+            <li><a ng-href="#/notifications" data-toggle="tab">Notifications</a></li>
+        </ul>-->
         <!-- tabs left -->
-        <div class="col-md-1">
+        <!--<div class="col-md-1">
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs">
-                    <!--thad: active was removed until proper actions are taken ui-sref-active="active"-->
+                    thad: active was removed until proper actions are taken ui-sref-active="active""
                     <li class="active"><a ng-href="#/description" data-toggle="tab">Description</a></li>
                     <li><a ng-href="#/volunteers" data-toggle="tab">Volunteers</a></li>
                     <li><a ng-href="#/participants" data-toggle="tab">Participants</a></li>
@@ -23,10 +41,6 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-1 spacercol"></div>
-        <!-- content -->
-        <div class="col-md-10">
-            <div ui-view=""></div>
-        </div>
+        <div class="col-md-1 spacercol"></div>-->
     </div>
 </div>

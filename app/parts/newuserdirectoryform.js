@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance) {
+    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService) {
         'use strict';
 
         // calendar options
@@ -62,7 +62,10 @@ angular.module('ohanaApp')
         $scope.postUser = function() {
             var i;
 
-
+            //push to db kept breaking due to null value
+            if ($scope.newUserDirectory.address.line2 == null) {
+                $scope.newUserDirectory.address.line2 = '';
+            }
             console.log($scope.newUserDirectory);
             console.log('SUCCESS');
 
@@ -146,7 +149,9 @@ angular.module('ohanaApp')
                         type: 'success',
                         timer: 2500
                     });
+                    howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                     $uibModalInstance.close();
+                    window.location.replace('#/home');
                 } else {
                     // Do something here when sign in unsuccessful....
                     swal({
@@ -166,5 +171,6 @@ angular.module('ohanaApp')
 
         angular.element(document).ready(function() {
             $("#phonenum").mask("(999)999-9999");
+            $("#sanicDOB").mask("99/99/9999");
         });
     });

@@ -9,7 +9,7 @@ test:
 dependencies:
   post:
     - bower install
-    - npm install -g grunt
+    - npm install -g grunt surge
 
 general:
   branches:
@@ -21,10 +21,9 @@ deployment:
   production:
     branch: master
     commands:
-      - grunt build
       - npm run surge_prod
   nightly:
     branch: nitenite
     commands:
-      - grunt build
       - npm run surge_test
+      #disabling this feature for now. - npm run surge_test

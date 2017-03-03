@@ -78,14 +78,16 @@ angular.module('ohanaApp')
 
         // Sends code needed for password reset to users email.
         this.sendPasswordReset = function(user) {
-            firebase.auth().sendPasswordResetEmail(user.email)
+            return firebase.auth().sendPasswordResetEmail(user.email)
                 .then(function(data) {
                     console.log('success : password reset sent');
+                    return true;
                 })
                 .catch(function(error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
                     console.log('ERROR: ' + error.code + ': ' + error.message);
+                    return false;
                 });
         };
 
@@ -139,7 +141,6 @@ angular.module('ohanaApp')
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
         };
-
         // Adds a key and sets the data to the key based on where the path is.
         this.pushData = function(path, data) {
             return firebase.database().ref(path).push(data)
@@ -236,30 +237,5 @@ angular.module('ohanaApp')
         /******************************************************
          *           DAO object container - end             *
          *******************************************************/
-
-        /******************************************************
-         *      Expense Service object container - start      *
-         *******************************************************/
-        this.expenseservice = expenseservice;
-
-        // Gets user chapter and address information 
-        this.getUserChapter = function() {
-            var expemail = this.getCurrentUserEmail();
-            // alert(expemail);
-
-            var ref = firebase.database().ref('/userData').orderByChild("email").equalTo(expemail);
-            var viewuserdata = $firebaseArray(ref);
-
-            console.log("Get User Data ", viewuserdata);
-            return {
-                viewuserdata: viewuserdata,
-
-            }
-
-        }
-
-        /******************************************************
-         *   Expense Service object container - start         *
-         ******************************************************/
 
     }]);

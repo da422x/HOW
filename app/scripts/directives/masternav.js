@@ -81,125 +81,117 @@ angular.module('ohanaApp')
                 }, {}];
 
                 $scope.participantNav = [{
+                    state: "#/manage/chapterchat",
+                    text: "Chapter Chat"
+                }, {
                     state: "#/manage/events",
                     text: "Events"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
                 }, {
                     state: "#/expense/viewexpense",
                     text: "Expense"
                 }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
+                    state: "#/manage/profile",
+                    text: "My Profile"
                 }];
 
                 $scope.volunteerNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }];
+                        state: "#/manage/chapterchat",
+                        text: "Chapter Chat"
+                    }, {
+                        state: "#/manage/events",
+                        text: "Events"
+                    }, {
+                        state: "#/expense/viewexpense",
+                        text: "Expense"
+                    }, {
+                        state: "#/manage/profile",
+                        text: "My Profile"
+                    }
+                    // ,{
+                    //     state: "#/manage/training",
+                    //     text: "My Training"
+                    // }
+                ];
 
-                $scope.ltmNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/dash/broadcasts",
-                    text: "Broadcasts"
-                }, {
-                    state: "#/inventory",
-                    text: "Inventory"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }];
+                $scope.ltmNav = [
+                    // {
+                    //     state: "#/dash/broadcasts",
+                    //     text: "Broadcasts"
+                    // }, 
+                    {
+                        state: "#/manage/chadmin",
+                        text: "Chapter Administration"
+                    }, {
+                        state: "#/manage/chapterchat",
+                        text: "Chapter Chat"
+                    }, {
+                        state: "#/manage/events",
+                        text: "Events"
+                    }, {
+                        state: "#/expense/viewexpense",
+                        text: "Expense"
+                    },
+                    // {
+                    //     state: "#/inventory",
+                    //     text: "Inventory"
+                    // }, 
+                    {
+                        state: "#/manage/directory",
+                        text: "Member Directory"
+                    }, {
+                        state: "#/manage/profile",
+                        text: "My Profile"
+                    }
+                    // , {
+                    //     state: "#/manage/training",
+                    //     text: "My Training"
+                    // }
+                ];
 
-                $scope.nationalNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/dash/broadcasts",
-                    text: "Broadcasts"
-                }, {
-                    state: "#/inventory",
-                    text: "Inventory"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
-                }, {
-                    state: "donors",
-                    text: "Donor Management"
-                }, {
-                    state: "#/superAdmin",
-                    text: "Administration"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }];
-
-                $scope.adminNav = [{
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/dash/broadcasts",
-                    text: "Broadcasts"
-                }, {
-                    state: "#/inventory",
-                    text: "Inventory"
-                }, {
-                    state: "#/manage/training",
-                    text: "My Training"
-                }, {
-                    state: "#/manage/directory",
-                    text: "Member Directory"
-                }, {
-                    state: "donors",
-                    text: "Donor Management"
-                }, {
-                    state: "#/superAdmin",
-                    text: "Administration"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }];
+                $scope.nationalNav = [
+                    // {
+                    //     state: "#/superAdmin",
+                    //     text: "Administration"
+                    // }, 
+                    // {
+                    //     state: "#/dash/broadcasts",
+                    //     text: "Broadcasts"
+                    // }, 
+                    {
+                        state: "#/manage/chadmin",
+                        text: "Chapter Administration"
+                    }, {
+                        state: "#/manage/chapterchat",
+                        text: "Chapter Chat"
+                    },
+                    // {
+                    //     state: "donors",
+                    //     text: "Donor Management"
+                    // }, 
+                    {
+                        state: "#/manage/events",
+                        text: "Events"
+                    }, {
+                        state: "#/expense/viewexpense",
+                        text: "Expense"
+                    },
+                    // {
+                    //     state: "#/inventory",
+                    //     text: "Inventory"
+                    // }, 
+                    {
+                        state: "#/manage/directory",
+                        text: "Member Directory"
+                    }, {
+                        state: "#/manage/profile",
+                        text: "My Profile"
+                    }
+                    // , 
+                    // {
+                    //     state: "#/manage/training",
+                    //     text: "My Training"
+                    // }
+                ];
 
                 $scope.showDonate = function() {
                     window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5WAD6PF3BUHPE");

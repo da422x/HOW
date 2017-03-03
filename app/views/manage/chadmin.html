@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 
-<div class="container">
+<div class="container" ng-init="update()">
     <h3>Chapter Administration</h3>
-    <p>
-        On the page, Chapter Managers can create reports for:
-        <p>
-            - Volunteers (This report will show how many hours have been reported and verified for each volunteer in your chapter)
-        </p>
-        <p>
-            - Volunteer comparison (This report will show how many volunteer hours your chapter has logged, and how many volunteers have logged hours compared to other chapters)
-        </p>
-        <p>
-            - Events (This report will show a complete view of all events put on by the chapter within a selected time frame)
-        </p>
-        <p>
-            Other Management functionality can be added based on organizational needs.
-        </p>
-        <p>
-            These reports should have a link to export to excel for more functionality.
-        </p>
-    </p>
+    <div style="clear: left; width: 100%; overflow: auto; margin-bottom: 5px">
+        <div class="toolbar-left" style="float: left">
+            <button class="btn btn-primary" ng-click="addChapter()">Add New Chapter</button>
+            <button class="btn btn-primary" ng-click="removeChapter()">Delete Chapter</button>
+        </div>
+    </div>
+    <div style="margin: auto; display: block; padding-top: 10px" max-width="100%">
+        <table id="chaptersTable" class="display table table-bordered responsive" cellspacing="0" width="100%"></table>
+    </div>
 </div>

@@ -15,6 +15,22 @@ angular.module('ohanaApp')
         $scope.newQuery = {};
         var allEvents = [];
 
+        $scope.filterTypes = ["All", "Past", "Upcoming"];
+        $scope.filter = {};
+
+        // var canvas = document.getElementById('signatureCanvas');
+        // var signaturePad = new SignaturePad(canvas);
+
+        // $scope.clearCanvas = function() {
+        //     signaturePad.clear();
+        //     $scope.msg = "";
+        // }
+
+        // $scope.saveCanvas = function() {
+        //     var sigImg = signaturePad.toDataURL();
+        //     $scope.signature = sigImg;
+        // }
+
 
         var loadAll = function() {
             var getEvents = commonServices.getPublicEvents();
@@ -33,6 +49,41 @@ angular.module('ohanaApp')
         };
 
         loadAll();
+
+        $scope.changeFilter = function() {
+            var getEvents = commonServices.getPublicEvents();
+            allEvents = [];
+            $q.all([getEvents]).then(function(data) {
+                if (data[0]) {
+                    _.each(data[0], function(event, key) {
+                        var dateToday = new Date();
+                        switch ($scope.filter) {
+                            case 'All':
+                                event.key = key;
+                                allEvents.push(event);
+                                break;
+                            case 'Past':
+                                if (event.startTime < dateToday.getTime()) {
+                                    event.key = key;
+                                    allEvents.push(event);
+                                }
+                                break;
+                            case 'Upcoming':
+                                if (event.startTime > dateToday.getTime()) {
+                                    event.key = key;
+                                    allEvents.push(event);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                    $scope.eventList = allEvents;
+                } else {
+                    console.log('Failed to get Events...');
+                }
+            });
+        };
 
         $scope.search = function() {
             if (allEvents.length > 0) {
@@ -79,29 +130,72 @@ angular.module('ohanaApp')
         $scope.manageEvent = function(index) {
             var selected = allEvents[index];
             console.log('Index is: ' + index);
-            console.log(selected.key);
+            //console.log(selected.key);
 
 
 
-            var getEvents = commonServices.getEvent(selected);
-            console.log(getEvents);
+            //var getEvents = commonServices.getEvent(selected);
+            //console.log('getEvents', getEvents);
+
+            $location.url('details/' + selected.key);
 
             //match event to db
-            $q.all([getEvents]).then(function(data) {
-                if (data[0]) {
-                    _.each(data[0], function(event, key) {
-                        if (selected.key === event.key) {
-                            console.log('Event: ' + event.name);
-                            selected = event;
-                        }
-                    });
-                }
-            });
+            // $q.all([getEvents]).then(function(data) {
+            //     console.log('hello me', data)
+            //     if (data[0]) {
+            //         _.each(data[0], function(event, key) {
+            //             console.log("inside the foreach", selected, event, key)
+            //             if (selected.key === key) {
+            //                 console.log('Event: ' + event.name);
+            //                 selected = event;
+            //                 $location.url('details/' + key);
+            //             }
+            //         });
+            //     } else {
+            //         console.log(data);
+            //     }
+            // }, function(err) {
+            //     console.log('the error is', err);
 
-            DAO.selectedEvent = selected;
-            $location.url('details');
+            // });
+
+            //DAO.selectedEvent = selected;
             //do something
         };
+
+        $scope.viewParticipants = function(eventKey) {
+            $uibModal.open({
+                templateUrl: '/parts/manageParticipants.html',
+                controller: 'ManageParticipantsCtrl',
+                resolve: {
+                    event: function() {
+                        return allEvents[eventKey];
+                    }
+                }
+            });
+        }
+        $scope.viewVolunteers = function(eventKey) {
+            $uibModal.open({
+                templateUrl: '/parts/manageVolunteers.html',
+                controller: 'ManageVolunteersCtrl',
+                resolve: {
+                    event: function() {
+                        return allEvents[eventKey];
+                    }
+                }
+            });
+        }
+
+        $scope.addParticipant = function() {
+            alert('a participant was added');
+        }
+        $scope.addVolunteer = function() {
+            alert('a volunteer was added');
+        }
+
+        $scope.getKeyLength = function(obj) {
+            return (obj) ? Object.keys(obj).length : 0;
+        }
 
         $scope.deleteEvent = function(index) {
             var selected = allEvents[index];

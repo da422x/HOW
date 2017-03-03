@@ -37,6 +37,7 @@ angular.module('ohanaApp')
 
                 $scope.membersTable = $('#membersTable').DataTable({
                     // ajax: 'testData/members.json',
+                    responsive: true,
                     data: dataSet,
                     columns: [{}, {
                         title: "KEY",
@@ -52,29 +53,22 @@ angular.module('ohanaApp')
                         data: "dob"
                     }, {
                         title: "Email",
-                        data: "email",
-                        orderable: false
+                        data: "email"
                     }, {
                         title: "Mobile #",
-                        data: "phone",
-                        orderable: false
+                        data: "phone"
                     }, {
                         title: "Role",
                         data: "role"
                     }, {
-                        title: "Region",
-                        data: "region"
+                        title: "Primary Chapter",
+                        data: "primaryChapter"
                     }, {
-                        title: "Chapter",
-                        data: "chapter"
+                        title: "Secondary Chapters",
+                        data: "chapters[, ]"
                     }, {
                         title: "Mil. Affil.",
-                        data: "branch",
-                        orderable: false
-                    }, {
-                        title: "Notes",
-                        data: "notes",
-                        orderable: false
+                        data: "branch"
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -101,17 +95,17 @@ angular.module('ohanaApp')
                         $(thead).find('th').eq(0).html('<input type="checkbox" id="membersTable-select-all">');
                     },
                     rowCallback: function(row, data, index) {
-                        $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
+                        $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key);
+                        $(row).find('input[type="checkbox"]').eq(0).attr('data-row-id', data.row_id);
                         $(row).children().eq(1).addClass('tdFname');
                         $(row).children().eq(2).addClass('tdLname');
                         $(row).children().eq(3).addClass('tdDob');
                         $(row).children().eq(4).addClass('tdEmail'); // email checking disabled
                         $(row).children().eq(5).addClass('tdTelly'); // phone # checking disabled
                         $(row).children().eq(6).addClass('tdSelectRole');
-                        $(row).children().eq(7).addClass('tdSelectRegion');
-                        $(row).children().eq(8).addClass('tdSelectChapter');
+                        $(row).children().eq(7).addClass('tdPrimaryChapter');
+                        $(row).children().eq(8).addClass('tdChapters');
                         $(row).children().eq(9).addClass('tdMil');
-                        $(row).children().eq(10).addClass('tdNotes');
                         for (i = 1; i < 10; i++) {
                             $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                         }
@@ -192,22 +186,6 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdEmail a').editable({
-                            type: "email",
-                            name: "email",
-                            placement: "bottom",
-                            emptytext: "null",
-                            url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/email/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.email = packet;
-                                    userService.setUserData(tempData);
-                                }
-                            }
-                        });
                         $('#membersTable .tdTelly a').editable({
                             type: "text",
                             name: "phone",
@@ -226,8 +204,8 @@ angular.module('ohanaApp')
                             }
                         });
 
-                        $(document).on("focus", ".mask", function() {
-                            $(this).mask("(999) 999-9999?");
+                        angular.element(document).ready(function() {
+                            $("#phonenum").mask("(999)999-9999");
                         });
 
                         $('#membersTable .tdSelectRole a').editable({
@@ -237,18 +215,27 @@ angular.module('ohanaApp')
                             emptytext: "null",
                             showbuttons: false,
                             url: function(params) {
-                                var packet = {
-                                    role: params.value
-                                }
-                                var path = '/userRoles/' + $scope.currId;
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    userService.setRole(packet);
+                                var currentUserUID = userService.getId();
+                                if ($scope.currId !== currentUserUID) {
+                                    var packet = {
+                                        role: params.value
+                                    }
+                                    var path = '/userRoles/' + $scope.currId;
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        userService.setRole(packet);
+                                    }
+                                } else {
+                                    swal(
+                                        'Alert',
+                                        'You cannot edit your own role!',
+                                        'error'
+                                    )
                                 }
                             },
                             source: function() {
-                                var currentUserRole = $rootScope.userRole;
-                                if (currentUserRole === 'admin') {
+                                var currentUserRole = userService.getRole();
+                                if (currentUserRole === 'National Staff') {
                                     return $rootScope.siteData.roles;
                                 } else {
                                     var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
@@ -256,69 +243,31 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdSelectRegion a').editable({
-                            type: "select",
-                            name: "region",
-                            placement: "bottom",
-                            emptytext: "null",
-                            showbuttons: false,
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Region/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.Region = packet;
-                                    userService.setUserData(tempData);
+                        $('#membersTable').off('click', '.tdPrimaryChapter a');
+                        $('#membersTable').on('click', '.tdPrimaryChapter a', function() {
+                            var self = this;
+                            var modalInstance = $uibModal.open({
+                                templateUrl: '/parts/changeChapter.html',
+                                controller: 'ChangeChapterCtrl',
+                                resolve: {
+                                    selectedUID: function() {
+                                        return self.parentElement.parentElement.children[0].firstChild.value;
+                                    }
                                 }
-                            },
-                            source: $rootScope.siteData.regions
+                            });
                         });
-                        $('#membersTable .tdSelectChapter a').editable({
-                            type: "select",
-                            name: "chapter",
-                            placement: "bottom",
-                            emptytext: "null",
-                            showbuttons: false,
-                            url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/Chapter/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.Chapter = packet;
-                                    userService.setUserData(tempData);
-                                    userService.setChapter(packet);
+                        $('#membersTable').off('click', '.tdChapters');
+                        $('#membersTable').on('click', '.tdChapters', function() {
+                            var self = this;
+                            var modalInstance = $uibModal.open({
+                                templateUrl: '/parts/manageadditionalchapters.html',
+                                controller: 'ManageAdditionalChapters',
+                                resolve: {
+                                    selectedUID: function() {
+                                        return self.parentElement.children[0].firstChild.value;
+                                    }
                                 }
-                            },
-                            source: function() {
-                                var regionText = $(this).parent().parent().find('.tdSelectRegion').text();
-                                switch (regionText) {
-                                    case 'Midwest Chapters':
-                                        return $rootScope.siteData.regionsChapters[0].chapters;
-                                        break;
-                                    case 'Northeast Chapters':
-                                        return $rootScope.siteData.regionsChapters[1].chapters;
-                                        break;
-                                    case 'Pacific Chapters':
-                                        return $rootScope.siteData.regionsChapters[2].chapters;
-                                        break;
-                                    case 'Rocky Mountain Chapters':
-                                        return $rootScope.siteData.regionsChapters[3].chapters;
-                                        break;
-                                    case 'Southeast Chapters':
-                                        return $rootScope.siteData.regionsChapters[4].chapters;
-                                        break;
-                                    case 'Southwest Region':
-                                        return $rootScope.siteData.regionsChapters[5].chapters;
-                                        break;
-                                    default:
-                                        return [{
-                                            value: '',
-                                            text: ''
-                                        }];
-                                }
-                            }
+                            });
                         });
                         $('#membersTable .tdMil a').editable({
                             type: "text",
@@ -336,13 +285,210 @@ angular.module('ohanaApp')
                                 }
                             }
                         });
-                        $('#membersTable .tdNotes a').editable({
-                            type: "textarea",
-                            name: "notes",
-                            placement: "bottom",
-                            emptytext: "null",
-                            url: function(params) {
-                                // TO-DO: Set up notes functionality
+                    }
+                });
+
+                // Handle Mobile Events.
+                $scope.membersTable.on('responsive-display', function(e, datatable, row, showHide, update) {
+                    $scope.currId = row.data().key;
+                    var currentElement = $(this).find('ul[data-dtr-index="' + row.index() + '"]').children();
+                    if (showHide) {
+                        _.each(currentElement, function(n) {
+                            switch ($(n).data('dt-column')) {
+                                case 2:
+                                    // First Name
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="2"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value;
+                                            var path = '/userData/' + params.name + '/name/first/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.name.first = packet;
+                                                userService.setUserData(tempData);
+                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    // Last Name
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="3"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/name/last/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.name.last = packet;
+                                                userService.setUserData(tempData);
+                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    // DOB
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="4"]>span.dtr-data').editable({
+                                        type: "combodate",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        format: 'MM/DD/YYYY',
+                                        viewformat: 'MM/DD/YYYY',
+                                        template: 'MMM / DD / YYYY',
+                                        combodate: {
+                                            template: 'MMM / DD / YYYY',
+                                            minYear: 1900,
+                                            maxYear: 2020
+                                        },
+                                        url: function(params) {
+                                            var packet = params.value;
+                                            var path = '/userData/' + params.name + '/DOB/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.DOB = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    // email
+                                    break;
+                                case 6:
+                                    // Mobile
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="6"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/phone/';
+                                            commonServices.updateData(path, packet);
+                                            if (params.name === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.phone = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 7:
+                                    // Role
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('ul>li[data-dtr-index="7"]>span.dtr-data').editable({
+                                        type: "select",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        showbuttons: false,
+                                        url: function(params) {
+                                            var currentUserUID = userService.getId();
+                                            if ($scope.currId !== currentUserUID) {
+                                                var packet = {
+                                                    role: params.value
+                                                }
+                                                var path = '/userRoles/' + params.name;
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    userService.setRole(packet);
+                                                }
+                                            } else {
+                                                swal(
+                                                    'Alert',
+                                                    'You cannot edit your own role!',
+                                                    'error'
+                                                )
+                                            }
+                                        },
+                                        source: function() {
+                                            var currentUserRole = userService.getRole();
+                                            if (currentUserRole === 'National Staff') {
+                                                return $rootScope.siteData.roles;
+                                            } else {
+                                                var newRoles = ['Participant', 'Volunteer', 'Chapter Lead']
+                                                return newRoles;
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 8:
+                                    // Primary Chapter
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('#membersTable').off('click', 'ul>li[data-dtr-index="8"]>span.dtr-data');
+                                    $('#membersTable').on('click', 'ul>li[data-dtr-index="8"]>span.dtr-data', function() {
+                                        var self = this;
+                                        var modalInstance = $uibModal.open({
+                                            templateUrl: '/parts/changeChapter.html',
+                                            controller: 'ChangeChapterCtrl',
+                                            resolve: {
+                                                selectedUID: function() {
+                                                    var tempRowId = $(self).parent().data('dt-row');
+                                                    var curKey = $(self).parent().parent().parent().parent().parent().find('input[data-row-id="' + tempRowId + '"]').val();
+                                                    return curKey;
+                                                }
+                                            }
+                                        });
+                                    });
+                                    break;
+                                case 9:
+                                    // Secondary Chapter
+                                    $(n).find('span.dtr-data').addClass('editable editable-click');
+                                    $('#membersTable').off('click', 'ul>li[data-dtr-index="9"]>span.dtr-data');
+                                    $('#membersTable').on('click', 'ul>li[data-dtr-index="9"]>span.dtr-data', function() {
+                                        var self = this;
+                                        var modalInstance = $uibModal.open({
+                                            templateUrl: '/parts/manageadditionalchapters.html',
+                                            controller: 'ManageAdditionalChapters',
+                                            resolve: {
+                                                selectedUID: function() {
+                                                    var tempRowId = $(self).parent().data('dt-row');
+                                                    var curKey = $(self).parent().parent().parent().parent().parent().find('input[data-row-id="' + tempRowId + '"]').val();
+                                                    return curKey;
+                                                }
+                                            }
+                                        });
+                                    });
+                                    break;
+                                case 10:
+                                    // Mil Affil
+                                    $('ul>li[data-dtr-index="10"]>span.dtr-data').editable({
+                                        type: "text",
+                                        name: $scope.currId,
+                                        placement: "bottom",
+                                        emptytext: "null",
+                                        url: function(params) {
+                                            var packet = params.value
+                                            var path = '/userData/' + params.name + '/branch/';
+                                            commonServices.updateData(path, packet);
+                                            if ($scope.currId === userService.getId()) {
+                                                var tempData = userService.getUserData();
+                                                tempData.branch = packet;
+                                                userService.setUserData(tempData);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                default:
+                                    // Do nothing
+                                    console.log('Should not be here');
+                                    break;
                             }
                         });
                     }
@@ -387,7 +533,7 @@ angular.module('ohanaApp')
 
                 _.each(userData[1], function(value, key) {
                     switch (currentUserRole) {
-                        case 'admin':
+                        case 'National Staff':
                             roles.push(value.role);
                             keys.push(key);
                             break;
@@ -405,13 +551,6 @@ angular.module('ohanaApp')
                 _.each(keys, function() {
                     _.each(userData[0], function(value, key) {
                         switch (currentUserRole) {
-                            case 'admin':
-                                if (keys[i] === key) {
-                                    value.key = key;
-                                    value.role = roles[i];
-                                    users.push(value);
-                                }
-                                break;
                             case 'National Staff':
                                 if (keys[i] === key) {
                                     value.key = key;
@@ -432,16 +571,21 @@ angular.module('ohanaApp')
                     });
                     i++;
                 });
-                console.log(users);
                 $scope.buildTable(users);
             });
         }; // end $scope.update
 
         $scope.roleChangeRequests = function() {
-            console.log();
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/managerolechangerequest.html',
                 controller: 'ManageRoleChangeRequestCtrl'
+            });
+        };
+
+        $scope.chapterStatus = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/chapterStatus.html',
+                controller: 'ChapterStatusCtrl'
             });
         };
 
@@ -467,6 +611,6 @@ angular.module('ohanaApp')
                 });
             } // end else
 
-        }; // end $scope.remove
+        }; // end $scope.remove 
 
     });

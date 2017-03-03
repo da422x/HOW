@@ -32,6 +32,7 @@ angular.module('ohanaApp')
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/newUserDirectoryForm.html',
                 controller: 'NewUserDirectoryFormCtrl'
+
             });
             if (!modalInstance) {
                 $scope.update();
