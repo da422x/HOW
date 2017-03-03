@@ -115,15 +115,17 @@
                     </a>
                 </div>
                 <div ng-switch-when="Participant">
-                    <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+                    <a ng-repeat="nav in participantNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
                         <h3>{{nav.text}}</h3>
                     </a>
                 </div>
             </div>
-            <hr />
-            <a href="#" ng-click="logout()">
-                <h3>Sign Out</h3>
-            </a>
+            <div ng-show="sessionUserRole">
+                <hr />
+                <a href="#" ng-click="logout()">
+                    <h3>Sign Out</h3>
+                </a>
+            </div>
             <hr />
             <div class="loggedout" ng-hide="sessionState">
                 <a ng-href="{{rightnav[0].state}}" ng-click="dismissMenu()">

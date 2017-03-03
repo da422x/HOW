@@ -55,7 +55,9 @@ angular.module('ohanaApp')
                 $scope.logout = function() {
                     $scope.sessionState = false;
                     $rootScope.sessionState = false;
+                    $scope.sessionUserRole = false;
                     commonServices.signout();
+                    $scope.toggleMenu();
                 };
 
                 // all nav setups
