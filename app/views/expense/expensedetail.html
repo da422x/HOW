@@ -85,7 +85,8 @@
                     <div class="form-group row">
                         <label for="lrate1" class="col-xs-6 col-form-label">Mile Rate</label>
                         <div class="input-group">
-                            <input id="lrate1" ng-model="dexedit.Line[0].Rate" name="milerate" class="form-control " placeholder="0.25" type="text" format-as-currency>
+                            <!-- <input id="lrate1" ng-model="dexedit.Line[0].Rate" name="milerate" class="form-control " placeholder="0.25" type="text" format-as-currency> -->
+                            <label id="lrate1" ng-model="dexedit.Line[0].Rate" name="milerate" class="form-control">{{ dexedit.Line[0].Rate | currency}}</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -109,7 +110,9 @@
                     <div class="form-group row">
                         <label for="lrate2" class="col-xs-6 col-form-label">Mile Rate</label>
                         <div class="input-group">
-                            <input id="lrate2" ng-model="dexedit.Line[1].Rate" name="trailermilerate" class="form-control" placeholder="0.4" type="text" format-as-currency>
+                            <!-- <input id="lrate2" ng-model="dexedit.Line[1].Rate" name="trailermilerate" class="form-control" placeholder="0.4" type="text" format-as-currency>
+ -->
+                            <label id="lrate2" ng-model="dexedit.Line[1].Rate" name="trailermilerate" class="form-control">{{ dexedit.Line[1].Rate | currency}}</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -191,22 +194,23 @@
                 </div>
             </fieldset>
             <!-- </div> -->
-            <!-- {{userRole}} {{useremail}}{{expenseemail}}{{paystat}}{{iseditexist}} -->
+            <!-- {{userRole}} {{useremail}}{{expenseemail}}{{paystat}}{{iseditexist}}   paystat=='Submitted' ||-->
             <div ng-show="(useremail==expenseemail )" class="form-group col-xs-12 expense_pad">
-                <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  ( paystat=='Edit' ||paystat=='Resubmit')) || ((userRole=='Chapter Lead' || userRole=='National Staff') && (paystat=='Submitted' || paystat=='Edit' || paystat=='Returned') ) ">
+                <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  ( paystat=='Edit' ||paystat=='Resubmit')) || ((userRole=='Chapter Lead' || userRole=='National Staff') && (  paystat=='Edit' || paystat=='Returned') ) ">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-hide="paystat=='Resubmit'" value="Save Expense">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-show="paystat=='Resubmit'" value="Resubmit Expense">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('submit')" ng-show="(paystat=='Edit') " value=" Submit Expense">
                     <input type="button" class="btn btn-primary" ng-click="deleteexp()" ng-show="( paystat=='Pending' || paystat=='Edit') " value="Delete Expense">
                     <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
                 </div>
-                <div class="form-group row col-xs-6" ng-show="iseditexist =='false' && (paystat=='Pending' || paystat=='Resubmit'  || paystat=='Submitted' || paystat=='Returned')">
+                <div class="form-group row col-xs-6" ng-hide="((useremail==expenseemail ) && ( paystat=='Edit' || paystat=='Resubmit' || paystat=='Returned')  ) || paystat=='Paid' || paystat=='Over Age'">
+                    <!-- ng-show="iseditexist =='false' "> -->
+                    <!-- && (paystat=='Pending' || paystat=='Resubmit'  || paystat=='Submitted' || paystat=='Returned')"> -->
                     <input type="button" class="btn btn-primary" value=" Recall Expense" title="Recall expense for Edit" ng-click="RecallExpense(dexedit.BillId, 'Edit', 'Expense recalled by Orignator')">
                     <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back">
                 </div>
-                <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back" ng-show="( iseditexist =='true' && (userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Submitted' || paystat=='Returned' || paystat=='Pending' ))">
+                <!--   <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back" ng-show="( iseditexist =='true' && (userRole=='Participant' || userRole=='Volunteer') &&  (paystat=='Submitted' || paystat=='Returned' || paystat=='Pending' ))"> -->
             </div>
-
             <div ng-show="userRole=='National Staff'   &&  useremail!=expenseemail && (paystat=='Pending' || paystat=='Edit' || paystat=='Resubmit')">
                 <input type="button " class="btn btn-primary " ng-click="GoBack() " value="Go Back ">
             </div>

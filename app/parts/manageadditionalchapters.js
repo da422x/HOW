@@ -66,11 +66,13 @@ angular.module('ohanaApp')
                 });
 
                 if (canUpdate) {
+                    console.log('hererererere');
                     $scope.userChapters.push(chapterObj);
                     $scope.chaptersAdded.push(chapterObj.chapter);
                     $scope.chaptersRemoved = _.filter($scope.chaptersRemoved, function(n) {
                         return n !== chapterObj.chapter;
                     });
+                    $scope.submitFlag = true;
                 } else {
                     swal('error', $scope.newChapter.value + ' has already been added to secondary chapters...', 'error');
                 }
@@ -81,23 +83,37 @@ angular.module('ohanaApp')
                 if (selectedUID) {
 
                     var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
+                    var canContinue = true;
                     $q.all([getSelectedUser]).then(function(data) {
 
                         $scope.userChapters = _.each($scope.userChapters, function(n) {
                             delete n.$$hashKey;
                         });
 
-                        // Logg changes.
-                        howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
-                            $scope.chaptersRemoved, $scope.chaptersAdded);
+                        _.each($scope.userChapters, function(n) {
+                            if (n.chapter === data[0].Chapter) {
+                                canContinue = false;
+                                return;
+                            }
+                        });
 
-                        // Update global variables, and Database.
-                        commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
+                        if (canContinue) {
+                            // Logg changes.
+                            howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                                $scope.chaptersRemoved, $scope.chaptersAdded);
+                            howLogService.logUserAddedToSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersAdded);
+                            howLogService.logUserRemovedFromSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersRemoved);
 
-                        // Close modal with success message.
-                        $uibModalInstance.dismiss('cancel');
-                        $rootScope.$broadcast('modalClosing');
-                        swal('Success', 'Region/Chapter updated successfully!', 'success');
+                            // Update global variables, and Database.
+                            commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
+
+                            // Close modal with success message.
+                            $uibModalInstance.dismiss('cancel');
+                            $rootScope.$broadcast('modalClosing');
+                            swal('Success', 'Region/Chapter updated successfully!', 'success');
+                        } else {
+                            swal('Error', 'User already has ' + data[0].Chapter + ' as their PRIMARY CHAPTER, please remove before submitting changes...', 'error');
+                        }
 
                     });
 
@@ -107,24 +123,38 @@ angular.module('ohanaApp')
                     var userData = userService.getUserData();
                     var currentChapter = userService.getChapter();
                     var currentUserName = userService.getUserName();
+                    var canContinue = true;
 
                     $scope.userChapters = _.each($scope.userChapters, function(n) {
                         delete n.$$hashKey;
                     });
 
-                    // Logg changes.
-                    howLogService.logSecondaryChapterChange(currentUserName, false,
-                        $scope.chaptersRemoved, $scope.chaptersAdded);
+                    _.each($scope.userChapters, function(n) {
+                        if (n.chapter === userService.getChapter()) {
+                            canContinue = false;
+                            return;
+                        }
+                    });
 
-                    // Update global variables, and Database.
-                    commonServices.updateData('/userData/' + userId + '/Chapters/', $scope.userChapters);
-                    userData.Chapters = $scope.userChapters;
-                    userService.setUserData(userData);
+                    if (canContinue) {
+                        // Logg changes.
+                        howLogService.logSecondaryChapterChange(currentUserName, false,
+                            $scope.chaptersRemoved, $scope.chaptersAdded);
+                        howLogService.logUserAddedToSecondaryChapter(currentUserName, false, $scope.chaptersAdded);
+                        howLogService.logUserRemovedFromSecondaryChapter(currentUserName, false, $scope.chaptersRemoved);
 
-                    // Close modal with success message.
-                    $uibModalInstance.dismiss('cancel');
-                    $rootScope.$broadcast('updateProfile', true);
-                    swal('Success', 'Region/Chapter updated successfully!', 'success');
+                        // Update global variables, and Database.
+                        commonServices.updateData('/userData/' + userId + '/Chapters/', $scope.userChapters);
+                        userData.Chapters = $scope.userChapters;
+                        userService.setUserData(userData);
+
+                        // Close modal with success message.
+                        $uibModalInstance.dismiss('cancel');
+                        $rootScope.$broadcast('updateProfile', true);
+                        swal('Success', 'Region/Chapter updated successfully!', 'success');
+                    } else {
+                        swal('Error', 'User already has ' + userService.getChapter() + ' as their PRIMARY CHAPTER, please remove before submitting changes...', 'error');
+                    }
                 }
 
             }

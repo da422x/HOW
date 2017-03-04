@@ -155,69 +155,9 @@ angular.module('ohanaApp')
             }
         };
 
-        $scope.addVolunteer = function(key) {
+        $scope.addVolunteer = function(key, idx) {
             //email = email.trim();
-            var email = $scope.userService.getUserData()["email"];
-            //check to see if the volunteer is a user at all. 
-            commonServices.getUserByEmail(email)
-                .then(function(data) {
-                    if (data) {
-                        var temp_key;
-                        _.each(data, function(val, idx) {
-                            temp_key = idx;
-                            data[idx]["key"] = idx;
-                        });
-
-                        commonServices.getData('userRoles/' + temp_key)
-                            .then(function(role) {
-                                if (role["role"] !== "Participant") {
-                                    //check to see if the volunteer exists per this event
-                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
-                                        .then(function(vol) {
-                                            console.log(vol);
-                                            if (!vol) {
-                                                commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                                                $scope.$apply();
-                                            } else {
-                                                swal(
-                                                    'Oops...',
-                                                    "That volunteer has already been added",
-                                                    'error'
-                                                );
-                                            }
-
-                                        })
-                                } else {
-                                    swal(
-                                        'Oops...',
-                                        "User not authorized to be added as a volunteer.",
-                                        'error'
-                                    );
-                                }
-
-                            })
-
-                    } else {
-                        swal(
-                            'Oops...',
-                            "That user doesn\'t exists",
-                            'error'
-                        );
-                    }
-
-                }, function(err) {
-                    swal(
-                        'Oops...',
-                        "Unknown Error",
-                        'error'
-                    );
-                });
-
-
-        }
-
-        $scope.addParticipant = function(key) {
-                //email = email.trim();
+            if ($scope.allVolunteerIsDisableds[idx]['isDisabled']) {
                 var email = $scope.userService.getUserData()["email"];
                 //check to see if the volunteer is a user at all. 
                 commonServices.getUserByEmail(email)
@@ -231,30 +171,32 @@ angular.module('ohanaApp')
 
                             commonServices.getData('userRoles/' + temp_key)
                                 .then(function(role) {
-                                    // if (role["role"] !== "Participant") {
-                                    //check to see if the volunteer exists per this event
-                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                                        .then(function(vol) {
-                                            console.log(vol);
-                                            if (!vol) {
-                                                commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
-                                                $scope.$apply();
-                                            } else {
-                                                swal(
-                                                    'Oops...',
-                                                    "That participant has already been added",
-                                                    'error'
-                                                );
-                                            }
+                                    if (role["role"] !== "Participant") {
+                                        //check to see if the volunteer exists per this event
+                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                            .then(function(vol) {
+                                                console.log(vol);
+                                                if (vol) {
+                                                    var entity_key = Object.keys(vol)[0];
+                                                    commonServices.removeData('/events/' + key + '/volunteers/', entity_key);
+                                                    $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
+                                                    $scope.$apply();
+                                                } else {
+                                                    swal(
+                                                        'Oops...',
+                                                        "That volunteer has already been added",
+                                                        'error'
+                                                    );
+                                                }
 
-                                        })
-                                        // } else {
-                                        //     swal(
-                                        //         'Oops...',
-                                        //         "User not authorized to be added as a volunteer.",
-                                        //         'error'
-                                        //     );
-                                        // }
+                                            })
+                                    } else {
+                                        swal(
+                                            'Oops...',
+                                            "User not authorized to be added as a volunteer.",
+                                            'error'
+                                        );
+                                    }
 
                                 })
 
@@ -273,7 +215,171 @@ angular.module('ohanaApp')
                             'error'
                         );
                     });
+            } else {
+                var email = $scope.userService.getUserData()["email"];
+                //check to see if the volunteer is a user at all. 
+                commonServices.getUserByEmail(email)
+                    .then(function(data) {
+                        if (data) {
+                            var temp_key;
+                            _.each(data, function(val, idx) {
+                                temp_key = idx;
+                                data[idx]["key"] = idx;
+                            });
 
+                            commonServices.getData('userRoles/' + temp_key)
+                                .then(function(role) {
+                                    if (role["role"] !== "Participant") {
+                                        //check to see if the volunteer exists per this event
+                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                            .then(function(vol) {
+                                                console.log(vol);
+                                                if (!vol) {
+                                                    commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                    $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
+                                                    $scope.$apply();
+                                                } else {
+                                                    swal(
+                                                        'Oops...',
+                                                        "That volunteer has already been added",
+                                                        'error'
+                                                    );
+                                                }
+
+                                            })
+                                    } else {
+                                        swal(
+                                            'Oops...',
+                                            "User not authorized to be added as a volunteer.",
+                                            'error'
+                                        );
+                                    }
+
+                                })
+
+                        } else {
+                            swal(
+                                'Oops...',
+                                "That user doesn\'t exists",
+                                'error'
+                            );
+                        }
+
+                    }, function(err) {
+                        swal(
+                            'Oops...',
+                            "Unknown Error",
+                            'error'
+                        );
+                    });
+            }
+
+
+        }
+
+        $scope.addParticipant = function(key, idx) {
+                //email = email.trim();
+                if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
+                    var email = $scope.userService.getUserData()["email"];
+                    //check to see if the volunteer is a user at all. 
+                    commonServices.getUserByEmail(email)
+                        .then(function(data) {
+                            if (data) {
+                                var temp_key;
+                                _.each(data, function(val, idx) {
+                                    temp_key = idx;
+                                    data[idx]["key"] = idx;
+                                });
+
+                                commonServices.getData('userRoles/' + temp_key)
+                                    .then(function(role) {
+                                        // if (role["role"] !== "Participant") {
+                                        //check to see if the volunteer exists per this event
+                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                            .then(function(vol) {
+                                                if (vol) {
+                                                    var entity_key = Object.keys(vol)[0];
+                                                    commonServices.removeData('/events/' + key + '/participants/' + entity_key);
+                                                    $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
+                                                    $scope.$apply();
+                                                } else {
+                                                    swal(
+                                                        'Oops...',
+                                                        "That participant has already been deleted",
+                                                        'error'
+                                                    );
+                                                }
+
+                                            })
+
+                                    })
+
+                            } else {
+                                swal(
+                                    'Oops...',
+                                    "That user doesn\'t exists",
+                                    'error'
+                                );
+                            }
+
+                        }, function(err) {
+                            swal(
+                                'Oops...',
+                                "Unknown Error",
+                                'error'
+                            );
+                        });
+                } else {
+                    var email = $scope.userService.getUserData()["email"];
+                    //check to see if the volunteer is a user at all. 
+                    commonServices.getUserByEmail(email)
+                        .then(function(data) {
+                            if (data) {
+                                var temp_key;
+                                _.each(data, function(val, idx) {
+                                    temp_key = idx;
+                                    data[idx]["key"] = idx;
+                                });
+
+                                commonServices.getData('userRoles/' + temp_key)
+                                    .then(function(role) {
+                                        // if (role["role"] !== "Participant") {
+                                        //check to see if the volunteer exists per this event
+                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                            .then(function(vol) {
+                                                console.log(vol);
+                                                if (!vol) {
+                                                    commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
+                                                    $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
+                                                    $scope.$apply();
+                                                } else {
+                                                    swal(
+                                                        'Oops...',
+                                                        "That participant has already been added",
+                                                        'error'
+                                                    );
+                                                }
+
+                                            })
+
+                                    })
+
+                            } else {
+                                swal(
+                                    'Oops...',
+                                    "That user doesn\'t exists",
+                                    'error'
+                                );
+                            }
+
+                        }, function(err) {
+                            swal(
+                                'Oops...',
+                                "Unknown Error",
+                                'error'
+                            );
+                        });
+                }
 
             }
             // Api.events.query().$promise.then(

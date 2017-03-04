@@ -23,6 +23,7 @@ angular.module('ohanaApp')
 
             $q.all([userRquests]).then(function(data) {
                 $scope.profileData = userService.getUserData();
+                $scope.profileData.years = parseInt($scope.profileData.years);
                 $scope.profileData.role = userService.getRole();
                 $scope.userUID = userService.getId();;
                 $scope.requests = [];
@@ -55,15 +56,7 @@ angular.module('ohanaApp')
         $scope.roleChangeRequest = function() {
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/rolerequestchangeform.html',
-                controller: 'RoleRequestChangeFormCtrl as rrcf',
-                resolve: {
-                    userInfo: function() {
-                        return {
-                            uid: $scope.userUID,
-                            data: $scope.profileData
-                        }
-                    }
-                }
+                controller: 'RoleRequestChangeFormCtrl as rrcf'
             });
             if (!modalInstance) {
                 $scope.update();

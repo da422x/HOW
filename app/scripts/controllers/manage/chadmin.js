@@ -11,6 +11,7 @@
 angular.module('ohanaApp')
     .controller('ChadminCtrl', function($rootScope, $q, commonServices, $scope, $uibModal, dataGridUtil, userService) {
         'use strict';
+        $scope.chapterTableData = {};
 
         $scope.$on('modalClosing', function() {
             $scope.update();
@@ -20,6 +21,7 @@ angular.module('ohanaApp')
             var i;
             var packet;
             var dataSet = dataGridUtil.buildChaptersTableData(results);
+            $scope.chapterTableData = dataSet;
             $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
             $scope.checkedBoxes = [];
 
@@ -48,6 +50,9 @@ angular.module('ohanaApp')
                         title: "Description",
                         data: "description"
                     }, {
+                        title: "Chapter Admin",
+                        data: "chadmin"
+                    }, {
                         title: "Region",
                         data: "region"
                     }, {
@@ -67,6 +72,9 @@ angular.module('ohanaApp')
                     }, {
                         title: "Location",
                         data: "googleMaps_Link"
+                    }, {
+                        title: "Donations",
+                        data: "donation_link"
                     }],
                     'columnDefs': [{
                         targets: 1,
@@ -131,7 +139,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/description';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/description';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -142,7 +150,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/zip';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/zip';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -152,8 +160,8 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "N/A",
                             url: function(params) {
-                                var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[3].textContent + '/' + $scope.editValue[4].textContent + '/' + $scope.editValue[1].textContent + '/email';
+                                var packet = params.value;
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -242,10 +250,14 @@ angular.module('ohanaApp')
         }; // end $scope.update
 
         $scope.addChapter = function() {
-            console.log();
+            console.log($scope.chaptersTable);
             var modalInstance = $uibModal.open({
-                templateUrl: '/parts/managerolechangerequest.html',
-                controller: 'ManageRoleChangeRequestCtrl'
+                templateUrl: '/parts/chapterAdd.html',
+                controller: 'ChapterAddCtrl'
+            });
+
+            modalInstance.result.then(function(parameter) {
+                $scope.chaptersTable.row.add(parameter);
             });
         };
 
@@ -263,8 +275,10 @@ angular.module('ohanaApp')
                     confirmButtonText: 'Yes, delete it!'
                 }).then(function() {
                     _.each($scope.checkedBoxes, function(userKey) {
-                        commonServices.removeData('/userData/' + userKey);
-                        commonServices.removeData('/userRoles/' + userKey);
+                        console.log($scope.checkedBoxes);
+
+                        //commonServices.removeData('/userData/' + userKey);
+                        //commonServices.removeData('/userRoles/' + userKey);
                     });
                     swal('Deleted!', 'Your file has been deleted.', 'success');
                     $scope.update();

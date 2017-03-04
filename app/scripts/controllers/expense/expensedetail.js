@@ -21,7 +21,7 @@ angular.module('ohanaApp')
         var uploader = $scope.uploader = new FileUploader({});
         //----Modal -- Payment Status Log  ---------//
         var $ctrl = this;
-        expenseservice.deleteExpense("oRa20172131228451485");
+
         $scope.openPaymentStatusLog = function() {
             $scope.$modalInstance = $uibModal.open({
                 scope: $scope,
@@ -86,7 +86,7 @@ angular.module('ohanaApp')
                     'Description': "",
                     'Amount': 0
                 });
-                console.log($scope.LineDetails);
+                // console.log($scope.LineDetails);
             }
 
         };
@@ -120,7 +120,7 @@ angular.module('ohanaApp')
 
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
                     vTotalLineCost = vTotalLineCost + parseFloat($scope.LineDetails[x].Amount);
-                    console.log("line amount change", x, vTotalLineCost, $scope.LineDetails[x].Amount, parseFloat($scope.LineDetails[x].Amount));
+                    // console.log("line amount change", x, vTotalLineCost, $scope.LineDetails[x].Amount, parseFloat($scope.LineDetails[x].Amount));
 
                 }
             }
@@ -225,7 +225,7 @@ angular.module('ohanaApp')
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key image ", snap.key);
+                // console.log("key image ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(expenseupdate);
                 // swal('Expense Updated Successfully!', '', 'success');
             });
@@ -254,7 +254,7 @@ angular.module('ohanaApp')
             $scope.expense.$loaded().then(function() {
                 angular.forEach($scope.expense, function(item) {
 
-                    console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
+                    // console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
                     var img = document.createElement('img');
                     var storage = firebase.storage();
                     var storageRef = firebase.storage().ref();
@@ -397,7 +397,7 @@ angular.module('ohanaApp')
                             break;
 
                     }
-                    console.log(" status check - ", $scope.useremail, $scope.expenseemail, item.PaymentStatus);
+                    // console.log(" status check - ", $scope.useremail, $scope.expenseemail, item.PaymentStatus);
 
                     var storageRefPic = '';
                     $scope.vimageurl = item.ImageURL;
@@ -462,13 +462,13 @@ angular.module('ohanaApp')
 
 
                     if (item.ImageURL) {
-                        console.log("Hello Image check", item.ImageURL, $scope.vImageList);
+                        // console.log("Hello Image check", item.ImageURL, $scope.vImageList);
                         $scope.vImageList = [];
                         var storageloc = '';
                         var urlinfo = '';
                         $scope.vImageList.length = 0;
                         for (var i = 0; i < item.ImageURL.length; i++) {
-                            console.log("Hello Image ", item.ImageURL[i].FileName, $scope.vImageList);
+                            // console.log("Hello Image ", item.ImageURL[i].FileName, $scope.vImageList);
 
                             storageloc = item.ImageURL[i].FileName;
 
@@ -505,7 +505,7 @@ angular.module('ohanaApp')
                 var storageRef = firebase.storage().ref();
                 return storageRef.child(storageloc).getDownloadURL().then(function(url) {
                     // return starsRef.getDownloadURL().then(function(url) {
-                    console.log("la url ", url);
+                    // console.log("la url ", url);
                     $scope.returnurl = url;
                     return url;
                 }).catch(function(error) {
@@ -553,20 +553,21 @@ angular.module('ohanaApp')
             }
             //-----Delete Expenses Created by the User ---END----------//
 
+
         $scope.setexpensedata = function(updatetype) {
             var self = this;
             var totalamt = (($scope.expense[0].Line[0].Quantity * $scope.expense[0].Line[0].Rate) + ($scope.expense[0].Line[1].Quantity * $scope.expense[0].Line[1].Rate));
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
             var currentdate = new Date();
             var StatusChangedDate = "";
+
             if (currentdate.getHours() > 12) {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
-
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + (currentdate.getHours() - 12)).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' PM';
             } else {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + currentdate.getHours()).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' AM';
 
-            };
-            console.log("eee11", $scope.PayStatusLogList);
+            }
+            // console.log("eee11", $scope.PayStatusLogList);
 
             //Re-Submit for Participant/Volunteer - so when they update - status changes to Pending
             //Returned for Chapter Lead - Only Payment Status update  not here
@@ -625,7 +626,7 @@ angular.module('ohanaApp')
                 }
             }
 
-            console.log("eee1", $scope.PayStatusLogList);
+            // console.log("eee1", $scope.PayStatusLogList);
             //Code added to remove $$HashKey in the array
             for (var x = 0; x < $scope.PayStatusLogList.length; x++) {
                 if ($scope.PayStatusLogList[x] != null) {
@@ -658,7 +659,7 @@ angular.module('ohanaApp')
                 ImageURL: []
             };
 
-            console.log(expenseupdate, $scope.vimageurl);
+            // console.log(expenseupdate, $scope.vimageurl);
 
             var oldimagecount = 0;
 
@@ -685,7 +686,7 @@ angular.module('ohanaApp')
 
             }
             expenseupdate.ImageURL = $scope.vimageurl;
-            console.log(expenseupdate, $scope.vimageurl);
+            // console.log(expenseupdate, $scope.vimageurl);
 
             var imagefilename = "";
 
@@ -695,7 +696,7 @@ angular.module('ohanaApp')
                 for (var x = 0; x < $scope.LineDetails.length; x++) {
 
                     lineamount = parseFloat(lineamount) + parseFloat($scope.LineDetails[x].Amount);
-                    console.log("Update-", x, expenseupdate.Line, $scope.LineDetails, lineamount, totalamt);
+                    // console.log("Update-", x, expenseupdate.Line, $scope.LineDetails, lineamount, totalamt);
 
                     expenseupdate.Line.push({
                         "ID": i,
@@ -716,19 +717,19 @@ angular.module('ohanaApp')
             var imageurl = '';
             if ($scope.uploader.queue.length > 0) {
                 imageurl = expenseservice.SaveImageData($routeParams.BillId, $scope.uploader.queue);
-                console.log("save image - ", imageurl);
+                // console.log("save image - ", imageurl);
             }
             var query = firebase.database().ref('expense/').orderByChild("BillId").equalTo($routeParams.BillId);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key ", snap.key);
+                // console.log("key ", snap.key);
                 firebase.database().ref('expense/' + snap.key).update(expenseupdate);
                 // alert("Expense Successfully Updated ");
 
 
 
             });
-            console.log("eee3");
+            // console.log("eee3");
         }
 
         //Update Expense - SAVE  and SUBMIT - Parameter value 'update' or 'submit'        
@@ -778,25 +779,25 @@ angular.module('ohanaApp')
             if (updatetype == 'submit') {
                 if (this.dexedit.Description === undefined || this.dexedit.Description.length == 0 || documentcount == 0 || totalamt == 0) {
                     swal({
-                        title: 'Required fields Missing',
-                        type: 'error',
-                        html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
-                            descinfo + this.dexedit.Description + '</td></tr> ' +
-                            supportinfo + documentcount + '</b></td> </tr> ' +
-                            amountinfo + totalamt + '</b></td></tr></table>',
-                    })
-                    console.log("eee0")
+                            title: 'Required fields Missing',
+                            type: 'error',
+                            html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                                descinfo + this.dexedit.Description + '</td></tr> ' +
+                                supportinfo + documentcount + '</b></td> </tr> ' +
+                                amountinfo + totalamt + '</b></td></tr></table>',
+                        })
+                        // console.log("eee0")
                 } else {
                     swal({
                         title: 'Confirm New Expense',
                         text: "Created Expense will be reviewed!",
                         type: 'info',
-                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
-                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + this.dexedit.Description + '</td></tr> ' +
-                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + lineamount + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + totalamt + '</b></td></tr></table>',
+                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                            '<tr><td class="swaltdl ">Description : </td><td class="swalgreen "><b>' + this.dexedit.Description + '</td></tr> ' +
+                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swalgreen "><b>$ ' + Math.round((this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swalgreen "><b>$ ' + Math.round((this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swalgreen "><b>$ ' + Math.round((lineamount) * 100) / 100 + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swalgreen "><b>$ ' + Math.round((totalamt) * 100) / 100 + '</b></td></tr></table>',
 
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -829,7 +830,7 @@ angular.module('ohanaApp')
             console.log('Recall Expense request for  ', $routeParams.BillId);
 
             if ($scope.iseditexist == 'true') {
-                swal('Recall not allowed! Only 1 Expense in EDIT status', '', 'info');
+                swal('Recall not allowed! You have 1 Expense in EDIT status', '', 'info');
             } else {
                 swal({
                     title: 'Are you sure?',
@@ -866,6 +867,9 @@ angular.module('ohanaApp')
 
         }
 
+
+
+
         $scope.UpdatePaymentStatus = function(billid, paymentstat, statreason) {
 
             console.log("Update Payment Status - ", billid, paymentstat, statreason);
@@ -875,10 +879,9 @@ angular.module('ohanaApp')
             var StatusChangedDate = "";
 
             if (currentdate.getHours() > 12) {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + (currentdate.getHours() - 12) + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' PM';
-
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + (currentdate.getHours() - 12)).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' PM';
             } else {
-                StatusChangedDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear() + ' ' + currentdate.getHours() + ':' + currentdate.getMinutes() + ':' + currentdate.getSeconds() + ' AM';
+                StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + currentdate.getHours()).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' AM';
 
             }
 
@@ -907,8 +910,8 @@ angular.module('ohanaApp')
             var query = firebase.database().ref('expense').orderByChild("BillId").equalTo(billid);
             query.on('child_added', function(snap) {
                 var obj = snap.val();
-                console.log("key ", snap.key, ePaymentLog);
-                //commonServices.updateData('expense/' + snap.key, ePaymentLog);
+                // console.log("key ", snap.key, ePaymentLog);
+                // commonServices.updateData('expense/' + snap.key, ePaymentLog);
                 // console.log(ePaymentLog);
                 firebase.database().ref('expense/' + snap.key).update(ePaymentLog);
 

@@ -171,6 +171,11 @@ angular.module('ohanaApp', [
                 controller: 'ExpenseOverviewCtrl',
                 controllerAs: 'expense/overview'
             })
+            .when('/expense/expenseconfig', {
+                templateUrl: 'views/expense/expenseconfig.html',
+                controller: 'ExpenseExpenseconfigCtrl',
+                controllerAs: 'expense/expenseconfig'
+            })
             .otherwise({
                 redirectTo: '/home'
             });

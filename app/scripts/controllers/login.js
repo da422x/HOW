@@ -17,12 +17,13 @@ angular.module('ohanaApp')
 
             var results = commonServices.signin(user);
             $q.all([results]).then(function(data) {
-                if (data[0]) {
-                    // If sign in was successful, send user to events page	
+                if (data[0].type === 'SUCCESS') {
+                    // If sign in was successful, send user to events page
+                    swal('Success', 'Logged in successfully!', 'success');
                     window.location.replace('#/manage/dash');
                 } else {
                     // Do something here when sign in unsuccessful....
-                    console.log('Login failed...');
+                    swal('error', data[0].code + ': ' + data[0].message, 'error');
                 }
             });
 

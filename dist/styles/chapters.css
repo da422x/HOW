@@ -15,7 +15,7 @@
 .additonal-chapter-btn-red {
     width: 100%;
     background-color: #AA3939;
-    margin-top: 5px;
+    margin-top: 9px;
 }
 
 .region-dd {
@@ -27,5 +27,20 @@
 }
 
 #manage-additional-chapters {
-    float: left;
+    margin: auto;
+    width: 80%;
+}
+
+#chapter-status-modal {
+    margin: auto;
+    width: 95%;
+}
+
+.logContainer {
+    height: 250px;
+    width: 100%;
+    max-width: 550px;
+    padding: 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

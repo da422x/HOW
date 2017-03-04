@@ -22,6 +22,7 @@ angular.module('ohanaApp')
             for (var i = 0; i < resultsLen; i++) {
                 var arr = {};
                 arr.key = results[i].key;
+                arr.row_id = i;
                 arr.first = results[i].name.first;
                 arr.last = results[i].name.last;
                 var dobparse = new Date(results[i].DOB);
@@ -39,15 +40,18 @@ angular.module('ohanaApp')
                 _.each(results[i].Chapters, function(c) {
                     arr.chapters.push(c.chapter);
                 });
+                if (!results[i].Chapters) {
+                    arr.chapters.push('none');
+                }
                 if (results[i].branch) {
                     arr.branch = results[i].branch;
                 } else {
-                    arr.branch = "";
+                    arr.branch = 'none';
                 }
                 if (results[i].notes) {
                     arr.notes = results[i].notes;
                 } else {
-                    arr.notes = "";
+                    arr.notes = 'none';
                 }
 
                 // NOTE FOR IF THE DATA IS STORED IN ARRAYS NOT OBJECTS LIKE ABOVE
@@ -167,6 +171,7 @@ angular.module('ohanaApp')
                         arr.state = stateName;
                         arr.name = results[i][stateName][chapterName].name;
                         arr.description = results[i][stateName][chapterName].description;
+                        arr.chadmin = (results[i][stateName][chapterName].chadmin ? results[i][stateName][chapterName].chadmin : " ");
                         arr.facebook = results[i][stateName][chapterName].url;
                         arr.facebook_link = results[i][stateName][chapterName].url_link;
                         arr.email = results[i][stateName][chapterName].email;
@@ -174,6 +179,8 @@ angular.module('ohanaApp')
                         arr.zip = results[i][stateName][chapterName].zip;
                         arr.googleMaps = "https://www.google.com/maps/place/" + results[i][stateName][chapterName].lat + "," + results[i][stateName][chapterName].lng;
                         arr.googleMaps_Link = "<a href='" + arr.googleMaps + "' target='_blank' class='storelocatorlink'>" + arr.googleMaps + "</a><br/>";
+                        arr.donation = (results[i][stateName][chapterName].donation ? results[i][stateName][chapterName].donation : "https://www.paypal.com/donate/?token=3TyOO6taytT0isxzdLwbDz8GvB6JtWLIzuZy0fjN3K4-PihZMiVhpPbECt0JiW7IkR8mfG");
+                        arr.donation_link = "<a href='" + arr.donation + "' target='_blank' class='storelocatorlink'>" + arr.donation + "</a><br/>";
                         gridData.push(arr);
                     }
                 }
