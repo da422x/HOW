@@ -189,8 +189,4 @@ angular.module('ohanaApp')
             });
         };
 
-        $(document).on("focus", ".mask", function() {
-            $(this).mask("(999) 999-9999?");
-        });
-
     });
