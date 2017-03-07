@@ -211,7 +211,7 @@ module.exports = function(grunt) {
             },
             local_dependencies: {
                 files: {
-                    'index.html': ['extensions/bootstrap-editable/js/bootstrap-editable.js',
+                    'index.html': ['<%= yeoman.app %>/extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
                         'assets/**/*.*',
                         'extensions/bootstrap-editable/css/bootstrap-editable.css', 'extensions/hamburgers.min.css',
