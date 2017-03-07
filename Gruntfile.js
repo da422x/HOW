@@ -23,6 +23,10 @@
 //{,*/} means only children nodes of a tree, it DOES NOT mean decendants
 //2/21/2017 all looking like parts/{,*/}.css -> parts/**/*.css
 
+
+//3/4/2017
+//updated injector to have a destination point and updated assets to 
+//pull in the files for waiver signing
 module.exports = function(grunt) {
 
     // Time how long tasks take. Can help when optimizing build times
@@ -196,16 +200,22 @@ module.exports = function(grunt) {
         },
         injector: {
             options: {
-                template: 'app/index.html'
-                    // Task-specific options go here.
+                template: 'app/index.html',
+                destFile: 'app/index.html',
+                transform: function(filepath, index, length) {
+                    if (filepath.includes('/app') && filepath.indexOf('/app') == 0) {
+                        filepath = '<script src="' + filepath.substring(5) + '"></script>';
+                        return filepath;
+                    }
+                }
             },
             local_dependencies: {
                 files: {
                     'index.html': ['extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
                         'assets/**/*.*',
-                        'extensions/bootstrap-editable/css/bootstrap-editable.css',
-                        'extensions/hamburgers.min.css'
+                        'extensions/bootstrap-editable/css/bootstrap-editable.css', 'extensions/hamburgers.min.css',
+                        '<%= yeoman.app %>/assets/**.js'
                     ],
                 }
             }
@@ -605,11 +615,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
         if (target === 'dist') {
-            console.log('thad wuz here')
             return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 
         grunt.task.run([
+            'injector',
             'jsbeautifier',
             'clean:server',
             'wiredep',

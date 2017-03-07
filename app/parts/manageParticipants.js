@@ -15,9 +15,10 @@ angular.module('ohanaApp')
         $scope.event = event;
         $scope.new_row = {
             key: "",
-            first: "",
-            middle: "",
-            last: "",
+            name: {
+                first: "",
+                last: ""
+            },
             email: "",
             phone: ""
         }
@@ -49,13 +50,21 @@ angular.module('ohanaApp')
                         // commonServices.getData('userRoles/' + temp_key)
                         //     .then(function(role) {
                         // if (role["role"] !== "Participant") {
-                        //check to see if the volunteer exists per this event
+                        //check to see if the participant exists per this event
                         commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                            .then(function(vol) {
-                                // console.log(vol);
-                                if (!vol) {
-                                    commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
-                                    $scope.reloadData();
+                            .then(function(part) {
+                                if (!part) {
+                                    //check if the prospective participant is already signed up as a volunteer
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                        .then(function(vol) {
+                                            if (vol) {
+                                                //if they are a volunteer then remove them from the volunteer table
+                                                var entity_key = Object.keys(vol)[0];
+                                                commonServices.removeData('/events/' + key + '/volunteers/' + entity_key);
+                                            }
+                                            commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
+                                            $scope.reloadData();
+                                        });
                                 } else {
                                     swal(
                                         'Oops...',
@@ -66,15 +75,6 @@ angular.module('ohanaApp')
                                 }
 
                             })
-                            // } else {
-                            //     swal(
-                            //         'Oops...',
-                            //         "User not authorized to be added as a volunteer.",
-                            //         'error'
-                            //     );
-                            // }
-
-                        //})
 
                     } else {
                         //query for this event 
@@ -84,7 +84,7 @@ angular.module('ohanaApp')
                                 console.log(vol);
                                 if (!vol) {
                                     //if false, check if all the fields have been filled out.
-                                    if ($scope.new_row.first && $scope.new_row.last && $scope.new_row.email && $scope.new_row.phone) {
+                                    if ($scope.new_row.name.first && $scope.new_row.name.last && $scope.new_row.email && $scope.new_row.phone) {
                                         commonServices.pushData('/events/' + $scope.event.key + '/participants', $scope.new_row);
                                         swal(
                                             'Success',
@@ -174,13 +174,10 @@ angular.module('ohanaApp')
                         data: "key"
                     }, {
                         title: "First Name",
-                        data: "first"
-                    }, {
-                        title: "Middle Name",
-                        data: "middle"
+                        data: "name.first"
                     }, {
                         title: "Last Name",
-                        data: "last"
+                        data: "name.last"
                     }, {
                         title: "Email",
                         data: "email",

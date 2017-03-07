@@ -13,14 +13,7 @@ angular.module('ohanaApp')
         'use strict';
         $scope.rows_selected = [];
         $scope.event = event;
-        $scope.new_row = {
-            key: "",
-            first: "",
-            middle: "",
-            last: "",
-            email: "",
-            phone: ""
-        }
+        $scope.email;
 
         $scope.addVolunteer = function(email, key) {
             email = email.trim();
@@ -42,8 +35,17 @@ angular.module('ohanaApp')
                                         .then(function(vol) {
                                             console.log(vol);
                                             if (!vol) {
-                                                commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                                                $scope.reloadData();
+                                                //check if the prospective volunteer is already signed up as a participant
+                                                commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                                    .then(function(part) {
+                                                        if (part) {
+                                                            //if they are a participant then remove them from the participant table
+                                                            var entity_key = Object.keys(part)[0];
+                                                            commonServices.removeData('/events/' + key + '/participants/' + entity_key);
+                                                        }
+                                                        commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                        $scope.reloadData();
+                                                    });
                                             } else {
                                                 swal(
                                                     'Oops...',

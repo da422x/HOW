@@ -177,6 +177,7 @@ angular.module('ohanaApp')
                                             .then(function(vol) {
                                                 console.log(vol);
                                                 if (vol) {
+
                                                     var entity_key = Object.keys(vol)[0];
                                                     commonServices.removeData('/events/' + key + '/volunteers/', entity_key);
                                                     $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
@@ -235,9 +236,20 @@ angular.module('ohanaApp')
                                             .then(function(vol) {
                                                 console.log(vol);
                                                 if (!vol) {
-                                                    commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                                                    $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
-                                                    $scope.$apply();
+                                                    //check if the prospective volunteer is already signed up as a participant
+                                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                                        .then(function(part) {
+                                                            if (part) {
+                                                                //if they are a participant then remove them from the participant table
+                                                                var entity_key = Object.keys(part)[0];
+                                                                commonServices.removeData('/events/' + key + '/participants/' + entity_key);
+                                                                $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
+                                                                $scope.$apply();
+                                                            }
+                                                            commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                            $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
+                                                            $scope.$apply();
+                                                        })
                                                 } else {
                                                     swal(
                                                         'Oops...',
@@ -346,12 +358,23 @@ angular.module('ohanaApp')
                                         // if (role["role"] !== "Participant") {
                                         //check to see if the volunteer exists per this event
                                         commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                                            .then(function(vol) {
-                                                console.log(vol);
-                                                if (!vol) {
-                                                    commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
-                                                    $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
-                                                    $scope.$apply();
+                                            .then(function(part) {
+                                                console.log(part);
+                                                if (!part) {
+                                                    //check if the prospective participant is already signed up as a volunteer
+                                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                                        .then(function(vol) {
+                                                            if (vol) {
+                                                                //if they are a volunteer then remove them from the volunteer table
+                                                                var entity_key = Object.keys(vol)[0];
+                                                                commonServices.removeData('/events/' + key + '/volunteers/' + entity_key);
+                                                                $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
+                                                                $scope.$apply();
+                                                            }
+                                                            commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
+                                                            $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
+                                                            $scope.$apply();
+                                                        });
                                                 } else {
                                                     swal(
                                                         'Oops...',
