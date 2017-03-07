@@ -331,6 +331,7 @@ angular.module('ohanaApp')
                 name: 'years',
                 placement: "bottom",
                 emptytext: "null",
+                tpl: '<input>',
                 url: function(params) {
                     $scope.saveUserData(params.value, 'years');
                 }

@@ -63,7 +63,7 @@
                     <span id="profile_branch" class="editable editable-click">{{profileData.branch || ""}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">Years of Service:
-                    <span id="profile_years" class="editable editable-click">{{profileData.years || ""}}</span>
+                    <span id="profile_years" class="editable editable-click">{{(profileData.years | number) || ""}}</span>
                 </h4>
             </div>
         </div>
