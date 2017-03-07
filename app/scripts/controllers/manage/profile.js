@@ -13,14 +13,21 @@ angular.module('ohanaApp')
         'use strict';
 
         $scope.$on('updateProfile', function(event, arg) {
+            console.log('here1');
             if (arg) {
                 $scope.update();
             }
         });
 
-        $scope.update = function() {
-            var userRquests = commonServices.getData('/roleChangeRequests/');
+        $scope.$on('modalClosing', function() {
+            console.log('here2')
+            $scope.update();
+        });
 
+        $scope.update = function() {
+
+            // Get all rcrs first.
+            var userRquests = commonServices.getData('/roleChangeRequests/');
             $q.all([userRquests]).then(function(data) {
                 $scope.profileData = userService.getUserData();
                 $scope.profileData.years = parseInt($scope.profileData.years);
@@ -33,14 +40,11 @@ angular.module('ohanaApp')
                         $scope.requests.push(value);
                     }
                 });
+
+                // Listeners have to be added once the data is loaded to the page.
                 $scope.addEditableListeners();
             });
-
         };
-
-        $scope.$on('modalClosing', function() {
-            $scope.update();
-        });
 
         $scope.rcs_status = false;
 
@@ -65,7 +69,6 @@ angular.module('ohanaApp')
         };
 
         $scope.deleteRequest = function(key) {
-            console.log(key);
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -97,8 +100,6 @@ angular.module('ohanaApp')
 
         $scope.saveUserData = function(value, typeOfData) {
             var firebaseTable = null;
-            console.log(value);
-
             switch (typeOfData) {
                 case "name.first":
                     firebaseTable = "/name/first/"
@@ -126,7 +127,6 @@ angular.module('ohanaApp')
                     break;
                 case "Region":
                     firebaseTable = "/Region/";
-                    $scope.updateChapterDropdown(value);
                     break;
                 case "Chapter":
                     firebaseTable = "/Chapter/";

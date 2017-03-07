@@ -57,7 +57,10 @@ angular.module('ohanaApp')
         };
 
         // empty submit object
-        $scope.newUserDirectory = {};
+        $scope.newUserDirectory = {
+            branch: 'none',
+            years: 0
+        };
 
         $scope.postUser = function() {
             var i;
