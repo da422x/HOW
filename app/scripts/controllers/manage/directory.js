@@ -191,7 +191,7 @@ angular.module('ohanaApp')
                             name: "phone",
                             placement: "bottom",
                             emptytext: "null",
-                            tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
+                            tpl: "<input id='phonenum'>",
                             url: function(params) {
                                 var packet = params.value
                                 var path = '/userData/' + $scope.currId + '/phone/';
@@ -204,7 +204,7 @@ angular.module('ohanaApp')
                             }
                         });
 
-                        angular.element(document).ready(function() {
+                        $(document).on('click', '#membersTable .tdTelly a', function() {
                             $("#phonenum").mask("(999)999-9999");
                         });
 
@@ -370,13 +370,16 @@ angular.module('ohanaApp')
                                     break;
                                 case 6:
                                     // Mobile
+                                    $(document).on('click', 'ul>li[data-dtr-index="6"]>span.dtr-data', function() {
+                                        $("#phonenum").mask("(999)999-9999");
+                                    });
                                     $(n).find('span.dtr-data').addClass('editable editable-click');
                                     $('ul>li[data-dtr-index="6"]>span.dtr-data').editable({
                                         type: "text",
                                         name: $scope.currId,
                                         placement: "bottom",
                                         emptytext: "null",
-                                        tpl: '<input type="text" id ="zipiddemo" class="mask form-control  input-sm dd" style="padding-right: 24px;">',
+                                        tpl: "<input id='phonenum'>",
                                         url: function(params) {
                                             var packet = params.value
                                             var path = '/userData/' + params.name + '/phone/';

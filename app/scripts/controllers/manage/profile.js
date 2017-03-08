@@ -13,14 +13,21 @@ angular.module('ohanaApp')
         'use strict';
 
         $scope.$on('updateProfile', function(event, arg) {
+            console.log('here1');
             if (arg) {
                 $scope.update();
             }
         });
 
-        $scope.update = function() {
-            var userRquests = commonServices.getData('/roleChangeRequests/');
+        $scope.$on('modalClosing', function() {
+            console.log('here2')
+            $scope.update();
+        });
 
+        $scope.update = function() {
+
+            // Get all rcrs first.
+            var userRquests = commonServices.getData('/roleChangeRequests/');
             $q.all([userRquests]).then(function(data) {
                 $scope.profileData = userService.getUserData();
                 $scope.profileData.years = parseInt($scope.profileData.years);
@@ -33,13 +40,11 @@ angular.module('ohanaApp')
                         $scope.requests.push(value);
                     }
                 });
+
+                // Listeners have to be added once the data is loaded to the page.
+                $scope.addEditableListeners();
             });
-
         };
-
-        $scope.$on('modalClosing', function() {
-            $scope.update();
-        });
 
         $scope.rcs_status = false;
 
@@ -64,7 +69,6 @@ angular.module('ohanaApp')
         };
 
         $scope.deleteRequest = function(key) {
-            console.log(key);
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -96,8 +100,6 @@ angular.module('ohanaApp')
 
         $scope.saveUserData = function(value, typeOfData) {
             var firebaseTable = null;
-            console.log(value);
-
             switch (typeOfData) {
                 case "name.first":
                     firebaseTable = "/name/first/"
@@ -125,7 +127,6 @@ angular.module('ohanaApp')
                     break;
                 case "Region":
                     firebaseTable = "/Region/";
-                    $scope.updateChapterDropdown(value);
                     break;
                 case "Chapter":
                     firebaseTable = "/Chapter/";
@@ -138,6 +139,9 @@ angular.module('ohanaApp')
                     break;
                 case "gender":
                     firebaseTable = "/gender/";
+                    break;
+                case "years":
+                    firebaseTable = "/years/";
                     break;
             }
 
@@ -189,8 +193,148 @@ angular.module('ohanaApp')
             });
         };
 
-        $(document).on("focus", ".mask", function() {
-            $(this).mask("(999) 999-9999?");
-        });
+        /*******************************************************
+         *                 Editable functions                   *
+         ********************************************************/
 
+        $scope.addEditableListeners = function() {
+            var states_list = [];
+            _.each($rootScope.siteData.states, function(state) {
+                states_list.push(state.name);
+            });
+
+            $('#profile_first_name').editable({
+                type: 'text',
+                name: 'first',
+                placement: "bottom",
+                emptytext: 'null',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'name.first');
+                }
+            });
+            $('#profile_last_name').editable({
+                type: 'text',
+                name: 'last',
+                placement: 'bottom',
+                emptytext: 'null',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'name.last');
+                }
+            });
+            $('#profile_dob').editable({
+                type: 'combodate',
+                name: 'dob',
+                placement: 'bottom',
+                emptytext: 'null',
+                format: 'MM/DD/YYYY',
+                viewformat: 'MM/DD/YYYY',
+                template: 'MMM / DD / YYYY',
+                combodate: {
+                    template: 'MMM / DD / YYYY',
+                    minYear: 1900,
+                    maxYear: 2020
+                },
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'DOB');
+                }
+            });
+            $('#profile_gender').editable({
+                type: "select",
+                name: "gender",
+                placement: "bottom",
+                emptytext: "null",
+                showbuttons: false,
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'gender');
+                },
+                source: function() {
+                    return ['M', 'F', 'N/A'];
+                }
+            });
+            $('#profile_addr1').editable({
+                type: 'text',
+                name: 'addr1',
+                placement: 'bottom',
+                emptytext: 'null',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'address.line1');
+                }
+            });
+            $('#profile_addr2').editable({
+                type: 'text',
+                name: 'addr2',
+                placement: 'bottom',
+                emptytext: 'null',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'address.line2');
+                }
+            });
+            $('#profile_city').editable({
+                type: 'text',
+                name: 'city',
+                placement: 'bottom',
+                emptytext: 'null',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'address.city');
+                }
+            });
+            $('#profile_state').editable({
+                type: "select",
+                name: "state",
+                placement: "bottom",
+                emptytext: "null",
+                showbuttons: false,
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'address.state');
+                },
+                source: function() {
+                    return states_list;
+                }
+            });
+            $(document).on('click', '#profile_zip', function() {
+                $("#profile_zip_num").mask("99999");
+            });
+            $('#profile_zip').editable({
+                type: 'number',
+                name: 'zip',
+                placement: 'bottom',
+                emptytext: 'null',
+                tpl: '<input id="profile_zip_num">',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'address.zip');
+                }
+            });
+            $(document).on('click', '#profile_phone', function() {
+                $("#profile_phone_num").mask("(999)999-9999");
+            });
+            $('#profile_phone').editable({
+                type: 'number',
+                name: 'phone',
+                placement: "bottom",
+                emptytext: "null",
+                tpl: '<input id="profile_phone_num">',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'phone');
+                }
+            });
+            $('#profile_branch').editable({
+                type: 'text',
+                name: 'branch',
+                placement: "bottom",
+                emptytext: "null",
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'branch');
+                }
+            });
+            $('#profile_years').editable({
+                type: 'number',
+                name: 'years',
+                placement: "bottom",
+                emptytext: "null",
+                tpl: '<input>',
+                url: function(params) {
+                    $scope.saveUserData(params.value, 'years');
+                }
+            });
+        }
     });

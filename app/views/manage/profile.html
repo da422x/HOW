@@ -9,44 +9,45 @@
                 <h6 class="list-group-item-text">User: </h6>
                 <h4 class="list-group-item-heading">
                     First:
-                    <span editable-text="profileData.name.first" onbeforesave="saveUserData($data, 'name.first')">{{profileData.name.first}}</span>
+                    <a id="profile_first_name" class="editable editable-click">{{profileData.name.first}}</a>
                     <br /> Last:
-                    <span editable-text="profileData.name.last" onbeforesave="saveUserData($data, 'name.last')">{{profileData.name.last}}</span>
+                    <span id="profile_last_name" class="editable editable-click">{{profileData.name.last}}</span>
                 </h4>
-                <h4 class="list-group-item-heading">
-                    <a href="#" id="user_dob" editable-bsdate="profileData.DOB" e-is-open="opened.$data" e-ng-click="open($event,'$data')" onbeforesave="saveUserData($data, 'DOB')" e-datepicker-popup="dd/MM/yyyy">{{( profileData.DOB | date:"dd/MM/yyyy") || '' }}</a>
+                <h4 class="list-group-item-heading">DOB:
+                    <span id="profile_dob" class="editable editable-click">{{( profileData.DOB | date:"dd/MM/yyyy") || ""}}</span>
                 </h4>
-                <h4 class="list-group-item-heading">
-                    <a href="#" id="user_gender" editable-select="profileData.gender" e-ng-options="s.value as s.text for s in [{ value: 'M', text: 'M'}, {value: 'F',text: 'F'}, {value: 'N/A',text: 'N/A'}]" onbeforesave="saveUserData($data, 'gender')">{{profileData.gender|| ""}}</a>
+                <h4 class="list-group-item-heading">Gender:
+                    <span id="profile_gender" class="editable editable-click">{{profileData.gender|| ""}}</span>
                 </h4>
-                <h4 class="list-group-item-heading">{{profileData.role}}</h4>
+                <h4 class="list-group-item-heading">Role: {{profileData.role}}</h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Address: </h6>
                 <h4 class="list-group-item-heading">Address 1:
-                    <span editable-text="profileData.address.line1" onbeforesave="saveUserData($data, 'address.line1')">{{profileData.address.line1 || ""}}</span>
+                    <span id="profile_addr1" class="editable editable-click">{{profileData.address.line1 || ""}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">Address 2:
-                    <span editable-text="profileData.address.line2" onbeforesave="saveUserData($data, 'address.line2')">{{profileData.address.line2 || ""}}</span>
+                    <span id="profile_addr2" class="editable editable-click">{{profileData.address.line2 || ""}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">
-                    <span editable-text="profileData.address.city" onbeforesave="saveUserData($data, 'address.city')">{{profileData.address.city || ""}}</span>,
-                    <span editable-select="profileData.address.state" e-ng-options="s.name as s.name for s in $root.siteData.states" onbeforesave="saveUserData($data, 'address.state')">{{profileData.address.state || ""}}</span>
-                    <span editable-text="profileData.address.zip" onbeforesave="saveUserData($data, 'address.zip')">{{profileData.address.zip || ""}}</span>
+                    <span id="profile_city" class="editable editable-click">{{profileData.address.city || ""}}</span>,
+                    <span id="profile_state" class="editable editable-click">{{profileData.address.state || ""}}</span>
+                    <span id="profile_zip" class="editable editable-click">{{profileData.address.zip || ""}}</span>
                 </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Contact: </h6>
-                <h4 class="list-group-item-heading">
-                    <a href="#" id="user_phone" editable-text="profileData.phone" onbeforesave="saveUserData($data, 'phone')">{{ profileData.phone|| "" }}</a>
+                <h4 class="list-group-item-heading">Phone:
+                    <span id="profile_phone" class="editable editable-click">{{profileData.phone || ""}}</span>
                 </h4>
-                <h4 class="list-group-item-heading">
-                    {{profileData.email}}
+                <h4 class="list-group-item-heading">Email:
+                    <span>{{profileData.email}}
+                        <span>
                 </h4>
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Orginization Data: </h6>
-                <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter: {{ profileData.Chapter|| "" }}</h4>
+                <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter: {{profileData.Chapter|| ""}}</h4>
                 <h4 class="list-group-item-heading">Secondary Chapter(s):
                     <h6 class="list-group-item-heading" ng-repeat="Chapters in profileData.Chapters">
                         {{Chapters.chapter}}
@@ -59,10 +60,10 @@
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Military Data: </h6>
                 <h4 class="list-group-item-heading">Military Branch:
-                    <span editable-text="profileData.branch" onbeforesave="saveUserData($data, 'branch')">{{profileData.branch || ""}}</span>
+                    <span id="profile_branch" class="editable editable-click">{{profileData.branch || ""}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">Years of Service:
-                    <span editable-number="profileData.years" e-min="0" onbeforesave="saveUserData($data, 'years')">{{profileData.years || ""}}</span>
+                    <span id="profile_years" class="editable editable-click">{{(profileData.years | number) || ""}}</span>
                 </h4>
             </div>
         </div>
