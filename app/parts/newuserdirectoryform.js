@@ -12,24 +12,40 @@ angular.module('ohanaApp')
     .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService) {
         'use strict';
 
-        // calendar options
-        $scope.popup = {
-            opened: false
+        $scope.initialize = function() {
+            // calendar options
+            $scope.popup = {
+                opened: false
+            };
+
+            $scope.format = 'MM/dd/yyyy';
+
+            $scope.dateOptions = {
+                maxDate: new Date(),
+                startingDay: 0,
+                showWeeks: false
+            };
+
+            $scope.chapters = [];
+
+            $scope.regions = $rootScope.siteData.regions;
+
+            $scope.states = $rootScope.siteData.states;
+
+            $scope.branches = ['none', 'Firefighter', 'Police', 'EMS'];
+
+            // empty submit object
+            $scope.newUserDirectory = {
+                branch: 'none',
+                years: 0,
+                service_type: false
+            };
         };
 
-        $scope.format = 'MM/dd/yyyy';
-
-        $scope.dateOptions = {
-            maxDate: new Date(),
-            startingDay: 0,
-            showWeeks: false
+        $scope.setDefault = function() {
+            $scope.newUserDirectory.branch = 'none';
+            $scope.newUserDirectory.years = 0;
         };
-
-        $scope.chapters = [];
-
-        $scope.regions = $rootScope.siteData.regions;
-
-        $scope.states = $rootScope.siteData.states;
 
         $scope.open = function() {
             $scope.popup.opened = true;
@@ -54,12 +70,6 @@ angular.module('ohanaApp')
                     console.log('Failed to get Chapters...');
                 }
             });
-        };
-
-        // empty submit object
-        $scope.newUserDirectory = {
-            branch: 'none',
-            years: 0
         };
 
         $scope.postUser = function() {

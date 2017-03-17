@@ -3,7 +3,7 @@
     <h4 class="modal-title">Add New User</h4>
 </div>
 <!-- end modal-header -->
-<div class="modal-body">
+<div class="modal-body" ng-init="initialize()">
     <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="height: 500px; overflow-y: auto; overflow-x: hidden;">
         <fieldset>
             <!-- Text - First Name -->
@@ -113,20 +113,35 @@
                 <label class="col-md-4 control-label" for="chapter">Chapter*</label>
                 <div class="col-md-7">
                     <select id="chapter" name="chapter" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters" required>
-                        <!-- <option value="KANSAS CHAPTER">KANSAS CHAPTER</option> -->
                     </select>
                 </div>
             </div>
-            <!-- Text - Service background -->
+            <!-- Text - Service Type -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="branch">Service background*</label>
+                <label class="col-md-4 control-label" for="service_type">Service Type*</label>
                 <div class="col-md-7">
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" value="First_Responder"> First Responder
+                    <br>
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" value="Military"> Military
+                    <br>
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" ng-value="false" checked> none
+                    <br>
+                </div>
+            </div>
+            <!-- Text - Service background -->
+            <div class="form-group" ng-show="newUserDirectory.service_type">
+                <label class="col-md-4 control-label" for="branch">Service background*</label>
+                <div class="col-md-7" ng-show="newUserDirectory.service_type === 'Military'">
                     <input id="branch" name="branch" type="text" class="form-control input-md" ng-model="newUserDirectory.branch" required>
                     <p ng-show="userForm.branch.$invalid && !userForm.branch.$pristine" class="help-block">Enter a valid service background.</p>
                 </div>
+                <div class="col-md-7" ng-show="newUserDirectory.service_type === 'First_Responder'">
+                    <select id="first_responder" name="first_responder" class="form-control" ng-model="newUserDirectory.branch" ng-options="branch as branch for branch in branches" required>
+                    </select>
+                </div>
             </div>
             <!-- Text - Years Served -->
-            <div class="form-group">
+            <div class="form-group" ng-show="newUserDirectory.service_type">
                 <label class="col-md-4 control-label" for="Years_Served">Years Served*</label>
                 <div class="col-md-7">
                     <input id="Years_Served" name="Years_Served" type="number" class="form-control input-md" ng-model="newUserDirectory.years" required>

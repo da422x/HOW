@@ -10,10 +10,6 @@
 angular.module('ohanaApp')
     .controller('ManageChapterchatCtrl', function($scope, $rootScope, $q, commonServices, userService) {
 
-        $scope.newMessage = '';
-
-        $scope.chatLog = [];
-
         $scope.$watch('chatLog', function() {
             $('.panel-body').animate({
                 scrollTop: $('.panel-body').get(0).scrollHeight
@@ -21,8 +17,20 @@ angular.module('ohanaApp')
         }, true);
 
         $scope.init = function() {
-            var usersChapter = userService.getChapter();
+            var userData = userService.getUserData();
+            $scope.newMessage = '';
+            $scope.chatLog = [];
+            $scope.chapterOptions = {};
+            $scope.chapterOptions[userData.Chapter] = userData.Chapter;
+            _.each(userData.Chapters, function(secondary) {
+                $scope.chapterOptions[secondary.chapter] = secondary.chapter;
+            });
+            $scope.loadChapterChat(userService.getChapter());
+        };
+
+        $scope.loadChapterChat = function(usersChapter) {
             var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
+            $scope.currentChapter = usersChapter;
 
             $q.all([getLog]).then(function(data) {
                 $scope.chatLog = _.sortBy(data[0], ['time']);
@@ -36,17 +44,29 @@ angular.module('ohanaApp')
                         }
                     });
             });
+        }
 
+        $scope.changeChapter = function() {
+            swal({
+                title: 'Switch Chapter',
+                input: 'select',
+                inputOptions: $scope.chapterOptions
+            }).then(function(option) {
+                $scope.loadChapterChat(option);
+                swal({
+                    type: 'success',
+                    title: 'Switched to ' + option
+                });
+            });;
         };
 
         $scope.sendMessage = function() {
             var messageData = {};
-            var usersChapter = $rootScope.userChapter;
-            messageData.userId = $rootScope.userId;
-            messageData.name = $rootScope.userName;
+            messageData.userId = userService.getId();
+            messageData.name = userService.getUserName();
             messageData.time = Date.now();
             messageData.message = $scope.newMessage;
-            commonServices.pushData('/chat/chapters/' + usersChapter, messageData);
+            commonServices.pushData('/chat/chapters/' + $scope.currentChapter, messageData);
             $scope.newMessage = '';
         };
 
