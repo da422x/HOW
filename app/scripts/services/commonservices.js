@@ -8,7 +8,7 @@
  * Service in the mainAppApp.
  */
 angular.module('ohanaApp')
-    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray) {
+    .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', '$q', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, $q) {
 
         /******************************************************
          *           User Management - start                  *
@@ -240,6 +240,74 @@ angular.module('ohanaApp')
                 });
         }
 
+        this.addressLookup = function(zip, outerCallback) {
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                "address": zip.toString()
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+                    //var coordinates = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                    var result = results[0].geometry.location;
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        outerCallback({
+                            success: true,
+                            err: null,
+                            results: result
+                        });
+                    } else {
+                        outerCallback({
+                            success: false,
+                            err: new Error('Geocode was not successful for the following reason: ' + status),
+                            results: null
+                        });
+                    }
+
+                }
+            });
+        }
+
+        this.zipCompare = function(location) {
+            //console.log($rootScope.siteData.regions);
+            var d = null;
+            var c1, r1;
+            var serv = this;
+            var promises = [];
+            // $rootScope.siteData.regions.forEach(function(entry) {
+            _.each($rootScope.siteData.regions, function(entry) {
+                var path = '/Regions/' + entry.text + '/';
+                var getChapters = serv.getData(path);
+                promises.push(getChapters);
+                $q.all([getChapters]).then(function(data) {
+                    var chapterNames = [];
+                    if (data[0]) {
+                        _.each(data[0], function(state) {
+                            _.each(state, function(chapters) {
+                                var coord = new google.maps.LatLng(chapters.lat, chapters.lng);
+                                var d1 = google.maps.geometry.spherical.computeDistanceBetween(location, coord);
+                                if (d == null) {
+                                    d = d1;
+                                } else {
+                                    if (d1 < d) {
+                                        d = d1;
+                                        c1 = chapters.name;
+                                        r1 = entry;
+                                    }
+                                }
+                            });
+                        });
+                    } else {
+                        console.log('Failed to get Chapters...');
+                    }
+                });
+
+            });
+            return $q.all(promises).then(function() {
+                var answ = [];
+                answ.push(c1);
+                answ.push(r1);
+                return answ;
+            });
+        }
         /******************************************************
          *           DAO object container - end             *
          *******************************************************/

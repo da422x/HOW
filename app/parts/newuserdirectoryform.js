@@ -59,7 +59,6 @@ angular.module('ohanaApp')
             $q.all([getChapters]).then(function(data) {
                 var chapterNames = [];
                 if (data[0]) {
-                    console.log(data[0]);
                     _.each(data[0], function(state) {
                         _.each(state, function(chapters) {
                             chapterNames.push(chapters.name);
@@ -70,6 +69,24 @@ angular.module('ohanaApp')
                     console.log('Failed to get Chapters...');
                 }
             });
+        };
+
+        $scope.ZipUpdate = function() {
+            var result = commonServices.addressLookup($scope.newUserDirectory.address.zip, function(callbackResult) {
+                if (callbackResult.success == true) {
+                    $scope.locationUpdate(callbackResult.results);
+                }
+            });
+        };
+
+        $scope.locationUpdate = function(location) {
+            var ctrl = this;
+            commonServices.zipCompare(location).then(function(result) {
+                $scope.newUserDirectory.region = result[1];
+                ctrl.regionUpdate();
+                $scope.newUserDirectory.chapter = result[0];
+            });
+
         };
 
         $scope.postUser = function() {

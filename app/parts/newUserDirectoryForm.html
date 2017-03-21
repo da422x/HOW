@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Zip">Zip*</label>
                 <div class="col-md-7">
-                    <input id="Zip" name="Zip" type="number" placeholder="Zip" class="form-control input-md" ng-model="newUserDirectory.address.zip" required>
+                    <input id="Zip" name="Zip" type="number" placeholder="Zip" class="form-control input-md" ng-model="newUserDirectory.address.zip" ng-change="ZipUpdate()" ng-model-options="{debounce:1000}" required>
                     <p ng-show="userForm.Zip.$invalid && !userForm.Zip.$pristine" class="help-block">Enter a valid zip code.</p>
                 </div>
             </div>
