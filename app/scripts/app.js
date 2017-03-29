@@ -127,7 +127,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                //              controller: 'ChadminCtrl as chadmin'
+                    //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -297,7 +297,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-    .filter('unique', function() {
+.filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique
