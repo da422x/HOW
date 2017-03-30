@@ -20,6 +20,8 @@ angular.module('ohanaApp')
 
             $scope.format = 'MM/dd/yyyy';
 
+            $scope.datePattern = '([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)\d\d';
+
             $scope.chapters = [];
 
             $scope.regions = $rootScope.siteData.regions;
@@ -37,7 +39,6 @@ angular.module('ohanaApp')
             };
 
             $scope.dateOptions = {
-                formatYear: 'yyyy',
                 maxDate: new Date(2020, 5, 22),
                 minDate: new Date(1900, 5, 22),
                 showWeeks: false,
@@ -205,13 +206,19 @@ angular.module('ohanaApp')
 
         };
 
+        $scope.validateDOB = function() {
+            console.log($scope.newUserDirectory.DOB);
+        };
+
+        // pattern="([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)\d\d"
+
         $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
 
         angular.element(document).ready(function() {
-            $("#phonenum").mask("(999)999-9999");
-            $("#sanicDOB").mask("99/99/9999");
-            $("#Zip").mask("99999");
+            $('#phonenum').mask('(999)999-9999');
+            $('#sanicDOB').mask('99/99/9999');
+            $('#Zip').mask('99999');
         });
     });
