@@ -33,7 +33,7 @@ angular.module('ohanaApp')
             // empty submit object
             $scope.newUserDirectory = {
                 gender: 'N/A',
-                branches: 'N/A',
+                branch: 'N/A',
                 years: 0,
                 service_type: false
             };
@@ -94,12 +94,11 @@ angular.module('ohanaApp')
         };
 
         $scope.postUser = function(form) {
-            console.log(form);
-
             if (form.$invalid) {
                 swal({
-                    text: "Please check the form for any fields that are highlighted in red",
-                    type: 'error'
+                    text: "The form has required fields that are missing data or formatted improperly.",
+                    type: 'error',
+                    customClass: 'modal-border'
                 });
             } else {
                 if (typeof $scope.newUserDirectory.address.line2 === 'undefined') {
@@ -129,7 +128,6 @@ angular.module('ohanaApp')
                 var results = commonServices.register(packet);
 
                 $q.all([results]).then(function(data) {
-                    console.log(data[0]);
                     if (data[0]) {
                         // If sign in was successful, send user to events page
                         swal({
@@ -152,12 +150,6 @@ angular.module('ohanaApp')
             }
 
         };
-
-        $scope.validateDOB = function() {
-            console.log($scope.newUserDirectory.DOB);
-        };
-
-        // pattern="([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)\d\d"
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');

@@ -194,3 +194,14 @@ a:visited {
 .help-block {
     color: #FF0000;
 }
+
+
+/* Styling for registration modal */
+
+.highlight_field {
+    border-color: #FF0000;
+}
+
+.modal-border {
+    border: 1px solid #ccc;
+}
