@@ -28,12 +28,12 @@ angular.module('ohanaApp')
 
             $scope.states = $rootScope.siteData.states;
 
-            $scope.branches = ['none', 'Firefighter', 'Police', 'EMS'];
+            $scope.branches = ['N/A', 'Firefighter', 'Police', 'EMS'];
 
             // empty submit object
             $scope.newUserDirectory = {
                 gender: 'N/A',
-                branch: 'none',
+                branches: 'N/A',
                 years: 0,
                 service_type: false
             };
@@ -47,7 +47,7 @@ angular.module('ohanaApp')
         };
 
         $scope.setDefault = function() {
-            $scope.newUserDirectory.branch = 'none';
+            $scope.newUserDirectory.branch = 'N/A';
             $scope.newUserDirectory.years = 0;
         };
 
@@ -97,112 +97,59 @@ angular.module('ohanaApp')
             console.log(form);
 
             if (form.$invalid) {
-                console.log('form is invalid');
+                swal({
+                    text: "Please check the form for any fields that are highlighted in red",
+                    type: 'error'
+                });
             } else {
-                console.log('form is valid');
+                if (typeof $scope.newUserDirectory.address.line2 === 'undefined') {
+                    $scope.newUserDirectory.address.line2 = '';
+                }
+
+                var packet = {
+                    address: {
+                        city: $scope.newUserDirectory.address.city,
+                        line1: $scope.newUserDirectory.address.line1,
+                        line2: $scope.newUserDirectory.address.line2,
+                        state: $scope.newUserDirectory.address.state.name,
+                        zip: $scope.newUserDirectory.address.zip
+                    },
+                    name: $scope.newUserDirectory.name,
+                    branch: $scope.newUserDirectory.branch,
+                    email: $scope.newUserDirectory.email,
+                    gender: $scope.newUserDirectory.gender,
+                    DOB: $scope.newUserDirectory.DOB.getTime(),
+                    phone: $scope.newUserDirectory.phone,
+                    years: $scope.newUserDirectory.years,
+                    Region: $scope.newUserDirectory.region.text,
+                    Chapter: $scope.newUserDirectory.chapter,
+                    password: $scope.newUserDirectory.password
+                };
+
+                var results = commonServices.register(packet);
+
+                $q.all([results]).then(function(data) {
+                    console.log(data[0]);
+                    if (data[0]) {
+                        // If sign in was successful, send user to events page
+                        swal({
+                            text: "User added!",
+                            type: 'success',
+                            timer: 2500
+                        });
+                        howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
+                        $uibModalInstance.close();
+                        window.location.replace('#/home');
+                    } else {
+                        // Do something here when sign in unsuccessful....
+                        swal({
+                            text: "Error submitting data. Please try again",
+                            type: 'error',
+                            timer: 2500
+                        });
+                    }
+                });
             }
-            // var i;
-
-            // //push to db kept breaking due to null value
-            // if ($scope.newUserDirectory.address.line2 == null) {
-            //     $scope.newUserDirectory.address.line2 = '';
-            // }
-            // console.log($scope.newUserDirectory);
-            // console.log('SUCCESS');
-
-            // var newDOB = $scope.newUserDirectory.DOB;
-            // newDOB = newDOB.toString();
-            // var DOBmonth = newDOB.substring(4, 7);
-            // var DOBday = newDOB.substring(8, 10);
-            // var DOByear = newDOB.substring(11, 15);
-
-            // switch (DOBmonth) {
-            //     case 'Jan':
-            //         DOBmonth = '01';
-            //         break;
-            //     case 'Feb':
-            //         DOBmonth = '02';
-            //         break;
-            //     case 'Mar':
-            //         DOBmonth = '03';
-            //         break;
-            //     case 'Apr':
-            //         DOBmonth = '04';
-            //         break;
-            //     case 'May':
-            //         DOBmonth = '05';
-            //         break;
-            //     case 'Jun':
-            //         DOBmonth = '06';
-            //         break;
-            //     case 'Jul':
-            //         DOBmonth = '07';
-            //         break;
-            //     case 'Aug':
-            //         DOBmonth = '08';
-            //         break;
-            //     case 'Sep':
-            //         DOBmonth = '09';
-            //         break;
-            //     case 'Oct':
-            //         DOBmonth = '10';
-            //         break;
-            //     case 'Nov':
-            //         DOBmonth = '11';
-            //         break;
-            //     case 'Dec':
-            //         DOBmonth = '12';
-            //         break;
-            //     default:
-            //         console.log('Error with DOB...');
-            // }
-
-            // newDOB = DOBmonth + '/' + DOBday + '/' + DOByear;
-
-            // var packet = {
-            //     address: {
-            //         city: $scope.newUserDirectory.address.city,
-            //         line1: $scope.newUserDirectory.address.line1,
-            //         line2: $scope.newUserDirectory.address.line2,
-            //         state: $scope.newUserDirectory.address.state.name,
-            //         zip: $scope.newUserDirectory.address.zip
-            //     },
-            //     name: $scope.newUserDirectory.name,
-            //     branch: $scope.newUserDirectory.branch,
-            //     email: $scope.newUserDirectory.email,
-            //     gender: $scope.newUserDirectory.gender,
-            //     DOB: newDOB,
-            //     phone: $scope.newUserDirectory.phone,
-            //     years: $scope.newUserDirectory.years,
-            //     Region: $scope.newUserDirectory.region.text,
-            //     Chapter: $scope.newUserDirectory.chapter,
-            //     password: $scope.newUserDirectory.password
-            // };
-
-            // var results = commonServices.register(packet);
-
-            // $q.all([results]).then(function(data) {
-            //     console.log(data[0]);
-            //     if (data[0]) {
-            //         // If sign in was successful, send user to events page
-            //         swal({
-            //             text: "User added!",
-            //             type: 'success',
-            //             timer: 2500
-            //         });
-            //         howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
-            //         $uibModalInstance.close();
-            //         window.location.replace('#/home');
-            //     } else {
-            //         // Do something here when sign in unsuccessful....
-            //         swal({
-            //             text: "Error submitting data. Please try again",
-            //             type: 'error',
-            //             timer: 2500
-            //         });
-            //     }
-            // });
-
 
         };
 

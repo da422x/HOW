@@ -26,8 +26,8 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Address1">Address 1*</label>
                 <div class="col-md-7">
-                    <input id="Address1" name="line1" type="text" placeholder="Street" class="form-control input-md" ng-model="newUserDirectory.address.line1" required>
-                    <p ng-show="submitted && userForm.line1.$error.required" class="help-block">Address is required.</p>
+                    <input id="Address1" name="Address1" type="text" placeholder="Street" class="form-control input-md" ng-model="newUserDirectory.address.line1" required>
+                    <p ng-show="submitted && userForm.Address1.$error.required" class="help-block">Address is required.</p>
                 </div>
             </div>
             <!-- Address 2 -->
@@ -128,7 +128,7 @@
                     <br>
                     <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" value="Military"> Military
                     <br>
-                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" ng-value="false" checked> none
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" ng-value="false" checked> N/A
                     <br>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                 <label class="col-md-4 control-label" for="Years_Served">Years Served*</label>
                 <div class="col-md-7">
                     <input id="Years_Served" name="Years_Served" type="text" pattern="^([0-9]|[1-9][0-9]|[1][0][0])$" class="form-control input-md" ng-model="newUserDirectory.years" required>
-                    <p ng-show="submitted && userForm.Years_Served.$pristine && !userForm.Years_Served.$valid" class="help-block">Years served is required.</p>
+                    <p ng-show="submitted && userForm.Years_Served.$error.required && !userForm.Years_Served.$valid" class="help-block">Years served is required.</p>
                     <p ng-show="userForm.Years_Served.$error.pattern" class="help-block">Valid range is 0-100</p>
                 </div>
             </div>
