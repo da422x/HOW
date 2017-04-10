@@ -13,14 +13,12 @@ angular.module('ohanaApp')
         'use strict';
 
         $scope.$on('updateProfile', function(event, arg) {
-            console.log('here1');
             if (arg) {
                 $scope.update();
             }
         });
 
         $scope.$on('modalClosing', function() {
-            console.log('here2')
             $scope.update();
         });
 
