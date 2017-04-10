@@ -24,6 +24,27 @@ angular.module('ohanaApp')
 
         $scope.update = function() {
 
+            $scope.profileData = {
+                name: {
+                    first: 'N/A',
+                    last: 'N/A'
+                },
+                DOB: 0,
+                gender: 'N/A',
+                address: {
+                    line1: 'N/A',
+                    line2: 'N/A',
+                    city: 'N/A',
+                    state: 'N/A',
+                    zip: 0
+                },
+                phone: 0,
+                email: 'N/A',
+                chapter: 'N/A',
+                branch: 'N/A',
+                years: 0
+            };
+
             // Get all rcrs first.
             var userRquests = commonServices.getData('/roleChangeRequests/');
             $q.all([userRquests]).then(function(data) {
