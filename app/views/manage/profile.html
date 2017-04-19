@@ -23,10 +23,10 @@
             </div>
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Address: </h6>
-                <h4 class="list-group-item-heading">Address 1:
+                <h4 class="list-group-item-heading">Line 1:
                     <span id="profile_addr1" class="editable editable-click">{{profileData.address.line1}}</span>
                 </h4>
-                <h4 class="list-group-item-heading">Address 2:
+                <h4 class="list-group-item-heading">Line 2:
                     <span id="profile_addr2" class="editable editable-click">{{profileData.address.line2}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">
@@ -46,8 +46,11 @@
                 </h4>
             </div>
             <div class="list-group-item">
-                <h6 class="list-group-item-text">Orginization Data: </h6>
-                <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter: {{profileData.Chapter}}</h4>
+                <h6 class="list-group-item-text">Region/Chapter Information: </h6>
+                <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter:
+                    <label class="format-chapter-class">{{profileData.Chapter}}
+                        <label>
+                </h4>
                 <h4 class="list-group-item-heading">Secondary Chapter(s):
                     <h6 class="list-group-item-heading" ng-repeat="Chapters in profileData.Chapters">
                         {{Chapters.chapter}}
@@ -58,8 +61,8 @@
                 </h4>
             </div>
             <div class="list-group-item">
-                <h6 class="list-group-item-text">Military Data: </h6>
-                <h4 class="list-group-item-heading">Military Branch:
+                <h6 class="list-group-item-text">Service Information: </h6>
+                <h4 class="list-group-item-heading">Branch:
                     <span id="profile_branch" class="editable editable-click">{{profileData.branch}}</span>
                 </h4>
                 <h4 class="list-group-item-heading">Years of Service:

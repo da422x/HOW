@@ -44,6 +44,10 @@ angular.module('ohanaApp')
                 showWeeks: false,
                 startingDay: 1
             };
+
+            $('#phonenum').mask('(999)999-9999');
+            $('#sanicDOB').mask('99/99/9999');
+            $('#Zip').mask('99999');
         };
 
         $scope.setDefault = function() {
@@ -109,7 +113,7 @@ angular.module('ohanaApp')
                     address: {
                         city: $scope.newUserDirectory.address.city,
                         line1: $scope.newUserDirectory.address.line1,
-                        line2: $scope.newUserDirectory.address.line2,
+                        line2: ($scope.newUserDirectory.address.line2 ? $scope.newUserDirectory.address.line2 : 'none'),
                         state: $scope.newUserDirectory.address.state.name,
                         zip: $scope.newUserDirectory.address.zip
                     },
@@ -155,9 +159,4 @@ angular.module('ohanaApp')
             $uibModalInstance.dismiss('cancel');
         };
 
-        angular.element(document).ready(function() {
-            $('#phonenum').mask('(999)999-9999');
-            $('#sanicDOB').mask('99/99/9999');
-            $('#Zip').mask('99999');
-        });
     });
