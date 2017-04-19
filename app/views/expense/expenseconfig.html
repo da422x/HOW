@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <input ng-model="item.OverAgeError " name="OverAgeError " class="textboxsize " placeholder="45 " ng-pattern="/^[0-9]{1,7}$/ " type="number ">
-                            <p ng-if="item.OverAgeWarning> item.OverAgeError" class="field-feedback"> Should be greater than Over Age Attention (days)
+                            <p ng-if="item.OverAgeWarning> item.OverAgeError" class="field-feedback"> Should be greater than Over Age Warning (days)
                             </p>
                         </td>
                         <td>
@@ -54,7 +54,7 @@
                                     cancel
                                 </button>
                             </form>
-                            <div class="buttons" ng-show="!rowform.$visible">
+                            <div ng-show="!rowform.$visible">
                                 <input type="button" class="btn btn-primary" ng-click="rowform.$show()" value="Edit">
                                 <input type="button" class="btn btn-danger" ng-click="removeConfig($index)" value="Delete">
                             </div>
