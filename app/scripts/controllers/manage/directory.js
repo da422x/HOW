@@ -55,7 +55,7 @@ angular.module('ohanaApp')
                         title: "Email",
                         data: "email"
                     }, {
-                        title: "Mobile #",
+                        title: "Phone",
                         data: "phone"
                     }, {
                         title: "Role",
@@ -101,13 +101,15 @@ angular.module('ohanaApp')
                         $(row).children().eq(2).addClass('tdLname');
                         $(row).children().eq(3).addClass('tdDob');
                         $(row).children().eq(4).addClass('tdEmail'); // email checking disabled
-                        $(row).children().eq(5).addClass('tdTelly'); // phone # checking disabled
+                        $(row).children().eq(5).addClass('tdTelly');
                         $(row).children().eq(6).addClass('tdSelectRole');
                         $(row).children().eq(7).addClass('tdPrimaryChapter');
                         $(row).children().eq(8).addClass('tdChapters');
                         $(row).children().eq(9).addClass('tdMil');
                         for (i = 1; i < 10; i++) {
-                            $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
+                            if (i !== 4) {
+                                $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
+                            }
                         }
                         return row;
                     },
@@ -133,15 +135,18 @@ angular.module('ohanaApp')
                             name: "first",
                             placement: "bottom",
                             emptytext: "null",
+                            display: false,
                             url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/name/first/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.name.first = packet;
-                                    userService.setUserData(tempData);
-                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                if (params.value !== '') {
+                                    var packet = params.value;
+                                    var path = '/userData/' + $scope.currId + '/name/first/';
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        var tempData = userService.getUserData();
+                                        tempData.name.first = packet;
+                                        userService.setUserData(tempData);
+                                        userService.setUserName(tempData.name.first, tempData.name.last);
+                                    }
                                 }
                             }
                         });
@@ -150,15 +155,18 @@ angular.module('ohanaApp')
                             name: "last",
                             placement: "bottom",
                             emptytext: "null",
+                            display: false,
                             url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/name/last/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.name.last = packet;
-                                    userService.setUserData(tempData);
-                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                if (params.value !== '') {
+                                    var packet = params.value
+                                    var path = '/userData/' + $scope.currId + '/name/last/';
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        var tempData = userService.getUserData();
+                                        tempData.name.last = packet;
+                                        userService.setUserData(tempData);
+                                        userService.setUserName(tempData.name.first, tempData.name.last);
+                                    }
                                 }
                             }
                         });
@@ -175,14 +183,17 @@ angular.module('ohanaApp')
                                 minYear: 1900,
                                 maxYear: 2020
                             },
+                            display: false,
                             url: function(params) {
-                                var packet = params.value;
-                                var path = '/userData/' + $scope.currId + '/DOB/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.DOB = packet;
-                                    userService.setUserData(tempData);
+                                if (params.value !== '') {
+                                    var packet = params.value;
+                                    var path = '/userData/' + $scope.currId + '/DOB/';
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        var tempData = userService.getUserData();
+                                        tempData.DOB = packet;
+                                        userService.setUserData(tempData);
+                                    }
                                 }
                             }
                         });
@@ -192,14 +203,17 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "null",
                             tpl: "<input id='phonenum'>",
+                            display: false,
                             url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/phone/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.phone = packet;
-                                    userService.setUserData(tempData);
+                                if (params.value !== '') {
+                                    var packet = params.value
+                                    var path = '/userData/' + $scope.currId + '/phone/';
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        var tempData = userService.getUserData();
+                                        tempData.phone = packet;
+                                        userService.setUserData(tempData);
+                                    }
                                 }
                             }
                         });
@@ -214,23 +228,26 @@ angular.module('ohanaApp')
                             placement: "bottom",
                             emptytext: "null",
                             showbuttons: false,
+                            display: false,
                             url: function(params) {
-                                var currentUserUID = userService.getId();
-                                if ($scope.currId !== currentUserUID) {
-                                    var packet = {
-                                        role: params.value
+                                if (params.value !== '') {
+                                    var currentUserUID = userService.getId();
+                                    if ($scope.currId !== currentUserUID) {
+                                        var packet = {
+                                            role: params.value
+                                        }
+                                        var path = '/userRoles/' + $scope.currId;
+                                        commonServices.updateData(path, packet);
+                                        if ($scope.currId === userService.getId()) {
+                                            userService.setRole(packet);
+                                        }
+                                    } else {
+                                        swal(
+                                            'Alert',
+                                            'You cannot edit your own role!',
+                                            'error'
+                                        )
                                     }
-                                    var path = '/userRoles/' + $scope.currId;
-                                    commonServices.updateData(path, packet);
-                                    if ($scope.currId === userService.getId()) {
-                                        userService.setRole(packet);
-                                    }
-                                } else {
-                                    swal(
-                                        'Alert',
-                                        'You cannot edit your own role!',
-                                        'error'
-                                    )
                                 }
                             },
                             source: function() {
@@ -274,14 +291,17 @@ angular.module('ohanaApp')
                             name: "branch",
                             placement: "bottom",
                             emptytext: "null",
+                            display: false,
                             url: function(params) {
-                                var packet = params.value
-                                var path = '/userData/' + $scope.currId + '/branch/';
-                                commonServices.updateData(path, packet);
-                                if ($scope.currId === userService.getId()) {
-                                    var tempData = userService.getUserData();
-                                    tempData.branch = packet;
-                                    userService.setUserData(tempData);
+                                if (params.value !== '') {
+                                    var packet = params.value
+                                    var path = '/userData/' + $scope.currId + '/branch/';
+                                    commonServices.updateData(path, packet);
+                                    if ($scope.currId === userService.getId()) {
+                                        var tempData = userService.getUserData();
+                                        tempData.branch = packet;
+                                        userService.setUserData(tempData);
+                                    }
                                 }
                             }
                         });
@@ -303,15 +323,18 @@ angular.module('ohanaApp')
                                         name: $scope.currId,
                                         placement: "bottom",
                                         emptytext: "null",
+                                        display: false,
                                         url: function(params) {
-                                            var packet = params.value;
-                                            var path = '/userData/' + params.name + '/name/first/';
-                                            commonServices.updateData(path, packet);
-                                            if (params.name === userService.getId()) {
-                                                var tempData = userService.getUserData();
-                                                tempData.name.first = packet;
-                                                userService.setUserData(tempData);
-                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            if (params.value !== '') {
+                                                var packet = params.value;
+                                                var path = '/userData/' + params.name + '/name/first/';
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    var tempData = userService.getUserData();
+                                                    tempData.name.first = packet;
+                                                    userService.setUserData(tempData);
+                                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                                }
                                             }
                                         }
                                     });
@@ -324,15 +347,18 @@ angular.module('ohanaApp')
                                         name: $scope.currId,
                                         placement: "bottom",
                                         emptytext: "null",
+                                        display: false,
                                         url: function(params) {
-                                            var packet = params.value
-                                            var path = '/userData/' + params.name + '/name/last/';
-                                            commonServices.updateData(path, packet);
-                                            if (params.name === userService.getId()) {
-                                                var tempData = userService.getUserData();
-                                                tempData.name.last = packet;
-                                                userService.setUserData(tempData);
-                                                userService.setUserName(tempData.name.first, tempData.name.last);
+                                            if (params.value !== '') {
+                                                var packet = params.value
+                                                var path = '/userData/' + params.name + '/name/last/';
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    var tempData = userService.getUserData();
+                                                    tempData.name.last = packet;
+                                                    userService.setUserData(tempData);
+                                                    userService.setUserName(tempData.name.first, tempData.name.last);
+                                                }
                                             }
                                         }
                                     });
@@ -353,14 +379,17 @@ angular.module('ohanaApp')
                                             minYear: 1900,
                                             maxYear: 2020
                                         },
+                                        display: false,
                                         url: function(params) {
-                                            var packet = params.value;
-                                            var path = '/userData/' + params.name + '/DOB/';
-                                            commonServices.updateData(path, packet);
-                                            if (params.name === userService.getId()) {
-                                                var tempData = userService.getUserData();
-                                                tempData.DOB = packet;
-                                                userService.setUserData(tempData);
+                                            if (params.value !== '') {
+                                                var packet = params.value;
+                                                var path = '/userData/' + params.name + '/DOB/';
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    var tempData = userService.getUserData();
+                                                    tempData.DOB = packet;
+                                                    userService.setUserData(tempData);
+                                                }
                                             }
                                         }
                                     });
@@ -380,14 +409,17 @@ angular.module('ohanaApp')
                                         placement: "bottom",
                                         emptytext: "null",
                                         tpl: "<input id='phonenum'>",
+                                        display: false,
                                         url: function(params) {
-                                            var packet = params.value
-                                            var path = '/userData/' + params.name + '/phone/';
-                                            commonServices.updateData(path, packet);
-                                            if (params.name === userService.getId()) {
-                                                var tempData = userService.getUserData();
-                                                tempData.phone = packet;
-                                                userService.setUserData(tempData);
+                                            if (params.value !== '') {
+                                                var packet = params.value
+                                                var path = '/userData/' + params.name + '/phone/';
+                                                commonServices.updateData(path, packet);
+                                                if (params.name === userService.getId()) {
+                                                    var tempData = userService.getUserData();
+                                                    tempData.phone = packet;
+                                                    userService.setUserData(tempData);
+                                                }
                                             }
                                         }
                                     });
@@ -401,23 +433,26 @@ angular.module('ohanaApp')
                                         placement: "bottom",
                                         emptytext: "null",
                                         showbuttons: false,
+                                        display: false,
                                         url: function(params) {
-                                            var currentUserUID = userService.getId();
-                                            if ($scope.currId !== currentUserUID) {
-                                                var packet = {
-                                                    role: params.value
+                                            if (params.value !== '') {
+                                                var currentUserUID = userService.getId();
+                                                if ($scope.currId !== currentUserUID) {
+                                                    var packet = {
+                                                        role: params.value
+                                                    }
+                                                    var path = '/userRoles/' + params.name;
+                                                    commonServices.updateData(path, packet);
+                                                    if (params.name === userService.getId()) {
+                                                        userService.setRole(packet);
+                                                    }
+                                                } else {
+                                                    swal(
+                                                        'Alert',
+                                                        'You cannot edit your own role!',
+                                                        'error'
+                                                    )
                                                 }
-                                                var path = '/userRoles/' + params.name;
-                                                commonServices.updateData(path, packet);
-                                                if (params.name === userService.getId()) {
-                                                    userService.setRole(packet);
-                                                }
-                                            } else {
-                                                swal(
-                                                    'Alert',
-                                                    'You cannot edit your own role!',
-                                                    'error'
-                                                )
                                             }
                                         },
                                         source: function() {
@@ -476,14 +511,17 @@ angular.module('ohanaApp')
                                         name: $scope.currId,
                                         placement: "bottom",
                                         emptytext: "null",
+                                        display: false,
                                         url: function(params) {
-                                            var packet = params.value
-                                            var path = '/userData/' + params.name + '/branch/';
-                                            commonServices.updateData(path, packet);
-                                            if ($scope.currId === userService.getId()) {
-                                                var tempData = userService.getUserData();
-                                                tempData.branch = packet;
-                                                userService.setUserData(tempData);
+                                            if (params.value !== '') {
+                                                var packet = params.value
+                                                var path = '/userData/' + params.name + '/branch/';
+                                                commonServices.updateData(path, packet);
+                                                if ($scope.currId === userService.getId()) {
+                                                    var tempData = userService.getUserData();
+                                                    tempData.branch = packet;
+                                                    userService.setUserData(tempData);
+                                                }
                                             }
                                         }
                                     });
