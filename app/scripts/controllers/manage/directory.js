@@ -67,7 +67,7 @@ angular.module('ohanaApp')
                         title: "Secondary Chapters",
                         data: "chapters[, ]"
                     }, {
-                        title: "Mil. Affil.",
+                        title: "Service Branch",
                         data: "branch"
                     }],
                     'columnDefs': [{
