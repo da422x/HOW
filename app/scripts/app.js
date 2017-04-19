@@ -127,7 +127,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                //              controller: 'ChadminCtrl as chadmin'
+                    //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -189,6 +189,7 @@ angular.module('ohanaApp', [
             apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
             authDomain: "herosonthewater-55a79.firebaseapp.com",
             databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+            projectId: "herosonthewater-55a79",
             storageBucket: "herosonthewater-55a79.appspot.com",
             messagingSenderId: "183234806884"
         };
@@ -244,8 +245,6 @@ angular.module('ohanaApp', [
                     'chapters': chapters
                 });
             });
-
-            //console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
@@ -297,7 +296,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-    .filter('unique', function() {
+.filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique

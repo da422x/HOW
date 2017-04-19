@@ -40,25 +40,25 @@ angular.module('ohanaApp')
 
         //check edit
         $scope.checkeditexist = function() {
-            $scope.editExpenseList = expenseservice.getEditStatusrec();
+                $scope.editExpenseList = expenseservice.getEditStatusrec();
 
-            var aedit = 0;
-            $scope.iseditexist = 'false';
-            $scope.editExpenseList.$loaded().then(function() {
-                angular.forEach($scope.editExpenseList, function(list) {
-                    // console.log("list ", list)
-                    if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
-                        aedit = aedit + 1;
-                        $scope.iseditexist = "true";
-                    }
-                    // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.iseditexist);
+                var aedit = 0;
+                $scope.iseditexist = 'false';
+                $scope.editExpenseList.$loaded().then(function() {
+                    angular.forEach($scope.editExpenseList, function(list) {
+                        // console.log("list ", list)
+                        if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
+                            aedit = aedit + 1;
+                            $scope.iseditexist = "true";
+                        }
+                        // console.log("Edit exist", aedit, list.PaymentStatus, list.BillId, $scope.iseditexist);
+                    });
                 });
-            });
 
-            // console.log("Edit exist", $scope.isEditexist);
-        }
-        //if EDIT exist, user can not recall expense to EDIT status - Only 1 Edit allowed per user
-        //Recall Expense button hidden
+                // console.log("Edit exist", $scope.isEditexist);
+            }
+            //if EDIT exist, user can not recall expense to EDIT status - Only 1 Edit allowed per user
+            //Recall Expense button hidden
         $scope.checkeditexist();
 
         // Initialize FORM field to clear old values in creating new expense.  
@@ -533,11 +533,11 @@ angular.module('ohanaApp')
             }).then(function() {
                 expenseservice.deleteExpense(bill)
                 swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-                // window.location.href = "#/expense/viewexpense"
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    // window.location.href = "#/expense/viewexpense"
                 $location.path('/expense/viewexpense');
 
             }, function(dismiss) {
@@ -781,14 +781,14 @@ angular.module('ohanaApp')
             if (updatetype == 'submit') {
                 if (this.dexedit.Description === undefined || this.dexedit.Description.length == 0 || documentcount == 0 || totalamt == 0) {
                     swal({
-                        title: 'Required fields Missing',
-                        type: 'error',
-                        html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
-                            descinfo + this.dexedit.Description + '</td></tr> ' +
-                            supportinfo + documentcount + '</b></td> </tr> ' +
-                            amountinfo + totalamt + '</b></td></tr></table>',
-                    })
-                    // console.log("eee0")
+                            title: 'Required fields Missing',
+                            type: 'error',
+                            html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' + this.dexedit.eventdate + '</b> </td></tr>' +
+                                descinfo + this.dexedit.Description + '</td></tr> ' +
+                                supportinfo + documentcount + '</b></td> </tr> ' +
+                                amountinfo + totalamt + '</b></td></tr></table>',
+                        })
+                        // console.log("eee0")
                 } else {
                     swal({
                         title: 'Confirm New Expense',
