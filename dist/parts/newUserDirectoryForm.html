@@ -132,16 +132,6 @@
                     <br>
                 </div>
             </div>
-            <!-- Volunteer -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="volunteer_status">Are you signing up to Volunteer?</label>
-                <div class="col-md-7">
-                    <br>
-                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="false">&nbsp No &nbsp
-                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="true">&nbsp Yes
-                    <br>
-                </div>
-            </div>
             <!-- Service background -->
             <div class="form-group" ng-show="newUserDirectory.service_type">
                 <label class="col-md-4 control-label" for="branch">Service background*</label>
@@ -161,6 +151,16 @@
                     <input id="Years_Served" name="Years_Served" type="text" pattern="^([0-9]|[1-9][0-9]|[1][0][0])$" ng-class="{'highlight_field': submitted && userForm.Years_Served.$invalid}" class="form-control input-md" ng-model="newUserDirectory.years" required>
                     <p ng-show="submitted && userForm.Years_Served.$error.required && !userForm.Years_Served.$valid" class="help-block">Years served is required.</p>
                     <p ng-show="userForm.Years_Served.$error.pattern" class="help-block">Valid range is 0-100</p>
+                </div>
+            </div>
+            <!-- Volunteer -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="volunteer_status">Are you signing up to Volunteer?</label>
+                <div class="col-md-7">
+                    <br>
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="false">&nbsp No &nbsp
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="true">&nbsp Yes
+                    <br>
                 </div>
             </div>
             <!-- Password -->
