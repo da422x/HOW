@@ -132,6 +132,16 @@
                     <br>
                 </div>
             </div>
+            <!-- Volunteer -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="volunteer_status">Are you signing up to Volunteer?</label>
+                <div class="col-md-7">
+                    <br>
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="false">&nbsp No &nbsp
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="true">&nbsp Yes
+                    <br>
+                </div>
+            </div>
             <!-- Service background -->
             <div class="form-group" ng-show="newUserDirectory.service_type">
                 <label class="col-md-4 control-label" for="branch">Service background*</label>
