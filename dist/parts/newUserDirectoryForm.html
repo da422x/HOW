@@ -153,6 +153,16 @@
                     <p ng-show="userForm.Years_Served.$error.pattern" class="help-block">Valid range is 0-100</p>
                 </div>
             </div>
+            <!-- Volunteer -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="volunteer_status">Are you signing up to Volunteer?</label>
+                <div class="col-md-7">
+                    <br>
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="false">&nbsp No &nbsp
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="true">&nbsp Yes
+                    <br>
+                </div>
+            </div>
             <!-- Password -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="password">Password*</label>

@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService) {
+    .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService, userService) {
         'use strict';
 
         $scope.initialize = function() {
@@ -35,7 +35,8 @@ angular.module('ohanaApp')
                 gender: 'N/A',
                 branch: 'N/A',
                 years: 0,
-                service_type: false
+                service_type: false,
+                volunteer: false
             };
 
             $scope.dateOptions = {
@@ -135,10 +136,31 @@ angular.module('ohanaApp')
                     if (data[0]) {
                         // If sign in was successful, send user to events page
                         swal({
-                            text: "User added!",
-                            type: 'success',
-                            timer: 2500
+                            text: 'User added!',
+                            type: 'success'
+                        }).then(function() {
+                            if ($scope.newUserDirectory.volunteer) {
+                                var rcr_packet = {
+                                    uid: userService.getId(),
+                                    name: userService.getUserName(),
+                                    email: userService.getUserData().email,
+                                    current_role: userService.getRole(),
+                                    request_role: 'volunteer',
+                                    user_comment: 'none',
+                                    admin_comment: '',
+                                    request_status: 'pending',
+                                    request_created: Date.now(),
+                                    request_updated: Date.now(),
+                                    request_closed: ''
+                                };
+                                commonServices.pushData('/roleChangeRequests/', rcr_packet);
+                                swal({
+                                    text: 'Request to be Volunteer has been submitted! You can view the status of your request on your profile page.',
+                                    type: 'success'
+                                });
+                            }
                         });
+
                         howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                         $uibModalInstance.close();
                         window.location.replace('#/home');
