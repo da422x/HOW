@@ -19,7 +19,7 @@
             </div>
             <div class="list-group-item">
                 <div class="form-group row">
-                    <label for="" class="col-xs-6 col-form-label">Miles Driven</label>
+                    <label for="" class="col-xs-6 col-form-label">Miles Driven * </label>
                     <div class="col-xs-10">
                         <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
                         <p ng-if="newExpenseform.miles.$error.pattern" class="field-feedback">
@@ -42,7 +42,7 @@
             </div>
             <div class="list-group-item">
                 <div class="form-group row">
-                    <label for="" class="col-xs-8 col-form-label">Trailer Miles</label>
+                    <label for="" class="col-xs-8 col-form-label">Trailer Miles * </label>
                     <div class="col-xs-10">
                         <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
                         <p ng-if="newExpenseform.trailermiles.$error.pattern" class="field-feedback">
@@ -102,7 +102,7 @@
                 </div>
                 <div id="imagedisplay" class="form-group col-xs-12">
                     <div class="content panel-body-exp">
-                        <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only)</label>
+                        <label for="" class="col-md-12 col-form-label" title="Load supporting documents (images only) including paid bills, receipts, deposit slips. ">Load supporting documents (images only) * </label>
                         <input id="fileimage" name="fileimage" class="expenseInput" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
                         <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
                         <div ng-repeat="item in uploader.queue">
@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div class="form-group row btnalign">
-                <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination</label>
+                <label for="" class="col-md-12 col-form-label">Business purpose, Origin and Destination * </label>
                 <div class="col-md-12 ">
                     <input name="Description" ng-model="exp.Description" type="text" class="form-control expenseInput" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required ng-minlength="3">
                     <p ng-if="newExpenseform.Description.$invalid" class="field-feedback">
@@ -129,10 +129,13 @@
                 </div>
             </div>
             <div class="panel-body-exp row btnalign">
+                <span> * Denotes a required field </span>
+                <br/>
                 <button class="btn btn-primary ur_format_button " ng-click="confirmnewexpense() " type="submit ">Submit Expense</button>
                 <input type="button" class="btn btn-primary" ng-click="saveitforlater()" ng-hide="isEditexist=='true'" title="Save current expense enteries for later submission" value="Save it for Later">
                 <input type="button" class="btn btn-primary" ng-click="ClearFields()" value="Clear">
                 <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
             </div>
+        </div>
     </form>
-    </div>
+</div>
