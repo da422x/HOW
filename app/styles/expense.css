@@ -34,7 +34,6 @@
 
      .exp_format2 {
          display: inline-block;
-         margin-left: 10px;
          max-width: 120px;
          width: 66%;
          float: left;
@@ -202,9 +201,7 @@
          padding-left: 25px;
      }
 
-     .btnalign {
-         margin-left: 10px
-     }
+     .btnalign {}
 
      .btnalignmore {
          padding-left: 60px;
@@ -410,4 +407,21 @@
          font-weight: bolder;
          font-size: 16px;
          background-color: yellow;
+     }
+     /* begin kevin css for expenses*/
+
+     .load-image-group {
+         margin-top: 15px;
+         margin-bottom: 15px;
+     }
+     /* bootstrap row override */
+
+     .row {
+         margin-left: 0;
+         margin-right: 0;
+     }
+     /* new expense page panel heading background */
+
+     .expense-panel-heading {
+         background: #aec6cf;
      }
