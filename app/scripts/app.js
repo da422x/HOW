@@ -33,7 +33,7 @@ angular.module('ohanaApp', [
         'ui.map'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
-        $httpProvider.interceptors.push('pageAuthInterceptor');
+        //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
                 templateUrl: 'views/home.html',
