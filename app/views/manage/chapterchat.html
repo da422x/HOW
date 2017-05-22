@@ -4,19 +4,31 @@
         <div class="col-md-5">
             <div class="panel panel-primary">
                 <div class="panel-heading" id="accordion">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <span class="glyphicon glyphicon-comment"></span> {{currentChapter}}
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <ul class="dropdown-menu slidedown">
+                            <li>
+                                <a ng-click="changeChapter()">Change Chapter</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="panel">
-                    <div class="panel-body">
-                        <div ng-repeat="n in chatLog">
-                            <div class="header">
-                                <strong class="primary-font">{{n.name}}</strong>
-                                <small class="pull-right text-muted">
-                                    <span class="glyphicon glyphicon-time"></span> {{n.time | date : "short"}}</small>
+                <div class="panel" style="margin-bottom: 0px;">
+                    <div class="panel-body" style="word-break: break-all; min-height: 400px;">
+                        <div ng-repeat="n in chatLog" class="row">
+                            <div class="message-container">
+                                <div class="header">
+                                    <strong class="primary-font">{{n.name}}</strong>
+                                    <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span> {{n.time | date : "short"}}</small>
+                                </div>
+                                <p>
+                                    {{n.message}}
+                                </p>
                             </div>
-                            <p>
-                                {{n.message}}
-                            </p>
                         </div>
                     </div>
                     <div class="panel-footer">
@@ -30,6 +42,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3"></div>
     </div>
 </div>

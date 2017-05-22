@@ -1,154 +1,183 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Add New User</h4>
+    <h4 class="modal-title">Sign Up</h4>
 </div>
 <!-- end modal-header -->
-<div class="modal-body">
-    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="height: 500px; overflow-y: auto; overflow-x: hidden;">
+<div id="registration_form" class="modal-body" ng-init="initialize()">
+    <form name="userForm" class="form-horizontal" ng-submit="postUser(userForm)" novalidate style="height: 500px; overflow-y: auto; overflow-x: hidden;">
         <fieldset>
-            <!-- Text - First Name -->
+            <!-- First Name -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="fname">First Name*</label>
                 <div class="col-md-7">
-                    <input id="fname" name="fname" type="text" placeholder="John" class="form-control input-md" ng-model="newUserDirectory.name.first" ng-required="true">
-                    <p ng-show="userForm.fname.$invalid && !userForm.fname.$pristine" class="help-block">Enter a valid first name.</p>
+                    <input id="fname" name="fname" type="text" placeholder="John" ng-class="{'highlight_field': submitted && userForm.fname.$invalid}" class="form-control input-md" ng-model="newUserDirectory.name.first" required>
+                    <p ng-show="submitted && userForm.fname.$error.required" class="help-block">First name is required.</p>
                 </div>
             </div>
-            <!-- Text - Last Name -->
+            <!-- Last Name -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="lname">Last Name*</label>
                 <div class="col-md-7">
-                    <input id="lname" name="lname" type="text" placeholder="Doe" class="form-control input-md" ng-model="newUserDirectory.name.last" ng-required="true">
-                    <p ng-show="userForm.lname.$invalid && !userForm.lname.$pristine" class="help-block">Enter a valid last name.</p>
+                    <input id="lname" name="lname" type="text" placeholder="Doe" ng-class="{'highlight_field': submitted && userForm.lname.$invalid}" class="form-control input-md" ng-model="newUserDirectory.name.last" required>
+                    <p ng-show="submitted && userForm.lname.$error.required" class="help-block">Last name is required.</p>
                 </div>
             </div>
-            <!-- Text - Address 1 -->
+            <!-- Address 1 -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Address1">Address 1*</label>
                 <div class="col-md-7">
-                    <input id="Address1" name="line1" type="text" placeholder="Street" class="form-control input-md" ng-model="newUserDirectory.address.line1" ng-required="true">
-                    <p ng-show="userForm.line1.$invalid && !userForm.line1.$pristine" class="help-block">Enter a valid address line.</p>
-
+                    <input id="Address1" name="Address1" type="text" placeholder="Street" ng-class="{'highlight_field': submitted && userForm.Address1.$invalid}" class="form-control input-md" ng-model="newUserDirectory.address.line1" required>
+                    <p ng-show="submitted && userForm.Address1.$error.required" class="help-block">Address 1 is required.</p>
                 </div>
             </div>
-            <!-- Text - street 2 -->
+            <!-- Address 2 -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Address2">Address 2</label>
                 <div class="col-md-7">
                     <input id="Address2" name="Address2" type="text" placeholder="APT/SUITE" class="form-control input-md" ng-model="newUserDirectory.address.line2">
-                    <p ng-show="userForm.Address2.$invalid && !userForm.Address2.$pristine" class="help-block">Enter a valid address line.</p>
                 </div>
             </div>
-            <!-- Text - City -->
+            <!-- City -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="City">City*</label>
                 <div class="col-md-7">
-                    <input id="City" name="City" type="text" placeholder="City" class="form-control input-md" ng-model="newUserDirectory.address.city" ng-required="false">
-                    <p ng-show="userForm.City.$invalid && !userForm.City.$pristine" class="help-block">Enter a valid city name.</p>
+                    <input id="City" name="City" type="text" placeholder="City" ng-class="{'highlight_field': submitted && userForm.City.$invalid}" class="form-control input-md" ng-model="newUserDirectory.address.city" required>
+                    <p ng-show="submitted && userForm.City.$error.required" class="help-block">City is required.</p>
                 </div>
             </div>
+            <!-- State-->
             <div class="form-group">
                 <label for="" class="col-md-4 control-label">State*</label>
                 <div class="col-md-7">
-                    <select ng-options="state as state.name for state in states" class="form-control input-md" ng-model="newUserDirectory.address.state"></select>
+                    <select name="state" ng-options="state as state.name for state in states" ng-class="{'highlight_field': submitted && userForm.state.$invalid}" class="form-control input-md" ng-model="newUserDirectory.address.state" required></select>
+                    <p ng-show="submitted && userForm.state.$error.required" class="help-block">State is required.</p>
                 </div>
             </div>
-            <!-- Number - Zip -->
+            <!-- Zip -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Zip">Zip*</label>
                 <div class="col-md-7">
-                    <input id="Zip" name="Zip" type="number" placeholder="Zip" class="form-control input-md" ng-model="newUserDirectory.address.zip" ng-required="false">
-                    <p ng-show="userForm.Zip.$invalid && !userForm.Zip.$pristine" class="help-block">Enter a valid zip code.</p>
+                    <input id="Zip" name="Zip" type="text" placeholder="99999" ng-class="{'highlight_field': submitted && userForm.Zip.$invalid}" class="form-control input-md" ng-model="newUserDirectory.address.zip" ng-change="ZipUpdate()" ng-model-options="{debounce:1000}" required>
+                    <p ng-show="submitted && userForm.Zip.$error.required" class="help-block">Zip code is required.</p>
                 </div>
             </div>
-            <!-- Datepicker - DOB -->
+            <!-- DOB -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="date">Date of Birth*</label>
                 <div class="col-md-7">
                     <p class="input-group">
-                        <input type="text" id="sanicDOB" class="form-control input-md mask" placeholder="mm/dd/yyyy" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                        <input type="text" name="dob" id="sanicDOB" length="10" ng-pattern="/^([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)\d\d$/" ng-class="{'highlight_field': submitted && userForm.dob.$invalid}" class="form-control input-md mask" placeholder="mm/dd/yyyy" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" required>
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
+                        <p ng-show="submitted && userForm.dob.$error.required" class="help-block">Date of birth is required.</p>
+                        <p ng-show="userForm.dob.$error.pattern" class="help-block">Valid date of birth is required</p>
                     </p>
                 </div>
             </div>
-            <!-- Text - Gender -->
+            <!-- Gender -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Gender">Gender*</label>
                 <div class="col-md-7">
-                    <select ng-model="newUserDirectory.gender" class="form-control" required>
+                    <select name="Gender" ng-model="newUserDirectory.gender" ng-class="{'highlight_field': submitted && userForm.gender.$invalid}" class="form-control" required>
                         <option value="M">M</option>
                         <option value="F">F</option>
                         <option value="N/A">N/A</option>
                     </select>
                 </div>
             </div>
-            <!-- Text - Email -->
+            <!-- Email -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="email">Email*</label>
                 <div class="col-md-7">
-                    <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="newUserDirectory.email" ng-required="true">
-                    <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email address.</p>
+                    <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" ng-class="{'highlight_field': submitted && userForm.email.$invalid}" class="form-control input-md" ng-model="newUserDirectory.email" required>
+                    <p ng-show="submitted && userForm.email.$error.required" class="help-block">Email address is required.</p>
+                    <p ng-show="userForm.email.$error.email" class="help-block">Valid email format required. (test@test.com)</p>
                 </div>
             </div>
-            <!-- Text - Phone # -->
+            <!-- Phone # -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="phonenum">Phone #*</label>
                 <div class="col-md-7">
-                    <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="newUserDirectory.phone" ng-minlength="13" ng-maxlength="13" ng-required="true">
-                    <!--ng-pattern="/^\d{10}$/"-->
-                    <span class="help-block">10 digits only; no formatting, prefixes or extensions.</span>
-                    <p ng-show="userForm.phonenum.$invalid && !userForm.phonenum.$pristine" class="help-block">Enter a valid phone number.</p>
+                    <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" ng-class="{'highlight_field': submitted && userForm.phonenum.$invalid}" class="form-control input-md mask" ng-model="newUserDirectory.phone" ng-minlength="13" ng-maxlength="13" required>
+                    <p ng-show="submitted && userForm.phonenum.$error.required" class="help-block">Phone number is required.</p>
                 </div>
             </div>
-            <!-- Select - Region -->
+            <!-- Region -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="region">Region*</label>
                 <div class="col-md-7">
-                    <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()">
+                    <select id="region" name="region" ng-class="{'highlight_field': submitted && userForm.region.$invalid}" class="form-control" ng-options="region as region.text for region in regions" ng-model="newUserDirectory.region" ng-change="regionUpdate()" required>
                     </select>
+                    <p ng-show="submitted && userForm.region.$error.required && !userForm.region.$valid" class="help-block">Region is required.</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 control-label" for="chapter">Chapter*</label>
                 <div class="col-md-7">
-                    <select id="chapter" name="chapter" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters">
-                        <!-- <option value="KANSAS CHAPTER">KANSAS CHAPTER</option> -->
+                    <select id="chapter" name="chapter" ng-class="{'highlight_field': submitted && userForm.chapter.$invalid}" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters" required>
+                    </select>
+                    <p ng-show="submitted && userForm.chapter.$error.required && !userForm.chapter.$valid" class="help-block">Chapter is required.</p>
+                </div>
+            </div>
+            <!-- Service Type -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="service_type">Service Type*</label>
+                <div class="col-md-7">
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" value="First_Responder"> First Responder
+                    <br>
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" value="Military"> Military
+                    <br>
+                    <input type="radio" name="service_type" ng-model="newUserDirectory.service_type" ng-click="setDefault()" ng-value="false" checked> N/A
+                    <br>
+                </div>
+            </div>
+            <!-- Service background -->
+            <div class="form-group" ng-show="newUserDirectory.service_type">
+                <label class="col-md-4 control-label" for="branch">Service background*</label>
+                <div class="col-md-7" ng-if="newUserDirectory.service_type === 'Military'">
+                    <input id="branch" name="branch" type="text" ng-class="{'highlight_field': submitted && userForm.branch.$invalid}" class="form-control input-md" ng-model="newUserDirectory.branch" required>
+                    <p ng-show="submitted && userForm.branch.$pristine && !userForm.branch.$valid" class="help-block">Service background is required.</p>
+                </div>
+                <div class="col-md-7" ng-if="newUserDirectory.service_type === 'First_Responder'">
+                    <select id="first_responder" name="first_responder" class="form-control" ng-model="newUserDirectory.branch" ng-options="branch as branch for branch in branches" required>
                     </select>
                 </div>
             </div>
-            <!-- Text - Service background -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="branch">Service background*</label>
-                <div class="col-md-7">
-                    <input id="branch" name="branch" type="text" placeholder="" class="form-control input-md" ng-model="newUserDirectory.branch">
-                    <span class="help-block">Please provide military service branch</span>
-                    <p ng-show="userForm.branch.$invalid && !userForm.branch.$pristine" class="help-block">Enter a valid service background.</p>
-                </div>
-            </div>
-            <!-- Text - Years Served -->
-            <div class="form-group">
+            <!-- Years Served -->
+            <div class="form-group" ng-if="newUserDirectory.service_type">
                 <label class="col-md-4 control-label" for="Years_Served">Years Served*</label>
                 <div class="col-md-7">
-                    <input id="Years_Served" name="Years_Served" type="text" placeholder="" class="form-control input-md" ng-model="newUserDirectory.years">
-                    <span class="help-block">Please provide years served</span>
-                    <p ng-show="userForm.Years_Served.$invalid && !userForm.Years_Served.$pristine" class="help-block">Enter a valid number.</p>
+                    <input id="Years_Served" name="Years_Served" type="text" pattern="^([0-9]|[1-9][0-9]|[1][0][0])$" ng-class="{'highlight_field': submitted && userForm.Years_Served.$invalid}" class="form-control input-md" ng-model="newUserDirectory.years" required>
+                    <p ng-show="submitted && userForm.Years_Served.$error.required && !userForm.Years_Served.$valid" class="help-block">Years served is required.</p>
+                    <p ng-show="userForm.Years_Served.$error.pattern" class="help-block">Valid range is 0-100</p>
                 </div>
             </div>
-            <!-- Text - Password -->
+            <!-- Volunteer -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="volunteer_status">Are you signing up to Volunteer?</label>
+                <div class="col-md-7">
+                    <br>
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="false">&nbsp No &nbsp
+                    <input type="radio" name="volunteer_status" ng-model="newUserDirectory.volunteer" ng-value="true">&nbsp Yes
+                    <br>
+                </div>
+            </div>
+            <!-- Password -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="password">Password*</label>
                 <div class="col-md-7">
-                    <input id="password" name="password" type="password" class="form-control input-md" ng-model="newUserDirectory.password" ng-required="true">
-                    <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password.</p>
+                    <input id="password" name="password" type="password" pattern="^([a-zA-Z0-9@*#!]{6,20})$" ng-class="{'highlight_field': submitted && userForm.password.$invalid}" class="form-control input-md" ng-model="newUserDirectory.password" required>
+                    <p ng-show="submitted && userForm.password.$pristine" class="help-block">Password is required.</p>
+                    <p ng-show="userForm.password.$error.pattern" class="help-block">Password must contain 6-20 characters, allowable characters a-z A-Z 0-9 @ * # !</p>
                 </div>
             </div>
-            <!-- Button - Submit -->
+            <!-- Submit -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-7">
-                    <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
+                    <button id="submit" name="submit" class="btn btn-primary" ng-click="submitted=true">Submit</button>
+                    <button type="button" name="cancel" class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </div>
         </fieldset>

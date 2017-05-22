@@ -520,6 +520,7 @@ angular.module('ohanaApp')
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
                 var bill = $routeParams.BillId;
+                var bill = $routeParams.BillId;
                 console.log('Data Delete Request SWAL ', $routeParams.BillId);
                 swal({
                     title: 'Are you sure?',

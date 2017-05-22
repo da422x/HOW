@@ -177,8 +177,9 @@ angular.module('ohanaApp')
                                             .then(function(vol) {
                                                 console.log(vol);
                                                 if (vol) {
-
                                                     var entity_key = Object.keys(vol)[0];
+                                                    //additional check for witness waiver(at account level)
+                                                    alert("line 182" + JSON.stringify(vol[entity_key]))
                                                     commonServices.removeData('/events/' + key + '/volunteers/', entity_key);
                                                     $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
                                                     $scope.$apply();
@@ -246,6 +247,8 @@ angular.module('ohanaApp')
                                                                 $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
                                                                 $scope.$apply();
                                                             }
+                                                            //additional check for witness waiver(at account level)
+                                                            alert("line 247" + JSON.stringify(data[temp_key]))
                                                             commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
                                                             $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
                                                             $scope.$apply();
@@ -290,62 +293,64 @@ angular.module('ohanaApp')
         }
 
         $scope.addParticipant = function(key, idx) {
-                //email = email.trim();
-                if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
-                    var email = $scope.userService.getUserData()["email"];
-                    //check to see if the volunteer is a user at all. 
-                    commonServices.getUserByEmail(email)
-                        .then(function(data) {
-                            if (data) {
-                                var temp_key;
-                                _.each(data, function(val, idx) {
-                                    temp_key = idx;
-                                    data[idx]["key"] = idx;
-                                });
+            //email = email.trim();
+            if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
+                var email = $scope.userService.getUserData()["email"];
+                //check to see if the volunteer is a user at all. 
+                commonServices.getUserByEmail(email)
+                    .then(function(data) {
+                        if (data) {
+                            var temp_key;
+                            _.each(data, function(val, idx) {
+                                temp_key = idx;
+                                data[idx]["key"] = idx;
+                            });
 
-                                commonServices.getData('userRoles/' + temp_key)
-                                    .then(function(role) {
-                                        // if (role["role"] !== "Participant") {
-                                        //check to see if the volunteer exists per this event
-                                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                                            .then(function(vol) {
-                                                if (vol) {
-                                                    var entity_key = Object.keys(vol)[0];
-                                                    commonServices.removeData('/events/' + key + '/participants/' + entity_key);
-                                                    $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
-                                                    $scope.$apply();
-                                                } else {
-                                                    swal(
-                                                        'Oops...',
-                                                        "That participant has already been deleted",
-                                                        'error'
-                                                    );
-                                                }
+                            commonServices.getData('userRoles/' + temp_key)
+                                .then(function(role) {
+                                    // if (role["role"] !== "Participant") {
+                                    //check to see if the volunteer exists per this event
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                        .then(function(vol) {
+                                            if (vol) {
+                                                var entity_key = Object.keys(vol)[0];
+                                                //additional check for witness waiver(at account level)
+                                                alert("line 318" + JSON.stringify(vol[entity_key]))
+                                                commonServices.removeData('/events/' + key + '/participants/' + entity_key);
+                                                $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
+                                                $scope.$apply();
+                                            } else {
+                                                swal(
+                                                    'Oops...',
+                                                    "That participant has already been deleted",
+                                                    'error'
+                                                );
+                                            }
 
-                                            })
+                                        })
 
-                                    })
+                                })
 
-                            } else {
-                                swal(
-                                    'Oops...',
-                                    "That user doesn\'t exists",
-                                    'error'
-                                );
-                            }
-
-                        }, function(err) {
+                        } else {
                             swal(
                                 'Oops...',
-                                "Unknown Error",
+                                "That user doesn\'t exists",
                                 'error'
                             );
-                        });
-                } else {
-                    var email = $scope.userService.getUserData()["email"];
-                    //check to see if the volunteer is a user at all. 
-                    commonServices.getUserByEmail(email)
-                        .then(function(data) {
+                        }
+
+                    }, function(err) {
+                        swal(
+                            'Oops...',
+                            "Unknown Error",
+                            'error'
+                        );
+                    });
+            } else {
+                var email = $scope.userService.getUserData()["email"];
+                //check to see if the volunteer is a user at all. 
+                commonServices.getUserByEmail(email)
+                    .then(function(data) {
                             if (data) {
                                 var temp_key;
                                 _.each(data, function(val, idx) {
@@ -371,6 +376,13 @@ angular.module('ohanaApp')
                                                                 $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
                                                                 $scope.$apply();
                                                             }
+                                                            alert("line 379" + JSON.stringify(data[temp_key]));
+                                                            if ($scope.areWaiversUnsigned['witness']) {
+                                                                //put up fill out form for signing the witness form
+                                                            }
+                                                            if ($scope.areWaiversUnsigned['events']) {
+                                                                //filling out 
+                                                            }
                                                             commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
                                                             $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
                                                             $scope.$apply();
@@ -395,33 +407,70 @@ angular.module('ohanaApp')
                                 );
                             }
 
-                        }, function(err) {
+                        },
+                        function(err) {
                             swal(
                                 'Oops...',
                                 "Unknown Error",
                                 'error'
                             );
                         });
+            }
+
+        }
+
+        //might need to move into 
+        $scope.areWaiversUnsigned = function(person_detail, event_key) {
+            var checker_obj = {}
+            if (person_detail['witness']) {
+                //perform date substraction to see if witness waiver is still valid
+                //first time date was saved
+                var saved_date = new Date(person_detail['witness']['date_signed']);
+
+                //date range from today's date
+                var d1 = new Date(Date.now());
+                var d2 = new Date(d1.getFullYear() - 1, d1.getMonth(), d1.getDate());
+                if (saved_date < d2) {
+                    //the witness waiver has expired
+                    checker_obj['witness'] = true;
+                } else {
+                    //witness waiver hasn't expired
+                    checker_obj['witness'] = false;
                 }
 
             }
-            // Api.events.query().$promise.then(
-            // 	function (response) { // on success
-            // 		$scope.eventList = response;
-            // 		if (response.length === 0) {
-            // 			swal({
-            // 				text: "No events exist.",
-            // 				type: 'warning',
-            // 				timer: 2500
-            // 			});
-            // 		}
-            // 		
-            // 	},
-            // 	function (response) { // on error
-            // 		swal({
-            // 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
-            // 			type: 'warning',
-            // 			timer: 2500
-            // 		});
-            // 	});
+            if (person_detail['events'].hasOwnProperty(event_key)) {
+                //no signing needed
+                checker_obj['event'] = false;
+            } else {
+                //needs signing
+                checker_obj['event'] = true;
+            }
+        }
+
+        /*waiver object:
+          waiver{
+            date_signed
+
+          }
+        */
+        // Api.events.query().$promise.then(
+        // 	function (response) { // on success
+        // 		$scope.eventList = response;
+        // 		if (response.length === 0) {
+        // 			swal({
+        // 				text: "No events exist.",
+        // 				type: 'warning',
+        // 				timer: 2500
+        // 			});
+        // 		}
+        // 		
+        // 	},
+        // 	function (response) { // on error
+        // 		swal({
+        // 			text: "Connection failed. Could not " + response.config.method + " from " + response.config.url,
+        // 			type: 'warning',
+        // 			timer: 2500
+        // 		});
+        // 	});
     });
