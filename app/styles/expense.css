@@ -200,9 +200,9 @@
          padding-bottom: 6px;
          padding-left: 25px;
      }
-
+     
      .btnalign {}
-
+     
      .btnalignmore {
          padding-left: 60px;
      }
@@ -409,19 +409,19 @@
          background-color: yellow;
      }
      /* begin kevin css for expenses*/
-
+     
      .load-image-group {
          margin-top: 15px;
          margin-bottom: 15px;
      }
      /* bootstrap row override */
-
+     
      .row {
          margin-left: 0;
          margin-right: 0;
      }
      /* new expense page panel heading background */
-
+     
      .expense-panel-heading {
          background: #aec6cf;
      }
