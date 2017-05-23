@@ -211,7 +211,7 @@
             </fieldset>
             <!-- </div> -->
             <!-- {{userRole}} {{useremail}}{{expenseemail}}{{paystat}}{{iseditexist}}   paystat=='Submitted' ||-->
-            <div ng-show="(useremail==expenseemail )" class="form-group col-xs-12 expense_pad">
+            <div ng-show="(useremail==expenseemail )" class="form-group" stlye="margin-botton:20px">
                 <div class="form-group row col-xs-6" ng-show="((userRole=='Participant' || userRole=='Volunteer') &&  ( paystat=='Edit' ||paystat=='Resubmit')) || ((userRole=='Chapter Lead' || userRole=='National Staff') && (  paystat=='Edit' || paystat=='Returned') ) ">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-hide="paystat=='Resubmit'" value="Save Expense">
                     <input type="button" class="btn btn-primary" ng-click="updateexpense('update')" ng-show="paystat=='Resubmit'" value="Resubmit Expense">
