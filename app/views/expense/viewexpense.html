@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Create Expense Report" ng-click="CreateExpenseReport()">
+                    <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Export Expense Reports" ng-click="CreateExpenseReport()">
                     <input type="button" class="btn btn-primary " ng-click="neweexpense()" value="New Expense">
                     <button class="btn btn-primary btn-danger" ng-show="userRole=='National Staff' || userRole=='Chapter Lead'" ng-click="filterPastDue()" title="Filters expenses that were submitted 30 days prior to date and still Overdue">Overdue Expenses</button>
                     <!--  <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
