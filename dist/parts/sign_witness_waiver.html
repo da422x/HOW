@@ -7,7 +7,8 @@
 
 <!-- start modal body -->
 <div class="modal-body">
-    <form name="userForm" class="form-horizontal sign_up_form" ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">
+    <form name="userForm" class="form-horizontal sign_up_form" novalidate style="overflow-y: auto; overflow-x: hidden;">
+        <!--ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">-->
         <div class="row">
             <div class="col-md-6">
                 <legend>Participant/Volunteer</legend>
@@ -25,8 +26,8 @@
                     <canvas id='signatureCanvas' width='300' height='37' style='border-radius:4px; border: 1px solid lightgrey ;'></canvas>
                     <br>
                     <div class='button-bar'>
-                        <button type="button" class='btn btn-primary' onclick='pdfService.clearCanvas()'>Clear</button>
-                        <!--<button type="button" class='btn btn-primary' onclick='saveCanvas()'>Sign</button>-->
+                        <button type="button" class='btn btn-primary' ng-click='clearCanvas()'>Clear</button>
+                        <!--<button type="button" class='btn btn-primary' ng-click='saveCanvas()'>Sign</button>-->
                     </div>
                 </div>
                 <div class="form-group">
@@ -74,8 +75,8 @@
                     <canvas id='signatureCanvas2' width='300' height='37' style='border-radius:4px; border: 1px solid lightgrey ;'></canvas>
                     <br>
                     <div class='button-bar'>
-                        <button type="button" class='btn btn-primary' onclick='pdfService.clearCanvas2()'>Clear</button>
-                        <!--<button type="button" class='btn btn-primary' onclick='saveCanvas2()'>Sign</button>-->
+                        <button type="button" class='btn btn-primary' ng-click='clearCanvas2()'>Clear</button>
+                        <!--<button type="button" class='btn btn-primary' ng-click='saveCanvas2()'>Sign</button>-->
                     </div>
                 </div>
                 <div class="form-group">
@@ -89,7 +90,7 @@
             </div>
         </div>
         <div class="row" style="text-align: center; margin: auto; width:100%">
-            <button type="button" class="btn btn-primary" onclick="pdfService.saveImgPerUser()">save image</button>
+            <button type="button" class="btn btn-primary" ng-click="submitData()">save image</button>
         </div>
     </form>
 </div>
