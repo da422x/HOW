@@ -5489,7 +5489,7 @@ Editableform based on Twitter Bootstrap 3
                         // ISO 8601: First week contains first thursday.
                         // ISO also states week starts on Monday, but we can be more abstract here.
                         var
-                            // Start of current week: based on weekstart/current date
+                        // Start of current week: based on weekstart/current date
                             ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
                             // Thursday of this week
                             th = new Date(+ws + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
@@ -5769,7 +5769,7 @@ Editableform based on Twitter Bootstrap 3
             } else {
                 // For magnitudes >1, move one month at a time...
                 for (var i = 0; i < mag; i++)
-                    // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+                // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
                     new_date = this.moveMonth(new_date, dir);
                 // ...then reset the day, keeping it in the new month
                 new_month = new_date.getUTCMonth();
