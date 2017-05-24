@@ -264,7 +264,7 @@
 }
 
 .strips .strip__inner-text {
-    will-change: transform, opacity;
+    /* will-change: transform, opacity;*/
     position: absolute;
     z-index: 5;
     top: 50%;

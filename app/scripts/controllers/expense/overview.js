@@ -1196,20 +1196,21 @@ angular.module('ohanaApp')
                             data: "PastWeek",
                             title: "Past Week",
                             width: "50px",
-
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         },
 
                         {
                             data: "PastMonth",
                             title: "Past Month",
                             width: "50px",
-
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         },
 
                         {
                             data: "Past3Month",
                             title: "Past 3 Month",
                             width: "50px",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
 
                         },
 
@@ -1218,13 +1219,15 @@ angular.module('ohanaApp')
                             data: "Past1Year",
                             title: "Past 1 Year",
                             width: "50px",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
 
                         },
 
                         {
                             data: "ALL",
                             title: "ALL",
-                            width: "40px"
+                            width: "40px",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         }
                     ],
                     'columnDefs': [{

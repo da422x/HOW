@@ -611,7 +611,7 @@ angular.module('ohanaApp')
                             }, {
                                 data: "Amount",
                                 width: "60px",
-                                render: $.fn.dataTable.render.number(',', '.', 2)
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$')
                             }, {
                                 data: "PaymentStatus",
                                 width: "60px"
