@@ -179,7 +179,7 @@ angular.module('ohanaApp')
                                                 if (vol) {
                                                     var entity_key = Object.keys(vol)[0];
                                                     //additional check for witness waiver(at account level)
-                                                    alert("line 182" + JSON.stringify(vol[entity_key]))
+                                                    // alert("line 182" + JSON.stringify(vol[entity_key]))
                                                     commonServices.removeData('/events/' + key + '/volunteers/', entity_key);
                                                     $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
                                                     $scope.$apply();
@@ -247,8 +247,21 @@ angular.module('ohanaApp')
                                                                 $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
                                                                 $scope.$apply();
                                                             }
+                                                            var areWaiversUnsignedObj = $scope.areWaiversUnsigned(data[temp_key], key)
+                                                            if (areWaiversUnsignedObj['witness']) {
+                                                                //put up fill out form for signing the witness form
+                                                                var modalInstance = $uibModal.open({
+                                                                    templateUrl: '/parts/sign_witness_waiver.html',
+                                                                    controller: 'SignWitnessWaiverCtrl',
+                                                                    resolve: {
+                                                                        // selectedUID: function() {
+                                                                        //     return self.parentElement.parentElement.children[0].firstChild.value;
+                                                                        // }
+                                                                    }
+                                                                });
+                                                            }
                                                             //additional check for witness waiver(at account level)
-                                                            alert("line 247" + JSON.stringify(data[temp_key]))
+                                                            //alert("line 247" + JSON.stringify(data[temp_key]))
                                                             commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
                                                             $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
                                                             $scope.$apply();
@@ -315,7 +328,6 @@ angular.module('ohanaApp')
                                             if (vol) {
                                                 var entity_key = Object.keys(vol)[0];
                                                 //additional check for witness waiver(at account level)
-                                                alert("line 318" + JSON.stringify(vol[entity_key]))
                                                 commonServices.removeData('/events/' + key + '/participants/' + entity_key);
                                                 $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
                                                 $scope.$apply();
@@ -376,12 +388,32 @@ angular.module('ohanaApp')
                                                                 $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
                                                                 $scope.$apply();
                                                             }
-                                                            alert("line 379" + JSON.stringify(data[temp_key]));
-                                                            if ($scope.areWaiversUnsigned['witness']) {
+
+                                                            var areWaiversUnsignedObj = $scope.areWaiversUnsigned(data[temp_key], key)
+                                                            if (areWaiversUnsignedObj['witness']) {
                                                                 //put up fill out form for signing the witness form
+                                                                var modalInstance = $uibModal.open({
+                                                                    templateUrl: '/parts/sign_witness_waiver.html',
+                                                                    controller: 'SignWitnessWaiverCtrl',
+                                                                    resolve: {
+                                                                        // selectedUID: function() {
+                                                                        //     return self.parentElement.parentElement.children[0].firstChild.value;
+                                                                        // }
+                                                                    }
+                                                                });
                                                             }
-                                                            if ($scope.areWaiversUnsigned['events']) {
+                                                            if (areWaiversUnsignedObj['event']) {
                                                                 //filling out 
+                                                                //put up fill out form for signing the witness form
+                                                                var modalInstance = $uibModal.open({
+                                                                    templateUrl: '/parts/sign_event_waiver.html',
+                                                                    controller: 'SignEventWaiver',
+                                                                    resolve: {
+                                                                        eventKey: function() {
+                                                                            return key;
+                                                                        }
+                                                                    }
+                                                                });
                                                             }
                                                             commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
                                                             $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
@@ -438,14 +470,18 @@ angular.module('ohanaApp')
                     checker_obj['witness'] = false;
                 }
 
+            } else {
+                //witness never signed a waiver
+                checker_obj['witness'] = true;
             }
-            if (person_detail['events'].hasOwnProperty(event_key)) {
+            if (person_detail['events'] && person_detail['events'].hasOwnProperty(event_key)) {
                 //no signing needed
                 checker_obj['event'] = false;
             } else {
                 //needs signing
                 checker_obj['event'] = true;
             }
+            return checker_obj;
         }
 
         /*waiver object:

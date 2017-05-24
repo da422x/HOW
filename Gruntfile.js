@@ -59,6 +59,9 @@ module.exports = function(grunt) {
                 files: ['bower.json'],
                 tasks: ['wiredep']
             },
+            pdf: {
+                files: ['<%= yeoman.app %>/assets/**/*.pdf']
+            },
             js: {
                 files: ['<%= yeoman.app %>/**/*.js'],
                 //tasks: ['newer:jshint:all', 'newer:jscs:all', 'jsbeautifier'],
@@ -90,6 +93,9 @@ module.exports = function(grunt) {
                 files: [
                     '<%= yeoman.app %>/**/*.html',
                     '.tmp/styles/**/*.css',
+                    //this picks up the pdf for grunt serve. although... it does need to exists in .tmp first
+                    //syke that didn't work 
+                    '<%= yeoman.app %>/assets/**/*.pdf',
                     '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
                 ],
                 tasks: ['jsbeautifier']
@@ -110,6 +116,12 @@ module.exports = function(grunt) {
                     middleware: function(connect) {
                         return [
                             connect.static('.tmp'),
+                            //didn't work 
+                            // connect().use(
+                            //     '/app/assets/Media_Waiver_Form.pdf',
+                            //     connect.static('./app/assets/Media_Waiver_Form.pdf')
+                            // ),
+                            connect.static('/app/assets/Media_Waiver_Form.pdf'),
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
@@ -204,6 +216,7 @@ module.exports = function(grunt) {
                 destFile: 'app/index.html',
                 transform: function(filepath, index, length) {
                     if (filepath.includes('/app') && filepath.indexOf('/app') == 0) {
+                        console.log(filepath);
                         filepath = '<script src="' + filepath.substring(5) + '"></script>';
                         return filepath;
                     }
@@ -213,9 +226,10 @@ module.exports = function(grunt) {
                 files: {
                     'index.html': ['<%= yeoman.app %>/extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
-                        'assets/**/*.*',
-                        'extensions/bootstrap-editable/css/bootstrap-editable.css', 'extensions/hamburgers.min.css',
-                        '<%= yeoman.app %>/assets/**.js'
+                        // '<%= yeoman.app %>/extensions/bootstrap-editable/css/bootstrap-editable.css',
+                        // '<%= yeoman.app %>/extensions/hamburgers.min.css',
+                        '<%= yeoman.app %>/assets/**.js',
+                        '<%= yeoman.app %>/parts/**.js'
                     ],
                 }
             }
@@ -514,11 +528,17 @@ module.exports = function(grunt) {
                 // cwd: '<%= yeoman.app %>/styles',
                 // dest: '.tmp/styles/',
                 // src: '**/*.css'
+                //for waiver support on events page - the actual fix, syke didn't work 
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>/styles',
                     dest: '.tmp/styles/',
                     src: '**/*.css'
+                }, {
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/assets',
+                    dest: '.tmp/assets/',
+                    src: '**/*.pdf'
                 }, {
                     expand: true,
                     dot: true,
