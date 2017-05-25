@@ -10,23 +10,20 @@
 </div>
 
 <!-- end modal-header -->
-<div class="modal-body">
-    <table id="participantsTable" class="display table table-bordered">
+<div class="modal-body" ng-init="buildTable()">
+    <table id="participantsTable" class="display table table-bordered" style="width:100%">
         <tfoot>
             <tr>
                 <td>
-                    <button ng-click="addParticipant()" type="button" class="btn btn-primary">
+                    <button ng-click="addParticipant(new_row.email, event.key)" type="button" class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>
                 </td>
                 <td>
-                    <input class="form-control" type="text" ng-model="new_row.first">
+                    <input class="form-control" type="text" ng-model="new_row.name.first">
                 </td>
                 <td>
-                    <input class="form-control" type="text" ng-model="new_row.middle">
-                </td>
-                <td>
-                    <input class="form-control" type="text" ng-model="new_row.last">
+                    <input class="form-control" type="text" ng-model="new_row.name.last">
                 </td>
                 <td>
                     <input class="form-control" type="text" ng-model="new_row.email">

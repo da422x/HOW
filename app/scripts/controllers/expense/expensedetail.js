@@ -22,6 +22,9 @@ angular.module('ohanaApp')
         //----Modal -- Payment Status Log  ---------//
         var $ctrl = this;
 
+        // console log shorthand
+        var log = console.log;
+
         $scope.openPaymentStatusLog = function() {
             $scope.$modalInstance = $uibModal.open({
                 scope: $scope,
@@ -29,7 +32,6 @@ angular.module('ohanaApp')
                 size: 'lg',
             })
         };
-
         $scope.ok = function() {
             $scope.$modalInstance.close();
         };
@@ -145,7 +147,7 @@ angular.module('ohanaApp')
 
         //DELETE Selected Image  
         $scope.removeImage = function(imgname) {
-
+            log("hi");
             var filearray = [];
             var filename = $scope.vimageurl[imgname].FileName;
 
@@ -252,8 +254,18 @@ angular.module('ohanaApp')
             $scope.expense = expenseservice.getEditExpenseData($routeParams.BillId);
 
             $scope.expense.$loaded().then(function() {
-                angular.forEach($scope.expense, function(item) {
+                // hack to trim empty space in address, if second address is not filled out it will leave an empty space behind
+                var temp = $scope.expense[0].SubmitAddress.split(",");
+                temp.forEach(function(item, index, arr) {
+                    if (item.trim() == '') {
+                        arr.splice(index, 1);
+                    } else {
+                        arr[index] = item.replace(/\s+$/, '');
+                    }
+                })
+                $scope.expense[0].SubmitAddress = temp.join(',');
 
+                angular.forEach($scope.expense, function(item) {
                     // console.log("Expense Detail Loaded", $scope.expense, item.PaymentStatus);
                     var img = document.createElement('img');
                     var storage = firebase.storage();
@@ -500,8 +512,8 @@ angular.module('ohanaApp')
             $scope.spaedServ = $firebaseObject(refspaedtServ);
             $scope.url = refspaedtServ.once("value").then(function(rootSnapshot) {
                 var lafoto = rootSnapshot.val().foto;
-                // console.log("Inside image ", lafoto)
-                // var starsRef = firebase.storage().ref('fotos' + lafoto);
+                console.log("Inside image ", lafoto)
+                    // var starsRef = firebase.storage().ref('fotos' + lafoto);
                 var storageRef = firebase.storage().ref();
                 return storageRef.child(storageloc).getDownloadURL().then(function(url) {
                     // return starsRef.getDownloadURL().then(function(url) {
@@ -519,41 +531,40 @@ angular.module('ohanaApp')
 
         //-----Delete Expenses Created by the User --START-------//
         $scope.deleteexp = function() {
-            var bill = $routeParams.BillId;
-            var bill = $routeParams.BillId;
-            console.log('Data Delete Request SWAL ', $routeParams.BillId);
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function() {
-                expenseservice.deleteExpense(bill)
-                swal(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                    // window.location.href = "#/expense/viewexpense"
-                $location.path('/expense/viewexpense');
-
-            }, function(dismiss) {
-                // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-                if (dismiss === 'cancel') {
+                var bill = $routeParams.BillId;
+                var bill = $routeParams.BillId;
+                console.log('Data Delete Request SWAL ', $routeParams.BillId);
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function() {
+                    expenseservice.deleteExpense(bill)
                     swal(
-                        'Cancelled',
-                        'Your expense is safe',
-                        'error'
-                    )
-                }
-            })
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                        // window.location.href = "#/expense/viewexpense"
+                    $location.path('/expense/viewexpense');
 
-        }
+                }, function(dismiss) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (dismiss === 'cancel') {
+                        swal(
+                            'Cancelled',
+                            'Your expense is safe',
+                            'error'
+                        )
+                    }
+                })
 
-        //-----Delete Expenses Created by the User ---END----------//
+            }
+            //-----Delete Expenses Created by the User ---END----------//
 
 
         $scope.setexpensedata = function(updatetype) {

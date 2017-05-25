@@ -13,18 +13,77 @@ angular.module('ohanaApp')
         'use strict';
         $scope.rows_selected = [];
         $scope.event = event;
-        $scope.new_row = {
-            key: "",
-            first: "",
-            middle: "",
-            last: "",
-            email: "",
-            phone: ""
-        }
+        $scope.email;
 
-        $scope.addVolunteer = function() {
-            commonServices.pushData('/events/' + $scope.event.key + '/volunteers', $scope.new_row);
-            $scope.reloadData();
+        $scope.addVolunteer = function(email, key) {
+            email = email.trim();
+            //check to see if the volunteer is a user at all. 
+            commonServices.getUserByEmail(email)
+                .then(function(data) {
+                    if (data) {
+                        var temp_key;
+                        _.each(data, function(val, idx) {
+                            temp_key = idx;
+                            data[idx]["key"] = idx;
+                        });
+
+                        commonServices.getData('userRoles/' + temp_key)
+                            .then(function(role) {
+                                if (role["role"] !== "Participant") {
+                                    //check to see if the volunteer exists per this event
+                                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                                        .then(function(vol) {
+                                            console.log(vol);
+                                            if (!vol) {
+                                                //check if the prospective volunteer is already signed up as a participant
+                                                commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                                                    .then(function(part) {
+                                                        if (part) {
+                                                            //if they are a participant then remove them from the participant table
+                                                            var entity_key = Object.keys(part)[0];
+                                                            commonServices.removeData('/events/' + key + '/participants/' + entity_key);
+                                                        }
+                                                        commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
+                                                        $scope.reloadData();
+                                                    });
+                                            } else {
+                                                swal(
+                                                    'Oops...',
+                                                    "That volunteer has already been added",
+                                                    'error'
+                                                );
+                                            }
+
+                                        })
+                                } else {
+                                    swal(
+                                        'Oops...',
+                                        "User not authorized to be added as a volunteer.",
+                                        'error'
+                                    );
+                                }
+
+                            })
+
+                    } else {
+                        swal(
+                            'Oops...',
+                            "That user doesn\'t exists",
+                            'error'
+                        );
+                        $scope.reloadData();
+                    }
+
+                }, function(err) {
+                    swal(
+                        'Oops...',
+                        "Unknown Error",
+                        'error'
+                    );
+                    $scope.reloadData();
+                });
+
+
         }
         $scope.reloadData = function() {
             commonServices.getData('/events/' + $scope.event.key + '/volunteers')
@@ -38,7 +97,9 @@ angular.module('ohanaApp')
                 commonServices.removeData('/events/' + $scope.event.key + '/volunteers/' + val);
 
             })
-            $scope.reloadData();
+            $scope.reloadData(
+
+            );
         }
 
         $scope.buildTable = function() {
@@ -65,32 +126,34 @@ angular.module('ohanaApp')
                     $scope.volunteersTable.destroy();
                     console.log('inside the destroy');
                 }
-
                 $scope.volunteersTable = $('#volunteersTable').DataTable({
                     // ajax: 'testData/members.json',
                     data: dataSet,
                     // scrollX: true,
                     columns: [{
-                        title: "KEY",
-                        data: "key"
-                    }, {
-                        title: "First Name",
-                        data: "first"
-                    }, {
-                        title: "Middle Name",
-                        data: "middle"
-                    }, {
-                        title: "Last Name",
-                        data: "last"
-                    }, {
-                        title: "Email",
-                        data: "email",
-                        orderable: false
-                    }, {
-                        title: "Mobile #",
-                        data: "phone",
-                        orderable: false
-                    }],
+                            title: "KEY",
+                            data: "key"
+                        }, {
+                            title: "Email",
+                            data: "email",
+                            orderable: false
+                        }, {
+                            title: "First Name",
+                            data: "name.first"
+                        },
+                        // {
+                        //     title: "Middle Name",
+                        //     data: "middle"
+                        // }, 
+                        {
+                            title: "Last Name",
+                            data: "name.last"
+                        }, {
+                            title: "Mobile #",
+                            data: "phone",
+                            orderable: false
+                        }
+                    ],
                     'columnDefs': [{
                         targets: 0,
                         searchable: false,
@@ -156,8 +219,6 @@ angular.module('ohanaApp')
                 console.log($scope.volunteersTable);
             })
         }
-
-        $scope.buildTable();
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');

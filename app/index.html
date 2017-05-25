@@ -49,6 +49,7 @@
 </head>
 
 <body>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCK9lQ8uE8dcnCOod7nGeaRy1PetMeuOoY&language=en&region=US&libraries=geometry"></script>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -72,7 +73,6 @@
     </script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <!-- build:js(.) scripts/vendor.js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChntY-POe8wZ6pqvz8WXi1pkAyt6B7gtE&language=en&region=US"></script>
     <!-- bower:js -->
     <script src="bower_components/es6-promise/es6-promise.js"></script>
     <script src="bower_components/js-polyfills/es5.js"></script>
@@ -143,6 +143,8 @@
     <script src="bower_components/chart.js/dist/Chart.js"></script>
     <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <script src="bower_components/signature_pad/signature_pad.js"></script>
+    <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="bower_components/angular-ui-map/ui-map.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -177,28 +179,36 @@
     <script src="scripts/controllers/manage/profile.js"></script>
     <script src="scripts/controllers/manage/regadmin.js"></script>
     <script src="scripts/controllers/manage/superadmin.js"></script>
-    <script src="parts/neweventform.js"></script>
-    <script src="parts/chapterAddForm.js"></script>
-    <script src="parts/newuserdirectoryform.js"></script>
-    <script src="parts/newiteminventoryform.js"></script>
-    <script src="parts/rolerequestchangeform.js"></script>
-    <script src="parts/managerolechangerequest.js"></script>
-    <script src="parts/donors.js"></script>
-    <script src="parts/public.events.description.js"></script>
-    <script src="parts/events.add.participants.js"></script>
-    <script src="parts/events.add.volunteers.js"></script>
-    <script src="parts/events.add.inventory.js"></script>
-    <script src="parts/passwordreset.js"></script>
-    <script src="parts/chapterstatusctrl.js"></script>
-    <script src="parts/changeChapterCtrl.js"></script>
-    <script src="parts/manageadditionalchapters.js"></script>
-    <script src="parts/manageVolunteers.js"></script>
-    <script src="parts/manageParticipants.js"></script>
     <script src="scripts/services/commonservices.js"></script>
     <script src="scripts/services/dao.js"></script>
     <script src="scripts/services/pageauthinterceptor.js"></script>
+    <script src="scripts/services/pdf_service.js"></script>
     <!-- injector:js -->
     <script src="extensions/bootstrap-editable/js/bootstrap-editable.js"></script>
+    <script src="assets/compatibility.js"></script>
+    <script src="assets/pdf.js"></script>
+    <script src="parts/changeChapterCtrl.js"></script>
+    <script src="parts/chapterAddForm.js"></script>
+    <script src="parts/chapterStatusCtrl.js"></script>
+    <script src="parts/donors.js"></script>
+    <script src="parts/events.add.inventory.js"></script>
+    <script src="parts/events.add.participants.js"></script>
+    <script src="parts/events.add.volunteers.js"></script>
+    <script src="parts/filloutMedia.js"></script>
+    <script src="parts/manageParticipants.js"></script>
+    <script src="parts/manageVolunteers.js"></script>
+    <script src="parts/manageadditionalchapters.js"></script>
+    <script src="parts/managerolechangerequest.js"></script>
+    <script src="parts/neweventform.js"></script>
+    <script src="parts/newiteminventoryform.js"></script>
+    <script src="parts/newuserdirectoryform.js"></script>
+    <script src="parts/passwordReset.js"></script>
+    <script src="parts/public.events.description.js"></script>
+    <script src="parts/rolerequestchangeform.js"></script>
+    <script src="parts/sign_event_waiver.js"></script>
+    <script src="parts/sign_witness_waiver.js"></script>
+    <!-- endinjector -->
+    <!-- injector:pdf -->
     <!-- endinjector -->
     <script src="scripts/controllers/expense/expensedetail.js"></script>
     <script src="scripts/controllers/expense/newexpense.js"></script>

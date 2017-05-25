@@ -9,9 +9,9 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('PublicEventsDescriptionCtrl', function($scope, $location, $uibModalInstance) {
+    .controller('PublicEventsDescriptionCtrl', function($scope, $location, $uibModalInstance, $rootScope, userService) {
         'use strict';
-
+        console.log(userService.getUserData(), userService.getRole(), $rootScope);
         // calendar options
 
         $scope.event = $scope.selected;
@@ -30,6 +30,7 @@ angular.module('ohanaApp')
         };
 
         $scope.postRsvp = function() {
+            //put join event logic here.  
             $uibModalInstance.dismiss('cancel');
         }
 

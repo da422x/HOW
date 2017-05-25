@@ -100,10 +100,14 @@ angular.module('ohanaApp')
                     packet.msg += n.userName + ' ';
                     if (n.changedBy) {
                         packet.msg += 'Primary Chapter was switched by ' + n.changedBy + ' from ';
+                        packet.msg += n.oldChapter + ' to ' + n.newChapter;
                     } else {
-                        packet.msg += 'switched Primary Chapter from ';
+                        if (n.oldChapter) {
+                            packet.msg += 'switched Primary Chapter from ' + n.oldChapter + ' to ' + n.newChapter;
+                        } else {
+                            packet.msg += 'is a newly registered user, and has joined ' + n.newChapter;
+                        }
                     }
-                    packet.msg += n.oldChapter + ' to ' + n.newChapter;
                 } else if (n.type === 'secondary') {
                     packet.msg += n.userName + ' ';
                     if (n.changedBy) {

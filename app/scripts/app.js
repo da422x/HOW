@@ -29,10 +29,11 @@ angular.module('ohanaApp', [
         'angularFileUpload',
         'bcherny/formatAsCurrency',
         'xeditable',
-        'chart.js'
+        'chart.js',
+        'ui.map'
     ])
     .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
-        $httpProvider.interceptors.push('pageAuthInterceptor');
+        //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
                 templateUrl: 'views/home.html',
@@ -188,6 +189,7 @@ angular.module('ohanaApp', [
             apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
             authDomain: "herosonthewaterprod.firebaseapp.com",
             databaseURL: "https://herosonthewaterprod.firebaseio.com",
+            projectId: "herosonthewaterprod",
             storageBucket: "herosonthewaterprod.appspot.com",
             messagingSenderId: "464567079814"
         };
@@ -243,8 +245,6 @@ angular.module('ohanaApp', [
                     'chapters': chapters
                 });
             });
-
-            //console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
