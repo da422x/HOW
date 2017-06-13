@@ -8,6 +8,8 @@
         "surge_prod": "surge -p dist -d howprod.surge.sh"
     },
     "devDependencies": {
+        "@types/angular": "^1.6.4",
+        "@types/jquery": "^1.10.31",
         "autoprefixer-core": "^5.2.1",
         "grunt": "^0.4.5",
         "grunt-angular-templates": "^0.5.7",

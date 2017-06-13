@@ -306,7 +306,6 @@ angular.module('ohanaApp', [
         //     firebase.database.enableLogging(true, true);
         // }
     })
-
     .filter('unique', function() {
 
         // Take in the collection and which field
