@@ -132,7 +132,8 @@
                 });
                 // ... another test for android gb browser for non-DOM objects
                 var Test = function Test() {};
-                Test.prototype = {get id() {}
+                Test.prototype = {
+                    get id() {}
                 };
                 Object.defineProperty(new Test(), 'id', {
                     value: '',

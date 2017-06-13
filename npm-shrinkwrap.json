@@ -1,0 +1,17 @@
+{
+    "name": "ohana",
+    "dependencies": {
+        "sweetalert2": {
+            "version": "4.3.3",
+            "from": "sweetalert2@>=4.0.0 <5.0.0",
+            "resolved": "https://registry.npmjs.org/sweetalert2/-/sweetalert2-4.3.3.tgz",
+            "dependencies": {
+                "es6-promise": {
+                    "version": "4.0.5",
+                    "from": "es6-promise@latest",
+                    "resolved": "https://registry.npmjs.org/es6-promise/-/es6-promise-4.0.5.tgz"
+                }
+            }
+        }
+    }
+}
