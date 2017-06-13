@@ -127,7 +127,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                    //              controller: 'ChadminCtrl as chadmin'
+                //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -185,13 +185,13 @@ angular.module('ohanaApp', [
         //changing jquery editable to angular editable
         editableOptions.theme = 'bs3';
         //end changing jquery editable to angular editable
-        var config = { 
-            apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg", 
-            authDomain: "herosonthewater-55a79.firebaseapp.com", 
-            databaseURL: "https://herosonthewater-55a79.firebaseio.com", 
-            projectId: "herosonthewater-55a79", 
-            storageBucket: "herosonthewater-55a79.appspot.com", 
-            messagingSenderId: "183234806884" 
+        var config = {
+            apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+            authDomain: "herosonthewater-55a79.firebaseapp.com",
+            databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+            projectId: "herosonthewater-55a79",
+            storageBucket: "herosonthewater-55a79.appspot.com",
+            messagingSenderId: "183234806884"
         };
 
         if (firebase.apps.length === 0) {
@@ -296,7 +296,7 @@ angular.module('ohanaApp', [
         // }
     })
 
-.filter('unique', function() {
+    .filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique

@@ -28,91 +28,91 @@ angular.module('ohanaApp')
 
         //Over Age Expense Config settings
         $scope.checkedOverageDays = function() {
-                $scope.expenseconfig = [];
-                $scope.expenseconfig.length = 0;
-                $scope.editstatus = [];
-                $scope.editstatus.length = 0;
+            $scope.expenseconfig = [];
+            $scope.expenseconfig.length = 0;
+            $scope.editstatus = [];
+            $scope.editstatus.length = 0;
 
-                commonServices.getData('/Config/Expense')
-                    .then(function(data) {
+            commonServices.getData('/Config/Expense')
+                .then(function(data) {
 
-                        if (data) {
+                    if (data) {
 
-                            $scope.expenseconfig = data;
+                        $scope.expenseconfig = data;
 
-                            for (var x = 0; x < $scope.expenseconfig.length; x++) {
-                                // console.log("Overage config ", currentdate, Date.parse($scope.expenseconfig[x].startdate), $scope.OverAgeWarning, $scope.OverAgeError);
-                                if (Date.parse(currentdate) >= Date.parse($scope.expenseconfig[x].startdate) && Date.parse(currentdate) <= Date.parse($scope.expenseconfig[x].enddate)) {
-                                    $scope.OverAgeWarning = $scope.expenseconfig[x].OverAgeWarning;
-                                    $scope.OverAgeError = $scope.expenseconfig[x].OverAgeError;
-                                    $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
-                                }
+                        for (var x = 0; x < $scope.expenseconfig.length; x++) {
+                            // console.log("Overage config ", currentdate, Date.parse($scope.expenseconfig[x].startdate), $scope.OverAgeWarning, $scope.OverAgeError);
+                            if (Date.parse(currentdate) >= Date.parse($scope.expenseconfig[x].startdate) && Date.parse(currentdate) <= Date.parse($scope.expenseconfig[x].enddate)) {
+                                $scope.OverAgeWarning = $scope.expenseconfig[x].OverAgeWarning;
+                                $scope.OverAgeError = $scope.expenseconfig[x].OverAgeError;
+                                $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
                             }
-
-
-                            //Get EDIT expense record info
-                            $scope.editExpenseList = expenseservice.getEditStatusrec();
-                            $scope.iseditexist = 'false';
-                            var pastdue = 0;
-                            $scope.$apply(function() {});
-                            $scope.editExpenseList.$loaded().then(function() {
-                                angular.forEach($scope.editExpenseList, function(list) {
-                                    // console.log("list ", list, list.email, $scope.useremail, $scope.iseditexist)
-
-                                    if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
-                                        $timeout(function() {
-
-                                            $scope.iseditexist = "true";
-                                            $scope.editeventdate = list.eventdate;
-
-                                            //Set the Over Age days message
-                                            $scope.daysforoverage = 0;
-                                            pastdue = 0;
-                                            pastdue = expenseservice.getPastDue(list.eventdate);
-
-                                            if (pastdue < $scope.OverAgeDays) {
-                                                $scope.daysforoverage = $scope.OverAgeDays - pastdue; //60 -
-                                            }
-
-                                            if (pastdue == $scope.OverAgeDays) {
-                                                $scope.daysforoverage = 0; //60 -
-                                            }
-                                            if (pastdue > $scope.OverAgeDays) {
-                                                $scope.daysforoverage = pastdue - $scope.OverAgeDays;
-                                            }
-                                            // console.log("pastdd", pastdue, $scope.daysforoverage);
-
-                                            $scope.editstatus.push({
-                                                "OverAge": $scope.daysforoverage,
-                                                "BillId": list.BillId,
-                                                "EmailID": list.email
-                                            });
-
-                                            if ($scope.daysforoverage !== undefined) {
-                                                if ($scope.daysforoverage > 0) {
-                                                    swal('Expense waiting for submission! Over Age in ' + $scope.daysforoverage + ' days', '', '');
-                                                } else if ($scope.daysforoverage == 0) {
-                                                    swal('Expense waiting for submission! Over Age TODAY', '', '');
-
-                                                } else {
-                                                    swal('Expense in EDIT status Over Aged ', '', '');
-
-                                                }
-                                            }
-
-                                        }, 0);
-
-                                    }
-
-                                });
-                            });
-                            // console.log
-                            ("list out", $scope.useremail, $scope.iseditexist)
                         }
 
-                    });
-            }
-            //Go to New Expense Page - EDIT status checked first 
+
+                        //Get EDIT expense record info
+                        $scope.editExpenseList = expenseservice.getEditStatusrec();
+                        $scope.iseditexist = 'false';
+                        var pastdue = 0;
+                        $scope.$apply(function() {});
+                        $scope.editExpenseList.$loaded().then(function() {
+                            angular.forEach($scope.editExpenseList, function(list) {
+                                // console.log("list ", list, list.email, $scope.useremail, $scope.iseditexist)
+
+                                if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
+                                    $timeout(function() {
+
+                                        $scope.iseditexist = "true";
+                                        $scope.editeventdate = list.eventdate;
+
+                                        //Set the Over Age days message
+                                        $scope.daysforoverage = 0;
+                                        pastdue = 0;
+                                        pastdue = expenseservice.getPastDue(list.eventdate);
+
+                                        if (pastdue < $scope.OverAgeDays) {
+                                            $scope.daysforoverage = $scope.OverAgeDays - pastdue; //60 -
+                                        }
+
+                                        if (pastdue == $scope.OverAgeDays) {
+                                            $scope.daysforoverage = 0; //60 -
+                                        }
+                                        if (pastdue > $scope.OverAgeDays) {
+                                            $scope.daysforoverage = pastdue - $scope.OverAgeDays;
+                                        }
+                                        // console.log("pastdd", pastdue, $scope.daysforoverage);
+
+                                        $scope.editstatus.push({
+                                            "OverAge": $scope.daysforoverage,
+                                            "BillId": list.BillId,
+                                            "EmailID": list.email
+                                        });
+
+                                        if ($scope.daysforoverage !== undefined) {
+                                            if ($scope.daysforoverage > 0) {
+                                                swal('Expense waiting for submission! Over Age in ' + $scope.daysforoverage + ' days', '', '');
+                                            } else if ($scope.daysforoverage == 0) {
+                                                swal('Expense waiting for submission! Over Age TODAY', '', '');
+
+                                            } else {
+                                                swal('Expense in EDIT status Over Aged ', '', '');
+
+                                            }
+                                        }
+
+                                    }, 0);
+
+                                }
+
+                            });
+                        });
+                        // console.log
+                        ("list out", $scope.useremail, $scope.iseditexist)
+                    }
+
+                });
+        }
+        //Go to New Expense Page - EDIT status checked first 
         $scope.neweexpense = function() {
 
             $scope.editExpenseList = expenseservice.getEditStatusrec();
@@ -178,20 +178,20 @@ angular.module('ohanaApp')
         //Filter the list on expense in EDIT status
         $scope.Showmeedit = function(BillId) {
 
-                // switch ($scope.userRole) {
-                //     case 'Volunteer':
-                //     case 'Participant':
-                //     case 'Chapter Lead':
-                // window.location = "#/expense/expensedetail/" + BillId;
-                $location.path('/expense/expensedetail/' + BillId);
-                //     break;
-                // default:
-                //     $scope.PayStatus = $scope.paystatuslist[1];
-                //     $scope.ExpenseSearch("edit");
-                //     break;
-                // }
-            }
-            //---select
+            // switch ($scope.userRole) {
+            //     case 'Volunteer':
+            //     case 'Participant':
+            //     case 'Chapter Lead':
+            // window.location = "#/expense/expensedetail/" + BillId;
+            $location.path('/expense/expensedetail/' + BillId);
+            //     break;
+            // default:
+            //     $scope.PayStatus = $scope.paystatuslist[1];
+            //     $scope.ExpenseSearch("edit");
+            //     break;
+            // }
+        }
+        //---select
         $scope.selectedRow = null; // initialize our variable to null
         $scope.setClickedRow = function(index) { //function that sets the value of selectedRow to current index
             $scope.selectedRow = index;
@@ -891,71 +891,71 @@ angular.module('ohanaApp')
             // $scope.userChapter = $rootScope.userChapter;
             angular.forEach($scope.lists, function(value, index) {
 
-                    for (var i = 0; i < value.length; i++) {
-                        // console.log("first list length", $scope.listS.length);
-                        //$scope.listS === value[i].Chapter || $scope.listS === "") &&
+                for (var i = 0; i < value.length; i++) {
+                    // console.log("first list length", $scope.listS.length);
+                    //$scope.listS === value[i].Chapter || $scope.listS === "") &&
 
-                        // console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
-                        // console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
-                        // console.log("third check - ", $scope.userRole, value[i].email, useremail);
+                    // console.log("first check - ", value[i].PaymentStatus, $scope.PayStatus.value);
+                    // console.log("second check - ", Date.parse(value[i].SubmitDate), Date.parse($scope.startdate), Date.parse($scope.enddate));
+                    // console.log("third check - ", $scope.userRole, value[i].email, useremail);
 
-                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
-                            (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
-                            var reportdata = {
-                                "Date": value[i].eventdate,
-                                "Business Purpose, Origin & Destination": value[i].Description,
-                                "Miles Driven": parseInt(value[i].Line[0].Quantity),
-                                "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
-                                "Trailer Miles": parseInt(value[i].Line[1].Quantity),
-                                "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
-                                "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
-                                "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
-                                "Explanation of Other Expense": value[i].Line[2].Description
-                            };
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        (($scope.userRole == 'Participant' || $scope.userRole == 'Volunteer') && (value[i].email == useremail))) {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
-                            rptdata.push(reportdata);
-                        }
+                        rptdata.push(reportdata);
+                    }
 
-                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
-                            ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
-                            var reportdata = {
-                                "Date": value[i].eventdate,
-                                "Business Purpose, Origin & Destination": value[i].Description,
-                                "Miles Driven": parseInt(value[i].Line[0].Quantity),
-                                "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
-                                "Trailer Miles": parseInt(value[i].Line[1].Quantity),
-                                "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
-                                "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
-                                "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
-                                "Explanation of Other Expense": value[i].Line[2].Description
-                            };
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
-                            rptdata.push(reportdata);
-                        }
+                        rptdata.push(reportdata);
+                    }
 
-                        if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
-                            (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
-                            $scope.userRole == 'National Staff') {
-                            var reportdata = {
-                                "Date": value[i].eventdate,
-                                "Business Purpose, Origin & Destination": value[i].Description,
-                                "Miles Driven": parseInt(value[i].Line[0].Quantity),
-                                "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
-                                "Trailer Miles": parseInt(value[i].Line[1].Quantity),
-                                "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
-                                "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
-                                "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
-                                "Explanation of Other Expense": value[i].Line[2].Description
-                            };
+                    if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
+                        (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
+                        $scope.userRole == 'National Staff') {
+                        var reportdata = {
+                            "Date": value[i].eventdate,
+                            "Business Purpose, Origin & Destination": value[i].Description,
+                            "Miles Driven": parseInt(value[i].Line[0].Quantity),
+                            "Travel @ .25/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100),
+                            "Trailer Miles": parseInt(value[i].Line[1].Quantity),
+                            "Trailer Hauling @ .40/mile": numberWithCommas(Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100),
+                            "Other Expenses": numberWithCommas(Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100),
+                            "Total": numberWithCommas(Math.round(parseFloat(value[i].Amount) * 100) / 100),
+                            "Explanation of Other Expense": value[i].Line[2].Description
+                        };
 
-                            rptdata.push(reportdata);
-                        }
+                        rptdata.push(reportdata);
+                    }
 
-                        console.log("report", i, rptdata);
-                    } //for loop 
-                }) //for each
+                    console.log("report", i, rptdata);
+                } //for loop 
+            }) //for each
 
 
             return rptdata;
