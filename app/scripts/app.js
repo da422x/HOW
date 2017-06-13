@@ -194,6 +194,15 @@ angular.module('ohanaApp', [
             messagingSenderId: "183234806884"
         };
 
+        var config = {
+            apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
+            authDomain: "herosonthewaterprod.firebaseapp.com",
+            databaseURL: "https://herosonthewaterprod.firebaseio.com",
+            projectId: "herosonthewaterprod",
+            storageBucket: "herosonthewaterprod.appspot.com",
+            messagingSenderId: "464567079814"
+        }
+
         if (firebase.apps.length === 0) {
             firebase.initializeApp(config);
         }
