@@ -185,14 +185,16 @@ angular.module('ohanaApp', [
         //changing jquery editable to angular editable
         editableOptions.theme = 'bs3';
         //end changing jquery editable to angular editable
-        var config = {
-            apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
-            authDomain: "herosonthewater-55a79.firebaseapp.com",
-            databaseURL: "https://herosonthewater-55a79.firebaseio.com",
-            projectId: "herosonthewater-55a79",
-            storageBucket: "herosonthewater-55a79.appspot.com",
-            messagingSenderId: "183234806884"
-        };
+
+        //uncomment this and comment below config to change to dev/prod
+        // var config = {
+        //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+        //     authDomain: "herosonthewater-55a79.firebaseapp.com",
+        //     databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+        //     projectId: "herosonthewater-55a79",
+        //     storageBucket: "herosonthewater-55a79.appspot.com",
+        //     messagingSenderId: "183234806884"
+        // };
 
         var config = {
             apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
