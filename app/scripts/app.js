@@ -186,12 +186,12 @@ angular.module('ohanaApp', [
         editableOptions.theme = 'bs3';
         //end changing jquery editable to angular editable
         var config = {
-            apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
-            authDomain: "herosonthewaterprod.firebaseapp.com",
-            databaseURL: "https://herosonthewaterprod.firebaseio.com",
-            projectId: "herosonthewaterprod",
-            storageBucket: "herosonthewaterprod.appspot.com",
-            messagingSenderId: "464567079814"
+            apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
+            authDomain: "herosonthewatertest2.firebaseapp.com",
+            databaseURL: "https://herosonthewatertest2.firebaseio.com",
+            projectId: "herosonthewatertest2",
+            storageBucket: "herosonthewatertest2.appspot.com",
+            messagingSenderId: "569173546476"
         };
 
         if (firebase.apps.length === 0) {
@@ -207,9 +207,12 @@ angular.module('ohanaApp', [
             chapters: []
         };
 
+
+
         var getSiteData = commonServices.getData('/siteData/');
 
         $q.all([getSiteData]).then(function(data) {
+
             _.each(data[0].states, function(states) {
                 $rootScope.siteData.states.push(states);
             });
@@ -219,32 +222,29 @@ angular.module('ohanaApp', [
             });
 
             _.each(data[0].regions, function(regions) {
-                var chapters = [];
+                $rootScope.siteData.regions.push(regions);
+            });
 
-                _.each(regions.chapters, function(newChapters) {
+            _.each(data[0].chapters, function(chapters, key) {
+                chapters.key = key;
+                $rootScope.siteData.chapters.push(chapters);
+            });
 
-                    $rootScope.siteData.chapters.push({
-                        'value': newChapters.value,
-                        'text': newChapters.text
-                    });
-
-                    chapters.push({
-                        'value': newChapters.value,
-                        'text': newChapters.text
-                    });
+            _.each($rootScope.siteData.regions, function(regions) {
+                var chaptersByRegion = [];
+                _.each($rootScope.siteData.chapters, function(chapters) {
+                    if (chapters.region === regions.value) {
+                        chaptersByRegion.push(chapters);
+                    }
                 });
-
-                $rootScope.siteData.regions.push({
-                    'value': regions.value,
-                    'text': regions.text
-                });
-
                 $rootScope.siteData.regionsChapters.push({
-                    'value': regions.value,
-                    'text': regions.text,
-                    'chapters': chapters
+                    text: regions.text,
+                    value: regions.value,
+                    chapters: chaptersByRegion
                 });
             });
+
+            console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {

@@ -22,14 +22,14 @@ angular.module('ohanaApp')
 
             $scope.regionUpdate = function(selectedRegion) {
                 // Update chapter drop down based on selected region.
-                _.each($scope.regions, function(region) {
-                    if (selectedRegion.value === region.value) {
-                        $scope.chapters = region.chapters;
-                    }
+                var chapterList = _.filter($rootScope.siteData.regionsChapters, function(n) {
+                    return n.value === selectedRegion.value;
                 });
+                $scope.chapters = chapterList[0].chapters;
             };
 
             $scope.updateRegionChapter = function(region, chapter) {
+                console.log(region, chapter);
                 if (selectedUID) {
                     var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
                     $q.all([getSelectedUser]).then(function(data) {
@@ -44,13 +44,13 @@ angular.module('ohanaApp')
                         }).then(function() {
                             // Logg changes.
                             howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
-                                data[0].Chapter, chapter.value);
-                            howLogService.logUserAddedToChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), chapter.value);
+                                data[0].Chapter, chapter.text);
+                            howLogService.logUserAddedToChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), chapter.text);
                             howLogService.logUserRemovedFromChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), data[0].Chapter);
 
                             // Get new values and update DB.
                             commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
-                            commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.value);
+                            commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.key);
                             commonServices.updateData('/userRoles/' + selectedUID + '/role', 'Participant');
 
                             // Close modal with success message.
@@ -78,19 +78,19 @@ angular.module('ohanaApp')
                         // Logg changes.
                         howLogService.logPrimaryChapterChange(currentUserName, false,
                             currentChapter, chapter.value);
-                        howLogService.logUserAddedToChapter(currentUserName, false, chapter.value);
+                        howLogService.logUserAddedToChapter(currentUserName, false, chapter.text);
                         howLogService.logUserRemovedFromChapter(currentUserName, false, currentChapter);
 
                         // update DB.
                         commonServices.updateData('/userData/' + userId + '/Region', region.value);
-                        commonServices.updateData('/userData/' + userId + '/Chapter', chapter.value);
+                        commonServices.updateData('/userData/' + userId + '/Chapter', chapter.key);
                         commonServices.updateData('/userRoles/' + userId + '/role', 'Participant');
 
                         // Update global variables.
                         userData.Region = region.value;
-                        userData.Chapter = chapter.value;
+                        userData.Chapter = chapter.key;
                         userService.setUserData(userData);
-                        userService.setChapter(chapter.value);
+                        userService.setChapter(chapter.key);
                         userService.setRole('Participant');
 
                         // Close modal with success message.
