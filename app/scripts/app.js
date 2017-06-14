@@ -31,7 +31,8 @@ angular.module('ohanaApp', [
         'chart.js',
         'ui.map'
     ])
-    .config(function($routeProvider, $httpProvider) {
+    .config(function($routeProvider, $httpProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
         //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
