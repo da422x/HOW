@@ -12,7 +12,6 @@
 angular.module('ohanaApp', [
         'ngAnimate',
         'ui.bootstrap',
-        'ui.router',
         'ui.select',
         'ngCookies',
         'ngMessages',
@@ -32,7 +31,7 @@ angular.module('ohanaApp', [
         'chart.js',
         'ui.map'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+    .config(function($routeProvider, $httpProvider) {
         //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {

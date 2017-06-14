@@ -14,7 +14,7 @@ angular.module('ohanaApp')
             templateUrl: 'views/masternav.html',
             restrict: 'E',
 
-            controller: function($state, $rootScope, commonServices, $scope, $uibModal) {
+            controller: function($rootScope, commonServices, $scope, $uibModal) {
                 $scope.sessionState = $rootScope.sessionState;
                 $scope.sessionUserRole = $rootScope.userRole;
                 $scope.$on('changeSessionState', function(event, arg) {
