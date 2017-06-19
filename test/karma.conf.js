@@ -14,7 +14,7 @@ module.exports = function(config) {
         // testing framework to use (jasmine/mocha/qunit/...)
         // as well as any additional frameworks (requirejs/chai/sinon/...)
         frameworks: [
-            'jasmine'
+            'jasmine', 'karma-typescript'
         ],
 
         // list of files / patterns to load in the browser
@@ -33,11 +33,10 @@ module.exports = function(config) {
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-touch/angular-touch.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'bower_components/angular-ui-router/release/angular-ui-router.js',
             'bower_components/datatables.net/js/jquery.dataTables.js',
             'bower_components/datatables.net-bs/js/dataTables.bootstrap.js',
             'bower_components/datatables.net-autofill/js/dataTables.autoFill.js',
-            'bower_components/datatables-autofill-bootstrap/js/autoFill.bootstrap.js',
+            'bower_components/datatables-autofill-bootstrap/js/dataTables.autoFill.js',
             'bower_components/datatables.net-buttons/js/dataTables.buttons.js',
             'bower_components/datatables.net-buttons/js/buttons.colVis.js',
             'bower_components/datatables.net-buttons/js/buttons.flash.js',
@@ -78,6 +77,7 @@ module.exports = function(config) {
             'bower_components/angular-xeditable/dist/js/xeditable.js',
             'bower_components/chart.js/dist/Chart.js',
             'bower_components/angular-chart.js/dist/angular-chart.js',
+            'bower_components/signature_pad/signature_pad.js',
             'bower_components/angular-ui-utils/ui-utils.js',
             'bower_components/angular-ui-map/ui-map.js',
             'bower_components/angular-mocks/angular-mocks.js',
@@ -108,7 +108,8 @@ module.exports = function(config) {
         // Which plugins to enable
         plugins: [
             'karma-phantomjs-launcher',
-            'karma-jasmine'
+            'karma-jasmine',
+            "karma-typescript"
         ],
 
         // Continuous Integration mode

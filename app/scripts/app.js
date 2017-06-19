@@ -12,7 +12,6 @@
 angular.module('ohanaApp', [
         'ngAnimate',
         'ui.bootstrap',
-        'ui.router',
         'ui.select',
         'ngCookies',
         'ngMessages',
@@ -32,7 +31,8 @@ angular.module('ohanaApp', [
         'chart.js',
         'ui.map'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+    .config(function($routeProvider, $httpProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
         //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
@@ -306,7 +306,6 @@ angular.module('ohanaApp', [
         //     firebase.database.enableLogging(true, true);
         // }
     })
-
     .filter('unique', function() {
 
         // Take in the collection and which field
