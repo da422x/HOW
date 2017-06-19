@@ -1,12 +1,19 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "sourceMap": false,
         "target": "es5",
         "noImplicitAny": false,
-        "sourceMap": false,
-        "typeRoots": ["./node_modules/@types"]
+
+        "typeRoots": ["./node_modules/@types"],
+        "baseUrl": "./node_modules/@types",
+        "rootDir": "./node_modules/@types",
+        "types": [
+            "jasmine"
+        ]
     },
     "include": [
-        "app/**/*"
+        "./app/**/*.ts",
+        "./test/spec/**/*.ts"
     ]
 }
