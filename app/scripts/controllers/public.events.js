@@ -68,6 +68,17 @@ angular.module('ohanaApp')
                 });
         }
 
+        $scope.testingTester = function() {
+            return 5;
+        }
+
+        $scope.testingTester2 = function() {
+            //this is a faked method
+            //check public_events.ts in the test files to see how this
+            //angular service is spoofed with a fake method for testing purporses. 
+            return Api.getme();
+        }
+
         $scope.checkAllParticipantIsDisableds = function(key, idx) {
 
             commonServices.getUserByEmailAtPath($scope.userService.getUserData()["email"], '/events/' + key + '/participants')
