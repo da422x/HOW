@@ -114,7 +114,8 @@ angular.module('ohanaApp')
                     phone: $scope.newUserDirectory.phone,
                     years: $scope.newUserDirectory.years,
                     Region: $scope.newUserDirectory.region.text,
-                    Chapter: $scope.newUserDirectory.chapter.key
+                    Chapter: $scope.newUserDirectory.chapter,
+                    password: $scope.newUserDirectory.password
                 };
 
                 var results = commonServices.register(packet);
@@ -148,7 +149,7 @@ angular.module('ohanaApp')
                             }
                         });
 
-                        howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
+                        //howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                         $uibModalInstance.close();
                         window.location.replace('#/home');
                     } else {

@@ -32,8 +32,7 @@ angular.module('ohanaApp')
 
             // Get all rcrs first.
             var userRquests = commonServices.getData('/roleChangeRequests/');
-            var chapterList = commonServices.getData('/siteData/chapters/')
-            $q.all([userRquests, chapterList]).then(function(data) {
+            $q.all([userRquests]).then(function(data) {
 
                 // Construct list of rcr's for current user.
                 $scope.requests = [];
@@ -41,27 +40,6 @@ angular.module('ohanaApp')
                     if (value.uid === $scope.userUID) {
                         value.key = key;
                         $scope.requests.push(value);
-                    }
-                });
-
-                // Translate chapter keys to text for display.
-                _.each(data[1], function(value, key) {
-                    console.log('here!');
-                    if ($scope.profileData.Chapter === key) {
-                        $scope.profileData.Chapter = value;
-                    } else {
-                        _.each($scope.profileData.Chapters, function(c) {
-                            if (c.chapter === key) {
-
-                            }
-                            i++;
-                        });
-                        for (var i = 0; i < $scope.profileData.Chapters.length; i++) {
-                            if ($scope.profileData.Chapters[i].chapter === key) {
-                                $scope.profileData.Chapters[i].chapter = value;
-                                break;
-                            }
-                        }
                     }
                 });
 

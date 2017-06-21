@@ -29,7 +29,6 @@ angular.module('ohanaApp')
             };
 
             $scope.updateRegionChapter = function(region, chapter) {
-                console.log(region, chapter);
                 if (selectedUID) {
                     var getSelectedUser = commonServices.getData('/userData/' + selectedUID);
                     $q.all([getSelectedUser]).then(function(data) {
@@ -43,14 +42,16 @@ angular.module('ohanaApp')
                             confirmButtonText: 'Yes, please continue!'
                         }).then(function() {
                             // Logg changes.
-                            howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
-                                data[0].Chapter, chapter.text);
-                            howLogService.logUserAddedToChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), chapter.text);
-                            howLogService.logUserRemovedFromChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), data[0].Chapter);
+                            // howLogService.logPrimaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                            //     data[0].Chapter, chapter.text);
+                            // howLogService.logUserAddedToChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), chapter.text);
+                            // howLogService.logUserRemovedFromChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), data[0].Chapter);
+
+                            delete chapter.$$hashKey;
 
                             // Get new values and update DB.
                             commonServices.updateData('/userData/' + selectedUID + '/Region', region.value);
-                            commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter.key);
+                            commonServices.updateData('/userData/' + selectedUID + '/Chapter', chapter);
                             commonServices.updateData('/userRoles/' + selectedUID + '/role', 'Participant');
 
                             // Close modal with success message.
@@ -74,23 +75,24 @@ angular.module('ohanaApp')
                         var userData = userService.getUserData();
                         var currentChapter = userService.getChapter();
                         var currentUserName = userService.getUserName();
+                        delete chapter.$$hashKey;
 
                         // Logg changes.
-                        howLogService.logPrimaryChapterChange(currentUserName, false,
-                            currentChapter, chapter.value);
-                        howLogService.logUserAddedToChapter(currentUserName, false, chapter.text);
-                        howLogService.logUserRemovedFromChapter(currentUserName, false, currentChapter);
+                        // howLogService.logPrimaryChapterChange(currentUserName, false,
+                        //     currentChapter, chapter.value);
+                        // howLogService.logUserAddedToChapter(currentUserName, false, chapter.text);
+                        // howLogService.logUserRemovedFromChapter(currentUserName, false, currentChapter);
 
                         // update DB.
                         commonServices.updateData('/userData/' + userId + '/Region', region.value);
-                        commonServices.updateData('/userData/' + userId + '/Chapter', chapter.key);
+                        commonServices.updateData('/userData/' + userId + '/Chapter', chapter);
                         commonServices.updateData('/userRoles/' + userId + '/role', 'Participant');
 
                         // Update global variables.
                         userData.Region = region.value;
-                        userData.Chapter = chapter.key;
+                        userData.Chapter = chapter;
                         userService.setUserData(userData);
-                        userService.setChapter(chapter.key);
+                        userService.setChapter(chapter);
                         userService.setRole('Participant');
 
                         // Close modal with success message.
