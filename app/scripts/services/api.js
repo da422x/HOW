@@ -22,6 +22,14 @@ angular.module('ohanaApp').service('Api', function($resource) {
         // 				update: { method: 'PUT' },
         // 				remove: { method: 'DELETE', isArray: false }
         // 			}),
+
+        //fake method for sampling spying
+        ezmoney: function() {
+            //thad
+            //contents don't matter
+            //so long as it's invokable
+
+        },
         createChapter: $resource(extension + '/region/:region_id/create_chapter', {
             region_id: '@region_id'
         }, {

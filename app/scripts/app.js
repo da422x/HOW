@@ -12,7 +12,6 @@
 angular.module('ohanaApp', [
         'ngAnimate',
         'ui.bootstrap',
-        'ui.router',
         'ui.select',
         'ngCookies',
         'ngMessages',
@@ -32,7 +31,8 @@ angular.module('ohanaApp', [
         'chart.js',
         'ui.map'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $routeProvider, $httpProvider) {
+    .config(function($routeProvider, $httpProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
         //$httpProvider.interceptors.push('pageAuthInterceptor');
         $routeProvider
             .when("/home", {
@@ -127,7 +127,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                    //              controller: 'ChadminCtrl as chadmin'
+                //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -185,6 +185,17 @@ angular.module('ohanaApp', [
         //changing jquery editable to angular editable
         editableOptions.theme = 'bs3';
         //end changing jquery editable to angular editable
+
+        //uncomment this and comment below config to change to dev/prod
+        // var config = {
+        //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+        //     authDomain: "herosonthewater-55a79.firebaseapp.com",
+        //     databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+        //     projectId: "herosonthewater-55a79",
+        //     storageBucket: "herosonthewater-55a79.appspot.com",
+        //     messagingSenderId: "183234806884"
+        // };
+
         var config = {
             apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
             authDomain: "herosonthewatertest2.firebaseapp.com",
@@ -295,8 +306,7 @@ angular.module('ohanaApp', [
         //     firebase.database.enableLogging(true, true);
         // }
     })
-
-.filter('unique', function() {
+    .filter('unique', function() {
 
         // Take in the collection and which field
         //   should be unique

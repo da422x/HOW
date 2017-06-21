@@ -9,7 +9,7 @@
  * Controller of public login
  */
 angular.module('ohanaApp')
-    .controller('LoginCtrl', function($q, commonServices, $state, $scope, $rootScope, $uibModal, $location) {
+    .controller('LoginCtrl', function($q, commonServices, $scope, $rootScope, $uibModal, $location) {
         'use strict';
 
         $scope.logObj = {};
