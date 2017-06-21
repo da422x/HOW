@@ -48,12 +48,12 @@
             <div class="list-group-item">
                 <h6 class="list-group-item-text">Region/Chapter Information: </h6>
                 <h4 class="list-group-item-heading" ng-click="changeChapter()">Primary Chapter:
-                    <label class="format-chapter-class">{{profileData.Chapter}}
+                    <label class="format-chapter-class">{{profileData.Chapter.text}}
                         <label>
                 </h4>
                 <h4 class="list-group-item-heading">Secondary Chapter(s):
                     <h6 class="list-group-item-heading" ng-repeat="Chapters in profileData.Chapters">
-                        {{Chapters.chapter}}
+                        {{Chapters.chapter.text}}
                     </h6>
                     <button type="button" class="btn btn-default btn-sm" ng-click="editChapters()">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>

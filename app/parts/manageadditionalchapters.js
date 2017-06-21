@@ -56,17 +56,16 @@ angular.module('ohanaApp')
                 var canUpdate = true;
                 var chapterObj = {
                     region: $scope.newRegion.value,
-                    chapter: $scope.newChapter.value
+                    chapter: $scope.newChapter.key
                 }
 
                 _.each($scope.userChapters, function(n) {
-                    if (n.chapter === $scope.newChapter.value) {
+                    if (n.chapter === $scope.newChapter.key) {
                         canUpdate = false;
                     }
                 });
 
                 if (canUpdate) {
-                    console.log('hererererere');
                     $scope.userChapters.push(chapterObj);
                     $scope.chaptersAdded.push(chapterObj.chapter);
                     $scope.chaptersRemoved = _.filter($scope.chaptersRemoved, function(n) {
@@ -99,10 +98,10 @@ angular.module('ohanaApp')
 
                         if (canContinue) {
                             // Logg changes.
-                            howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
-                                $scope.chaptersRemoved, $scope.chaptersAdded);
-                            howLogService.logUserAddedToSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersAdded);
-                            howLogService.logUserRemovedFromSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersRemoved);
+                            // howLogService.logSecondaryChapterChange(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(),
+                            //     $scope.chaptersRemoved, $scope.chaptersAdded);
+                            // howLogService.logUserAddedToSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersAdded);
+                            // howLogService.logUserRemovedFromSecondaryChapter(data[0].name.first + ' ' + data[0].name.last, userService.getUserName(), $scope.chaptersRemoved);
 
                             // Update global variables, and Database.
                             commonServices.updateData('/userData/' + selectedUID + '/Chapters/', $scope.userChapters);
@@ -138,10 +137,10 @@ angular.module('ohanaApp')
 
                     if (canContinue) {
                         // Logg changes.
-                        howLogService.logSecondaryChapterChange(currentUserName, false,
-                            $scope.chaptersRemoved, $scope.chaptersAdded);
-                        howLogService.logUserAddedToSecondaryChapter(currentUserName, false, $scope.chaptersAdded);
-                        howLogService.logUserRemovedFromSecondaryChapter(currentUserName, false, $scope.chaptersRemoved);
+                        // howLogService.logSecondaryChapterChange(currentUserName, false,
+                        //     $scope.chaptersRemoved, $scope.chaptersAdded);
+                        // howLogService.logUserAddedToSecondaryChapter(currentUserName, false, $scope.chaptersAdded);
+                        // howLogService.logUserRemovedFromSecondaryChapter(currentUserName, false, $scope.chaptersRemoved);
 
                         // Update global variables, and Database.
                         commonServices.updateData('/userData/' + userId + '/Chapters/', $scope.userChapters);
