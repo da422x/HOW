@@ -56,7 +56,6 @@
         "grunt-ng-annotate": "^0.9.2",
         "grunt-postcss": "^0.5.5",
         "grunt-replace": "^1.0.1",
-        "grunt-sass": "^1.2.0",
         "grunt-serve": "^0.1.6",
         "grunt-size-report": "^0.1.4",
         "grunt-svgmin": "^2.0.0",
