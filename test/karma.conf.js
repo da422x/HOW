@@ -47,7 +47,7 @@ module.exports = function(config) {
             'bower_components/datatables.net/js/jquery.dataTables.js',
             'bower_components/datatables.net-bs/js/dataTables.bootstrap.js',
             'bower_components/datatables.net-autofill/js/dataTables.autoFill.js',
-            'bower_components/datatables-autofill-bootstrap/js/dataTables.autoFill.js',
+            'bower_components/datatables-autofill-bootstrap/js/autoFill.bootstrap.js',
             'bower_components/datatables.net-buttons/js/dataTables.buttons.js',
             'bower_components/datatables.net-buttons/js/buttons.colVis.js',
             'bower_components/datatables.net-buttons/js/buttons.flash.js',
