@@ -34,7 +34,7 @@ angular.module('ohanaApp')
 
         this.setChapter = function(data) {
             $rootScope.userChapter = data;
-            localStorage.setItem('userChapter', data);
+            localStorage.setItem('userChapter', JSON.stringify(data));
         };
 
         // Getter Functions
@@ -61,7 +61,7 @@ angular.module('ohanaApp')
 
         this.getChapter = function() {
             var userChapter = localStorage.getItem('userChapter');
-            return userChapter;
+            return JSON.parse(userChapter);
         };
 
     });

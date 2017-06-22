@@ -108,7 +108,7 @@ angular.module('ohanaApp')
                         $(row).children().eq(4).addClass('tdSelectState');
                         $(row).children().eq(5).addClass('tdSelectZip');
                         $(row).children().eq(6).addClass('tdEmail'); // email checking disabled
-                        for (i = 1; i < 7; i++) {
+                        for (i = 2; i < 7; i++) {
                             if (i != 3 && i != 4) {
                                 $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                             }

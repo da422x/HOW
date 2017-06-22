@@ -282,8 +282,8 @@ angular.module('ohanaApp', [
                         // temporary for debugging displays user logged in.
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
-                        console.log('Name: ' + userData.name.first);
-                        console.log('Chapter: ' + userData.Chapter);
+                        console.log('Name: ' + userData.name.first + ' ' + userData.name.last);
+                        console.log('Chapter: ' + userData.Chapter.text);
                         console.log('Role: ' + userRole);
 
                         // Setting session variables.

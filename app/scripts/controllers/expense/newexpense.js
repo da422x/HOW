@@ -16,7 +16,7 @@ angular.module('ohanaApp')
         $scope.exp = expenseservice.expense;
 
         // Initialize FORM field to clear old values in creating new expense.
-        $scope.exp.Chapter = "";
+        $scope.exp.Chapter = {};
         $scope.exp.email = commonServices.getCurrentUserEmail();
         $scope.exp.SubmitDate = "";
         $scope.exp.SubmitBy = "";
@@ -236,7 +236,7 @@ angular.module('ohanaApp')
         //Clear value in Expense Page
         $scope.ClearFields = function() {
 
-            $scope.exp.Chapter = "";
+            $scope.exp.Chapter = {};
             $scope.exp.email = commonServices.getCurrentUserEmail();
             $scope.exp.SubmitDate = "";
             $scope.exp.SubmitBy = "";
@@ -300,50 +300,50 @@ angular.module('ohanaApp')
 
         // -- CREATE NEW EXPENSE
         $scope.confirmnewexpense = function() {
-            var eventdate = $scope.exp.eventdate;
-            var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
-            $scope.CalculateAmount();
-            // var inp = document.getElementById('fileimage');
-            // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
-            for (var i = 0; i < $scope.uploader.queue.length; ++i) {
-                var filename = $scope.uploader.queue[i].file.name;
-                // console.log("file name", filename);
+                var eventdate = $scope.exp.eventdate;
+                var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
+                $scope.CalculateAmount();
+                // var inp = document.getElementById('fileimage');
+                // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
+                for (var i = 0; i < $scope.uploader.queue.length; ++i) {
+                    var filename = $scope.uploader.queue[i].file.name;
+                    // console.log("file name", filename);
+                }
+
+                if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.exp.Amount == 0 || !$scope.checkIfImageOrMileage()) {
+                    swal({
+                        title: 'Required fields Missing',
+                        type: 'error',
+                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                            '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr> ' +
+                            '<tr><td class="swaltdl ">Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+                    })
+                } else {
+                    swal({
+                        title: 'Please confirm New Expense',
+                        text: "Created Expense will be reviewed by Chapter Lead and National Staff!",
+                        type: 'info',
+                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[0].Amount + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[1].Amount + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.lineamount + '</b></td></tr>' +
+                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, create it!'
+                    }).then(function() {
+
+                        $scope.createnewexpense("Pending")
+                            // window.location.href = "#/expense/viewexpense"
+                        $location.path('/expense/viewexpense')
+                    })
+                }
             }
-
-            if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.exp.Amount == 0 || !$scope.checkIfImageOrMileage()) {
-                swal({
-                    title: 'Required fields Missing',
-                    type: 'error',
-                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
-                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr> ' +
-                        '<tr><td class="swaltdl ">Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
-                })
-            } else {
-                swal({
-                    title: 'Please confirm New Expense',
-                    text: "Created Expense will be reviewed by Chapter Lead and National Staff!",
-                    type: 'info',
-                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
-                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                        '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[0].Amount + '</b></td></tr>' +
-                        '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[1].Amount + '</b></td></tr>' +
-                        '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.lineamount + '</b></td></tr>' +
-                        '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
-
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, create it!'
-                }).then(function() {
-
-                    $scope.createnewexpense("Pending")
-                        // window.location.href = "#/expense/viewexpense"
-                    $location.path('/expense/viewexpense')
-                })
-            }
-        }
-        //function used to check if the user has either inputed mileage, or a recipt, or both.
+            //function used to check if the user has either inputed mileage, or a recipt, or both.
         $scope.checkIfImageOrMileage = function() {
             // check if image has been uploaded
             var input = document.getElementById('files');
@@ -414,7 +414,7 @@ angular.module('ohanaApp')
             var currentdate = new Date();
 
             // $scope.profileData.Chapter.charAt(1);
-            $scope.exp.BillId = $scope.userName.Region.charAt(1) + $scope.userChapter.charAt(1) + $scope.userName.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
+            $scope.exp.BillId = $scope.userName.Region.charAt(1) + $scope.userChapter.text.charAt(1) + $scope.userName.address.city.charAt(1) + currentdate.getFullYear() + (currentdate.getMonth() + 1) + currentdate.getDate() + +currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds() + Math.floor((Math.random() * 1000) + 1);
 
             $scope.exp.SubmitDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
             $scope.exp.SubmitAddress = $scope.userName.address.line1 + ' , ' + $scope.userName.address.line2 + ' , ' + $scope.userName.address.city + ' , ' + $scope.userName.address.state + ' , ' + $scope.userName.address.zip;
@@ -447,7 +447,7 @@ angular.module('ohanaApp')
             }
             // $scope.exp.PaymentLog[0].PayStatusDescription = 'New Expense created';
 
-            console.log("New expense ", $scope.exp.Chapter, $scope.exp.SubmitBy, $scope.exp.email);
+            console.log("New expense ", $scope.exp.Chapter.text, $scope.exp.SubmitBy, $scope.exp.email);
 
             var imageString;
             var imagefilename;

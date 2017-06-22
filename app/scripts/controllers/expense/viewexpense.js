@@ -324,7 +324,7 @@ angular.module('ohanaApp')
                 break;
 
             case 'Chapter Lead':
-                $scope.HeadTitle = ' for ' + $scope.userChapter;
+                $scope.HeadTitle = ' for ' + $scope.userChapter.text;
                 $scope.paystatuslist = [{
                     name: 'All',
                     value: ''
@@ -625,7 +625,7 @@ angular.module('ohanaApp')
                                 data: "SubmitBy",
                                 width: "60px"
                             }, {
-                                data: "Chapter",
+                                data: "Chapter.text",
                                 width: "60px"
                             }, {
                                 data: "SubmitDate",
@@ -919,7 +919,7 @@ angular.module('ohanaApp')
 
                         if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
                             (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
-                            ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
+                            ($scope.userRole == 'Chapter Lead' && $scope.userChapter.text == value[i].Chapter.text)) {
                             var reportdata = {
                                 "Date": value[i].eventdate,
                                 "Business Purpose, Origin & Destination": value[i].Description,
@@ -972,7 +972,7 @@ angular.module('ohanaApp')
             // console.log("Get Report Data", $scope.lists, $scope.startdate, $scope.enddate);
             var currentdate = new Date();
             var reportDate = (currentdate.getMonth() + 1) + '/' + currentdate.getDate() + '/' + currentdate.getFullYear();
-            var Chaptername = $scope.userChapter;
+            var Chaptername = $scope.userChapter.text;
             var sdate = ($scope.startdate.getMonth() + 1) + '/' + $scope.startdate.getDate() + '/' + $scope.startdate.getFullYear();
             var edate = ($scope.enddate.getMonth() + 1) + '/' + $scope.enddate.getDate() + '/' + $scope.enddate.getFullYear();
             var email = commonServices.getCurrentUserEmail();
@@ -1010,7 +1010,7 @@ angular.module('ohanaApp')
 
                     if ((value[i].PaymentStatus == $scope.PayStatus.value || $scope.PayStatus.value == "") &&
                         (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) && Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
-                        ($scope.userRole == 'Chapter Lead' && $scope.userChapter == value[i].Chapter)) {
+                        ($scope.userRole == 'Chapter Lead' && $scope.userChapter.text == value[i].Chapter.text)) {
                         var reportdata = {
                             "Event Date": value[i].eventdate,
                             "Business Purpose, Origin & Destination": value[i].Description,
