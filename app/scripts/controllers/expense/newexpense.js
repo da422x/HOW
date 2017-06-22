@@ -72,9 +72,7 @@ angular.module('ohanaApp')
 
         //---FILE UPLOADER ---START ---------
 
-        var uploader = $scope.uploader = new FileUploader({
-
-        });
+        var uploader = $scope.uploader = new FileUploader({});
 
 
         uploader.filters.push({
@@ -280,7 +278,7 @@ angular.module('ohanaApp')
 
 
             swal({
-                title: 'Need more time to submit',
+                title: 'Confirm Save Expense?',
                 text: "Expense will be saved in EDIT status!",
                 type: 'info',
                 html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
@@ -312,7 +310,7 @@ angular.module('ohanaApp')
                 // console.log("file name", filename);
             }
 
-            if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.uploader.queue.length == 0 || $scope.exp.Amount == 0) {
+            if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.exp.Amount == 0 || !$scope.checkIfImageOrMileage()) {
                 swal({
                     title: 'Required fields Missing',
                     type: 'error',
@@ -344,6 +342,19 @@ angular.module('ohanaApp')
                     $location.path('/expense/viewexpense')
                 })
             }
+        }
+        //function used to check if the user has either inputed mileage, or a recipt, or both.
+        $scope.checkIfImageOrMileage = function() {
+            // check if image has been uploaded
+            var input = document.getElementById('files');
+            if (input && input.files && input.files.length > 0) {
+                return true;
+            }
+            // check if mileage 
+            if ($scope.exp.Amount > 0) {
+                return true;
+            }
+            return false;
         }
 
 

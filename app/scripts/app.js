@@ -184,9 +184,18 @@ angular.module('ohanaApp', [
     }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService, editableOptions) {
         //changing jquery editable to angular editable
         editableOptions.theme = 'bs3';
-        //end changing jquery editable to angular editable
 
-        //uncomment this and comment below config to change to dev/prod
+        // Test 2 (updates for chapter edit feature).
+        var config = {
+            apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
+            authDomain: "herosonthewatertest2.firebaseapp.com",
+            databaseURL: "https://herosonthewatertest2.firebaseio.com",
+            projectId: "herosonthewatertest2",
+            storageBucket: "herosonthewatertest2.appspot.com",
+            messagingSenderId: "569173546476"
+        };
+
+        // Test 1 (Standard).
         // var config = {
         //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
         //     authDomain: "herosonthewater-55a79.firebaseapp.com",
@@ -196,14 +205,15 @@ angular.module('ohanaApp', [
         //     messagingSenderId: "183234806884"
         // };
 
-        var config = {
-            apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
-            authDomain: "herosonthewatertest2.firebaseapp.com",
-            databaseURL: "https://herosonthewatertest2.firebaseio.com",
-            projectId: "herosonthewatertest2",
-            storageBucket: "herosonthewatertest2.appspot.com",
-            messagingSenderId: "569173546476"
-        };
+        // Production DB.
+        // var config = {
+        //     apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
+        //     authDomain: "herosonthewaterprod.firebaseapp.com",
+        //     databaseURL: "https://herosonthewaterprod.firebaseio.com",
+        //     projectId: "herosonthewaterprod",
+        //     storageBucket: "herosonthewaterprod.appspot.com",
+        //     messagingSenderId: "464567079814"
+        // }
 
         if (firebase.apps.length === 0) {
             firebase.initializeApp(config);
