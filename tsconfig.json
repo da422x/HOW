@@ -1,15 +1,19 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-<<<<<<< HEAD
-        "target": "es5",
+        <<
+        <<
+        <<
+        <
+        HEAD "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
         "typeRoots": ["./node_modules/@types"]
     },
     "include": [
-        "app/**/*"
-=======
+        "app/**/*" ===
+        ===
+        =
         "sourceMap": false,
         "target": "es5",
         "noImplicitAny": false,
@@ -23,7 +27,9 @@
     },
     "include": [
         "./app/**/*.ts",
-        "./test/spec/**/*.ts"
->>>>>>> e00b116d91aae7e5f2ceb87da009c7e4dbf2fe4a
+        "./test/spec/**/*.ts" >>>
+        >>>
+        >
+        e00b116d91aae7e5f2ceb87da009c7e4dbf2fe4a
     ]
 }

@@ -108,7 +108,7 @@ angular.module('ohanaApp')
                         $(row).children().eq(4).addClass('tdSelectState');
                         $(row).children().eq(5).addClass('tdSelectZip');
                         $(row).children().eq(6).addClass('tdEmail'); // email checking disabled
-                        for (i = 2; i < 7; i++) {
+                        for (i = 1; i < 7; i++) {
                             if (i != 3 && i != 4) {
                                 $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                             }
@@ -132,6 +132,24 @@ angular.module('ohanaApp')
                             }
                         });
                         // editable field definitions and CRUD ops
+                        $('#chaptersTable .tdCName  a').editable({
+                            type: "text",
+                            name: "Chapter Name",
+                            placement: "bottom",
+                            emptytext: "N/A",
+                            url: function(params) {
+                                var packet = params.value;
+                                var packet2 = {
+                                    region: $scope.editValue[4].textContent,
+                                    text: params.value,
+                                    value: params.value
+                                };
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/name';
+                                var path2 = '/siteData/chapters/' + $($scope.editValue).find('#chaptersTable-select').val();
+                                commonServices.updateData(path, packet);
+                                commonServices.updateData(path2, packet2);
+                            }
+                        });
                         $('#chaptersTable .tdDescription a').editable({
                             type: "text",
                             name: "description",
@@ -139,7 +157,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/description';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/description';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -150,7 +168,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/zip';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/zip';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -161,7 +179,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/email';
                                 commonServices.updateData(path, packet);
                             }
                         });
