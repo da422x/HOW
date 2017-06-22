@@ -31,37 +31,70 @@ angular.module('ohanaApp')
         $scope.expenseconfig.length = 0;
 
         $scope.saveConfig = function(data, id) {
+            // check if date range is valid
+            if (!$scope.isDateValid($scope.expenseconfig[id - 1])) {
+                swal(
+                    'Invalid',
+                    'Date range is invalid!',
+                    'warning'
+                )
 
-            $scope.expenseconfigdata.push({
-                id: id,
-                startdate: $scope.expenseconfig[id - 1].startdate,
-                enddate: $scope.expenseconfig[id - 1].enddate,
-                MileRate: $scope.expenseconfig[id - 1].MileRate,
-                TrailerRate: $scope.expenseconfig[id - 1].TrailerRate,
-                OverAgeWarning: $scope.expenseconfig[id - 1].OverAgeWarning,
-                OverAgeError: $scope.expenseconfig[id - 1].OverAgeError,
-                OverAgeDays: $scope.expenseconfig[id - 1].OverAgeDays,
-            });
+            } else {
+                $scope.expenseconfigdata.push({
+                    id: id,
+                    startdate: $scope.expenseconfig[id - 1].startdate,
+                    enddate: $scope.expenseconfig[id - 1].enddate,
+                    MileRate: $scope.expenseconfig[id - 1].MileRate,
+                    TrailerRate: $scope.expenseconfig[id - 1].TrailerRate,
+                    OverAgeWarning: $scope.expenseconfig[id - 1].OverAgeWarning,
+                    OverAgeError: $scope.expenseconfig[id - 1].OverAgeError,
+                    OverAgeDays: $scope.expenseconfig[id - 1].OverAgeDays,
+                });
 
-            $scope.expenseconfigdata.push(data);
+                $scope.expenseconfigdata.push(data);
 
-            angular.extend(data, {
-                id: id
-            });
+                angular.extend(data, {
+                    id: id
+                });
 
-            // $scope.expenseconfig = $scope.expenseconfigdata;
-            $scope.updateconfigdata();
-            console.log("save ", data, id, $scope.expenseconfigdata);
+                // $scope.expenseconfig = $scope.expenseconfigdata;
+                $scope.updateconfigdata();
+                console.log("save ", data, id, $scope.expenseconfigdata);
+            }
         };
 
-        // remove user
+        // remove configuration - added confirm dialog 
         $scope.removeConfig = function(index) {
-            $scope.expenseconfig.splice(index, 1);
-            // $scope.expenseconfig = $scope.expenseconfigdata;
-            $scope.updateconfigdata();
+            // store index to get around some silly scope issue
+            var currIndex = index;
+            swal({
+                title: 'Confirm Delete?',
+                text: "Woud you like to delete this expense config?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                buttonsStyling: false
+            }).then(function() {
+                console.log(currIndex);
+                $scope.expenseconfig.splice(index, 1);
+                swal(
+                    'Deleted!',
+                    'Your config has been deleted.',
+                    'success'
+                )
+            })
+            //update config list
+            $scope.updateconfigdata(false);
         };
 
-        // add user
+        // add config
         $scope.addConfig = function() {
             var recid = 0;
 
@@ -73,14 +106,10 @@ angular.module('ohanaApp')
                     "enddate": '',
                     "MileRate": 0,
                     "TrailerRate": 0,
-                    "OverAgeWarning": 0,
-                    "OverAgeError": 0,
-                    "OverAgeDays": 0
-
+                    "OverAgeWarning": 30,
+                    "OverAgeError": 45,
+                    "OverAgeDays": 60
                 };
-
-
-                console.log("good");
             } else {
                 console.log("emo");
                 $scope.expenseconfig = [];
@@ -93,12 +122,8 @@ angular.module('ohanaApp')
                     "OverAgeWarning": 0,
                     "OverAgeError": 0,
                     "OverAgeDays": 0
-
                 };
-
             }
-
-
             $scope.expenseconfig.push($scope.inserted);
         };
 
@@ -151,12 +176,46 @@ angular.module('ohanaApp')
         loadexpenseconfig();
 
 
+        //function call to handle the "cancel" button on an edit config row
+        // if dates are not set or invalid then remove this config
+        $scope.cancel = function(index) {
+            // check dates
+            var currIndex = index.id - 1;
+            // check if dates are valid, if not pop up alert that they will not be saved.
+            $scope.expenseconfig.splice(currIndex, 1);
+            $scope.updateconfigdata();
+        }
+
+        // check if date is valid
+        $scope.isDateValid = function(expenseConfig) {
+            var startDate = expenseConfig.startdate;
+            var endDate = expenseConfig.enddate;
+            // check if date is empty string or null
+            if (startDate === "" || endDate === "" || startDate === null || endDate === null) {
+                return false;
+            }
+            // check if start date is after end date
+            // convert earlier objects to moment objects
+            startDate = moment(expenseConfig.startDate);
+            endDate = moment(expenseConfig.enddate);
+            if (startDate.isAfter(endDate)) {
+                return false;
+            }
+
+
+            // more checks later
+
+
+
+            return true;
+        }
+
         //Go Back to View Expense Page
         $scope.GoBack = function() {
             $location.path('/expense/viewexpense');
         }
 
-        $scope.updateconfigdata = function() {
+        $scope.updateconfigdata = function(showSwal) {
             $scope.userName = userService.getUserData();
             var StatusChangedBy = $scope.userName.name.first + ' ' + $scope.userName.name.last;
 
@@ -166,7 +225,6 @@ angular.module('ohanaApp')
                 StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + (currentdate.getHours() - 12)).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' PM';
             } else {
                 StatusChangedDate = currentdate.getFullYear() + '-' + ("0" + (currentdate.getMonth() + 1)).slice(-2) + '-' + ("0" + currentdate.getDate()).slice(-2) + ' ' + ("0" + currentdate.getHours()).slice(-2) + ':' + ("0" + currentdate.getMinutes()).slice(-2) + ':' + ("0" + currentdate.getSeconds()).slice(-2) + ' AM';
-
             }
 
             $scope.ConfigLog.push({
@@ -190,19 +248,18 @@ angular.module('ohanaApp')
                 ExpenseLog: $scope.ConfigLog
             }
 
-
             // This is to update configuration value
             commonServices.updateData('/Config/', $scope.config);
             // console.log("called", $scope.config);
-            swal({
-                text: "Updated Expense Config",
-                type: 'success',
-                timer: 2500
-            })
+            if (showSwal) {
+                swal({
+                    text: "Updated Expense Config",
+                    type: 'success',
+                    timer: 2500
+                })
+            }
             loadexpenseconfig();
             $scope.buildConfigData();
-
-
         }
 
         //Build Expense Amount Data Table for viewing expense
@@ -224,12 +281,8 @@ angular.module('ohanaApp')
                     autoWidth: false,
                     data: $scope.ConfigLog, // tabledata,
                     scrollY: "200px",
-                    // scrollX: false,
                     scrollCollapse: true,
                     paging: false,
-
-                    // fixedColumns: true,
-                    // "pagingType": "full_numbers",
 
                     columns: [{
                         data: "StatusDate",
@@ -242,29 +295,16 @@ angular.module('ohanaApp')
 
                     }],
                     'columnDefs': [{
-                            targets: 0,
-                            width: "25%"
-                        }, {
-                            targets: 1,
-                            width: "35%"
-                        }
-
-
-
-                    ],
+                        targets: 0,
+                        width: "25%"
+                    }, {
+                        targets: 1,
+                        width: "35%"
+                    }],
                     'order': [
                         [0, 'desc']
                     ],
-
-
-
                 });
-
-
-
-
             });
-
         }
-
     });
