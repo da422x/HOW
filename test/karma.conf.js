@@ -80,6 +80,7 @@ module.exports = function(config) {
             'bower_components/signature_pad/signature_pad.js',
             'bower_components/angular-ui-utils/ui-utils.js',
             'bower_components/angular-ui-map/ui-map.js',
+            'bower_components/rxjs/dist/rx.all.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'app/scripts/**/*.js',
