@@ -1,35 +1,12 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        <<
-        <<
-        <<
-        <
-        HEAD "target": "es5",
+        "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
         "typeRoots": ["./node_modules/@types"]
     },
     "include": [
-        "app/**/*" ===
-        ===
-        =
-        "sourceMap": false,
-        "target": "es5",
-        "noImplicitAny": false,
-
-        "typeRoots": ["./node_modules/@types"],
-        "baseUrl": "./node_modules/@types",
-        "rootDir": "./node_modules/@types",
-        "types": [
-            "jasmine"
-        ]
-    },
-    "include": [
-        "./app/**/*.ts",
-        "./test/spec/**/*.ts" >>>
-        >>>
-        >
-        e00b116d91aae7e5f2ceb87da009c7e4dbf2fe4a
+        "app/**/*"
     ]
 }
