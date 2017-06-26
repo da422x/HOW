@@ -1,6 +1,7 @@
 # Heroes On the Water 2.0
 
 [![CircleCI](https://circleci.com/gh/madthad91/HOW/tree/master.svg?style=shield)](https://circleci.com/gh/madthad91/HOW/tree/master)
+
 [Production link](http://howprod.surge.sh) (for now)
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
