@@ -127,7 +127,7 @@ angular.module('ohanaApp', [
                 templateUrl: 'views/manage/chadmin.html',
                 controller: 'ChadminCtrl',
                 controllerAs: 'manage/chadmin'
-                //              controller: 'ChadminCtrl as chadmin'
+                    //              controller: 'ChadminCtrl as chadmin'
             })
             .when('/manage/regAdmin', {
                 templateUrl: 'views/manage/regadmin.html',
@@ -184,18 +184,28 @@ angular.module('ohanaApp', [
     }).run(function($q, commonServices, $rootScope, $firebaseAuth, userService, editableOptions) {
         //changing jquery editable to angular editable
         editableOptions.theme = 'bs3';
-        //end changing jquery editable to angular editable
 
-        //uncomment this and comment below config to change to dev/prod
+        // Test 2 (updates for chapter edit feature).
         var config = {
-            apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
-            authDomain: "herosonthewater-55a79.firebaseapp.com",
-            databaseURL: "https://herosonthewater-55a79.firebaseio.com",
-            projectId: "herosonthewater-55a79",
-            storageBucket: "herosonthewater-55a79.appspot.com",
-            messagingSenderId: "183234806884"
+            apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
+            authDomain: "herosonthewatertest2.firebaseapp.com",
+            databaseURL: "https://herosonthewatertest2.firebaseio.com",
+            projectId: "herosonthewatertest2",
+            storageBucket: "herosonthewatertest2.appspot.com",
+            messagingSenderId: "569173546476"
         };
 
+        // Test 1 (Standard).
+        // var config = {
+        //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
+        //     authDomain: "herosonthewater-55a79.firebaseapp.com",
+        //     databaseURL: "https://herosonthewater-55a79.firebaseio.com",
+        //     projectId: "herosonthewater-55a79",
+        //     storageBucket: "herosonthewater-55a79.appspot.com",
+        //     messagingSenderId: "183234806884"
+        // };
+
+        // Production DB.
         // var config = {
         //     apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
         //     authDomain: "herosonthewaterprod.firebaseapp.com",
@@ -218,9 +228,12 @@ angular.module('ohanaApp', [
             chapters: []
         };
 
+
+
         var getSiteData = commonServices.getData('/siteData/');
 
         $q.all([getSiteData]).then(function(data) {
+
             _.each(data[0].states, function(states) {
                 $rootScope.siteData.states.push(states);
             });
@@ -230,32 +243,29 @@ angular.module('ohanaApp', [
             });
 
             _.each(data[0].regions, function(regions) {
-                var chapters = [];
+                $rootScope.siteData.regions.push(regions);
+            });
 
-                _.each(regions.chapters, function(newChapters) {
+            _.each(data[0].chapters, function(chapters, key) {
+                chapters.key = key;
+                $rootScope.siteData.chapters.push(chapters);
+            });
 
-                    $rootScope.siteData.chapters.push({
-                        'value': newChapters.value,
-                        'text': newChapters.text
-                    });
-
-                    chapters.push({
-                        'value': newChapters.value,
-                        'text': newChapters.text
-                    });
+            _.each($rootScope.siteData.regions, function(regions) {
+                var chaptersByRegion = [];
+                _.each($rootScope.siteData.chapters, function(chapters) {
+                    if (chapters.region === regions.value) {
+                        chaptersByRegion.push(chapters);
+                    }
                 });
-
-                $rootScope.siteData.regions.push({
-                    'value': regions.value,
-                    'text': regions.text
-                });
-
                 $rootScope.siteData.regionsChapters.push({
-                    'value': regions.value,
-                    'text': regions.text,
-                    'chapters': chapters
+                    text: regions.text,
+                    value: regions.value,
+                    chapters: chaptersByRegion
                 });
             });
+
+            console.log($rootScope.siteData);
         });
 
         $rootScope.authObj.$onAuthStateChanged(function(user) {
@@ -272,8 +282,8 @@ angular.module('ohanaApp', [
                         // temporary for debugging displays user logged in.
                         console.log('Logged in!');
                         console.log('UID: ' + currentUserId);
-                        console.log('Name: ' + userData.name.first);
-                        console.log('Chapter: ' + userData.Chapter);
+                        console.log('Name: ' + userData.name.first + ' ' + userData.name.last);
+                        console.log('Chapter: ' + userData.Chapter.text);
                         console.log('Role: ' + userRole);
 
                         // Setting session variables.

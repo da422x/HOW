@@ -132,6 +132,24 @@ angular.module('ohanaApp')
                             }
                         });
                         // editable field definitions and CRUD ops
+                        $('#chaptersTable .tdCName  a').editable({
+                            type: "text",
+                            name: "Chapter Name",
+                            placement: "bottom",
+                            emptytext: "N/A",
+                            url: function(params) {
+                                var packet = params.value;
+                                var packet2 = {
+                                    region: $scope.editValue[4].textContent,
+                                    text: params.value,
+                                    value: params.value
+                                };
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/name';
+                                var path2 = '/siteData/chapters/' + $($scope.editValue).find('#chaptersTable-select').val();
+                                commonServices.updateData(path, packet);
+                                commonServices.updateData(path2, packet2);
+                            }
+                        });
                         $('#chaptersTable .tdDescription a').editable({
                             type: "text",
                             name: "description",
@@ -139,7 +157,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/description';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/description';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -150,7 +168,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/zip';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/zip';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -161,7 +179,7 @@ angular.module('ohanaApp')
                             emptytext: "N/A",
                             url: function(params) {
                                 var packet = params.value;
-                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $scope.editValue[1].textContent + '/email';
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/email';
                                 commonServices.updateData(path, packet);
                             }
                         });

@@ -25,7 +25,6 @@ angular.module('ohanaApp')
 
             angular.element(document).ready(function() {
                 //toggle `popup` / `inline` mode
-                console.log($, $.fn, $.fn.editable)
                 $.fn.editable.defaults.mode = 'popup';
                 $.fn.editable.defaults.ajaxOptions = {
                     type: 'PUT'

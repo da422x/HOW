@@ -20,6 +20,7 @@ angular.module('ohanaApp')
                 .then(function() {
                     var userId = firebase.auth().currentUser.uid;
                     console.log('success : user registered');
+                    delete user.Chapter.$$hashKey;
                     return firebase.database().ref('/userData/' + userId).set(user)
                         .then(function(data) {
                             console.log('success : user data added');
@@ -80,7 +81,7 @@ angular.module('ohanaApp')
                     var errorMessage = error.message;
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
-        }
+        };
 
         // Sends code needed for password reset to users email.
         this.sendPasswordReset = function(user) {
@@ -105,7 +106,7 @@ angular.module('ohanaApp')
             } else {
                 return '';
             }
-        }
+        };
 
         // Get current signed in Users UID.
         this.getCurrentUserUid = function() {
@@ -115,7 +116,7 @@ angular.module('ohanaApp')
             } else {
                 return '';
             }
-        }
+        };
 
         // Returns a promise containing the users current role.
         this.getCurrentUserRole = function() {
@@ -125,7 +126,7 @@ angular.module('ohanaApp')
                 .then(function(snapshot) {
                     return snapshot.val();
                 });
-        }
+        };
 
         /******************************************************
          *             User Management - end                  *
@@ -242,6 +243,7 @@ angular.module('ohanaApp')
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
         };
+
         /******************************************************
          *                  C.R.U.D. - end                     *
          *******************************************************/
@@ -262,7 +264,15 @@ angular.module('ohanaApp')
                     var errorMessage = error.message;
                     console.log('ERROR: ' + error.code + ': ' + error.message);
                 });
-        }
+        };
+
+        /*******************************************************
+         *           DAO object container - end                *
+         *******************************************************/
+
+        /*******************************************************
+         *           Other Utility methods - start             *
+         *******************************************************/
 
         this.addressLookup = function(zip, outerCallback) {
             var geocoder = new google.maps.Geocoder();
@@ -288,7 +298,7 @@ angular.module('ohanaApp')
 
                 }
             });
-        }
+        };
 
         this.zipCompare = function(location) {
             //console.log($rootScope.siteData.regions);
@@ -331,9 +341,10 @@ angular.module('ohanaApp')
                 answ.push(r1);
                 return answ;
             });
-        }
+        };
+
         /******************************************************
-         *           DAO object container - end             *
-         *******************************************************/
+         *            Other Utility methods - end             *
+         *****************************************************/
 
     }]);

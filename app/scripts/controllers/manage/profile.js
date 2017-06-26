@@ -29,9 +29,12 @@ angular.module('ohanaApp')
             $scope.profileData.role = userService.getRole();
             $scope.userUID = userService.getId();
 
+
             // Get all rcrs first.
             var userRquests = commonServices.getData('/roleChangeRequests/');
             $q.all([userRquests]).then(function(data) {
+
+                // Construct list of rcr's for current user.
                 $scope.requests = [];
                 _.each(data[0], function(value, key) {
                     if (value.uid === $scope.userUID) {

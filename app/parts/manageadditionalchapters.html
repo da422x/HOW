@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div style="margin-top: 10px;">
-                <select name="currentChapters" multiple class="form-control" ng-model="currentChapter" ng-options="chapter as chapter.chapter for chapter in userChapters" required></select>
+                <select name="currentChapters" multiple class="form-control" ng-model="currentChapter" ng-options="chapter as chapter.chapter.text for chapter in userChapters" required></select>
                 <button id="remove" name="remove" class="btn btn-primary additonal-chapter-btn-red" ng-disabled="userForm.currentChapters.$invalid" ng-click="removeChapter()">Remove Chapter</button>
             </div>
         </div>

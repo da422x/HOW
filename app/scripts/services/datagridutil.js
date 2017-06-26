@@ -35,10 +35,10 @@ angular.module('ohanaApp')
                 arr.email = results[i].email;
                 arr.phone = results[i].phone;
                 arr.role = results[i].role;
-                arr.primaryChapter = results[i].Chapter;
+                arr.primaryChapter = results[i].Chapter.text;
                 arr.chapters = [];
                 _.each(results[i].Chapters, function(c) {
-                    arr.chapters.push(c.chapter);
+                    arr.chapters.push(c.chapter.text);
                 });
                 if (!results[i].Chapters) {
                     arr.chapters.push('none');
@@ -167,6 +167,7 @@ angular.module('ohanaApp')
                     for (var chapterName in results[i][stateName]) {
                         //CHAPTER LEVEL
                         var arr = {};
+                        arr.key = Object.keys(results[i][stateName])[0];
                         arr.region = regionName;
                         arr.state = stateName;
                         arr.name = results[i][stateName][chapterName].name;
