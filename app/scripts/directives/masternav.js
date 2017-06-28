@@ -106,7 +106,7 @@ angular.module('ohanaApp')
                     // {
                     //     state: "#/manage/events",
                     //     text: "Events"
-                    // },
+                    // }, 
                     {
                         state: "#/expense/viewexpense",
                         text: "Expense"
