@@ -119,15 +119,15 @@ angular.module('ohanaApp')
 
         $scope.fileadded = false;
         $scope.uploadImageFile = function() {
-                var input = document.getElementById('files');
-                if (input.files.length > 0) {
-                    $scope.fileadded = true;
-                } else {
-                    $scope.fileadded = false;
-                }
-                console.log("File status check - ", input.files.length, $scope.fileadded)
+            var input = document.getElementById('files');
+            if (input.files.length > 0) {
+                $scope.fileadded = true;
+            } else {
+                $scope.fileadded = false;
             }
-            //------------Addition Line Items--------------//
+            console.log("File status check - ", input.files.length, $scope.fileadded)
+        }
+        //------------Addition Line Items--------------//
         $scope.LineDetails = [];
         $scope.LineDetails.length = 0;
         $scope.LineDetails = expenseservice.LineDetails;
@@ -292,7 +292,7 @@ angular.module('ohanaApp')
             }).then(function() {
 
                 $scope.createnewexpense("SAVE")
-                    // window.location.href = "#/expense/viewexpense"
+                // window.location.href = "#/expense/viewexpense"
                 $location.path('/expense/viewexpense')
             })
 
@@ -300,50 +300,50 @@ angular.module('ohanaApp')
 
         // -- CREATE NEW EXPENSE
         $scope.confirmnewexpense = function() {
-                var eventdate = $scope.exp.eventdate;
-                var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
-                $scope.CalculateAmount();
-                // var inp = document.getElementById('fileimage');
-                // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
-                for (var i = 0; i < $scope.uploader.queue.length; ++i) {
-                    var filename = $scope.uploader.queue[i].file.name;
-                    // console.log("file name", filename);
-                }
-
-                if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.exp.Amount == 0 || !$scope.checkIfImageOrMileage()) {
-                    swal({
-                        title: 'Required fields Missing',
-                        type: 'error',
-                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
-                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                            '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr> ' +
-                            '<tr><td class="swaltdl ">Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
-                    })
-                } else {
-                    swal({
-                        title: 'Please confirm New Expense',
-                        text: "Created Expense will be reviewed by Chapter Lead and National Staff!",
-                        type: 'info',
-                        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
-                            '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
-                            '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[0].Amount + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[1].Amount + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.lineamount + '</b></td></tr>' +
-                            '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
-
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, create it!'
-                    }).then(function() {
-
-                        $scope.createnewexpense("Pending")
-                            // window.location.href = "#/expense/viewexpense"
-                        $location.path('/expense/viewexpense')
-                    })
-                }
+            var eventdate = $scope.exp.eventdate;
+            var meventdate = (eventdate.getMonth() + 1) + '/' + eventdate.getDate() + '/' + eventdate.getFullYear();
+            $scope.CalculateAmount();
+            // var inp = document.getElementById('fileimage');
+            // console.log("file name", $scope.uploader.queue.length, $scope.uploader.queue, $scope.exp.email);
+            for (var i = 0; i < $scope.uploader.queue.length; ++i) {
+                var filename = $scope.uploader.queue[i].file.name;
+                // console.log("file name", filename);
             }
-            //function used to check if the user has either inputed mileage, or a recipt, or both.
+
+            if ($scope.exp.Description === undefined || $scope.exp.Description.length == 0 || $scope.exp.Amount == 0 || !$scope.checkIfImageOrMileage()) {
+                swal({
+                    title: 'Required fields Missing',
+                    type: 'error',
+                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                        '<tr><td class="swaltdl ">No. of supporting documents Loaded : </td><td class="swaltdr "><b> ' + $scope.uploader.queue.length + '</b></td> </tr> ' +
+                        '<tr><td class="swaltdl ">Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+                })
+            } else {
+                swal({
+                    title: 'Please confirm New Expense',
+                    text: "Created Expense will be reviewed by Chapter Lead and National Staff!",
+                    type: 'info',
+                    html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' + meventdate + '</b> </td></tr>' +
+                        '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' + $scope.exp.Description + '</td></tr> ' +
+                        '<tr><td class="swaltdl ">Miles Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[0].Amount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Line[1].Amount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.lineamount + '</b></td></tr>' +
+                        '<tr><td class="swaltdl ">Total Expense Amount : </td><td class="swaltdr "><b>$ ' + $scope.exp.Amount + '</b></td></tr></table>',
+
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, create it!'
+                }).then(function() {
+
+                    $scope.createnewexpense("Pending")
+                    // window.location.href = "#/expense/viewexpense"
+                    $location.path('/expense/viewexpense')
+                })
+            }
+        }
+        //function used to check if the user has either inputed mileage, or a recipt, or both.
         $scope.checkIfImageOrMileage = function() {
             // check if image has been uploaded
             var input = document.getElementById('files');
@@ -461,7 +461,7 @@ angular.module('ohanaApp')
 
 
                     imagefilename = 'images/' + $scope.exp.BillId + "_" + $scope.uploader.queue[x].file.name
-                        //input.files[x].name;
+                    //input.files[x].name;
                     expenseservice.addNewImage({
                         ID: (x + 1),
                         ImageUrlLocation: "",

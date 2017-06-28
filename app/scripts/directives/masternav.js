@@ -83,26 +83,31 @@ angular.module('ohanaApp')
                 }, {}];
 
                 $scope.participantNav = [{
-                    state: "#/manage/chapterchat",
-                    text: "Chapter Chat"
-                }, {
-                    state: "#/manage/events",
-                    text: "Events"
-                }, {
-                    state: "#/expense/viewexpense",
-                    text: "Expense"
-                }, {
-                    state: "#/manage/profile",
-                    text: "My Profile"
-                }];
+                        state: "#/manage/chapterchat",
+                        text: "Chapter Chat"
+                    },
+                    // {
+                    //     state: "#/manage/events",
+                    //     text: "Events"
+                    // }, 
+                    {
+                        state: "#/expense/viewexpense",
+                        text: "Expense"
+                    }, {
+                        state: "#/manage/profile",
+                        text: "My Profile"
+                    }
+                ];
 
                 $scope.volunteerNav = [{
                         state: "#/manage/chapterchat",
                         text: "Chapter Chat"
-                    }, {
-                        state: "#/manage/events",
-                        text: "Events"
-                    }, {
+                    },
+                    // {
+                    //     state: "#/manage/events",
+                    //     text: "Events"
+                    // },
+                    {
                         state: "#/expense/viewexpense",
                         text: "Expense"
                     }, {

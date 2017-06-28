@@ -41,6 +41,7 @@ angular.module('ohanaApp')
                         event.key = key;
                         allEvents.push(event);
                     });
+                    console.log(allEvents);
                     $scope.eventList = allEvents;
                 } else {
                     console.log('Failed to get Events...');
