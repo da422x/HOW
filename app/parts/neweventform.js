@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('NewEventFormCtrl', function($q, $scope, $uibModalInstance, commonServices) {
+    .controller('NewEventFormCtrl', function($q, $scope, $uibModalInstance, commonServices, $rootScope) {
         'use strict';
 
         // calendar options
@@ -87,6 +87,7 @@ angular.module('ohanaApp')
             // submit form
             $scope.newEvent.startTime = $scope.st.getTime();
             $scope.newEvent.endTime = $scope.et.getTime();
+            $scope.initiator = $rootScope.userId;
 
             var result = commonServices.pushData('/events/', $scope.newEvent);
 
