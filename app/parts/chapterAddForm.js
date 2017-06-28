@@ -54,15 +54,29 @@ angular.module('ohanaApp')
             submitChapter.sl_pages_url = "";
             submitChapter.tags = "";
             //Post Chapter Data
-            var result = commonServices.setData('/Regions/' + submitChapter.region + '/' + submitChapter.state + '/' + submitChapter.name, submitChapter);
+            var newChapterKey = commonServices.getNewKey('/Regions/' + submitChapter.region + '/' + submitChapter.state + '/');
 
-            $q.all([result]).then(function(data) {
-                $uibModalInstance.close(submitChapter);
-                swal({
-                    text: "Adding Chapter",
-                    type: 'success',
-                    timer: 2500
-                });
+            // Get Key for new chapter.
+            $q.all([newChapterKey]).then(function(data) {
+
+                // Post new chapter with key, update map table.
+                var result = commonServices.setData('/Regions/' + submitChapter.region + '/' + submitChapter.state + '/' + data[0], submitChapter);
+                $q.all([result]).then(function(status) {
+
+                    var updateMapTable = commonServices.setData('/siteData/chapters/' + data[0], {
+                        region: submitChapter.region,
+                        text: submitChapter.name,
+                        value: submitChapter.name
+                    });
+
+                    $uibModalInstance.close(submitChapter);
+                    swal({
+                        text: "Adding Chapter",
+                        type: 'success',
+                        timer: 2500
+                    });
+                })
+
             });
         };
 

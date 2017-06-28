@@ -62,22 +62,10 @@ angular.module('ohanaApp')
 
         $scope.regionUpdate = function() {
             var regionName = $scope.newUserDirectory.region.text;
-            var path = '/Regions/' + regionName + '/';
-            var getChapters = commonServices.getData(path);
-
-            $q.all([getChapters]).then(function(data) {
-                var chapterNames = [];
-                if (data[0]) {
-                    _.each(data[0], function(state) {
-                        _.each(state, function(chapters) {
-                            chapterNames.push(chapters.name);
-                        });
-                    });
-                    $scope.chapters = chapterNames;
-                } else {
-                    console.log('Failed to get Chapters...');
-                }
+            var chapterList = _.filter($rootScope.siteData.regionsChapters, function(n) {
+                return n.value === regionName;
             });
+            $scope.chapters = chapterList[0].chapters;
         };
 
         $scope.ZipUpdate = function() {
@@ -161,7 +149,7 @@ angular.module('ohanaApp')
                             }
                         });
 
-                        howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
+                        //howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
                         $uibModalInstance.close();
                         window.location.replace('#/home');
                     } else {

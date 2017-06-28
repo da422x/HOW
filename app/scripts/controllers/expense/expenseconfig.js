@@ -68,29 +68,29 @@ angular.module('ohanaApp')
             // store index to get around some silly scope issue
             var currIndex = index;
             swal({
-                title: 'Confirm Delete?',
-                text: "Woud you like to delete this expense config?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, keep it!',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                buttonsStyling: false
-            }).then(function() {
-                console.log(currIndex);
-                $scope.expenseconfig.splice(index, 1);
-                swal(
-                    'Deleted!',
-                    'Your config has been deleted.',
-                    'success'
-                )
-            })
-            //update config list
+                    title: 'Confirm Delete?',
+                    text: "Woud you like to delete this expense config?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it!',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    buttonsStyling: false
+                }).then(function() {
+                    console.log(currIndex);
+                    $scope.expenseconfig.splice(index, 1);
+                    swal(
+                        'Deleted!',
+                        'Your config has been deleted.',
+                        'success'
+                    )
+                })
+                //update config list
             $scope.updateconfigdata(false);
         };
 

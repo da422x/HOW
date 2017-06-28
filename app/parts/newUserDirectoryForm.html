@@ -115,7 +115,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="chapter">Chapter*</label>
                 <div class="col-md-7">
-                    <select id="chapter" name="chapter" ng-class="{'highlight_field': submitted && userForm.chapter.$invalid}" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter for chapter in chapters" required>
+                    <select id="chapter" name="chapter" ng-class="{'highlight_field': submitted && userForm.chapter.$invalid}" class="form-control" ng-model="newUserDirectory.chapter" ng-options="chapter as chapter.text for chapter in chapters" required>
                     </select>
                     <p ng-show="submitted && userForm.chapter.$error.required && !userForm.chapter.$valid" class="help-block">Chapter is required.</p>
                 </div>

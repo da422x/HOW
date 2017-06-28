@@ -21,16 +21,21 @@ angular.module('ohanaApp')
             $scope.newMessage = '';
             $scope.chatLog = [];
             $scope.chapterOptions = {};
-            $scope.chapterOptions[userData.Chapter] = userData.Chapter;
+            $scope.AllChapterData = [];
+            $scope.chapterOptions[userData.Chapter.key] = userData.Chapter.text;
+            $scope.AllChapterData.push(userData.Chapter);
             _.each(userData.Chapters, function(secondary) {
-                $scope.chapterOptions[secondary.chapter] = secondary.chapter;
+                $scope.chapterOptions[secondary.chapter.key] = secondary.chapter.text;
+                $scope.AllChapterData.push(secondary.chapter);
             });
-            $scope.loadChapterChat(userService.getChapter());
+            $scope.loadChapterChat(userData.Chapter.key);
         };
 
         $scope.loadChapterChat = function(usersChapter) {
             var getLog = commonServices.getData('/chat/chapters/' + usersChapter);
-            $scope.currentChapter = usersChapter;
+            $scope.currentChapter = _.find($scope.AllChapterData, function(c) {
+                return c.key === usersChapter;
+            });
 
             $q.all([getLog]).then(function(data) {
                 $scope.chatLog = _.sortBy(data[0], ['time']);
@@ -55,7 +60,7 @@ angular.module('ohanaApp')
                 $scope.loadChapterChat(option);
                 swal({
                     type: 'success',
-                    title: 'Switched to ' + option
+                    title: 'Switched chapters!'
                 });
             });;
         };
@@ -66,7 +71,7 @@ angular.module('ohanaApp')
             messageData.name = userService.getUserName();
             messageData.time = Date.now();
             messageData.message = $scope.newMessage;
-            commonServices.pushData('/chat/chapters/' + $scope.currentChapter, messageData);
+            commonServices.pushData('/chat/chapters/' + $scope.currentChapter.key, messageData);
             $scope.newMessage = '';
         };
 
