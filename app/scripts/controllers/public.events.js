@@ -9,7 +9,7 @@
  * Controller of management console - events
  */
 angular.module('ohanaApp')
-    .controller('PublicEventsCtrl', function($q, commonServices, $scope, $uibModal, Api, selectValues, userService) {
+    .controller('PublicEventsCtrl', function($q, commonServices, $scope, $uibModal, Api, userService, $filter) {
         'use strict';
         $scope.newQuery = {};
         $scope.userService = userService;
@@ -41,8 +41,9 @@ angular.module('ohanaApp')
                         $scope.checkAllParticipantIsDisableds(idx, count);
                         count++;
                     });
-                    console.log(data[0])
                     $scope.eventList = data[0];
+                    $scope.eventList2 = angular.copy($scope.eventList);
+                    console.log($scope.eventList, $scope.eventList2);
                 } else {
                     console.log('Failed to get Events...');
                 }
@@ -95,35 +96,96 @@ angular.module('ohanaApp')
                 });
         }
 
-        $scope.search = function() {
-            if ($scope.eventList.length > 0) {
-                $scope.empty = false;
+        $scope.popup1 = {
+            opened: false
+        };
+        $scope.popup2 = {
+            opened: false
+        };
 
-                if ($scope.newQuery.search == '*' || !($scope.newQuery.search)) {
-                    loadAll();
-                } else {
-                    var eventsFound = [];
-                    _.each($scope.eventList, function(event) {
-                        _.each(event, function(attribute) {
-                            if (angular.isString(attribute) && angular.isString($scope.newQuery.search)) {
-                                if (_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())) {
-                                    eventsFound.push(event);
-                                    return false;
-                                }
-                            } else if (_.includes(attribute, $scope.newQuery.search)) {
-                                eventsFound.push(event);
-                                return false;
-                            }
-                        });
-                    });
-                    if (eventsFound.length == 0) {
-                        console.log('no results');
-                        $scope.empty = true;
-                        $scope.noEventsFound = "No results for " + $scope.newQuery.search + " found.";
-                    }
-                    $scope.eventList = eventsFound;
-                }
+        $scope.$watch('dt', function(val) {
+            $scope.filtersRunner();
+        });
+
+        $scope.$watch('dt2', function(val) {
+            $scope.filtersRunner();
+        });
+
+        $scope.filtersRunner = function() {
+            $scope.search();
+            if ($scope.dt)
+                $scope.dateMath($scope.dt.getTime(), 'lower');
+            if ($scope.dt2)
+                $scope.dateMath($scope.dt2.getTime(), 'upper');
+        }
+
+        $scope.dateMath = function(date, bound) {
+            switch (bound) {
+                case 'lower':
+                    var lower_res = {};
+                    console.log($scope.eventList)
+                    Object.keys($scope.eventList).forEach(function(val, idx) {
+                        var evtObjToSearch = $scope.eventList[val];
+                        if (date <= evtObjToSearch['startTime'])
+                            lower_res[val] = $scope.eventList[val];
+                    })
+                    $scope.eventList = lower_res;
+                    break;
+                case 'upper':
+                    var upper_res = {};
+                    console.log($scope.eventList)
+                    Object.keys($scope.eventList).forEach(function(val, idx) {
+                        var evtObjToSearch = $scope.eventList[val];
+                        if (evtObjToSearch['startTime'] <= date)
+                            upper_res[val] = $scope.eventList[val];
+                    })
+                    $scope.eventList = upper_res;
+                    break;
             }
+
+        }
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+        $scope.open = function() {
+            $scope.popup1.opened = true;
+        };
+        $scope.open2 = function() {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[0];
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+        $scope.search = function() {
+
+            if (!$scope.newQuery.search) {
+                $scope.eventList = $scope.eventList2;
+                return;
+            }
+
+            var res = {};
+            Object.keys($scope.eventList2).forEach(function(val, idx) {
+                var evtObjToSearch = $scope.eventList2[val]
+                for (var key in evtObjToSearch) {
+                    if (evtObjToSearch.hasOwnProperty(key)) {
+                        //string search match
+                        if (typeof evtObjToSearch[key] === "string" && evtObjToSearch[key].toLowerCase().includes($scope.newQuery.search)) {
+                            res[val] = $scope.eventList2[val];
+                        }
+                        //match numbers
+                        else if (typeof evtObjToSearch[key] === "number" && evtObjToSearch[key].toString().toLowerCase().includes($scope.newQuery.search)) {
+                            res[val] = $scope.eventList2[val];
+                        }
+
+                    }
+                }
+            });
+            $scope.eventList = res;
 
         };
 

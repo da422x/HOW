@@ -1,13 +1,42 @@
 <div class="container">
     <h3>Events</h3>
-    <form class="form-horizontal">
-        <div class="form-group">
+    <div style="display: flex; flex-wrap:wrap">
+        <div class="form-group" style="flex-grow:1; min-width:350px">
             <label class="control-label" for="fname">Search:</label>
             <div>
-                <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
+                <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="filtersRunner()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
             </div>
         </div>
-    </form>
+        <div class="form-group" style="flex-grow:1; min-width:350px;">
+            <div>
+                <label class="control-label">filter between:</label>
+            </div>
+            <div>
+                <div style="width:49%; display:inline-block">
+                    <label class="control-label">Lower bound:</label>
+                    <p class="input-group">
+                        <input type="text" class="form-control" ng-model="dt" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup1.opened">
+                        <!--uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />-->
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+                <div style="width:49%; display:inline-block">
+                    <label class="control-label">Upper bound:</label>
+                    <p class="input-group">
+                        <input type="text" class="form-control" ng-model="dt2" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup2.opened">
+                        <!--uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />-->
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <!--<input type="text" class="form-control" is-open="thad" datetime-picker="MM/dd/yyyy HH:mm" ng-model="datez">-->
+            <!--<input type="text" class="form-control" datetime-picker="mediumDate" ng-model="picker1_date" is-open="thad" enable-time="false" datepicker-options="thad2" close-on-date-selection="false" datepicker-append-to-body="true">-->
+        </div>
+    </div>
     <div class="row event-row">
         <div class="col-md-4" ng-repeat="(key, event) in eventList">
             <!--<div>{{event}}</div>
