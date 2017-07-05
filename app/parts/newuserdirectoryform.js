@@ -71,6 +71,7 @@ angular.module('ohanaApp')
         $scope.ZipUpdate = function() {
             var result = commonServices.addressLookup($scope.newUserDirectory.address.zip, function(callbackResult) {
                 if (callbackResult.success == true) {
+                    console.log('zip success');
                     $scope.locationUpdate(callbackResult.results);
                 }
             });
@@ -80,8 +81,11 @@ angular.module('ohanaApp')
             var ctrl = this;
             commonServices.zipCompare(location).then(function(result) {
                 $scope.newUserDirectory.region = result[1];
-                ctrl.regionUpdate();
-                $scope.newUserDirectory.chapter = result[0];
+                ctrl.regionUpdate(); //set option to chage
+                var chapter = _.filter($scope.chapters, function(n) {
+                    return n.value === result[0];
+                });
+                $scope.newUserDirectory.chapter = chapter[0];
             });
 
         };
