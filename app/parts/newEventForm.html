@@ -67,8 +67,8 @@
                 <label class="col-md-4 control-label" for="phonenum">Contact Number*</label>
                 <div class="col-md-7">
                     <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="newEvent.mobileNumber" ng-minlength="9" ng-required="true ">
-                    <span class="help-block ">10 digits only; no formatting, prefixes or extensions.</span>
-                    <p ng-show="eventForm.phonenum.$invalid && !eventForm.phonenum.$pristine " class="help-block ">Enter a valid phone number.</p>
+                    <span ng-show="eventForm.phonenum.$invalid" class="help-block ">10 digits only; no formatting, prefixes or extensions.</span>
+                    <!--<p ng-show="eventForm.phonenum.$error.required" class="help-block ">Enter a valid phone number.</p>-->
                 </div>
             </div>
             <!-- Select - Status -->
