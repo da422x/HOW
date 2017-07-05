@@ -1,6 +1,18 @@
 /* getinvolved styling */
 
 
+/* get involved href links text style */
+
+#getInvolved-link {
+    text-decoration: underline;
+    text-decoration-color: #caa128;
+}
+
+a:hover {
+    color: #caa128
+}
+
+
 /* hero image and text */
 
 #herodesc2 {
