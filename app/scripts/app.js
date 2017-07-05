@@ -29,7 +29,8 @@ angular.module('ohanaApp', [
         'bcherny/formatAsCurrency',
         'xeditable',
         'chart.js',
-        'ui.map'
+        'ui.map',
+        'ui.bootstrap.datetimepicker'
     ])
     .config(function($routeProvider, $httpProvider, $locationProvider) {
         $locationProvider.hashPrefix('');
