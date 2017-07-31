@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "test": "tsc && grunt test",
-        "ready": "grunt jsbeautifier && git pull origin master && grunt build && git add . && git commit -m ",
+        "ready": "git config push.default current && grunt jsbeautifier && git pull origin master && grunt build && git add . && git commit -m ",
         "postready": "git push -u",
         "surge_test": "surge -p dist -d howtest.surge.sh",
         "surge_prod": "surge -p dist -d howprod.surge.sh"
