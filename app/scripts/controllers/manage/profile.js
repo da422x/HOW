@@ -60,15 +60,6 @@ angular.module('ohanaApp')
             }
         };
 
-        $scope.roleChangeRequest = function() {
-            var modalInstance = $uibModal.open({
-                templateUrl: '/parts/rolerequestchangeform.html',
-                controller: 'RoleRequestChangeFormCtrl as rrcf'
-            });
-            if (!modalInstance) {
-                $scope.update();
-            }
-        };
 
         $scope.deleteRequest = function(key) {
             swal({
@@ -171,6 +162,7 @@ angular.module('ohanaApp')
             return true;
         }
 
+        // Call Modals
         $scope.changeChapter = function() {
             var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changeChapter.html',
@@ -192,6 +184,23 @@ angular.module('ohanaApp')
                         return false;
                     }
                 }
+            });
+        };
+
+        $scope.roleChangeRequest = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/rolerequestchangeform.html',
+                controller: 'RoleRequestChangeFormCtrl as rrcf'
+            });
+            if (!modalInstance) {
+                $scope.update();
+            }
+        };
+
+        $scope.feedBackRequest = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/parts/giveFeedback.html',
+                controller: 'GiveFeedbackCtrl as feedback'
             });
         };
 
