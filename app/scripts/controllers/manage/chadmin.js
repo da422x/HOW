@@ -104,12 +104,13 @@ angular.module('ohanaApp')
                         $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key)
                         $(row).children().eq(1).addClass('tdCName');
                         $(row).children().eq(2).addClass('tdDescription');
-                        $(row).children().eq(3).addClass('tdSelectRegion');
-                        $(row).children().eq(4).addClass('tdSelectState');
-                        $(row).children().eq(5).addClass('tdSelectZip');
-                        $(row).children().eq(6).addClass('tdEmail'); // email checking disabled
+                        $(row).children().eq(3).addClass('tdChapterAdmin');
+                        $(row).children().eq(4).addClass('tdSelectRegion');
+                        $(row).children().eq(5).addClass('tdSelectState');
+                        $(row).children().eq(6).addClass('tdSelectZip');
+                        $(row).children().eq(7).addClass('tdEmail'); // email checking disabled
                         for (i = 2; i < 7; i++) {
-                            if (i != 3 && i != 4) {
+                            if (i != 4 && i != 5 && i != 6) {
                                 $(row).children().eq(i).wrapInner('<a class="editable editable-click" style="border: none;"></a>');
                             }
                         }
@@ -136,7 +137,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "Chapter Name",
                             placement: "bottom",
-                            emptytext: "N/A",
+                            emptytext: "none",
                             url: function(params) {
                                 var packet = params.value;
                                 var packet2 = {
@@ -154,10 +155,21 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "description",
                             placement: "bottom",
-                            emptytext: "N/A",
+                            emptytext: "none",
                             url: function(params) {
                                 var packet = params.value
                                 var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/description';
+                                commonServices.updateData(path, packet);
+                            }
+                        });
+                        $('#chaptersTable .tdChapterAdmin a').editable({
+                            type: "text",
+                            name: "chadmin",
+                            placement: "bottom",
+                            emptytext: "none",
+                            url: function(params) {
+                                var packet = params.value
+                                var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/lead';
                                 commonServices.updateData(path, packet);
                             }
                         });
@@ -165,7 +177,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "zip",
                             placement: "bottom",
-                            emptytext: "N/A",
+                            emptytext: "none",
                             url: function(params) {
                                 var packet = params.value;
                                 var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/zip';
@@ -176,7 +188,7 @@ angular.module('ohanaApp')
                             type: "email",
                             name: "email",
                             placement: "bottom",
-                            emptytext: "N/A",
+                            emptytext: "none",
                             url: function(params) {
                                 var packet = params.value;
                                 var path = '/Regions/' + $scope.editValue[4].textContent + '/' + $scope.editValue[5].textContent + '/' + $($scope.editValue).find('#chaptersTable-select').val() + '/email';

@@ -35,7 +35,7 @@ angular.module('ohanaApp')
                 arr.email = results[i].email;
                 arr.phone = results[i].phone;
                 arr.role = results[i].role;
-                arr.primaryChapter = results[i].Chapter.text;
+                arr.primaryChapter = results[i].Chapter.text || 'none';
                 arr.chapters = [];
                 _.each(results[i].Chapters, function(c) {
                     arr.chapters.push(c.chapter.text);
@@ -172,7 +172,7 @@ angular.module('ohanaApp')
                         arr.state = stateName;
                         arr.name = results[i][stateName][chapterName].name;
                         arr.description = results[i][stateName][chapterName].description;
-                        arr.chadmin = (results[i][stateName][chapterName].chadmin ? results[i][stateName][chapterName].chadmin : " ");
+                        arr.chadmin = (results[i][stateName][chapterName].chadmin ? results[i][stateName][chapterName].chadmin : "none");
                         arr.facebook = results[i][stateName][chapterName].url;
                         arr.facebook_link = results[i][stateName][chapterName].url_link;
                         arr.email = results[i][stateName][chapterName].email;
