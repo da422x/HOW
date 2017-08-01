@@ -134,7 +134,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "first",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             display: false,
                             url: function(params) {
                                 if (params.value !== '') {
@@ -147,6 +147,7 @@ angular.module('ohanaApp')
                                         userService.setUserData(tempData);
                                         userService.setUserName(tempData.name.first, tempData.name.last);
                                     }
+                                    $scope.update();
                                 }
                             }
                         });
@@ -154,7 +155,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "last",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             display: false,
                             url: function(params) {
                                 if (params.value !== '') {
@@ -167,6 +168,7 @@ angular.module('ohanaApp')
                                         userService.setUserData(tempData);
                                         userService.setUserName(tempData.name.first, tempData.name.last);
                                     }
+                                    $scope.update();
                                 }
                             }
                         });
@@ -174,7 +176,7 @@ angular.module('ohanaApp')
                             type: "combodate",
                             name: "DOB",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             format: 'MM/DD/YYYY',
                             viewformat: 'MM/DD/YYYY',
                             template: 'MMM / DD / YYYY',
@@ -194,6 +196,7 @@ angular.module('ohanaApp')
                                         tempData.DOB = packet;
                                         userService.setUserData(tempData);
                                     }
+                                    $scope.update();
                                 }
                             }
                         });
@@ -201,7 +204,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "phone",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             tpl: "<input id='phonenum'>",
                             display: false,
                             url: function(params) {
@@ -214,6 +217,7 @@ angular.module('ohanaApp')
                                         tempData.phone = packet;
                                         userService.setUserData(tempData);
                                     }
+                                    $scope.update();
                                 }
                             }
                         });
@@ -226,7 +230,7 @@ angular.module('ohanaApp')
                             type: "select",
                             name: "role",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             showbuttons: false,
                             display: false,
                             url: function(params) {
@@ -241,6 +245,7 @@ angular.module('ohanaApp')
                                         if ($scope.currId === userService.getId()) {
                                             userService.setRole(packet);
                                         }
+                                        $scope.update();
                                     } else {
                                         swal(
                                             'Alert',
@@ -290,7 +295,7 @@ angular.module('ohanaApp')
                             type: "text",
                             name: "branch",
                             placement: "bottom",
-                            emptytext: "null",
+                            emptytext: "none",
                             display: false,
                             url: function(params) {
                                 if (params.value !== '') {
@@ -302,6 +307,7 @@ angular.module('ohanaApp')
                                         tempData.branch = packet;
                                         userService.setUserData(tempData);
                                     }
+                                    $scope.update();
                                 }
                             }
                         });
@@ -322,7 +328,7 @@ angular.module('ohanaApp')
                                         type: "text",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         display: false,
                                         url: function(params) {
                                             if (params.value !== '') {
@@ -335,6 +341,7 @@ angular.module('ohanaApp')
                                                     userService.setUserData(tempData);
                                                     userService.setUserName(tempData.name.first, tempData.name.last);
                                                 }
+                                                $scope.update();
                                             }
                                         }
                                     });
@@ -346,7 +353,7 @@ angular.module('ohanaApp')
                                         type: "text",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         display: false,
                                         url: function(params) {
                                             if (params.value !== '') {
@@ -359,6 +366,7 @@ angular.module('ohanaApp')
                                                     userService.setUserData(tempData);
                                                     userService.setUserName(tempData.name.first, tempData.name.last);
                                                 }
+                                                $scope.update();
                                             }
                                         }
                                     });
@@ -370,7 +378,7 @@ angular.module('ohanaApp')
                                         type: "combodate",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         format: 'MM/DD/YYYY',
                                         viewformat: 'MM/DD/YYYY',
                                         template: 'MMM / DD / YYYY',
@@ -390,6 +398,7 @@ angular.module('ohanaApp')
                                                     tempData.DOB = packet;
                                                     userService.setUserData(tempData);
                                                 }
+                                                $scope.update();
                                             }
                                         }
                                     });
@@ -407,7 +416,7 @@ angular.module('ohanaApp')
                                         type: "text",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         tpl: "<input id='phonenum'>",
                                         display: false,
                                         url: function(params) {
@@ -420,6 +429,7 @@ angular.module('ohanaApp')
                                                     tempData.phone = packet;
                                                     userService.setUserData(tempData);
                                                 }
+                                                $scope.update();
                                             }
                                         }
                                     });
@@ -431,7 +441,7 @@ angular.module('ohanaApp')
                                         type: "select",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         showbuttons: false,
                                         display: false,
                                         url: function(params) {
@@ -446,6 +456,7 @@ angular.module('ohanaApp')
                                                     if (params.name === userService.getId()) {
                                                         userService.setRole(packet);
                                                     }
+                                                    $scope.update();
                                                 } else {
                                                     swal(
                                                         'Alert',
@@ -510,7 +521,7 @@ angular.module('ohanaApp')
                                         type: "text",
                                         name: $scope.currId,
                                         placement: "bottom",
-                                        emptytext: "null",
+                                        emptytext: "none",
                                         display: false,
                                         url: function(params) {
                                             if (params.value !== '') {
@@ -522,6 +533,7 @@ angular.module('ohanaApp')
                                                     tempData.branch = packet;
                                                     userService.setUserData(tempData);
                                                 }
+                                                $scope.update();
                                             }
                                         }
                                     });

@@ -187,14 +187,14 @@ angular.module('ohanaApp', [
         editableOptions.theme = 'bs3';
 
         // Test 2 (updates for chapter edit feature).
-        // var config = {
-        //     apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
-        //     authDomain: "herosonthewatertest2.firebaseapp.com",
-        //     databaseURL: "https://herosonthewatertest2.firebaseio.com",
-        //     projectId: "herosonthewatertest2",
-        //     storageBucket: "herosonthewatertest2.appspot.com",
-        //     messagingSenderId: "569173546476"
-        // };
+        var config = {
+            apiKey: "AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78",
+            authDomain: "herosonthewatertest2.firebaseapp.com",
+            databaseURL: "https://herosonthewatertest2.firebaseio.com",
+            projectId: "herosonthewatertest2",
+            storageBucket: "herosonthewatertest2.appspot.com",
+            messagingSenderId: "569173546476"
+        };
 
         // Test 1 (Standard).
         // var config = {
@@ -207,14 +207,14 @@ angular.module('ohanaApp', [
         // };
 
         // Production DB.
-        var config = {
-            apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
-            authDomain: "herosonthewaterprod.firebaseapp.com",
-            databaseURL: "https://herosonthewaterprod.firebaseio.com",
-            projectId: "herosonthewaterprod",
-            storageBucket: "herosonthewaterprod.appspot.com",
-            messagingSenderId: "464567079814"
-        }
+        // var config = {
+        //     apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
+        //     authDomain: "herosonthewaterprod.firebaseapp.com",
+        //     databaseURL: "https://herosonthewaterprod.firebaseio.com",
+        //     projectId: "herosonthewaterprod",
+        //     storageBucket: "herosonthewaterprod.appspot.com",
+        //     messagingSenderId: "464567079814"
+        // }
 
         if (firebase.apps.length === 0) {
             firebase.initializeApp(config);
