@@ -3,43 +3,32 @@
 <div class="container">
     <h1>Heroes on the Water Chapters</h1>
     <form class="form-inline">
-        <div class="form-group">
+        <!--         removing ability to search by keyword for now
+ -->
+        <!-- <div class="form-group">
             <label for="eventName" control-label>Keyword</label>
-            <input type="text" class="form-control" ng-model="keywordFilter">
-        </div>
+            <input type="text" class="form-control" ng-model="keywordFilter" ng-model-options="{debounce:1000}">
+        </div> -->
         <div class="form-group">
             <label for="eventName" control-label>Zip Code</label>
-            <input type="text" class="form-control" ng-model="locationFilter">
+            <input type="text" class="form-control" ng-model="locationFilter" ng-change="ZipUpdate()" ng-model-options="{debounce:1000}">
         </div>
     </form>
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!--<ui-gmap-google-map center='map.center' zoom='map.zoom'>
-				<ui-gmap-markers models="filteredMarkers" coords="'self'" icon="'icon'" click="onClick">
-					<ui-gmap-windows show="show" templateUrl="'templateUrl'" templateParameter="'templateParameter'">
-				                <div ng-non-bindable>{{title}}</div>
-				            </ui-gmap-windows>
-				        </ui-gmap-markers>
-			</ui-gmap-google-map>-->
-        </div>
-    </div>
-    <div ng-show="filteredMarkers.length">
+    <div ng-show="chapters.length">
         <div class="row">
             <div class="col-sm-12">
                 <h1>Chapters</h1>
             </div>
         </div>
-        <div class="row" ng-repeat="chapter in filteredMarkers">
+
+
+        <div class="row" ng-repeat="chapter in chapters">
             <div class="col-sm-12">
-                <h4><a href={{chapter.url}} target="_blank">{{chapter.name}}</a></h5>
-                    <p>{{chapter.city}}, {{chapter.state}} {{chapter.zip}}</p>
-                    <p>{{chapter.contactName}}</p>
-                    <p>{{chapter.contactEmail}}</p>
+                <h4><a href={{chapter.url}} target="_blank">{{chapter.value}}</a></h5>
             </div>
         </div>
     </div>
-    <div class="row" ng-hide="filteredMarkers.length">
+    <div class="row" ng-hide="chapters.length">
         <h2>Your search did not yield any results. Please try again.</h2>
     </div>
 </div>
