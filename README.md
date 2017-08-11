@@ -19,6 +19,10 @@ Run `grunt` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
+## Commit
+
+Run 'npm run ready "<commit messsage>" to upload your code. Look at the package.json file for all scrips included in project. Request PR for large commits. 
+
 # Surge hosting for sharing with others
 
 Go here for info: https://surge.sh/
