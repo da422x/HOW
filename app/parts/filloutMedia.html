@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<!-- start modal-header -->
+<div class="modal-header" ng-init="initialize()">
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Please fillout waiver</h4>
+</div>
+<!-- end modal-header -->
+
+<!-- start modal body -->
+<div id="manage-additional-chapters" class="modal-body">
+    <style>
+    .waiver-form .form-control {
+        width: 300px !important;
+        margin: 4px;
+        display: inline-block !important;
+    }
+
+    #the-canvas {
+        border: 1px solid black;
+    }
+    </style>
+    <script src="./lib/pdf.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- bower:css -->
+    <!-- endbower -->
+    <br>
+    <div style="width: 80%; text-align: center; margin: auto" class="panel panel-default">
+        <div class="panel-heading">PDF.js 'Hello, world!' example</div>
+        <div class="panel-body">
+            <form style="text-align: left" class="container-fluid waiver-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <legend>Participant/Volunteer</legend>
+                        <div class="form-group">
+                            <label for="author_name">Name</label>
+                            <input class="form-control" type="text" id="author_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_date">Date</label>
+                            <input class="form-control" type="date" id="author_date">
+                        </div>
+                        <div class="form-group">
+                            <label>Enter your signature below</label>
+                            <br>
+                            <canvas id='signatureCanvas' width='300' height='37' style='border-radius:4px; border: 1px solid lightgrey ;'></canvas>
+                            <br>
+                            <div class='button-bar'>
+                                <button type="button" class='btn btn-primary' onclick='clearCanvas()'>Clear</button>
+                                <!--<button type="button" class='btn btn-primary' onclick='saveCanvas()'>Sign</button>-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="author_email">Email</label>
+                            <input class="form-control" type="email" id="author_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_phone">Phone</label>
+                            <input class="form-control" type="text" id="author_phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_street">Street Address</label>
+                            <input class="form-control" type="text" id="author_street">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_apt">Apt/Suite</label>
+                            <input class="form-control" type="text" id="author_apt">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_city">City</label>
+                            <input class="form-control" type="text" id="author_city">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_state">State</label>
+                            <input class="form-control" type="text" id="author_state">
+                        </div>
+                        <div class="form-group">
+                            <label for="author_zip">Zip</label>
+                            <input class="form-control" type="text" id="author_zip">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <legend>Witness</legend>
+                        <div class="form-group">
+                            <label for="witness_name">Name</label>
+                            <input class="form-control" type="text" id="witness_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="witness_date">Date</label>
+                            <input class="form-control" type="date" id="witness_date">
+                        </div>
+                        <div class="form-group">
+                            <label>Enter your signature below</label>
+                            <br>
+                            <canvas id='signatureCanvas2' width='300' height='37' style='border-radius:4px; border: 1px solid lightgrey ;'></canvas>
+                            <br>
+                            <div class='button-bar'>
+                                <button type="button" class='btn btn-primary' onclick='clearCanvas2()'>Clear</button>
+                                <!--<button type="button" class='btn btn-primary' onclick='saveCanvas2()'>Sign</button>-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="witness_email">Email</label>
+                            <input class="form-control" type="text" id="witness_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="witness_phone">Phone</label>
+                            <input class="form-control" type="text" id="witness_phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="text-align: center; margin: auto; width:100%">
+                    <button type="button" class="btn btn-primary" onclick="saveImg()">save image</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <canvas id="the-canvas1" style="display:none"></canvas>
+        <canvas id="the-canvas2" style="display:none"></canvas>
+        <img id="mediaWaiver">
+        <img id="releaseWaiver">
+    </div>
+</div>
+<!-- end modal body -->

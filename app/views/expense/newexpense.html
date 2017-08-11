@@ -1,0 +1,143 @@
+<div class="container">
+    <form id="newExpenseform" name="newExpenseform" method="post" class="form-inline" novalidate>
+        <div class="panel panel-default  ">
+            <div class="panel-heading clearfix expense-panel-heading">
+                <h3 class="panel-title pull-left">Create New Expense</h3>
+            </div>
+            <div class="list-group-item">
+                <div class="form-group row  ">
+                    <label for="exp.eventdate" class="col-xs-6 col-form-label">Event Date</label>
+                    <div class=" col-xs-10">
+                        <div class="input-group  ">
+                            <input id="exp.eventdate" type="text" class="form-control expenseInput" ng-model="exp.eventdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="dateopen()" title="Event Date - Expenses can only be created for events 60 days prior to current date"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item row">
+                <div class="form-group col-lg-6">
+                    <label class="col-form-label">Miles Driven </label>
+                    <div>
+                        <input ng-model="exp.Line[0].Quantity" name="miles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <p ng-if="newExpenseform.miles.$error.pattern" class="field-feedback">
+                            - Enter miles driven > 0 - </p>
+                    </div>
+                </div>
+                <div class="form-group col-lg-3">
+                    <label class="col-form-label">Mile Rate</label>
+                    <div>
+                        <label class="form-control exp_format2" ng-model="exp.Line[0].Rate" name="milerate">{{exp.Line[0].Rate| currency}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-3">
+                    <label class="col-form-label">Mileage Amount</label>
+                    <div>
+                        <label class="form-control exp_format2" placeholder="0" ng-model="exp.Line[0].Amount" name="Amount1">{{ (exp.Line[0].Quantity * exp.Line[0].Rate) | currency}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item row">
+                <div class="form-group col-lg-6">
+                    <label class="col-form-label">Trailer Miles </label>
+                    <div>
+                        <input ng-model="exp.Line[1].Quantity" name="trailermiles" class="form-control expenseInput" placeholder="0" ng-pattern="/^[0-9]{1,7}$/" type="number">
+                        <p ng-if="newExpenseform.trailermiles.$error.pattern" class="field-feedback">
+                            Enter trailer hauling miles > 0
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group col-lg-3">
+                    <label class="col-form-label ">Trailer Mile Rate</label>
+                    <div>
+                        <label class="form-control exp_format2" ng-model="exp.Line[1].Rate" name="trailermilerate">{{exp.Line[1].Rate| currency}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-3">
+                    <label class="col-form-label">Trailer Mileage Amount</label>
+                    <div>
+                        <label class="form-control" placeholder="0" ng-model="exp.Line[1].Amount" name="Amount2">{{ (exp.Line[1].Quantity * exp.Line[1].Rate) | currency}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <label for="" class="col-md-12 col-form-label" title="Other Expenses">
+                    <h4>Other Expenses</h4>
+                </label>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />
+                            </th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="Line in LineDetails">
+                            <td>
+                                <input type="checkbox" ng-model="Line.selected" />
+                            </td>
+                            <td>
+                                <input type="text" size="80" class="form-control expenseInput" ng-model="Line.Description" name="LineDescription" placeholder="Explanation of Other expenses" title="Explanation of Other expenses" required />
+                            </td>
+                            <td>
+                                <input id=lineamount name=lineamount class="form-control" ng-model="Line.Amount" type="text" format-as-currency>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btnalign  " ng-click="addNew()" value="Add New">
+                    <input ng-hide="!LineDetails.length" type="button" class="btn btn-danger btnalign " ng-click="remove()" value="Remove">
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title pull-left">Bill Receipts</h3>
+                </div>
+                <div id="imagedisplay" class="form-group col-xs-12">
+                    <div class="content load-image-group">
+                        <span>
+                            <strong>Load supporting documents (images only) * </strong>
+                        </span>
+                        <input id="fileimage" name="fileimage" class="expenseInput" type="file" ng-model="expensedocument" nv-file-select="" uploader="uploader" multiple accept="image/*" required title="  " ng-style="expensedocument?{'color':'#333'}:{'color':'transparent'}" />
+                        <p><b>Number of documents selected </b>- {{ uploader.queue.length }}</p>
+                        <div ng-repeat="item in uploader.queue">
+                            <strong>{{ item.file.name }}</strong>
+                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, width: 350,height: 350 }"></div>
+                            <span ng-show="item.isSuccess "><i class="glyphicon glyphicon-ok "></i></span>
+                            <span ng-show="item.isCancel "><i class="glyphicon glyphicon-ban-circle "></i></span>
+                            <span ng-show="item.isError "><i class="glyphicon glyphicon-remove "></i></span>
+                            <button type="button " class="btn btn-danger btn-xs " ng-click="item.remove() ">
+                                <span class="glyphicon glyphicon-trash "></span> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>&nbsp;</p>
+            <div class="form-group btnalign">
+                <label class="col-md-12 col-form-label ">Business purpose, Origin and Destination * </label>
+                <div class="col-md-12 ">
+                    <input name="Description" ng-model="exp.Description" type="text" class="form-control expenseInput" title="Business purpose, Origin & Destination" size="120" placeholder="Business purpose, Origin & Destination" required ng-minlength="3">
+                    <p ng-if="newExpenseform.Description.$invalid" class="field-feedback">
+                        Enter description for your expense
+                    </p>
+                    <p ng-show="newExpenseform.Description.$error.minlength" class="field-feedback">Description is too short.</p>
+                </div>
+            </div>
+            <div class="panel-body-exp btnalign">
+                <span> * Denotes a required field </span>
+                <br/>
+                <button class="btn btn-primary ur_format_button " ng-click="confirmnewexpense() " type="submit ">Submit Expense</button>
+                <input type="button" class="btn btn-primary" ng-click="saveitforlater()" ng-hide="isEditexist=='true'" title="Save current expense enteries for later submission" value="Save it for Later">
+                <input type="button" class="btn btn-primary" ng-click="ClearFields()" value="Clear">
+                <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Cancel">
+            </div>
+        </div>
+    </form>
+</div>
