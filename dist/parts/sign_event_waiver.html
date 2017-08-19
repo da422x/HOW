@@ -1,0 +1,39 @@
+<!-- start modal-header -->
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">Fill out your event waiver</h4>
+</div>
+<!-- end modal-header -->
+
+<!-- start modal body -->
+<div class="modal-body">
+  <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">
+    <div class="row">
+      <div class="col-md-6">
+        <legend>Participant/Volunteer</legend>
+        <div class="form-group">
+          <label for="author_name">Name</label>
+          <input class="form-control" type="text" id="author_name">
+        </div>
+        <div class="form-group">
+          <label for="author_date">Date</label>
+          <input class="form-control" type="date" id="author_date">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <legend>Witness</legend>
+        <div class="form-group">
+          <label for="witness_name">Name</label>
+          <input class="form-control" type="text" id="witness_name">
+        </div>
+        <div class="form-group">
+          <label for="witness_date">Date</label>
+          <input class="form-control" type="date" id="witness_date">
+        </div>
+      </div>
+      <div class="row" style="text-align: center; margin: auto; width:100%">
+        <button type="button" class="btn btn-primary" ng-click="submitData()">save image</button>
+      </div>
+  </form>
+  </div>
+  <!-- end modal body -->

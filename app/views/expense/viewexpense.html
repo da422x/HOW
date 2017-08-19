@@ -1,0 +1,139 @@
+<div class="container" ng-init="viewexpensedata()" ng-controller="ViewExpenseController">
+  <form id="viewExpenseform" name="viewExpenseform" method="post" class="form-inline" novalidate>
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left">View Expense {{HeadTitle}}</h3>
+      </div>
+      <div class="panel-body-exp">
+
+        <div class="row" style="margin-bottom:20px">
+          <div class="form-group row expense_pad col-lg-3">
+            <label for="DateFilter" class="col-form-label">Submit Date Range</label>
+            <div>
+              <select class="form-control" ng-model="DateFilter" ng-change="DateFilterChange()" ng-options="DateRange.name for DateRange  in DateRangelist" name="DateFilter" title="Select quick DateFilter">
+              </select>
+            </div>
+          </div>
+          <label class="expense_pad col-lg-3">Current Date Range:
+            <br/>{{disp_filterdate}}</label>
+          <div ng-show="DateFilter.name=='Custom Range'" class="form-group row col-lg-3">
+            <div class="form-group row expense_pad">
+              <label for="startdate" class="col-form-label">From</label>
+              <div>
+                <div class="input-group">
+                  <input id="startdate" type="text" class="form-control" ng-model="startdate" is-open="popup.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" ng-change="ExpenseSearch('normal')" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="dateopen()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+                <div class="col-md-4 ">
+                  <span ng-show="viewExpenseform.startdate.$error.required && 
+                                !viewExpenseform.startdate.$pristine">
+                    Invalid or Empty from date
+                  </span>
+                  <span ng-show="viewExpenseform.startdate.$error.dateLowerThan">
+                    From date must be greater than To date
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row expense_pad">
+              <label for="enddate" class="col-form-label">To</label>
+              <div>
+                <div class="input-group">
+                  <input id="enddate" type="text" class="form-control" ng-model="enddate" is-open="popup1.opened" ng-required="true" datepicker-options="dateOptions" close-text="Close" uib-datepicker-popup="{{format}}" alt-input-formats="altInputFormats" date-lower-than="{{startdate| date:'short'}}" ng-change="ExpenseSearch('normal')" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="dateopen1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+                <div class="col-md-4 ">
+                  <span ng-show="viewExpenseform.enddate.$error.required && 
+                                !viewExpenseform.startdate.$pristine">
+                    Invalid or Empty from date
+                  </span>
+                  <span ng-show="viewExpenseform.enddate.$error.dateLowerThan">
+                    From date must be lower than To date
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row expense_pad col-lg-3">
+            <label for="PayStatus" class="col-form-label">Payment Status</label>
+            <div>
+              <select class="form-control" ng-model="PayStatus" ng-options="status.name for status  in paystatuslist" name="PayStatus" title="Select Payment Status" ng-change="ExpenseSearch()">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <img class="cursorPointer" src="/assets/images/expense/pdf.png" width="40" height="40" title="Export Expense Reports" ng-click="CreateExpenseReport()">
+          <input type="button" class="btn btn-primary " ng-click="neweexpense()" value="New Expense">
+          <button class="btn btn-primary btn-danger" ng-show="userRole=='National Staff' || userRole=='Chapter Lead'" ng-click="filterPastDue()" title="Filters expenses that were submitted 30 days prior to date and still Overdue">Overdue Expenses</button>
+          <!--  <a href=" #/expense_QBUpdate" title="QuickBooks Update" ng-show="userRole=='National Staff'">
+                        <img src="/assets/images/expense/QuickBooks.png" width="130" height="35" title="Go to QuickBooks Update Page" />
+                    </a> -->
+          <img class="  " src="/assets/images/expense/Pie.png" width="40" height="40" title="Quick Expense Overview" ng-click="openExpenseDash()" ng-mouseover="showPopover()" ng-mouseleave="hidePopover()">
+          <div class="form-group row btnalignmore " ng-repeat="dash in editstatus " ng-show="useremail != editstatus.EmailID">
+            <a class="blinkinfo   btn-danger  btn      " ng-show="dash.OverAge > 0" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
+            <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a>
+          </div>
+          <a class="swaltdr" title="Expense Configuration" ng-show="userRole=='National Staff'" href="/#/expense/expenseconfig">
+            <button class="btn btn-warning">
+              Edit Expense Configurations
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="form-group row col-lg-12">
+            <input id=viewrow type="button" class="btn btn-primary " ng-click="ViewSelectedRow()" value="Pay Submitted Expense">
+        </div> -->
+    <div class="table-responsive">
+      <table id="expenseTable" class="table table-bordered table-responsive table-hover" cellspacing="0" width="80%">
+      </table>
+    </div>
+  </form>
+</div>
+<script type="text/ng-template " id="myModalContent.html ">
+  <div class="modal-header ">
+    <h3 class="modal-title " id="modal-title ">Expense by Payment Status</h3>
+  </div>
+  <div class="modal-body " id="modal-body ">
+    <div>
+      <canvas id="piechart " class="chart chart-pie chart-xs ng-isolate-scope " chart-data="piedata " chart-labels="pielabels " chart-options="options " height="150 " width="150 " chart-colors="piecolor ">
+      </canvas>
+    </div>
+    <div>
+      <table class="table table-striped table-bordered ">
+        <thead>
+          <tr>
+            <th><b>Payment Status</b></th>
+            <th><b>Expense Count</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in expensedash ">
+            <td>
+              {{item.Label}}
+            </td>
+            <td>
+              {{item.Data}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <b>Total</b>
+            </td>
+            <td>
+              <span> {{TotalExpenseCount}} </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer ">
+      <button class="btn btn-primary " type="button " ng-click="ok() ">CLOSE</button>
+    </div>
+</script>

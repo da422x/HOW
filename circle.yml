@@ -1,0 +1,29 @@
+machine:
+  node:
+    version: 8.1.1
+
+test:
+  override:
+    - grunt test --force
+
+dependencies:
+  post:
+    - bower install
+    - npm install -g grunt surge
+
+general:
+  branches:
+    only: 
+      - master
+      # - nitenite
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - npm run surge_prod
+  # nightly:
+  #   branch: nitenite
+  #   commands:
+  #     - npm run surge_test
+      #disabling this feature for now. - npm run surge_test
