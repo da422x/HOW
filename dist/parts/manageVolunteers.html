@@ -1,35 +1,35 @@
 <style>
 #volunteersTable_wrapper>div:nth-child(2)>div {
-    margin-right: 3px;
-    overflow-x: auto;
+  margin-right: 3px;
+  overflow-x: auto;
 }
 </style>
 <div class="modal-header">
-    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">{{event.name +"'s Volunteers"}}</h4>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">{{event.name +"'s Volunteers"}}</h4>
 </div>
 <!-- end modal-header -->
 <div class="modal-body" ng-init="buildTable()">
-    <table id="volunteersTable" class="display table table-bordered" style="width:100%">
-        <tfoot>
-            <tr>
-                <td>
-                    <button ng-click="addVolunteer(email, event.key)" type="button" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </button>
-                </td>
-                <td>
-                    <input class="form-control" type="text" ng-model="email">
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
+  <table id="volunteersTable" class="display table table-bordered" style="width:100%">
+    <tfoot>
+      <tr>
+        <td>
+          <button ng-click="addVolunteer(email, event.key)" type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </button>
+        </td>
+        <td>
+          <input class="form-control" type="text" ng-model="email">
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
 
-    <div style="display:flex">
-        <button type="button" ng-click="deleteVolunteers()" class="btn btn-danger">Delete selected volunteers</button>
-    </div>
+  <div style="display:flex">
+    <button type="button" ng-click="deleteVolunteers()" class="btn btn-danger">Delete selected volunteers</button>
+  </div>
 </div>
 <!-- end modal body -->

@@ -16,22 +16,22 @@
 
 <!DOCTYPE html>
 <div class="modal-header">
-    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Add New Item</h4>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">Add New Item</h4>
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-    <ui-select multiple ng-model="person.selected" theme="bootstrap" close-on-select="false" on-remove="removed($item, $model)" on-select="onSelectCallback($item, $model)" ng-disabled="disabled" style="min-width: 300px;" title="Choose a person">
-        <ui-select-match placeholder="Add inventory from your chapter...">{{$item.name}}</ui-select-match>
-        <ui-select-choices repeat="item in selectedInventory">
-            <div ng-bind-html="item.name | highlight: $select.search"></div>
-            <small>
-                category: {{item.category}}
-            </small>
-        </ui-select-choices>
-    </ui-select>
+  <ui-select multiple ng-model="person.selected" theme="bootstrap" close-on-select="false" on-remove="removed($item, $model)" on-select="onSelectCallback($item, $model)" ng-disabled="disabled" style="min-width: 300px;" title="Choose a person">
+    <ui-select-match placeholder="Add inventory from your chapter...">{{$item.name}}</ui-select-match>
+    <ui-select-choices repeat="item in selectedInventory">
+      <div ng-bind-html="item.name | highlight: $select.search"></div>
+      <small>
+        category: {{item.category}}
+      </small>
+    </ui-select-choices>
+  </ui-select>
 </div>
 <!-- end modal body -->
 <div class="modal-footer">
-    <button type="button" name="submit" class="btn btn-primary" ng-click="addParticipants()">Submit</button>
+  <button type="button" name="submit" class="btn btn-primary" ng-click="addParticipants()">Submit</button>
 </div>

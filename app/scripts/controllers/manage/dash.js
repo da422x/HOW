@@ -9,7 +9,7 @@
  * Controller of management console - dashboard
  */
 angular.module('ohanaApp')
-    .controller('DashCtrl', function() {
-        'use strict';
-        // empty controller
-    });
+  .controller('DashCtrl', function() {
+    'use strict';
+    // empty controller
+  });

@@ -1,109 +1,109 @@
 /** homepage styling **/
 
 a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .cursorPointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 
 /* youtube video overlay */
 
 #overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 54;
-    color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 54;
+  color: #fff;
 }
 
 #videoplayer {
-    position: absolute;
-    left: 50%;
-    top: 15%;
-    margin-left: -320px;
-    width: 640px;
-    height: 360px;
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  margin-left: -320px;
+  width: 640px;
+  height: 360px;
 }
 
 #videoclose {
-    position: absolute;
-    right: 30px;
-    top: 30px;
-    background: none;
-    border: none;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  background: none;
+  border: none;
 }
 
 
 /* hero image and text */
 
 .hero {
-    background-color: #e9e9e9;
+  background-color: #e9e9e9;
 }
 
 .hero img {
-    margin-top: -75px;
-    margin-left: -1px;
-    width: 100%;
-    height: auto;
+  margin-top: -75px;
+  margin-left: -1px;
+  width: 100%;
+  height: auto;
 }
 
 #herotext {
-    position: absolute;
-    left: 15%;
-    top: 20vw;
-    width: 38%;
-    max-width: 325px;
-    text-align: left;
-    color: white;
+  position: absolute;
+  left: 15%;
+  top: 20vw;
+  width: 38%;
+  max-width: 325px;
+  text-align: left;
+  color: white;
 }
 
 #herotext h2 {
-    font-size: 28px;
+  font-size: 28px;
 }
 
 .button-border {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 14px;
-    font-size: 12px;
-    font-family: "montserrat-bold";
-    line-height: 1.8;
-    appearance: none;
-    box-shadow: none;
-    border-radius: 5px;
-    color: white;
-    background: rgba(0, 0, 0, 0);
-    border: solid 3px white;
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-    /*
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-family: "montserrat-bold";
+  line-height: 1.8;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 5px;
+  color: white;
+  background: rgba(0, 0, 0, 0);
+  border: solid 3px white;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+  /*
     transition: color 0.4s;
     -webkit-transition: color 0.4s;
 */
 }
 
 .button-border:hover {
-    color: #afafaf;
-    border: solid 3px #afafaf;
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-    /*
+  color: #afafaf;
+  border: solid 3px #afafaf;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+  /*
     transition: color 0.4s;
     -webkit-transition: color 0.4s;
 */
@@ -113,428 +113,428 @@ a:hover {
 /* mission and stats */
 
 .missionstats {
-    position: relative;
-    width: 100%;
-    min-height: 480px;
-    height: 50vw;
-    background-color: #e9e9e9;
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  height: 50vw;
+  background-color: #e9e9e9;
 }
 
 
 /* mission */
 
 .mission {
-    margin: auto;
-    padding-top: 75px;
-    width: 75%;
-    max-width: 900px;
-    height: auto;
+  margin: auto;
+  padding-top: 75px;
+  width: 75%;
+  max-width: 900px;
+  height: auto;
 }
 
 .h3 h3 {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .h3 {
-    margin: auto;
-    width: 85%;
-    max-width: 560px;
-    overflow: visible;
-    position: relative;
-    z-index: 49;
-    text-align: center;
-    color: black;
-    margin-top: -95px;
+  margin: auto;
+  width: 85%;
+  max-width: 560px;
+  overflow: visible;
+  position: relative;
+  z-index: 49;
+  text-align: center;
+  color: black;
+  margin-top: -95px;
 }
 
 #paint {
-    margin: auto;
-    width: 100%;
-    max-width: 700px;
-    display: block;
-    position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 700px;
+  display: block;
+  position: relative;
 }
 
 #paint2 {
-    display: none;
+  display: none;
 }
 
 
 /* stats */
 
 .stats {
-    margin: auto;
-    padding-top: 40px;
-    width: 75%;
-    max-width: 900px;
-    height: auto;
+  margin: auto;
+  padding-top: 40px;
+  width: 75%;
+  max-width: 900px;
+  height: auto;
 }
 
 #ring1,
 #ring2,
 #ring3 {
-    display: table;
-    margin: auto;
-    width: 65%;
+  display: table;
+  margin: auto;
+  width: 65%;
 }
 
 .ring {
-    width: 33.333333333%;
-    float: left;
+  width: 33.333333333%;
+  float: left;
 }
 
 .h5 {
-    position: relative;
-    margin-top: -45%;
-    text-align: center;
+  position: relative;
+  margin-top: -45%;
+  text-align: center;
 }
 
 .h5 h5 {
-    font-size: 4.5vw;
+  font-size: 4.5vw;
 }
 
 .stats h6 {
-    margin: auto;
-    max-width: 80%;
-    text-align: center;
-    font-size: 20px;
-    padding-top: 27%;
+  margin: auto;
+  max-width: 80%;
+  text-align: center;
+  font-size: 20px;
+  padding-top: 27%;
 }
 
 
 /* secondary page navigation */
 
 .jumpbar {
-    width: 100%;
-    height: 900px;
+  width: 100%;
+  height: 900px;
 }
 
 .jumpbar .column {
-    width: 100%;
-    float: left;
-    height: 300px;
+  width: 100%;
+  float: left;
+  height: 300px;
 }
 
 .jumpbar .col1 {
-    position: absolute;
-    z-index: 48;
-    background-color: #A1DFF6;
+  position: absolute;
+  z-index: 48;
+  background-color: #A1DFF6;
 }
 
 .jumpbar .col2 {
-    position: absolute;
-    z-index: 48;
-    margin-top: 300px;
-    background-color: #97BCFF;
+  position: absolute;
+  z-index: 48;
+  margin-top: 300px;
+  background-color: #97BCFF;
 }
 
 .jumpbar .col3 {
-    position: absolute;
-    z-index: 48;
-    margin-top: 600px;
-    background-color: #FFD698;
+  position: absolute;
+  z-index: 48;
+  margin-top: 600px;
+  background-color: #FFD698;
 }
 
 #purpose-icon,
 #donate-icon,
 #events-icon {
-    display: block;
-    margin: auto;
-    padding-top: 30px;
+  display: block;
+  margin: auto;
+  padding-top: 30px;
 }
 
 .jumpbar h6 {
-    text-align: center;
-    font-size: 20px;
-    margin: 0 10% 0 10%;
-    padding-top: 25px;
+  text-align: center;
+  font-size: 20px;
+  margin: 0 10% 0 10%;
+  padding-top: 25px;
 }
 
 .jumpbar h2 {
-    text-align: center;
-    font-size: 30px;
+  text-align: center;
+  font-size: 30px;
 }
 
 
 /* chapter search */
 
 .chaptersearch {
-    position: relative;
-    clear: both;
-    width: 100%;
-    height: 240px;
-    background-color: #D7D7D7;
+  position: relative;
+  clear: both;
+  width: 100%;
+  height: 240px;
+  background-color: #D7D7D7;
 }
 
 .chaptersearch .desc {
-    margin: auto;
-    padding-top: 35px;
-    text-align: center;
-    width: 80%;
-    max-width: 900px;
+  margin: auto;
+  padding-top: 35px;
+  text-align: center;
+  width: 80%;
+  max-width: 900px;
 }
 
 .chaptersearch .searchform {
-    position: absolute;
-    left: 50%;
-    width: 80%;
-    margin-left: -40%;
-    margin-top: 25px;
-    z-index: 46;
+  position: absolute;
+  left: 50%;
+  width: 80%;
+  margin-left: -40%;
+  margin-top: 25px;
+  z-index: 46;
 }
 
 .searchform form {
-    text-align: center;
+  text-align: center;
 }
 
 .searchform input {
-    top: 0px;
-    width: 250px;
-    height: 45px;
-    padding-left: 10px;
-    font-size: 16px;
-    font-family: "montserrat-regular";
-    border-color: black;
-    border-radius: 7px;
+  top: 0px;
+  width: 250px;
+  height: 45px;
+  padding-left: 10px;
+  font-size: 16px;
+  font-family: "montserrat-regular";
+  border-color: black;
+  border-radius: 7px;
 }
 
 .searchform button {
-    top: 0px;
-    width: 120px;
-    height: 45px;
-    border: 0px;
-    color: white;
-    background-color: #009730;
-    border-radius: 7px;
-    margin-left: 20px;
+  top: 0px;
+  width: 120px;
+  height: 45px;
+  border: 0px;
+  color: white;
+  background-color: #009730;
+  border-radius: 7px;
+  margin-left: 20px;
 }
 
 .searchform button:hover {
-    background-color: green;
+  background-color: green;
 }
 
 #worldmap {
-    position: relative;
-    display: block;
-    width: 80%;
-    margin: auto;
-    margin-top: -150px;
+  position: relative;
+  display: block;
+  width: 80%;
+  margin: auto;
+  margin-top: -150px;
 }
 
 
 /* MEDIA QUERIES */
 
 @media only screen and (max-width: 720px) {
-    /* For mobile screens: */
-    #videoplayer {
-        margin-left: -180px;
-        width: 360px;
-        height: 240px;
-    }
-    #herotext {
-        position: relative;
-        margin: auto;
-        text-align: center;
-        left: 0%;
-        top: 0%;
-        width: 70%;
-        max-width: 600px;
-        padding-top: 40px;
-    }
-    #herotext h2 {
-        font-size: 30px;
-        color: black;
-    }
-    .button-border {
-        color: black;
-        border-color: black;
-    }
-    .missionstats {
-        height: 1200px;
-    }
-    .mission {
-        padding-top: 50px;
-        width: 85%;
-    }
-    .h3 h3 {
-        font-size: 21px;
-    }
-    .h3 {
-        margin-top: -130px;
-        max-width: 460px;
-    }
-    #paint {
-        display: none;
-    }
-    #paint2 {
-        margin: auto;
-        width: 90%;
-        max-width: 450px;
-        display: block;
-        position: relative;
-    }
-    #ring1,
-    #ring2,
-    #ring3 {
-        width: 85%;
-        max-width: 220px;
-    }
-    .ring {
-        width: 100%;
-    }
-    .h5 {
-        margin-top: -150px;
-    }
-    .h5 h5 {
-        font-size: 70px;
-    }
-    .stats {
-        padding-top: 20px;
-    }
-    .stats h6 {
-        padding-top: 75px;
-        padding-bottom: 25px;
-    }
-    #worldmap {
-        width: 90%;
-        margin-top: -130px;
-    }
-    .chaptersearch h2 {
-        font-size: 24px;
-    }
+  /* For mobile screens: */
+  #videoplayer {
+    margin-left: -180px;
+    width: 360px;
+    height: 240px;
+  }
+  #herotext {
+    position: relative;
+    margin: auto;
+    text-align: center;
+    left: 0%;
+    top: 0%;
+    width: 70%;
+    max-width: 600px;
+    padding-top: 40px;
+  }
+  #herotext h2 {
+    font-size: 30px;
+    color: black;
+  }
+  .button-border {
+    color: black;
+    border-color: black;
+  }
+  .missionstats {
+    height: 1200px;
+  }
+  .mission {
+    padding-top: 50px;
+    width: 85%;
+  }
+  .h3 h3 {
+    font-size: 21px;
+  }
+  .h3 {
+    margin-top: -130px;
+    max-width: 460px;
+  }
+  #paint {
+    display: none;
+  }
+  #paint2 {
+    margin: auto;
+    width: 90%;
+    max-width: 450px;
+    display: block;
+    position: relative;
+  }
+  #ring1,
+  #ring2,
+  #ring3 {
+    width: 85%;
+    max-width: 220px;
+  }
+  .ring {
+    width: 100%;
+  }
+  .h5 {
+    margin-top: -150px;
+  }
+  .h5 h5 {
+    font-size: 70px;
+  }
+  .stats {
+    padding-top: 20px;
+  }
+  .stats h6 {
+    padding-top: 75px;
+    padding-bottom: 25px;
+  }
+  #worldmap {
+    width: 90%;
+    margin-top: -130px;
+  }
+  .chaptersearch h2 {
+    font-size: 24px;
+  }
 }
 
 @media only screen and (max-width: 560px) {
-    /* mobile fixes */
-    #purpose-icon,
-    #donate-icon,
-    #events-icon {
-        width: 70px;
-    }
-    .jumpbar h2 {
-        font-size: 24px;
-    }
-    .chaptersearch {
-        height: 270px;
-    }
-    .chaptersearch .desc {
-        width: 70%;
-        max-width: 375px;
-    }
-    .chaptersearch .searchform {
-        width: 50%;
-        margin-left: -25%;
-    }
-    .searchform input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    .searchform button {
-        margin-left: 0px;
-    }
+  /* mobile fixes */
+  #purpose-icon,
+  #donate-icon,
+  #events-icon {
+    width: 70px;
+  }
+  .jumpbar h2 {
+    font-size: 24px;
+  }
+  .chaptersearch {
+    height: 270px;
+  }
+  .chaptersearch .desc {
+    width: 70%;
+    max-width: 375px;
+  }
+  .chaptersearch .searchform {
+    width: 50%;
+    margin-left: -25%;
+  }
+  .searchform input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .searchform button {
+    margin-left: 0px;
+  }
 }
 
 @media only screen and (min-width: 960px) {
-    /* For desktop screens: */
-    #herotext h2 {
-        font-size: 36px;
-    }
-    #herotext {
-        left: 15%;
-        width: 38%;
-        max-width: 425px;
-    }
-    .button-border {
-        margin-top: 12px;
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-    #videoplayer {
-        margin-left: -427px;
-        width: 854px;
-        height: 480px;
-    }
-    .h3 h3 {
-        font-size: 30px;
-    }
-    .h3 {
-        max-width: 700px;
-        margin-top: -110px;
-    }
-    .missionstats {
-        min-height: 520px;
-        height: 50vw;
-        max-height: 580px;
-    }
-    .stats h6 {
-        font-size: 24px;
-    }
-    .jumpbar {
-        height: 300px;
-    }
-    .jumpbar .column {
-        width: 33.33333333%;
-        float: left;
-        height: 300px;
-    }
-    .jumpbar .col1 {
-        position: absolute;
-        z-index: 48;
-    }
-    .jumpbar .col2 {
-        position: absolute;
-        z-index: 48;
-        margin-left: 33.333333%;
-        margin-top: 0;
-    }
-    .jumpbar .col3 {
-        position: absolute;
-        z-index: 48;
-        margin-left: 66.666666%;
-        margin-top: 0;
-    }
-    #purpose-icon,
-    #donate-icon,
-    #events-icon {
-        padding-top: 25px;
-    }
-    .jumpbar h6 {
-        text-align: center;
-        font-size: 20px;
-        padding-top: 35px;
-        margin: 0 12% 0 12%;
-    }
-    #worldmap {
-        width: 60%;
-        min-width: 675px;
-        margin-top: -15%;
-    }
+  /* For desktop screens: */
+  #herotext h2 {
+    font-size: 36px;
+  }
+  #herotext {
+    left: 15%;
+    width: 38%;
+    max-width: 425px;
+  }
+  .button-border {
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  #videoplayer {
+    margin-left: -427px;
+    width: 854px;
+    height: 480px;
+  }
+  .h3 h3 {
+    font-size: 30px;
+  }
+  .h3 {
+    max-width: 700px;
+    margin-top: -110px;
+  }
+  .missionstats {
+    min-height: 520px;
+    height: 50vw;
+    max-height: 580px;
+  }
+  .stats h6 {
+    font-size: 24px;
+  }
+  .jumpbar {
+    height: 300px;
+  }
+  .jumpbar .column {
+    width: 33.33333333%;
+    float: left;
+    height: 300px;
+  }
+  .jumpbar .col1 {
+    position: absolute;
+    z-index: 48;
+  }
+  .jumpbar .col2 {
+    position: absolute;
+    z-index: 48;
+    margin-left: 33.333333%;
+    margin-top: 0;
+  }
+  .jumpbar .col3 {
+    position: absolute;
+    z-index: 48;
+    margin-left: 66.666666%;
+    margin-top: 0;
+  }
+  #purpose-icon,
+  #donate-icon,
+  #events-icon {
+    padding-top: 25px;
+  }
+  .jumpbar h6 {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 35px;
+    margin: 0 12% 0 12%;
+  }
+  #worldmap {
+    width: 60%;
+    min-width: 675px;
+    margin-top: -15%;
+  }
 }
 
 @media only screen and (min-width: 1440px) {
-    /* For largest screens: */
-    #herotext h2 {
-        font-size: 44px;
-    }
-    #herotext {
-        left: 15%;
-        width: 30%;
-        max-width: 475px;
-    }
-    .button-border {
-        margin-top: 15px;
-        padding: 10px 18px;
-        font-size: 16px;
-    }
-    #videoplayer {
-        margin-left: -640px;
-        width: 1280px;
-        height: 720px;
-    }
-    .h5 h5 {
-        font-size: 64px;
-    }
-    .stats h6 {
-        font-size: 28px;
-    }
+  /* For largest screens: */
+  #herotext h2 {
+    font-size: 44px;
+  }
+  #herotext {
+    left: 15%;
+    width: 30%;
+    max-width: 475px;
+  }
+  .button-border {
+    margin-top: 15px;
+    padding: 10px 18px;
+    font-size: 16px;
+  }
+  #videoplayer {
+    margin-left: -640px;
+    width: 1280px;
+    height: 720px;
+  }
+  .h5 h5 {
+    font-size: 64px;
+  }
+  .stats h6 {
+    font-size: 28px;
+  }
 }

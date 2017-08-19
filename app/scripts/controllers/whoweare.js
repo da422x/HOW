@@ -9,7 +9,7 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('WhoweareCtrl', function() {
-        'use strict';
-        // empty controller
-    });
+  .controller('WhoweareCtrl', function() {
+    'use strict';
+    // empty controller
+  });

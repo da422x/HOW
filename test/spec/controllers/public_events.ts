@@ -16,62 +16,62 @@ declare var module;
 //I'm basically doing this so I don't have to rename 
 //let api across every test file
 {
-//ready some global variables that we will initialize later
-let controller;
-let $scope; 
-let $rootScope;
-let api;
-let spyOnApiService;
+  //ready some global variables that we will initialize later
+  let controller;
+  let $scope;
+  let $rootScope;
+  let api;
+  let spyOnApiService;
 
-describe('Testing the public events controller directlys', function(){
-  beforeEach(function(){
-    module('ohanaApp');
-
-    //prepare the necessary injections
-    inject(function($controller, $injector){
-      $rootScope = $injector.get('$rootScope');
-      api = $injector.get('Api');
-      spyOnApiService = spyOn($injector.get('Api') , 'ezmoney');
-      $scope = $rootScope.$new();
-      controller = $injector.get('$controller')('PublicEventsCtrl', {$scope: $scope})
-    });
-  });
-
-  beforeEach(function(){
-    console.log('hello world');
-  });
-
-  it('should check that the sample method returns a hardcoded 5', function(){
-    console.log('hai there');
-    expect($scope.testingTester()).toEqual(5);
-  });
-
-
-})
-
-  describe('Spoofing the api service to test $scope calls against injected services', function(){
-    beforeEach(function(){
+  describe('Testing the public events controller directlys', function () {
+    beforeEach(function () {
       module('ohanaApp');
 
-      inject(function($injector){
+      //prepare the necessary injections
+      inject(function ($controller, $injector) {
+        $rootScope = $injector.get('$rootScope');
+        api = $injector.get('Api');
+        spyOnApiService = spyOn($injector.get('Api'), 'ezmoney');
+        $scope = $rootScope.$new();
+        controller = $injector.get('$controller')('PublicEventsCtrl', { $scope: $scope })
+      });
+    });
+
+    beforeEach(function () {
+      console.log('hello world');
+    });
+
+    it('should check that the sample method returns a hardcoded 5', function () {
+      console.log('hai there');
+      expect($scope.testingTester()).toEqual(5);
+    });
+
+
+  })
+
+  describe('Spoofing the api service to test $scope calls against injected services', function () {
+    beforeEach(function () {
+      module('ohanaApp');
+
+      inject(function ($injector) {
         $rootScope = $injector.get('$rootScope');
         $scope = $rootScope.$new();
-        
+
         controller = $injector.get('$controller')('PublicEventsCtrl', {
           $scope: $scope,
           Api: {
-            getme: function(){
+            getme: function () {
               return 12;
             }
           }
         });
-        
+
       });
     });
 
-      it('should spoof the api service for a simple equality test', function(){
-        expect($scope.testingTester2()).toEqual(12);
-      });
+    it('should spoof the api service for a simple equality test', function () {
+      expect($scope.testingTester2()).toEqual(12);
+    });
   });
 
 }

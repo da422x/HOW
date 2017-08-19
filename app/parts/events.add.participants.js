@@ -9,21 +9,21 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('EventaddparticipantsCtrl', function($scope, $location, $uibModalInstance, Api) {
-        'use strict';
+  .controller('EventaddparticipantsCtrl', function($scope, $location, $uibModalInstance, Api) {
+    'use strict';
 
-        // calendar options
+    // calendar options
 
-        $scope.popup = {
-            opened: false
-        };
+    $scope.popup = {
+      opened: false
+    };
 
-        $scope.open = function() {
-            $scope.popup.opened = true;
-        };
+    $scope.open = function() {
+      $scope.popup.opened = true;
+    };
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
-        };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
 
-    });
+  });

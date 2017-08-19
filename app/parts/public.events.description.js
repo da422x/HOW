@@ -9,29 +9,29 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('PublicEventsDescriptionCtrl', function($scope, $location, $uibModalInstance, $rootScope, userService) {
-        'use strict';
-        console.log(userService.getUserData(), userService.getRole(), $rootScope);
-        // calendar options
+  .controller('PublicEventsDescriptionCtrl', function($scope, $location, $uibModalInstance, $rootScope, userService) {
+    'use strict';
+    console.log(userService.getUserData(), userService.getRole(), $rootScope);
+    // calendar options
 
-        $scope.event = $scope.selected;
-        console.log('In modal');
-        console.log($scope.selected);
-        $scope.popup = {
-            opened: false
-        };
+    $scope.event = $scope.selected;
+    console.log('In modal');
+    console.log($scope.selected);
+    $scope.popup = {
+      opened: false
+    };
 
-        $scope.open = function() {
-            $scope.popup.opened = true;
-        };
+    $scope.open = function() {
+      $scope.popup.opened = true;
+    };
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
-        };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
 
-        $scope.postRsvp = function() {
-            //put join event logic here.  
-            $uibModalInstance.dismiss('cancel');
-        }
+    $scope.postRsvp = function() {
+      //put join event logic here.  
+      $uibModalInstance.dismiss('cancel');
+    }
 
-    });
+  });
