@@ -9,50 +9,50 @@
  * Controller of management console - event notifications
  */
 angular.module('ohanaApp')
-    .controller('EventdetailnotificationCtrl', function($scope) {
-        'use strict';
-        $scope.distros = ['b@example.com', 'c@example.com'];
-        $scope.recipient = [];
-        $scope.ccVisible = false;
-        $scope.bccVisible = false;
+  .controller('EventdetailnotificationCtrl', function($scope) {
+    'use strict';
+    $scope.distros = ['b@example.com', 'c@example.com'];
+    $scope.recipient = [];
+    $scope.ccVisible = false;
+    $scope.bccVisible = false;
 
-        $scope.toggleCC = function() {
-            this.ccVisible = !this.ccVisible;
-        };
+    $scope.toggleCC = function() {
+      this.ccVisible = !this.ccVisible;
+    };
 
-        $scope.toggleBCC = function() {
-            this.bccVisible = !this.bccVisible;
-        };
+    $scope.toggleBCC = function() {
+      this.bccVisible = !this.bccVisible;
+    };
 
-        $scope.options = {
-            height: 600,
-        };
+    $scope.options = {
+      height: 600,
+    };
 
-        $scope.sendTime = "";
+    $scope.sendTime = "";
 
-        $scope.dateOptions = {
-            formatYear: 'yy',
-            maxDate: new Date(2020, 5, 22),
-            minDate: new Date(),
-            startingDay: 1,
-            showWeeks: false
-        };
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1,
+      showWeeks: false
+    };
 
-        $scope.today = function() {
-            var dateToday = new Date();
-            $scope.t = dateToday;
-        };
-        $scope.today();
+    $scope.today = function() {
+      var dateToday = new Date();
+      $scope.t = dateToday;
+    };
+    $scope.today();
 
-        $scope.openSendDate = function() {
-            $scope.sendDate.opened = true;
-        };
+    $scope.openSendDate = function() {
+      $scope.sendDate.opened = true;
+    };
 
-        $scope.sendDate = {
-            opened: false
-        };
+    $scope.sendDate = {
+      opened: false
+    };
 
-        $scope.sendEventNotification = function() {
-            eventDetailsNotifications.reset();
-        }
-    });
+    $scope.sendEventNotification = function() {
+      eventDetailsNotifications.reset();
+    }
+  });

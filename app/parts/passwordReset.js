@@ -9,36 +9,36 @@
  * Controller of the ohanaApp
  */
 angular.module('ohanaApp')
-    .controller('passwordResetFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance) {
-        'use strict';
+  .controller('passwordResetFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance) {
+    'use strict';
 
-        $scope.userEmail = {
-            email: ''
-        };
+    $scope.userEmail = {
+      email: ''
+    };
 
-        $scope.popup = {
-            opened: false
-        };
+    $scope.popup = {
+      opened: false
+    };
 
-        $scope.open = function() {
-            $scope.popup.opened = true;
-        };
+    $scope.open = function() {
+      $scope.popup.opened = true;
+    };
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
-        };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
 
-        $scope.resetPassword = function() {
-            var pr = commonServices.sendPasswordReset($scope.userEmail);
-            $q.all([pr]).then(function(data) {
-                console.log(data);
-                if (data[0]) {
-                    $uibModalInstance.dismiss('cancel');
-                    swal("Request sent!", "Check your email for instructions to reset your password", "success");
-                } else {
-                    swal("Request Failed...", "Email does not exist", "error");
-                }
-            });
-        };
+    $scope.resetPassword = function() {
+      var pr = commonServices.sendPasswordReset($scope.userEmail);
+      $q.all([pr]).then(function(data) {
+        console.log(data);
+        if (data[0]) {
+          $uibModalInstance.dismiss('cancel');
+          swal("Request sent!", "Check your email for instructions to reset your password", "success");
+        } else {
+          swal("Request Failed...", "Email does not exist", "error");
+        }
+      });
+    };
 
-    });
+  });

@@ -2,37 +2,37 @@
 
 <!-- start modal-header -->
 <div class="modal-header">
-    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Change Chapter</h4>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">Change Chapter</h4>
 </div>
 <!-- end modal-header -->
 
 <!-- start modal body -->
 <div class="modal-body">
-    <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="region">Region*</label>
-            <div class="col-md-7">
-                <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newRegion" ng-change="regionUpdate(newRegion)" required>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="chapter">Chapter*</label>
-            <div class="col-md-7">
-                <select id="chapter" name="chapter" class="form-control" ng-model="newChapter" ng-options="chapter as chapter.text for chapter in chapters" required>
-                </select>
-            </div>
-        </div>
+  <form name="userForm" class="form-horizontal" ng-submit="postUser()" novalidate style="overflow-y: auto; overflow-x: hidden;">
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="region">Region*</label>
+      <div class="col-md-7">
+        <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newRegion" ng-change="regionUpdate(newRegion)" required>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="chapter">Chapter*</label>
+      <div class="col-md-7">
+        <select id="chapter" name="chapter" class="form-control" ng-model="newChapter" ng-options="chapter as chapter.text for chapter in chapters" required>
+        </select>
+      </div>
+    </div>
 
-        <!-- Button - Submit/Cancel -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="submit"></label>
-            <div class="col-md-7">
-                <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.chapter.$invalid" ng-click="updateRegionChapter(newRegion, newChapter)">Submit</button>
-                <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()">Cancel</button>
-            </div>
-        </div>
-    </form>
+    <!-- Button - Submit/Cancel -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="submit"></label>
+      <div class="col-md-7">
+        <button id="submit" name="submit" class="btn btn-primary" ng-disabled="userForm.chapter.$invalid" ng-click="updateRegionChapter(newRegion, newChapter)">Submit</button>
+        <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
+  </form>
 </div>
 <!-- end modal body -->

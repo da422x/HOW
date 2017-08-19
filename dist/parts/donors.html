@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <div class="modal-header">
-    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Donation Information</h4>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">Donation Information</h4>
 </div>
 <!-- end modal-header -->
 <div class="modal-body">
-    <form class="form-horizontal" name="donation" ng-submit="donate(donation.$valid)">
-        <fieldset>
-            <!-- Text - First Name -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="fname">First Name*</label>
-                <div class="col-md-7">
-                    <input id="fname" name="fname" type="text" placeholder="John" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
-            <!-- Text - Last Name -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="lname">Last Name*</label>
-                <div class="col-md-7">
-                    <input id="lname" name="lname" type="text" placeholder="Doe" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+  <form class="form-horizontal" name="donation" ng-submit="donate(donation.$valid)">
+    <fieldset>
+      <!-- Text - First Name -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="fname">First Name*</label>
+        <div class="col-md-7">
+          <input id="fname" name="fname" type="text" placeholder="John" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
+      <!-- Text - Last Name -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="lname">Last Name*</label>
+        <div class="col-md-7">
+          <input id="lname" name="lname" type="text" placeholder="Doe" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="city">Billing Address*</label>
-                <div class="col-md-7">
-                    <input id="address" name="address" type="text" placeholder="" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="city">Billing Address*</label>
+        <div class="col-md-7">
+          <input id="address" name="address" type="text" placeholder="" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="city">City*</label>
-                <div class="col-md-7">
-                    <input id="city" name="city" type="text" placeholder="Dallas" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="city">City*</label>
+        <div class="col-md-7">
+          <input id="city" name="city" type="text" placeholder="Dallas" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="state">State*</label>
-                <div class="col-md-2">
-                    <input id="state" name="state" type="text" ngpattern="[A-Z]{0,2}" placeholder="TX" class="form-control input-md" ng-required="true">
-                </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="state">State*</label>
+        <div class="col-md-2">
+          <input id="state" name="state" type="text" ngpattern="[A-Z]{0,2}" placeholder="TX" class="form-control input-md" ng-required="true">
+        </div>
 
-                <label class="col-md-2 control-label" for="zipcode">Zip Code*</label>
-                <div class="col-md-3">
-                    <input id="zipcode" name="zipcode" type="text" ngpattern="[0-9]{0,5}" placeholder="12345" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+        <label class="col-md-2 control-label" for="zipcode">Zip Code*</label>
+        <div class="col-md-3">
+          <input id="zipcode" name="zipcode" type="text" ngpattern="[0-9]{0,5}" placeholder="12345" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="creditcard">Credit Card Number*</label>
-                <div class="col-md-7">
-                    <input id="creditcard" name="creditcard" type="text" ngpattern="[0-9,-]{13,19}" placeholder="1234-5678-9123-4567" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="creditcard">Credit Card Number*</label>
+        <div class="col-md-7">
+          <input id="creditcard" name="creditcard" type="text" ngpattern="[0-9,-]{13,19}" placeholder="1234-5678-9123-4567" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
+      <div class="form-group">
 
-                <label class="col-md-4 control-label" for="date">Expiration Date*</label>
-                <div class="col-md-4">
-                    <p class="input-group">
-                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                    </p>
-                </div>
+        <label class="col-md-4 control-label" for="date">Expiration Date*</label>
+        <div class="col-md-4">
+          <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="newUserDirectory.DOB" is-open="popup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
 
 
-                <label class="col-md-1 control-label" for="cvc">CVC*</label>
-                <div class="col-md-2">
-                    <input id="cvc" name="cvc" type="text" ngpattern="[0-9]{0,3}" placeholder="123" class="form-control input-md" ng-required="true">
-                </div>
-            </div>
+        <label class="col-md-1 control-label" for="cvc">CVC*</label>
+        <div class="col-md-2">
+          <input id="cvc" name="cvc" type="text" ngpattern="[0-9]{0,3}" placeholder="123" class="form-control input-md" ng-required="true">
+        </div>
+      </div>
 
-            <div class="form-group">
+      <div class="form-group">
 
-            </div>
+      </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="dollaramount">Dollar Amount*</label>
-                <div class="col-md-4">
-                    <input id="dollaramount" type="text" name="dollaramount" type="number" placeholder="$1.00" class="form-control input-md" ng-requied="true">
-                </div>
-            </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="dollaramount">Dollar Amount*</label>
+        <div class="col-md-4">
+          <input id="dollaramount" type="text" name="dollaramount" type="number" placeholder="$1.00" class="form-control input-md" ng-requied="true">
+        </div>
+      </div>
 
-            <div class="form-group">
-                <div class="col-md-4"></div>
-                <p class="col-md-7">* indicates required field.</p>
-            </div>
-            <!-- Button - Submit -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-7">
-                    <button id="submit" name="submit" class="btn btn-primary" ng-submit="donate()">Donate</button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+      <div class="form-group">
+        <div class="col-md-4"></div>
+        <p class="col-md-7">* indicates required field.</p>
+      </div>
+      <!-- Button - Submit -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-7">
+          <button id="submit" name="submit" class="btn btn-primary" ng-submit="donate()">Donate</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
 </div>
 <!-- end modal body -->

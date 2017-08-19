@@ -9,7 +9,7 @@
  * Controller of public get involved
  */
 angular.module('ohanaApp')
-    .controller('GetinvolvedCtrl', function($scope) {
-        'use strict';
-        // empty controller
-    });
+  .controller('GetinvolvedCtrl', function($scope) {
+    'use strict';
+    // empty controller
+  });

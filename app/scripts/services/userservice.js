@@ -8,60 +8,60 @@
  * Service in the ohanaApp.
  */
 angular.module('ohanaApp')
-    .service('userService', function($rootScope, commonServices) {
+  .service('userService', function($rootScope, commonServices) {
 
-        // Setter Sunctions.
+    // Setter Sunctions.
 
-        this.setId = function(data) {
-            $rootScope.userId = data;
-            localStorage.setItem('userId', data);
-        };
+    this.setId = function(data) {
+      $rootScope.userId = data;
+      localStorage.setItem('userId', data);
+    };
 
-        this.setUserData = function(data) {
-            $rootScope.userData = data;
-            localStorage.setItem('userData', JSON.stringify(data));
-        };
+    this.setUserData = function(data) {
+      $rootScope.userData = data;
+      localStorage.setItem('userData', JSON.stringify(data));
+    };
 
-        this.setUserName = function(first, last) {
-            $rootScope.userName = first + ' ' + last;
-            localStorage.setItem('userName', first + ' ' + last);
-        };
+    this.setUserName = function(first, last) {
+      $rootScope.userName = first + ' ' + last;
+      localStorage.setItem('userName', first + ' ' + last);
+    };
 
-        this.setRole = function(data) {
-            $rootScope.userRole = data;
-            localStorage.setItem('userRole', data);
-        };
+    this.setRole = function(data) {
+      $rootScope.userRole = data;
+      localStorage.setItem('userRole', data);
+    };
 
-        this.setChapter = function(data) {
-            $rootScope.userChapter = data;
-            localStorage.setItem('userChapter', JSON.stringify(data));
-        };
+    this.setChapter = function(data) {
+      $rootScope.userChapter = data;
+      localStorage.setItem('userChapter', JSON.stringify(data));
+    };
 
-        // Getter Functions
+    // Getter Functions
 
-        this.getId = function() {
-            var userId = localStorage.getItem('userId');
-            return userId;
-        };
+    this.getId = function() {
+      var userId = localStorage.getItem('userId');
+      return userId;
+    };
 
-        this.getUserData = function() {
-            var userData = localStorage.getItem('userData');
-            return JSON.parse(userData);
-        };
+    this.getUserData = function() {
+      var userData = localStorage.getItem('userData');
+      return JSON.parse(userData);
+    };
 
-        this.getUserName = function() {
-            var userName = localStorage.getItem('userName');
-            return userName;
-        };
+    this.getUserName = function() {
+      var userName = localStorage.getItem('userName');
+      return userName;
+    };
 
-        this.getRole = function() {
-            var userRole = localStorage.getItem('userRole');
-            return userRole;
-        };
+    this.getRole = function() {
+      var userRole = localStorage.getItem('userRole');
+      return userRole;
+    };
 
-        this.getChapter = function() {
-            var userChapter = localStorage.getItem('userChapter');
-            return JSON.parse(userChapter);
-        };
+    this.getChapter = function() {
+      var userChapter = localStorage.getItem('userChapter');
+      return JSON.parse(userChapter);
+    };
 
-    });
+  });

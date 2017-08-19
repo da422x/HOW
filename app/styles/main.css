@@ -1,77 +1,77 @@
 @font-face {
-    font-family: besom;
-    font-weight: normal;
-    src: url(/assets/fonts/BesomRegular.ttf) format('truetype');
+  font-family: besom;
+  font-weight: normal;
+  src: url(/assets/fonts/BesomRegular.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: klinicslab-medium;
-    font-weight: normal;
-    src: url(/assets/fonts/KlinicSlabMedium.otf) format('opentype');
+  font-family: klinicslab-medium;
+  font-weight: normal;
+  src: url(/assets/fonts/KlinicSlabMedium.otf) format('opentype');
 }
 
 @font-face {
-    font-family: klinicslab-book;
-    font-weight: lighter;
-    src: url(/assets/fonts/KlinicSlabBook.otf) format('opentype');
+  font-family: klinicslab-book;
+  font-weight: lighter;
+  src: url(/assets/fonts/KlinicSlabBook.otf) format('opentype');
 }
 
 @font-face {
-    font-family: montserrat-bold;
-    font-weight: bold;
-    src: url(/assets/fonts/Montserrat-Bold.otf) format('opentype');
+  font-family: montserrat-bold;
+  font-weight: bold;
+  src: url(/assets/fonts/Montserrat-Bold.otf) format('opentype');
 }
 
 @font-face {
-    font-family: montserrat-regular;
-    font-weight: normal;
-    src: url(/assets/fonts/Montserrat-Regular.otf) format('opentype');
+  font-family: montserrat-regular;
+  font-weight: normal;
+  src: url(/assets/fonts/Montserrat-Regular.otf) format('opentype');
 }
 
 h1,
 h2 {
-    font-family: montserrat-bold;
+  font-family: montserrat-bold;
 }
 
 h3,
 h4 {
-    font-family: montserrat-regular;
+  font-family: montserrat-regular;
 }
 
 h5 {
-    font-family: besom;
+  font-family: besom;
 }
 
 h6 {
-    font-family: klinicslab-medium;
+  font-family: klinicslab-medium;
 }
 
 p {
-    font-family: klinicslab-book;
+  font-family: klinicslab-book;
 }
 
 .master {
-    background-color: white;
+  background-color: white;
 }
 
 .navbar-default {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 body {
-    padding-top: 0;
-    background: none;
+  padding-top: 0;
+  background: none;
 }
 
 .container>h3 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 a,
 a:active,
 a:visited {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 
@@ -85,147 +85,147 @@ a:visited {
 }*/
 
 #membersTable #inventoryTable a {
-    border-bottom: none;
-    color: black;
+  border-bottom: none;
+  color: black;
 }
 
 
 /* EVENTS CSS */
 
 .tabs-left>.nav-tabs {
-    border-bottom: 0;
+  border-bottom: 0;
 }
 
 .tab-content>.tab-pane,
 .pill-content>.pill-pane {
-    display: none;
+  display: none;
 }
 
 .tab-content>.active,
 .pill-content>.active {
-    display: block;
+  display: block;
 }
 
 .tabs-left>.nav-tabs>li {
-    float: none;
+  float: none;
 }
 
 .tabs-left>.nav-tabs>li>a {
-    min-width: 74px;
-    margin-right: 0;
-    margin-bottom: 3px;
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
 }
 
 .tabs-left>.nav-tabs {
-    float: left;
-    margin-right: 19px;
-    border-right: 1px solid #ddd;
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
 }
 
 .tabs-left>.nav-tabs>li>a {
-    margin-right: -1px;
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
-    border-radius: 4px 0 0 4px;
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .tabs-left>.nav-tabs>li>a:hover,
 .tabs-left>.nav-tabs>li>a:focus {
-    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
 }
 
 .tabs-left>.nav-tabs .active>a,
 .tabs-left>.nav-tabs .active>a:hover,
 .tabs-left>.nav-tabs .active>a:focus {
-    border-color: #ddd transparent #ddd #ddd;
-    *border-right-color: #ffffff;
+  border-color: #ddd transparent #ddd #ddd;
+  *border-right-color: #ffffff;
 }
 
 
 /* event details leftside-nav spacing off of right side */
 
 .spacercol {
-    width: 40px !important;
+  width: 40px !important;
 }
 
 
 /* ui-select height */
 
 .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
-    margin-bottom: 0px;
-    height: 1em;
+  margin-bottom: 0px;
+  height: 1em;
 }
 
 
 /* ui-select padding */
 
 .ui-select-multiple.ui-select-bootstrap {
-    padding: 6px 12px 6px 12px;
+  padding: 6px 12px 6px 12px;
 }
 
 
 /* events cards field title text formatting */
 
 .list-group-item h6 {
-    font-size: 15px;
-    margin-top: 0px;
-    margin-bottom: 5px;
+  font-size: 15px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 
 
 /* styling for 'Role Change Requests' */
 
 #approved-requests {
-    background-color: #DFF2BF;
+  background-color: #DFF2BF;
 }
 
 #declined-requests {
-    background-color: #FFBABA;
+  background-color: #FFBABA;
 }
 
 #pending-requests {
-    background-color: #FEEFB3;
+  background-color: #FEEFB3;
 }
 
 #rcr-alert {
-    background-color: #9F6000;
+  background-color: #9F6000;
 }
 
 .help-block {
-    color: #FF0000;
+  color: #FF0000;
 }
 
 .current-role-class {
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
 }
 
 
 /* Styling for registration modal */
 
 .highlight_field {
-    border-color: #FF0000;
+  border-color: #FF0000;
 }
 
 .modal-border {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 
 /* Styling for Profile page */
 
 .format-chapter-class {
-    text-decoration: none;
-    color: #428bca;
+  text-decoration: none;
+  color: #428bca;
 }
 
 .editable-click {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
