@@ -17,6 +17,7 @@
     "sub": true,
     "eqnull": true,
     "asi":true,
+    "camelcase": true,
     "globals": {
         "angular": true,
         "$": true,

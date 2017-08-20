@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "test": "tsc && grunt test",
-    "ready": "git config push.default current && grunt jsbeautifier && git pull origin master && grunt build && git add . && git commit -m ",
+    "ready": "git config push.default current && grunt jsbeautifier && npm run prettier && git pull origin master && grunt build && git add . && git commit -m ",
     "postready": "git push -u",
+    "prettier": "prettier --single-quote --tab-width 2 --trailing-comma es5 --write \".\/app/**/*.js\"",
     "surge_test": "surge -p dist -d howtest.surge.sh",
     "surge_prod": "surge -p dist -d howprod.surge.sh"
   },
@@ -58,6 +59,7 @@
     "karma-cli": "1.0.1",
     "load-grunt-tasks": "3.5.0",
     "phantomjs-prebuilt": "2.1.13",
+    "prettier": "^1.5.3",
     "surge": "0.18.0",
     "time-grunt": "1.4.0"
   },
