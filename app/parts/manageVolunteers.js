@@ -13,7 +13,17 @@ angular.module('ohanaApp')
     'use strict';
     $scope.rows_selected = [];
     $scope.event = event;
-    $scope.email;
+    $scope.email = "";
+    console.log(event);
+    $scope.hello = function() {
+      console.log('thad wuz here');
+    }
+    $scope.volunteersTable = null;
+
+    //this key will be set during the addVolunteer method
+    //that method has promise chaining, so this var is to carry the new event key
+    var newEventKey = null;
+    var newEventUserData = null;
 
     $scope.addVolunteer = function(email, key) {
       email = email.trim();
@@ -21,70 +31,64 @@ angular.module('ohanaApp')
       commonServices.getUserByEmail(email)
         .then(function(data) {
           if (data) {
-            var temp_key;
             _.each(data, function(val, idx) {
-              temp_key = idx;
+              newEventKey = idx;
               data[idx]["key"] = idx;
+              newEventUserData = data;
             });
-
-            commonServices.getData('userRoles/' + temp_key)
-              .then(function(role) {
-                if (role["role"] !== "Participant") {
-                  //check to see if the volunteer exists per this event
-                  commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
-                    .then(function(vol) {
-                      console.log(vol);
-                      if (!vol) {
-                        //check if the prospective volunteer is already signed up as a participant
-                        commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                          .then(function(part) {
-                            if (part) {
-                              //if they are a participant then remove them from the participant table
-                              var entity_key = Object.keys(part)[0];
-                              commonServices.removeData('/events/' + key + '/participants/' + entity_key);
-                            }
-                            commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                            $scope.reloadData();
-                          });
-                      } else {
-                        swal(
-                          'Oops...',
-                          "That volunteer has already been added",
-                          'error'
-                        );
-                      }
-
-                    })
-                } else {
-                  swal(
-                    'Oops...',
-                    "User not authorized to be added as a volunteer.",
-                    'error'
-                  );
-                }
-
-              })
-
+            return commonServices.getData('userRoles/' + newEventKey)
           } else {
-            swal(
+            throw ([
               'Oops...',
               "That user doesn\'t exists",
               'error'
-            );
-            $scope.reloadData();
-          }
+            ]);
 
-        }, function(err) {
+          }
+        })
+        .then(function(role) {
+          console.log(role, $scope.email, event.key);
+          //check to see if the volunteer exists per this event
+          if (role["role"] !== "Participant")
+            return commonServices.getUserByEmailAtPath($scope.email, '/events/' + event.key + '/volunteers')
+          else
+            throw (['Oops...',
+              "User not authorized to be added as a volunteer.",
+              'error'
+            ]);
+        })
+        .then(function(vol) {
+          console.log(vol);
+          //check if the prospective volunteer is already signed up as a participant
+          if (!vol)
+            return commonServices.getUserByEmailAtPath($scope.email, '/events/' + event.key + '/participants');
+          else
+            throw (['Oops...',
+              "That volunteer has already been added",
+              'error'
+            ])
+        })
+        .then(function(part) {
+          console.log(part);
+          if (part) {
+            //if they are a participant then remove them from the participant table
+            var entity_key = Object.keys(part)[0];
+            commonServices.removeData('/events/' + event.key + '/participants/' + entity_key);
+          }
+          commonServices.setData('/events/' + event.key + '/volunteers/' + newEventKey, newEventUserData[newEventKey]);
+          $scope.reloadData();
+        })
+        .catch(function(err) {
+          console.log(err);
           swal(
-            'Oops...',
-            "Unknown Error",
-            'error'
+            err[0],
+            err[1],
+            err[2]
           );
           $scope.reloadData();
-        });
-
-
+        })
     }
+
     $scope.reloadData = function() {
       commonServices.getData('/events/' + $scope.event.key + '/volunteers')
         .then(function(data) {
@@ -93,23 +97,25 @@ angular.module('ohanaApp')
         });
     }
     $scope.deleteVolunteers = function() {
+      console.log($scope.rows_selected);
       $scope.rows_selected.forEach(function(val, idx) {
         commonServices.removeData('/events/' + $scope.event.key + '/volunteers/' + val);
 
       })
-      $scope.reloadData(
-
-      );
+      $scope.reloadData();
     }
 
     $scope.buildTable = function() {
       var i;
       var packet;
       var dataSet = [];
+      console.log
       var tmp = ($scope.event.volunteers) ? Object.keys($scope.event.volunteers).forEach(function(val, idx) {
-        $scope.event.volunteers[val]["key"] = val;
+        // $scope.event.volunteers[val]//["key"] = val;
         dataSet.push($scope.event.volunteers[val]);
       }) : [];
+
+      console.log(dataSet);
       //dataGridUtil.buildMembersTableData(results);
       $scope.currId = ""; // holds value of the current row's member Id for CRUD ops
       $scope.checkedBoxes = [];
@@ -124,8 +130,8 @@ angular.module('ohanaApp')
         //if exists, destroy instance of table
         if ($.fn.DataTable.isDataTable($('#volunteersTable'))) {
           $scope.volunteersTable.destroy();
-          console.log('inside the destroy');
         }
+        console.log('before error', dataSet);
         $scope.volunteersTable = $('#volunteersTable').DataTable({
           // ajax: 'testData/members.json',
           data: dataSet,
@@ -178,6 +184,24 @@ angular.module('ohanaApp')
             }
           },
           drawCallback: function(settings) {
+
+            $('#addVolunteer').click(function() {
+              console.log($scope);
+              $scope.addVolunteer($scope.email, event.key);
+            })
+
+            $('#deleteVolunteers').click(function() {
+              $scope.deleteVolunteers();
+            })
+
+            $('#email').on('keyup', function(e) {;
+              $scope.email = $(this).val();
+            });
+
+            $('#email').on('change', function(e) {;
+              $scope.email = $(this).val();
+            });
+
             // Handle click on checkbox
             $('.volunteersTable-select').on('click', function(e) {
               var $row = $(this).closest('tr');
