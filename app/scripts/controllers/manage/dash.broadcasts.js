@@ -8,8 +8,7 @@
  * # DashManageCtrl
  * Controller of management console - dashboard
  */
-angular.module('ohanaApp')
-  .controller('DashBroadcastsCtrl', function() {
-    'use strict';
-    // empty controller
-  });
+angular.module('ohanaApp').controller('DashBroadcastsCtrl', function() {
+  'use strict';
+  // empty controller
+});

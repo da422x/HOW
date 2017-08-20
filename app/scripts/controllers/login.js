@@ -8,13 +8,20 @@
  * # LoginCtrl
  * Controller of public login
  */
-angular.module('ohanaApp')
-  .controller('LoginCtrl', function($q, commonServices, $scope, $rootScope, $uibModal, $location) {
+angular
+  .module('ohanaApp')
+  .controller('LoginCtrl', function(
+    $q,
+    commonServices,
+    $scope,
+    $rootScope,
+    $uibModal,
+    $location
+  ) {
     'use strict';
 
     $scope.logObj = {};
     $scope.checkLogin = function(user) {
-
       var results = commonServices.signin(user);
       $q.all([results]).then(function(data) {
         if (data[0].type === 'SUCCESS') {
@@ -26,14 +33,13 @@ angular.module('ohanaApp')
           swal('error', data[0].code + ': ' + data[0].message, 'error');
         }
       });
-
     };
 
     $scope.addUser = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/newUserDirectoryForm.html',
         controller: 'NewUserDirectoryFormCtrl',
-        backdrop: 'static'
+        backdrop: 'static',
       });
       if (!modalInstance) {
         $scope.update();
@@ -43,7 +49,7 @@ angular.module('ohanaApp')
     $scope.passwordReset = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/passwordReset.html',
-        controller: 'passwordResetFormCtrl'
+        controller: 'passwordResetFormCtrl',
       });
       if (!modalInstance) {
         $scope.update();

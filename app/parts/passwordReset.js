@@ -8,16 +8,23 @@
  * # passwordResetFormCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('passwordResetFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance) {
+angular
+  .module('ohanaApp')
+  .controller('passwordResetFormCtrl', function(
+    $rootScope,
+    $q,
+    commonServices,
+    $scope,
+    $uibModalInstance
+  ) {
     'use strict';
 
     $scope.userEmail = {
-      email: ''
+      email: '',
     };
 
     $scope.popup = {
-      opened: false
+      opened: false,
     };
 
     $scope.open = function() {
@@ -34,11 +41,14 @@ angular.module('ohanaApp')
         console.log(data);
         if (data[0]) {
           $uibModalInstance.dismiss('cancel');
-          swal("Request sent!", "Check your email for instructions to reset your password", "success");
+          swal(
+            'Request sent!',
+            'Check your email for instructions to reset your password',
+            'success'
+          );
         } else {
-          swal("Request Failed...", "Email does not exist", "error");
+          swal('Request Failed...', 'Email does not exist', 'error');
         }
       });
     };
-
   });

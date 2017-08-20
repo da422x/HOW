@@ -8,19 +8,29 @@
  * # NewuserdirectoryformCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('NewUserDirectoryFormCtrl', function($rootScope, $q, commonServices, $scope, $uibModalInstance, howLogService, userService) {
+angular
+  .module('ohanaApp')
+  .controller('NewUserDirectoryFormCtrl', function(
+    $rootScope,
+    $q,
+    commonServices,
+    $scope,
+    $uibModalInstance,
+    howLogService,
+    userService
+  ) {
     'use strict';
 
     $scope.initialize = function() {
       // calendar options
       $scope.popup = {
-        opened: false
+        opened: false,
       };
 
       $scope.format = 'MM/dd/yyyy';
 
-      $scope.datePattern = '([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)\d\d';
+      $scope.datePattern =
+        '([0][1-9]|[1][0-2])[- /.]([0][1-9]|[1-2][0-9]|[3][0-1])[- /.](19|20)dd';
 
       $scope.chapters = [];
 
@@ -36,14 +46,14 @@ angular.module('ohanaApp')
         branch: 'N/A',
         years: 0,
         service_type: false,
-        volunteer: false
+        volunteer: false,
       };
 
       $scope.dateOptions = {
         maxDate: new Date(2020, 5, 22),
         minDate: new Date(1900, 5, 22),
         showWeeks: false,
-        startingDay: 1
+        startingDay: 1,
       };
 
       $('#phonenum').mask('(999)999-9999');
@@ -62,19 +72,24 @@ angular.module('ohanaApp')
 
     $scope.regionUpdate = function() {
       var regionName = $scope.newUserDirectory.region.text;
-      var chapterList = _.filter($rootScope.siteData.regionsChapters, function(n) {
+      var chapterList = _.filter($rootScope.siteData.regionsChapters, function(
+        n
+      ) {
         return n.value === regionName;
       });
       $scope.chapters = chapterList[0].chapters;
     };
 
     $scope.ZipUpdate = function() {
-      var result = commonServices.addressLookup($scope.newUserDirectory.address.zip, function(callbackResult) {
-        if (callbackResult.success == true) {
-          console.log('zip success');
-          $scope.locationUpdate(callbackResult.results);
+      var result = commonServices.addressLookup(
+        $scope.newUserDirectory.address.zip,
+        function(callbackResult) {
+          if (callbackResult.success == true) {
+            console.log('zip success');
+            $scope.locationUpdate(callbackResult.results);
+          }
         }
-      });
+      );
     };
 
     $scope.locationUpdate = function(location) {
@@ -87,15 +102,14 @@ angular.module('ohanaApp')
         });
         $scope.newUserDirectory.chapter = chapter[0];
       });
-
     };
 
     $scope.postUser = function(form) {
       if (form.$invalid) {
         swal({
-          text: "The form has required fields that are missing data or formatted improperly.",
+          text: 'The form has required fields that are missing data or formatted improperly.',
           type: 'error',
-          customClass: 'modal-border'
+          customClass: 'modal-border',
         });
       } else {
         if (typeof $scope.newUserDirectory.address.line2 === 'undefined') {
@@ -106,9 +120,10 @@ angular.module('ohanaApp')
           address: {
             city: $scope.newUserDirectory.address.city,
             line1: $scope.newUserDirectory.address.line1,
-            line2: ($scope.newUserDirectory.address.line2 ? $scope.newUserDirectory.address.line2 : 'none'),
+            line2: $scope.newUserDirectory.address.line2 ?
+              $scope.newUserDirectory.address.line2 : 'none',
             state: $scope.newUserDirectory.address.state.name,
-            zip: $scope.newUserDirectory.address.zip
+            zip: $scope.newUserDirectory.address.zip,
           },
           name: $scope.newUserDirectory.name,
           branch: $scope.newUserDirectory.branch,
@@ -119,7 +134,7 @@ angular.module('ohanaApp')
           years: $scope.newUserDirectory.years,
           Region: $scope.newUserDirectory.region.text,
           Chapter: $scope.newUserDirectory.chapter,
-          password: $scope.newUserDirectory.password
+          password: $scope.newUserDirectory.password,
         };
 
         var results = commonServices.register(packet);
@@ -129,7 +144,7 @@ angular.module('ohanaApp')
             // If sign in was successful, send user to events page
             swal({
               text: 'User added!',
-              type: 'success'
+              type: 'success',
             }).then(function() {
               if ($scope.newUserDirectory.volunteer) {
                 var rcr_packet = {
@@ -143,12 +158,12 @@ angular.module('ohanaApp')
                   request_status: 'pending',
                   request_created: Date.now(),
                   request_updated: Date.now(),
-                  request_closed: ''
+                  request_closed: '',
                 };
                 commonServices.pushData('/roleChangeRequests/', rcr_packet);
                 swal({
                   text: 'Request to be Volunteer has been submitted! You can view the status of your request on your profile page.',
-                  type: 'success'
+                  type: 'success',
                 });
               }
             });
@@ -159,18 +174,16 @@ angular.module('ohanaApp')
           } else {
             // Do something here when sign in unsuccessful....
             swal({
-              text: "Error submitting data. Please try again",
+              text: 'Error submitting data. Please try again',
               type: 'error',
-              timer: 2500
+              timer: 2500,
             });
           }
         });
       }
-
     };
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
-
   });

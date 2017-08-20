@@ -8,8 +8,16 @@
  * # ChapterStatusCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('ChapterStatusCtrl', function($q, commonServices, userService, $scope, $rootScope, $uibModalInstance) {
+angular
+  .module('ohanaApp')
+  .controller('ChapterStatusCtrl', function(
+    $q,
+    commonServices,
+    userService,
+    $scope,
+    $rootScope,
+    $uibModalInstance
+  ) {
     'use strict';
 
     $scope.initialize = function() {
@@ -24,7 +32,7 @@ angular.module('ohanaApp')
       if (userService.getRole() === 'Chapter Lead') {
         $scope.levelChanged('Chapter');
         $scope.selectedChapter = {
-          text: userService.getChapter()
+          text: userService.getChapter(),
         };
       }
     };
@@ -49,16 +57,18 @@ angular.module('ohanaApp')
 
     $scope.levelChanged = function(level) {
       $scope.currentLog = [];
-      if (level === "National") {
+      if (level === 'National') {
         $scope.logType = [{
-          text: 'All Chapter Changes'
-        }];
+          text: 'All Chapter Changes',
+        }, ];
       } else {
         $scope.logType = [{
-          text: 'Primary Member Changes'
-        }, {
-          text: 'Secondary Member Changes'
-        }];
+            text: 'Primary Member Changes',
+          },
+          {
+            text: 'Secondary Member Changes',
+          },
+        ];
       }
     };
 
@@ -72,13 +82,19 @@ angular.module('ohanaApp')
           });
           break;
         case 'Primary Member Changes':
-          logData = commonServices.getData('/logs/chapterLogs/memberTraffic/primaryChapter/' + $scope.selectedChapter.text);
+          logData = commonServices.getData(
+            '/logs/chapterLogs/memberTraffic/primaryChapter/' +
+            $scope.selectedChapter.text
+          );
           $q.all([logData]).then(function(data) {
             $scope.formatPrimaryMemberLogs(data[0]);
           });
           break;
         case 'Secondary Member Changes':
-          logData = commonServices.getData('/logs/chapterLogs/memberTraffic/secondaryChapter/' + $scope.selectedChapter.text);
+          logData = commonServices.getData(
+            '/logs/chapterLogs/memberTraffic/secondaryChapter/' +
+            $scope.selectedChapter.text
+          );
           $q.all([logData]).then(function(data) {
             $scope.formatSecondaryMemberLogs(data[0]);
           });
@@ -86,7 +102,7 @@ angular.module('ohanaApp')
         default:
           console.log('No Log Option...');
       }
-    }
+    };
 
     $scope.formatAllLogs = function(data) {
       var newLog = [];
@@ -94,24 +110,31 @@ angular.module('ohanaApp')
       _.each(data, function(n) {
         packet = {
           msg: '',
-          ts: n.timeStamp
-        }
+          ts: n.timeStamp,
+        };
         if (n.type === 'primary') {
           packet.msg += n.userName + ' ';
           if (n.changedBy) {
-            packet.msg += 'Primary Chapter was switched by ' + n.changedBy + ' from ';
+            packet.msg +=
+              'Primary Chapter was switched by ' + n.changedBy + ' from ';
             packet.msg += n.oldChapter + ' to ' + n.newChapter;
           } else {
             if (n.oldChapter) {
-              packet.msg += 'switched Primary Chapter from ' + n.oldChapter + ' to ' + n.newChapter;
+              packet.msg +=
+                'switched Primary Chapter from ' +
+                n.oldChapter +
+                ' to ' +
+                n.newChapter;
             } else {
-              packet.msg += 'is a newly registered user, and has joined ' + n.newChapter;
+              packet.msg +=
+                'is a newly registered user, and has joined ' + n.newChapter;
             }
           }
         } else if (n.type === 'secondary') {
           packet.msg += n.userName + ' ';
           if (n.changedBy) {
-            packet.msg += 'Secondary Chapter(s) was modified by ' + n.changedBy + ': ';
+            packet.msg +=
+              'Secondary Chapter(s) was modified by ' + n.changedBy + ': ';
           } else {
             packet.msg += 'Secondary Chapter(s) was modified : ';
           }
@@ -134,10 +157,9 @@ angular.module('ohanaApp')
         }
 
         newLog.push(packet);
-
       });
       $scope.currentLog = newLog.reverse();
-    }
+    };
 
     $scope.formatPrimaryMemberLogs = function(data) {
       var newLog = [];
@@ -145,27 +167,41 @@ angular.module('ohanaApp')
       _.each(data, function(n) {
         packet = {
           msg: '',
-          ts: n.timeStamp
-        }
+          ts: n.timeStamp,
+        };
 
         if (n.status === 'added') {
           if (n.changedBy) {
-            packet.msg += n.userName + ' has been ADDED to ' + $scope.selectedChapter.text + ' by ' + n.changedBy + '.';
+            packet.msg +=
+              n.userName +
+              ' has been ADDED to ' +
+              $scope.selectedChapter.text +
+              ' by ' +
+              n.changedBy +
+              '.';
           } else {
-            packet.msg += n.userName + '  has JOINED ' + $scope.selectedChapter.text + '.';
+            packet.msg +=
+              n.userName + '  has JOINED ' + $scope.selectedChapter.text + '.';
           }
         } else {
           if (n.changedBy) {
-            packet.msg += n.userName + ' has been REMOVED from ' + $scope.selectedChapter.text + ' by ' + n.changedBy + '.';
+            packet.msg +=
+              n.userName +
+              ' has been REMOVED from ' +
+              $scope.selectedChapter.text +
+              ' by ' +
+              n.changedBy +
+              '.';
           } else {
-            packet.msg += n.userName + '  has LEFT ' + $scope.selectedChapter.text + '.';
+            packet.msg +=
+              n.userName + '  has LEFT ' + $scope.selectedChapter.text + '.';
           }
         }
 
         newLog.push(packet);
       });
       $scope.currentLog = newLog.reverse();
-    }
+    };
 
     $scope.formatSecondaryMemberLogs = function(data) {
       var newLog = [];
@@ -173,25 +209,45 @@ angular.module('ohanaApp')
       _.each(data, function(n) {
         packet = {
           msg: '',
-          ts: n.timeStamp
-        }
+          ts: n.timeStamp,
+        };
 
         if (n.status === 'added') {
           if (n.changedBy) {
-            packet.msg += n.userName + ' has been ADDED to ' + $scope.selectedChapter.text + ' as a secondary member by ' + n.changedBy + '.';
+            packet.msg +=
+              n.userName +
+              ' has been ADDED to ' +
+              $scope.selectedChapter.text +
+              ' as a secondary member by ' +
+              n.changedBy +
+              '.';
           } else {
-            packet.msg += n.userName + '  has JOINED ' + $scope.selectedChapter.text + ' as a secondary member.';
+            packet.msg +=
+              n.userName +
+              '  has JOINED ' +
+              $scope.selectedChapter.text +
+              ' as a secondary member.';
           }
         } else {
           if (n.changedBy) {
-            packet.msg += n.userName + ', as a secondary member, has been REMOVED from ' + $scope.selectedChapter.text + ' by ' + n.changedBy + '.';
+            packet.msg +=
+              n.userName +
+              ', as a secondary member, has been REMOVED from ' +
+              $scope.selectedChapter.text +
+              ' by ' +
+              n.changedBy +
+              '.';
           } else {
-            packet.msg += n.userName + ', as a scondary member,  has LEFT ' + $scope.selectedChapter.text + '.';
+            packet.msg +=
+              n.userName +
+              ', as a scondary member,  has LEFT ' +
+              $scope.selectedChapter.text +
+              '.';
           }
         }
 
         newLog.push(packet);
       });
       $scope.currentLog = newLog.reverse();
-    }
+    };
   });

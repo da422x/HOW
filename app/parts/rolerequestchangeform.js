@@ -8,8 +8,16 @@
  * # RoleRequestChangeFormCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('RoleRequestChangeFormCtrl', function($rootScope, $q, userService, commonServices, $scope, $uibModalInstance) {
+angular
+  .module('ohanaApp')
+  .controller('RoleRequestChangeFormCtrl', function(
+    $rootScope,
+    $q,
+    userService,
+    commonServices,
+    $scope,
+    $uibModalInstance
+  ) {
     'use strict';
 
     $scope.userData = userService.getUserData();
@@ -18,7 +26,7 @@ angular.module('ohanaApp')
 
     $scope.formData = {
       role: '',
-      comment: ''
+      comment: '',
     };
 
     $scope.roles = $rootScope.siteData.roles;
@@ -33,24 +41,28 @@ angular.module('ohanaApp')
         var canContinue = true;
         var errorMessage = '';
         $q.all([userRequests]).then(function(data) {
-
           if ($scope.currentUserRole !== $scope.formData.role.value) {
             _.each(data[0], function(value) {
-              if (value.uid === $scope.currentUID && value.request_status === 'pending') {
+              if (
+                value.uid === $scope.currentUID &&
+                value.request_status === 'pending'
+              ) {
                 canContinue = false;
-                errorMessage = 'You can only have one pending request at a time, you need to wait or delete current pending request...';
+                errorMessage =
+                  'You can only have one pending request at a time, you need to wait or delete current pending request...';
               }
             });
           } else {
             canContinue = false;
-            errorMessage = 'You are not allowed to make a request for a role you already have...';
+            errorMessage =
+              'You are not allowed to make a request for a role you already have...';
           }
 
           if (canContinue) {
             var newTS = Date.now();
             var packet = {
               uid: $scope.currentUID,
-              name: ($scope.userData.name.first + ' ' + $scope.userData.name.last),
+              name: $scope.userData.name.first + ' ' + $scope.userData.name.last,
               email: $scope.userData.email,
               current_role: $scope.currentUserRole,
               request_role: $scope.formData.role.value,
@@ -59,12 +71,16 @@ angular.module('ohanaApp')
               request_status: 'pending',
               request_created: newTS,
               request_updated: newTS,
-              request_closed: ''
+              request_closed: '',
             };
             commonServices.pushData('/roleChangeRequests/', packet);
             $rootScope.$broadcast('modalClosing');
             $uibModalInstance.dismiss('cancel');
-            swal('Success', 'Role Change Request created successfully', 'success');
+            swal(
+              'Success',
+              'Role Change Request created successfully',
+              'success'
+            );
           } else {
             swal('Error', errorMessage, 'error');
           }
@@ -72,6 +88,5 @@ angular.module('ohanaApp')
       } else {
         swal('Error', 'Role Change Request was not created...', 'error');
       }
-    }
-
+    };
   });

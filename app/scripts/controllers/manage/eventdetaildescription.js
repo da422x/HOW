@@ -8,29 +8,32 @@
  * # EventdetaildescriptionCtrl
  * Controller of management console - event description
  */
-angular.module('ohanaApp')
-  .controller('EventdetaildescriptionCtrl', function($http, $location, $scope, DAO) {
+angular
+  .module('ohanaApp')
+  .controller('EventdetaildescriptionCtrl', function(
+    $http,
+    $location,
+    $scope,
+    DAO
+  ) {
     'use strict';
     console.log('hello');
     $scope.selectedEvent = DAO.selectedEvent;
 
     console.log('hello:' + selectedEvent);
 
-
-
-    $scope.startTime = "";
-    $scope.endTime = "";
-    $scope.startDate = "";
-    $scope.endDate = "";
+    $scope.startTime = '';
+    $scope.endTime = '';
+    $scope.startDate = '';
+    $scope.endDate = '';
 
     $scope.dateOptions = {
       formatYear: 'yy',
       maxDate: new Date(2020, 5, 22),
       minDate: new Date(),
       startingDay: 1,
-      showWeeks: false
+      showWeeks: false,
     };
-
 
     // based on which picker was clicked
     $scope.openStartDate = function() {
@@ -42,11 +45,11 @@ angular.module('ohanaApp')
     };
 
     $scope.startDate = {
-      opened: false
+      opened: false,
     };
 
     $scope.endDate = {
-      opened: false
+      opened: false,
     };
 
     $scope.combineTimes = function() {
@@ -55,13 +58,25 @@ angular.module('ohanaApp')
       var tempStartDate = new Date($scope.startDate);
       var tempEndDate = new Date($scope.endDate);
 
-      var startDateTime = new Date(tempStartDate.getFullYear(), tempStartDate.getMonth(), tempStartDate.getDate(), tempStartTime.getHours(), tempStartTime.getMinutes());
-      var endDateTime = new Date(tempEndDate.getFullYear(), tempEndDate.getMonth(), tempEndDate.getDate(), tempEndTime.getHours(), tempEndTime.getMinutes());
+      var startDateTime = new Date(
+        tempStartDate.getFullYear(),
+        tempStartDate.getMonth(),
+        tempStartDate.getDate(),
+        tempStartTime.getHours(),
+        tempStartTime.getMinutes()
+      );
+      var endDateTime = new Date(
+        tempEndDate.getFullYear(),
+        tempEndDate.getMonth(),
+        tempEndDate.getDate(),
+        tempEndTime.getHours(),
+        tempEndTime.getMinutes()
+      );
       console.log(startDateTime, endDateTime);
 
       var arr = [startDateTime, endDateTime];
-      return (arr);
-    }
+      return arr;
+    };
 
     $scope.saveEventDescription = function() {
       // //			var packet = {
@@ -71,7 +86,6 @@ angular.module('ohanaApp')
       // //				function (successMsg) {},
       // //				function (errorMsg) {}
       // //				);
-
       // $http.put('http://txcdt36an7383.itservices.sbc.com:1337/events/' + $scope.howEvent.currentEvent.id, {
       //     name: $scope.newEventName
       // }).then(function() {

@@ -8,19 +8,24 @@
  * # NewiteminventoryformCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('NewItemInventoryFormCtrl', function($scope, $uibModalInstance, Api) {
+angular
+  .module('ohanaApp')
+  .controller('NewItemInventoryFormCtrl', function(
+    $scope,
+    $uibModalInstance,
+    Api
+  ) {
     'use strict';
 
     // calendar options
     $scope.popup = {
-      opened: false
+      opened: false,
     };
     $scope.format = 'MM/dd/yyyy';
     $scope.dateOptions = {
       maxDate: new Date(),
       startingDay: 0,
-      showWeeks: false
+      showWeeks: false,
     };
 
     $scope.open = function() {
@@ -29,60 +34,73 @@ angular.module('ohanaApp')
 
     // category dropdown data
     $scope.categories = [{
-      value: "kayaks_and_equip",
-      displayName: "Kayaks and Equipment"
-    }, {
-      value: "fishing_equip",
-      displayName: "Fishing Equipment"
-    }, {
-      value: "safety",
-      displayName: "Safety and PFDs"
-    }, {
-      value: "event_support",
-      displayName: "Event Support"
-    }, {
-      value: "chapter_support",
-      displayName: "Chapter Support"
-    }, {
-      value: "misc",
-      displayName: "Misc"
-    }];
+        value: 'kayaks_and_equip',
+        displayName: 'Kayaks and Equipment',
+      },
+      {
+        value: 'fishing_equip',
+        displayName: 'Fishing Equipment',
+      },
+      {
+        value: 'safety',
+        displayName: 'Safety and PFDs',
+      },
+      {
+        value: 'event_support',
+        displayName: 'Event Support',
+      },
+      {
+        value: 'chapter_support',
+        displayName: 'Chapter Support',
+      },
+      {
+        value: 'misc',
+        displayName: 'Misc',
+      },
+    ];
 
     // condition radio data
     $scope.conditions = [{
-      value: "new",
-      displayName: "New"
-    }, {
-      value: "good",
-      displayName: "Good"
-    }, {
-      value: "fair",
-      displayName: "Fair"
-    }, {
-      value: "poor",
-      displayName: "Poor"
-    }, {
-      value: "broken",
-      displayName: "Broken"
-    }];
+        value: 'new',
+        displayName: 'New',
+      },
+      {
+        value: 'good',
+        displayName: 'Good',
+      },
+      {
+        value: 'fair',
+        displayName: 'Fair',
+      },
+      {
+        value: 'poor',
+        displayName: 'Poor',
+      },
+      {
+        value: 'broken',
+        displayName: 'Broken',
+      },
+    ];
 
     // empty submit object
     $scope.newItem = {};
 
     $scope.postUser = function() {
       // submit form
-      $scope.newItem.chapter = $("#chapter :selected").val();
+      $scope.newItem.chapter = $('#chapter :selected').val();
       // check required fields if blank
-      if ($scope.newItem.name_of_item == null ||
+      if (
+        $scope.newItem.name_of_item == null ||
         $scope.newItem.category == null ||
         $scope.newItem.condition == null ||
-        $scope.newItem.chapter == null) {
+        $scope.newItem.chapter == null
+      ) {
         console.log($scope.newItem);
         console.log('ERROR');
         swal({
-          text: "Form incomplete!",
+          text: 'Form incomplete!',
           type: 'warning',
-          timer: 2500
+          timer: 2500,
         });
       } else {
         console.log($scope.newItem);
@@ -90,23 +108,21 @@ angular.module('ohanaApp')
         Api.member.save($scope.newItem).$promise.then(
           function(val) {
             swal({
-              text: "User added!",
+              text: 'User added!',
               type: 'success',
-              timer: 2500
+              timer: 2500,
             });
             $uibModalInstance.close();
           },
           function(error) {
             swal({
-              text: "Error submitting data. Please try again",
+              text: 'Error submitting data. Please try again',
               type: 'error',
-              timer: 2500
+              timer: 2500,
             });
           }
         );
-
       }
-
     };
 
     $scope.cancel = function() {

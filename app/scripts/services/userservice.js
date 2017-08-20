@@ -7,9 +7,9 @@
  * # userservice
  * Service in the ohanaApp.
  */
-angular.module('ohanaApp')
+angular
+  .module('ohanaApp')
   .service('userService', function($rootScope, commonServices) {
-
     // Setter Sunctions.
 
     this.setId = function(data) {
@@ -63,5 +63,4 @@ angular.module('ohanaApp')
       var userChapter = localStorage.getItem('userChapter');
       return JSON.parse(userChapter);
     };
-
   });

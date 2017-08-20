@@ -8,8 +8,7 @@
  * # GetinvolvedCtrl
  * Controller of public get involved
  */
-angular.module('ohanaApp')
-  .controller('GetinvolvedCtrl', function($scope) {
-    'use strict';
-    // empty controller
-  });
+angular.module('ohanaApp').controller('GetinvolvedCtrl', function($scope) {
+  'use strict';
+  // empty controller
+});

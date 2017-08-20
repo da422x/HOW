@@ -7,14 +7,24 @@
  * # ManageChapterchatCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('ManageChapterchatCtrl', function($scope, $rootScope, $q, commonServices, userService) {
-
-    $scope.$watch('chatLog', function() {
-      $('.panel-body').animate({
-        scrollTop: $('.panel-body').get(0).scrollHeight
-      });
-    }, true);
+angular
+  .module('ohanaApp')
+  .controller('ManageChapterchatCtrl', function(
+    $scope,
+    $rootScope,
+    $q,
+    commonServices,
+    userService
+  ) {
+    $scope.$watch(
+      'chatLog',
+      function() {
+        $('.panel-body').animate({
+          scrollTop: $('.panel-body').get(0).scrollHeight,
+        });
+      },
+      true
+    );
 
     $scope.init = function() {
       var userData = userService.getUserData();
@@ -39,7 +49,9 @@ angular.module('ohanaApp')
 
       $q.all([getLog]).then(function(data) {
         $scope.chatLog = _.sortBy(data[0], ['time']);
-        firebase.database().ref('/chat/chapters/' + usersChapter)
+        firebase
+          .database()
+          .ref('/chat/chapters/' + usersChapter)
           .on('value', function(snapshot) {
             $scope.chatLog = _.sortBy(snapshot.val(), ['time']);
             var kyz = Object.keys(snapshot.val());
@@ -49,20 +61,20 @@ angular.module('ohanaApp')
             }
           });
       });
-    }
+    };
 
     $scope.changeChapter = function() {
       swal({
         title: 'Switch Chapter',
         input: 'select',
-        inputOptions: $scope.chapterOptions
+        inputOptions: $scope.chapterOptions,
       }).then(function(option) {
         $scope.loadChapterChat(option);
         swal({
           type: 'success',
-          title: 'Switched chapters!'
+          title: 'Switched chapters!',
         });
-      });;
+      });
     };
 
     $scope.sendMessage = function() {
@@ -71,8 +83,10 @@ angular.module('ohanaApp')
       messageData.name = userService.getUserName();
       messageData.time = Date.now();
       messageData.message = $scope.newMessage;
-      commonServices.pushData('/chat/chapters/' + $scope.currentChapter.key, messageData);
+      commonServices.pushData(
+        '/chat/chapters/' + $scope.currentChapter.key,
+        messageData
+      );
       $scope.newMessage = '';
     };
-
   });

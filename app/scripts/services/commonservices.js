@@ -7,27 +7,37 @@
  * # commonServices
  * Service in the mainAppApp.
  */
-angular.module('ohanaApp')
-  .service('commonServices', ['$rootScope', '$firebaseAuth', 'DAO', 'expenseservice', '$firebaseArray', '$q', function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, $q) {
-
+angular.module('ohanaApp').service('commonServices', [
+  '$rootScope',
+  '$firebaseAuth',
+  'DAO',
+  'expenseservice',
+  '$firebaseArray',
+  '$q',
+  function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, $q) {
     /******************************************************
      *           User Management - start                  *
      *******************************************************/
 
     // Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
-      return firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      return firebase
+        .auth()
+        .createUserWithEmailAndPassword(user.email, user.password)
         .then(function() {
           var userId = firebase.auth().currentUser.uid;
           console.log('success : user registered');
           delete user.Chapter.$$hashKey;
-          return firebase.database().ref('/userData/' + userId).set(user)
+          return firebase
+            .database()
+            .ref('/userData/' + userId)
+            .set(user)
             .then(function(data) {
               console.log('success : user data added');
               firebase.database().ref('/userRoles/' + userId).set({
                 role: 'Participant',
                 name: user.name,
-                email: user.email
+                email: user.email,
               });
               return true;
             })
@@ -48,11 +58,15 @@ angular.module('ohanaApp')
 
     // Signs in existing user into the application, requires valid email and password.
     this.signin = function(user) {
-      return firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+      return firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
         .then(function(data) {
-          console.log('success : ' + firebase.auth().currentUser.email + ' signed In');
+          console.log(
+            'success : ' + firebase.auth().currentUser.email + ' signed In'
+          );
           return {
-            type: 'SUCCESS'
+            type: 'SUCCESS',
           };
         })
         .catch(function(error) {
@@ -62,15 +76,16 @@ angular.module('ohanaApp')
           return {
             type: 'ERROR',
             code: error.code,
-            message: error.message
+            message: error.message,
           };
         });
-
     };
 
     // Signs out current user.
     this.signout = function() {
-      firebase.auth().signOut()
+      firebase
+        .auth()
+        .signOut()
         .then(function(data) {
           console.log('success : Signed out');
           $rootScope.userData = {};
@@ -85,7 +100,9 @@ angular.module('ohanaApp')
 
     // Sends code needed for password reset to users email.
     this.sendPasswordReset = function(user) {
-      return firebase.auth().sendPasswordResetEmail(user.email)
+      return firebase
+        .auth()
+        .sendPasswordResetEmail(user.email)
         .then(function(data) {
           console.log('success : password reset sent');
           return true;
@@ -100,7 +117,7 @@ angular.module('ohanaApp')
 
     // Get current signed in Users email.
     this.getCurrentUserEmail = function() {
-      var user = firebase.auth().currentUser
+      var user = firebase.auth().currentUser;
       if (user != null) {
         return user.email;
       } else {
@@ -110,7 +127,7 @@ angular.module('ohanaApp')
 
     // Get current signed in Users UID.
     this.getCurrentUserUid = function() {
-      var user = firebase.auth().currentUser
+      var user = firebase.auth().currentUser;
       if (user != null) {
         return user.uid;
       } else {
@@ -121,7 +138,9 @@ angular.module('ohanaApp')
     // Returns a promise containing the users current role.
     this.getCurrentUserRole = function() {
       var user = firebase.auth().currentUser.uid;
-      return firebase.database().ref('/userRoles/' + user + '/role/')
+      return firebase
+        .database()
+        .ref('/userRoles/' + user + '/role/')
         .once('value')
         .then(function(snapshot) {
           return snapshot.val();
@@ -138,7 +157,10 @@ angular.module('ohanaApp')
 
     // Sets data at given path.
     this.setData = function(path, data) {
-      firebase.database().ref(path).set(data)
+      firebase
+        .database()
+        .ref(path)
+        .set(data)
         .then(function(data) {
           console.log('success : data set');
         })
@@ -150,7 +172,10 @@ angular.module('ohanaApp')
     };
     // Adds a key and sets the data to the key based on where the path is.
     this.pushData = function(path, data) {
-      return firebase.database().ref(path).push(data)
+      return firebase
+        .database()
+        .ref(path)
+        .push(data)
         .once('value')
         .then(function(snapshot) {
           console.log('success : data pushed');
@@ -163,7 +188,7 @@ angular.module('ohanaApp')
         });
     };
 
-    // Adds a key to the designated path, then returns the key. 
+    // Adds a key to the designated path, then returns the key.
     this.getNewKey = function(path) {
       return firebase.database().ref(path).push().key;
     };
@@ -172,7 +197,10 @@ angular.module('ohanaApp')
     this.updateData = function(path, data) {
       var updates = {};
       updates[path] = data;
-      firebase.database().ref().update(updates)
+      firebase
+        .database()
+        .ref()
+        .update(updates)
         .then(function(data) {
           console.log('success : data updated');
         })
@@ -185,7 +213,10 @@ angular.module('ohanaApp')
 
     // Removes data from given path.
     this.removeData = function(path) {
-      firebase.database().ref(path).remove()
+      firebase
+        .database()
+        .ref(path)
+        .remove()
         .then(function(data) {
           console.log('success : data Deleted');
         })
@@ -198,7 +229,9 @@ angular.module('ohanaApp')
 
     // Gets data from directed path, returns a promise.
     this.getData = function(path) {
-      return firebase.database().ref(path)
+      return firebase
+        .database()
+        .ref(path)
         .once('value')
         .then(function(snapshot) {
           return snapshot.val();
@@ -207,8 +240,9 @@ angular.module('ohanaApp')
 
     // Gets user based on email
     this.getUserByEmail = function(email) {
-
-      return firebase.database().ref('userData')
+      return firebase
+        .database()
+        .ref('userData')
         .orderByChild('email')
         .equalTo(email)
         .once('value')
@@ -219,8 +253,9 @@ angular.module('ohanaApp')
 
     // Gets user based on email with path(only for verification of volunteers, participants, guest and w/e else)
     this.getUserByEmailAtPath = function(email, path) {
-
-      return firebase.database().ref(path)
+      return firebase
+        .database()
+        .ref(path)
         .orderByChild('email')
         .equalTo(email)
         .once('value')
@@ -231,7 +266,9 @@ angular.module('ohanaApp')
 
     // Gets all Public events from database.
     this.getPublicEvents = function() {
-      return firebase.database().ref('events')
+      return firebase
+        .database()
+        .ref('events')
         .once('value')
         .then(function(snapshot) {
           console.log('Data received');
@@ -253,7 +290,11 @@ angular.module('ohanaApp')
      *******************************************************/
     this.DAO = DAO;
     this.getEvent = function(event) {
-      return firebase.database().ref('/events').orderByChild("name").equalTo(event.name)
+      return firebase
+        .database()
+        .ref('/events')
+        .orderByChild('name')
+        .equalTo(event.name)
         .once('value')
         .then(function(snapshot) {
           console.log('Data received');
@@ -277,27 +318,31 @@ angular.module('ohanaApp')
     this.addressLookup = function(zip, outerCallback) {
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode({
-        "address": zip.toString()
-      }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-          //var coordinates = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-          var result = results[0].geometry.location;
-          if (status == google.maps.GeocoderStatus.OK) {
-            outerCallback({
-              success: true,
-              err: null,
-              results: result
-            });
-          } else {
-            outerCallback({
-              success: false,
-              err: new Error('Geocode was not successful for the following reason: ' + status),
-              results: null
-            });
+          address: zip.toString(),
+        },
+        function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+            //var coordinates = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+            var result = results[0].geometry.location;
+            if (status == google.maps.GeocoderStatus.OK) {
+              outerCallback({
+                success: true,
+                err: null,
+                results: result,
+              });
+            } else {
+              outerCallback({
+                success: false,
+                err: new Error(
+                  'Geocode was not successful for the following reason: ' +
+                  status
+                ),
+                results: null,
+              });
+            }
           }
-
         }
-      });
+      );
     };
 
     this.zipCompare = function(location) {
@@ -317,7 +362,10 @@ angular.module('ohanaApp')
             _.each(data[0], function(state) {
               _.each(state, function(chapters) {
                 var coord = new google.maps.LatLng(chapters.lat, chapters.lng);
-                var d1 = google.maps.geometry.spherical.computeDistanceBetween(location, coord);
+                var d1 = google.maps.geometry.spherical.computeDistanceBetween(
+                  location,
+                  coord
+                );
                 if (d == null) {
                   d = d1;
                 } else {
@@ -333,7 +381,6 @@ angular.module('ohanaApp')
             console.log('Failed to get Chapters...');
           }
         });
-
       });
       return $q.all(promises).then(function() {
         var answ = [];
@@ -346,5 +393,5 @@ angular.module('ohanaApp')
     /******************************************************
      *            Other Utility methods - end             *
      *****************************************************/
-
-  }]);
+  },
+]);

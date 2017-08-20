@@ -29,8 +29,8 @@
   var isIE = userAgent.indexOf('Trident') >= 0;
   var isIOS = /\b(iPad|iPhone|iPod)(?=;)/.test(userAgent);
   var isOpera = userAgent.indexOf('Opera') >= 0;
-  var isSafari = /Safari\//.test(userAgent) &&
-    !/(Chrome\/|Android\s)/.test(userAgent);
+  var isSafari =
+    /Safari\//.test(userAgent) && !/(Chrome\/|Android\s)/.test(userAgent);
 
   // Initializing PDFJS global object here, it case if we need to change/disable
   // some PDF.js features, e.g. range requests
@@ -68,7 +68,7 @@
         offset = 0;
       }
       for (var i = 0, n = array.length; i < n; ++i, ++offset) {
-        this[offset] = array[i] & 0xFF;
+        this[offset] = array[i] & 0xff;
       }
     }
 
@@ -128,18 +128,18 @@
         // some browsers (e.g. safari) cannot use defineProperty() on DOM objects
         // and thus the native version is not sufficient
         Object.defineProperty(new Image(), 'id', {
-          value: 'test'
+          value: 'test',
         });
         // ... another test for android gb browser for non-DOM objects
         var Test = function Test() {};
         Test.prototype = {
-          get id() {}
+          get id() {},
         };
         Object.defineProperty(new Test(), 'id', {
           value: '',
           configurable: true,
           enumerable: true,
-          writable: false
+          writable: false,
         });
       } catch (e) {
         definePropertyPossible = false;
@@ -169,7 +169,6 @@
     };
   })();
 
-
   // No XMLHttpRequest#response?
   // Support: IE<11, Android <4.0
   (function checkXMLHttpRequestResponseCompatibility() {
@@ -179,7 +178,7 @@
       // IE10 might have response, but not overrideMimeType
       // Support: IE10
       Object.defineProperty(xhrPrototype, 'overrideMimeType', {
-        value: function xmlHttpRequestOverrideMimeType(mimeType) {}
+        value: function xmlHttpRequestOverrideMimeType(mimeType) {},
       });
     }
     if ('responseType' in xhr) {
@@ -196,12 +195,14 @@
       set: function xmlHttpRequestSetResponseType(value) {
         if (value === 'text' || value === 'arraybuffer') {
           this._responseType = value;
-          if (value === 'arraybuffer' &&
-            typeof this.overrideMimeType === 'function') {
+          if (
+            value === 'arraybuffer' &&
+            typeof this.overrideMimeType === 'function'
+          ) {
             this.overrideMimeType('text/plain; charset=x-user-defined');
           }
         }
-      }
+      },
     });
 
     // Support: IE9
@@ -212,7 +213,7 @@
             return new Uint8Array(new VBArray(this.responseBody).toArray());
           }
           return this.responseText;
-        }
+        },
       });
       return;
     }
@@ -223,13 +224,14 @@
           return this.responseText;
         }
         var text = this.responseText;
-        var i, n = text.length;
+        var i,
+          n = text.length;
         var result = new Uint8Array(n);
         for (i = 0; i < n; ++i) {
-          result[i] = text.charCodeAt(i) & 0xFF;
+          result[i] = text.charCodeAt(i) & 0xff;
         }
         return result.buffer;
-      }
+      },
     });
   })();
 
@@ -247,15 +249,18 @@
       var buffer = '';
       var i, n;
       for (i = 0, n = chars.length; i < n; i += 3) {
-        var b1 = chars.charCodeAt(i) & 0xFF;
-        var b2 = chars.charCodeAt(i + 1) & 0xFF;
-        var b3 = chars.charCodeAt(i + 2) & 0xFF;
+        var b1 = chars.charCodeAt(i) & 0xff;
+        var b2 = chars.charCodeAt(i + 1) & 0xff;
+        var b3 = chars.charCodeAt(i + 2) & 0xff;
         var d1 = b1 >> 2,
           d2 = ((b1 & 3) << 4) | (b2 >> 4);
-        var d3 = i + 1 < n ? ((b2 & 0xF) << 2) | (b3 >> 6) : 64;
-        var d4 = i + 2 < n ? (b3 & 0x3F) : 64;
-        buffer += (digits.charAt(d1) + digits.charAt(d2) +
-          digits.charAt(d3) + digits.charAt(d4));
+        var d3 = i + 1 < n ? ((b2 & 0xf) << 2) | (b3 >> 6) : 64;
+        var d4 = i + 2 < n ? b3 & 0x3f : 64;
+        buffer +=
+          digits.charAt(d1) +
+          digits.charAt(d2) +
+          digits.charAt(d3) +
+          digits.charAt(d4);
       }
       return buffer;
     };
@@ -283,10 +288,15 @@
         (buffer = input.charAt(idx++));
         // character found in table?
         // initialize bit storage and add its ascii value
-        ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+        ~buffer &&
+        (
+          (bs = bc % 4 ? bs * 64 + buffer : buffer),
           // and if not first of each 4 characters,
           // convert the first 8 bits to one ascii character
-          bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
+          bc++ % 4
+        ) ?
+        (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6)))) :
+        0
       ) {
         // try to find character in table (0-63, not found => -1)
         buffer = digits.indexOf(buffer);
@@ -333,8 +343,9 @@
           if (attribute.name.substring(0, 5) !== 'data-') {
             continue;
           }
-          var key = attribute.name.substring(5).replace(/\-([a-z])/g,
-            function(all, ch) {
+          var key = attribute.name
+            .substring(5)
+            .replace(/\-([a-z])/g, function(all, ch) {
               return ch.toUpperCase();
             });
           dataset[key] = attribute.value;
@@ -343,11 +354,11 @@
         Object.defineProperty(this, '_dataset', {
           value: dataset,
           writable: false,
-          enumerable: false
+          enumerable: false,
         });
         return dataset;
       },
-      enumerable: true
+      enumerable: true,
     });
   })();
 
@@ -373,7 +384,7 @@
         list.splice(index, 1);
       }
       element.className = list.join(' ');
-      return (index >= 0);
+      return index >= 0;
     }
 
     var classListPrototype = {
@@ -388,7 +399,7 @@
       },
       toggle: function(name) {
         changeList(this.element, name, true, true);
-      }
+      },
     };
 
     Object.defineProperty(HTMLElement.prototype, 'classList', {
@@ -401,17 +412,17 @@
           element: {
             value: this,
             writable: false,
-            enumerable: true
-          }
+            enumerable: true,
+          },
         });
         Object.defineProperty(this, '_classList', {
           value: classList,
           writable: false,
-          enumerable: false
+          enumerable: false,
         });
         return classList;
       },
-      enumerable: true
+      enumerable: true,
     });
   })();
 
@@ -424,7 +435,7 @@
       window.console = {
         log: function() {},
         error: function() {},
-        warn: function() {}
+        warn: function() {},
       };
     } else if (!('bind' in console.log)) {
       // native functions in IE9 might not have bind
@@ -538,8 +549,9 @@
         // thus pass the Chrome check above and not reach this block.
         polyfill = isAndroidPre5;
       } else if (isSafari) {
-        versionMatch = userAgent.
-        match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//);
+        versionMatch = userAgent.match(
+          /Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//
+        );
         // Safari < 6 lacks the set function.
         polyfill = versionMatch && parseInt(versionMatch[1]) < 6;
       }
@@ -610,7 +622,7 @@
         return scripts[scripts.length - 1];
       },
       enumerable: true,
-      configurable: true
+      configurable: true,
     });
   })();
 
@@ -631,7 +643,7 @@
           typeProperty.set.call(this, value === 'number' ? 'text' : value);
         },
         enumerable: true,
-        configurable: true
+        configurable: true,
       });
     }
   })();
@@ -643,8 +655,10 @@
       return;
     }
     var documentProto = document.constructor.prototype;
-    var readyStateProto = Object.getOwnPropertyDescriptor(documentProto,
-      'readyState');
+    var readyStateProto = Object.getOwnPropertyDescriptor(
+      documentProto,
+      'readyState'
+    );
     Object.defineProperty(documentProto, 'readyState', {
       get: function() {
         var value = readyStateProto.get.call(this);
@@ -654,7 +668,7 @@
         readyStateProto.set.call(this, value);
       },
       enumerable: true,
-      configurable: true
+      configurable: true,
     });
   })();
 
@@ -670,5 +684,4 @@
       }
     };
   })();
-
-}).call((typeof window === 'undefined') ? this : window);
+}.call(typeof window === 'undefined' ? this : window));

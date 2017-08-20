@@ -8,8 +8,15 @@
  * # NewuserdirectoryformCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('PublicEventsDescriptionCtrl', function($scope, $location, $uibModalInstance, $rootScope, userService) {
+angular
+  .module('ohanaApp')
+  .controller('PublicEventsDescriptionCtrl', function(
+    $scope,
+    $location,
+    $uibModalInstance,
+    $rootScope,
+    userService
+  ) {
     'use strict';
     console.log(userService.getUserData(), userService.getRole(), $rootScope);
     // calendar options
@@ -18,7 +25,7 @@ angular.module('ohanaApp')
     console.log('In modal');
     console.log($scope.selected);
     $scope.popup = {
-      opened: false
+      opened: false,
     };
 
     $scope.open = function() {
@@ -30,8 +37,7 @@ angular.module('ohanaApp')
     };
 
     $scope.postRsvp = function() {
-      //put join event logic here.  
+      //put join event logic here.
       $uibModalInstance.dismiss('cancel');
-    }
-
+    };
   });
