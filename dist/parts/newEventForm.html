@@ -4,7 +4,7 @@
   <h4 class="modal-title">Add New Event</h4>
 </div>
 <!-- end modal-header -->
-<div class="modal-body">
+<div class="modal-body" ng-init="initialize()">
   <form name="eventForm" ng-submit="postEvent()" class="form-horizontal" novalidate>
     <fieldset>
       <!-- Text - Event Name -->

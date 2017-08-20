@@ -12,6 +12,10 @@ angular.module('ohanaApp')
   .controller('NewEventFormCtrl', function($q, $scope, $uibModalInstance, commonServices, $rootScope) {
     'use strict';
 
+    $scope.initialize = function() {
+      $("#phonenum").mask("(999)999-9999");
+    }
+
     // calendar options
     $scope.format = 'MM/dd/yyyy';
     $scope.startpopup = {
@@ -116,8 +120,4 @@ angular.module('ohanaApp')
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
-
-    angular.element(document).ready(function() {
-      $("#phonenum").mask("(999)999-9999");
-    });
   });
