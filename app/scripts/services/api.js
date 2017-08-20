@@ -7,7 +7,8 @@ angular.module('ohanaApp').service('Api', function($resource) {
   //put url logic here to support localhost
   var l = window.location;
   var extension =
-    l.hostname === 'localhost' || l.hostname.indexOf('txcdtl08tm638x') > -1 ? //				"http://txcdt36an7383.itservices.sbc.com:1337"
+    l.hostname === 'localhost' || l.hostname.indexOf('txcdtl08tm638x') > -1 //				"http://txcdt36an7383.itservices.sbc.com:1337"
+    ?
     'http://ec2-52-43-72-217.us-west-2.compute.amazonaws.com:1337' :
     l.protocol + '//' + l.hostname;
 

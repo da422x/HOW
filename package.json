@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "test": "tsc && grunt test",
-    "ready": "git config push.default current && grunt jsbeautifier && prettier --single-quote --tab-width 2 --trailing-comma es5 --write \".\\app/**/*.js\" && git pull origin master && grunt build && git add . && git commit -m ",
+    "ready": "git config push.default current && grunt jsbeautifier && npm run prettier && git pull origin master && grunt build && git add . && git commit -m ",
     "postready": "git push -u",
+    "prettier": "prettier --single-quote --tab-width 2 --trailing-comma es5 --write \".\/app/**/*.js\"",
     "surge_test": "surge -p dist -d howtest.surge.sh",
     "surge_prod": "surge -p dist -d howprod.surge.sh"
   },
