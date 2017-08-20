@@ -8,8 +8,17 @@
  * # ManageRoleChangeRequestCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('ManageRoleChangeRequestCtrl', function($q, commonServices, userService, $scope, $rootScope, $location, $uibModalInstance) {
+angular
+  .module('ohanaApp')
+  .controller('ManageRoleChangeRequestCtrl', function(
+    $q,
+    commonServices,
+    userService,
+    $scope,
+    $rootScope,
+    $location,
+    $uibModalInstance
+  ) {
     'use strict';
 
     $scope.update = function() {
@@ -32,9 +41,13 @@ angular.module('ohanaApp')
             $scope.filterRequests(value);
           } else {
             _.each(data[1], function(value2, key2) {
-              if (value.uid === key2 &&
+              if (
+                value.uid === key2 &&
                 value2.Chapter === currentUserData.Chapter &&
-                (value.request_role === 'Participant' || value.request_role === 'Volunteer' || value.request_role === 'Chapter Lead')) {
+                (value.request_role === 'Participant' ||
+                  value.request_role === 'Volunteer' ||
+                  value.request_role === 'Chapter Lead')
+              ) {
                 value.key = key;
                 $scope.filterRequests(value);
               }
@@ -43,7 +56,7 @@ angular.module('ohanaApp')
         });
         console.log($scope.requests);
       });
-    }
+    };
 
     $scope.declined = function(key, request) {
       var currentUserUID = userService.getId();
@@ -53,16 +66,13 @@ angular.module('ohanaApp')
           input: 'text',
           showCancelButton: true,
           confirmButtonText: 'Submit',
-        }).then(function(message) {
+        }).then(
+          function(message) {
             if (message === '') {
-              swal(
-                'Alert',
-                'Declining request requires a comment...',
-                'error'
-              );
+              swal('Alert', 'Declining request requires a comment...', 'error');
             } else {
               var ts = Date.now();
-              delete request.key
+              delete request.key;
               delete request.$$hashKey;
               request.reviewer = userService.getUserName();
               request.reviewers_comment = message;
@@ -71,28 +81,17 @@ angular.module('ohanaApp')
               request.request_status = 'Declined';
               commonServices.updateData('/roleChangeRequests/' + key, request);
               $scope.update();
-              swal(
-                'Declined',
-                'Role change was declined!',
-                'success'
-              );
+              swal('Declined', 'Role change was declined!', 'success');
             }
           },
           function(dismiss) {
             if (dismiss === 'cancel') {
-              swal(
-                'Cancelled',
-                'No change made to request',
-                'error'
-              );
+              swal('Cancelled', 'No change made to request', 'error');
             }
-          });
-      } else {
-        swal(
-          'Alert',
-          'You cannot decline your own requests...',
-          'error'
+          }
         );
+      } else {
+        swal('Alert', 'You cannot decline your own requests...', 'error');
       }
     };
 
@@ -104,16 +103,13 @@ angular.module('ohanaApp')
           input: 'text',
           showCancelButton: true,
           confirmButtonText: 'Submit',
-        }).then(function(message) {
+        }).then(
+          function(message) {
             if (message === '') {
-              swal(
-                'Alert',
-                'Approval requires a comment...',
-                'error'
-              );
+              swal('Alert', 'Approval requires a comment...', 'error');
             } else {
               var ts = Date.now();
-              delete request.key
+              delete request.key;
               delete request.$$hashKey;
               request.reviewer = userService.getUserName();
               request.reviewers_comment = message;
@@ -121,30 +117,22 @@ angular.module('ohanaApp')
               request.request_closed = ts;
               request.request_status = 'Approved';
               commonServices.updateData('/roleChangeRequests/' + key, request);
-              commonServices.updateData('/userRoles/' + request.uid + '/role/', request.request_role);
-              $scope.update();
-              swal(
-                'Approved',
-                'Role change was approved!',
-                'success'
+              commonServices.updateData(
+                '/userRoles/' + request.uid + '/role/',
+                request.request_role
               );
+              $scope.update();
+              swal('Approved', 'Role change was approved!', 'success');
             }
           },
           function(dismiss) {
             if (dismiss === 'cancel') {
-              swal(
-                'Cancelled',
-                'No change made to request',
-                'error'
-              );
+              swal('Cancelled', 'No change made to request', 'error');
             }
-          });
-      } else {
-        swal(
-          'Alert',
-          'You cannot approve your own requests...',
-          'error'
+          }
         );
+      } else {
+        swal('Alert', 'You cannot approve your own requests...', 'error');
       }
     };
 
@@ -167,6 +155,5 @@ angular.module('ohanaApp')
           $scope.pendingCount = $scope.pending_requests.length;
           break;
       }
-    }
-
+    };
   });

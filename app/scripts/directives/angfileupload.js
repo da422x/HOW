@@ -11,8 +11,9 @@
  * @description
  * # angfileupload
  */
-angular.module('ohanaApp')
-  .directive('ngThumb', ['$window', function($window) {
+angular.module('ohanaApp').directive('ngThumb', [
+  '$window',
+  function($window) {
     var helper = {
       support: !!($window.FileReader && $window.CanvasRenderingContext2D),
       isFile: function(item) {
@@ -21,7 +22,7 @@ angular.module('ohanaApp')
       isImage: function(file) {
         var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
         return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-      }
+      },
     };
 
     return {
@@ -52,10 +53,11 @@ angular.module('ohanaApp')
           var height = params.height || this.height / this.width * params.width;
           canvas.attr({
             width: width,
-            height: height
+            height: height,
           });
           canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
         }
-      }
+      },
     };
-  }]);
+  },
+]);

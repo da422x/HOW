@@ -7,13 +7,18 @@
  * # howLogService
  * Service in the ohanaApp.
  */
-angular.module('ohanaApp')
+angular
+  .module('ohanaApp')
   .service('howLogService', function($rootScope, commonServices) {
-
     /************************************************************************************
      *             START - Primary and Scondary Chapter Change calls                    *
      ************************************************************************************/
-    this.logPrimaryChapterChange = function(userName, authUserName, oldChapter, newChapter) {
+    this.logPrimaryChapterChange = function(
+      userName,
+      authUserName,
+      oldChapter,
+      newChapter
+    ) {
       var ts = Date.now();
       var logObj = {
         type: 'primary',
@@ -21,13 +26,18 @@ angular.module('ohanaApp')
         userName: userName,
         changedBy: authUserName,
         oldChapter: oldChapter,
-        newChapter: newChapter
+        newChapter: newChapter,
       };
 
       commonServices.pushData('/logs/nationalLogs/memberTraffic/', logObj);
     };
 
-    this.logSecondaryChapterChange = function(userName, authUserName, oldChapters, newChapters) {
+    this.logSecondaryChapterChange = function(
+      userName,
+      authUserName,
+      oldChapters,
+      newChapters
+    ) {
       var ts = Date.now();
       var logObj = {
         type: 'secondary',
@@ -35,7 +45,7 @@ angular.module('ohanaApp')
         userName: userName,
         changedBy: authUserName,
         oldChapters: oldChapters,
-        newChapters: newChapters
+        newChapters: newChapters,
       };
 
       commonServices.pushData('/logs/nationalLogs/memberTraffic/', logObj);
@@ -53,13 +63,20 @@ angular.module('ohanaApp')
         timeStamp: ts,
         userName: userName,
         changedBy: authUserName,
-        newChapters: newChapter
+        newChapters: newChapter,
       };
 
-      commonServices.pushData('/logs/chapterLogs/memberTraffic/primaryChapter/' + newChapter, logObj);
+      commonServices.pushData(
+        '/logs/chapterLogs/memberTraffic/primaryChapter/' + newChapter,
+        logObj
+      );
     };
 
-    this.logUserAddedToSecondaryChapter = function(userName, authUserName, newChapters) {
+    this.logUserAddedToSecondaryChapter = function(
+      userName,
+      authUserName,
+      newChapters
+    ) {
       _.each(newChapters, function(newChapter) {
         var ts = Date.now();
         var logObj = {
@@ -68,14 +85,21 @@ angular.module('ohanaApp')
           timeStamp: ts,
           userName: userName,
           changedBy: authUserName,
-          newChapter: newChapter
+          newChapter: newChapter,
         };
 
-        commonServices.pushData('/logs/chapterLogs/memberTraffic/secondaryChapter/' + newChapter, logObj);
+        commonServices.pushData(
+          '/logs/chapterLogs/memberTraffic/secondaryChapter/' + newChapter,
+          logObj
+        );
       });
     };
 
-    this.logUserRemovedFromChapter = function(userName, authUserName, oldChapter) {
+    this.logUserRemovedFromChapter = function(
+      userName,
+      authUserName,
+      oldChapter
+    ) {
       var ts = Date.now();
       var logObj = {
         type: 'primary',
@@ -83,13 +107,20 @@ angular.module('ohanaApp')
         timeStamp: ts,
         userName: userName,
         changedBy: authUserName,
-        oldChapter: oldChapter
+        oldChapter: oldChapter,
       };
 
-      commonServices.pushData('/logs/chapterLogs/memberTraffic/primaryChapter/' + oldChapter, logObj);
+      commonServices.pushData(
+        '/logs/chapterLogs/memberTraffic/primaryChapter/' + oldChapter,
+        logObj
+      );
     };
 
-    this.logUserRemovedFromSecondaryChapter = function(userName, authUserName, oldChapters) {
+    this.logUserRemovedFromSecondaryChapter = function(
+      userName,
+      authUserName,
+      oldChapters
+    ) {
       _.each(oldChapters, function(oldChapter) {
         var ts = Date.now();
         var logObj = {
@@ -98,14 +129,16 @@ angular.module('ohanaApp')
           timeStamp: ts,
           userName: userName,
           changedBy: authUserName,
-          oldChapter: oldChapter
+          oldChapter: oldChapter,
         };
 
-        commonServices.pushData('/logs/chapterLogs/memberTraffic/secondaryChapter/' + oldChapter, logObj);
+        commonServices.pushData(
+          '/logs/chapterLogs/memberTraffic/secondaryChapter/' + oldChapter,
+          logObj
+        );
       });
     };
     /************************************************************************************
      *              END - Primary and Scondary Chapter Change calls                     *
      ************************************************************************************/
-
   });

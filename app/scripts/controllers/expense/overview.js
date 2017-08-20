@@ -7,52 +7,56 @@
  * # ExpenseOverviewCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('ExpenseOverviewCtrl', function($scope, $timeout, userService, expenseservice, commonServices, $window, $location, $q) {
-
+angular
+  .module('ohanaApp')
+  .controller('ExpenseOverviewCtrl', function(
+    $scope,
+    $timeout,
+    userService,
+    expenseservice,
+    commonServices,
+    $window,
+    $location,
+    $q
+  ) {
     $scope.userRole = userService.getRole();
     $scope.userName = userService.getUserData();
     $scope.userChapter = userService.getChapter();
     $scope.useremail = commonServices.getCurrentUserEmail();
 
-
     //Go  to View Expense Page
     $scope.ViewExpenseList = function() {
-      window.location = "#/expense/viewexpense";
-    }
+      window.location = '#/expense/viewexpense';
+    };
 
     // New Expense
-    //Go to New Expense Page - EDIT status checked first 
+    //Go to New Expense Page - EDIT status checked first
     $scope.neweexpense = function() {
-
-      if ($scope.iseditexist == "true") {
+      if ($scope.iseditexist == 'true') {
         swal(
           'You cant create new expense',
           'Previous expense in EDIT status must be submitted',
           'warning'
-        )
+        );
       } else {
         $location.path('/expense/newexpense');
       }
-
-    }
+    };
 
     //Pie Chart Label option setting
     $scope.options = {
       legend: {
         display: true,
-        position: 'bottom'
-      }
+        position: 'bottom',
+      },
     };
 
     $scope.options1 = {
-
       legend: {
         display: true,
-        position: 'bottom'
-      }
+        position: 'bottom',
+      },
     };
-
 
     // get array of last 12 month
     $scope.labels1 = [];
@@ -60,11 +64,9 @@ angular.module('ohanaApp')
     $scope.labels1 = expenseservice.getlast12month();
     $scope.labels2 = expenseservice.getlast12monthyear();
 
-
     $scope.series1 = [];
     $scope.data1 = [];
     $scope.data2 = [];
-
 
     $scope.options1 = {
       scales: {
@@ -72,17 +74,33 @@ angular.module('ohanaApp')
           id: 'y-axis-1',
           type: 'linear',
           display: true,
-          position: 'left'
-        }]
-      }
+          position: 'left',
+        }, ],
+      },
     };
 
     // ---Check box
     // Fruits
-    $scope.paystatuslist = ['Edit', 'Pending', 'Resubmit', 'Submitted', 'Returned', 'Paid', 'Over Age'];
+    $scope.paystatuslist = [
+      'Edit',
+      'Pending',
+      'Resubmit',
+      'Submitted',
+      'Returned',
+      'Paid',
+      'Over Age',
+    ];
 
     // Selected fruits
-    $scope.selectedpaystatus = ['Edit', 'Pending', 'Resubmit', 'Submitted', 'Returned', 'Paid', 'Over Age'];
+    $scope.selectedpaystatus = [
+      'Edit',
+      'Pending',
+      'Resubmit',
+      'Submitted',
+      'Returned',
+      'Paid',
+      'Over Age',
+    ];
 
     // Toggle selection for a given fruit by name
     $scope.paystatusSelection = function paystatusSelection(paystatus) {
@@ -91,40 +109,36 @@ angular.module('ohanaApp')
       // Is currently selected
       if (idx > -1) {
         $scope.selectedpaystatus.splice(idx, 1);
-      }
-      // Is newly selected
-      else {
+      } else {
+        // Is newly selected
         $scope.selectedpaystatus.push(paystatus);
       }
       $scope.getExpensebyStatus();
-
     };
-
 
     // -----
     //Over Age Expense Config settings
 
     $scope.checkedOverageDays = function() {
       var currentdate = new Date();
-      commonServices.getData('/Config/Expense')
-        .then(function(data) {
-          if (data) {
-
-            $scope.expenseconfig = data;
-            for (var x = 0; x < $scope.expenseconfig.length; x++) {
-              if (Date.parse(currentdate) >= Date.parse($scope.expenseconfig[x].startdate) && Date.parse(currentdate) <= Date.parse($scope.expenseconfig[x].enddate)) {
-
-                $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
-              }
+      commonServices.getData('/Config/Expense').then(function(data) {
+        if (data) {
+          $scope.expenseconfig = data;
+          for (var x = 0; x < $scope.expenseconfig.length; x++) {
+            if (
+              Date.parse(currentdate) >=
+              Date.parse($scope.expenseconfig[x].startdate) &&
+              Date.parse(currentdate) <=
+              Date.parse($scope.expenseconfig[x].enddate)
+            ) {
+              $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
             }
-            // console.log("OverageDays includes", $scope.expenseconfig, $scope.OverAgeDays);
-            $scope.getOverAgeData(); //Get Past due-Over Age data
           }
-        });
-
-    }
-
-
+          // console.log("OverageDays includes", $scope.expenseconfig, $scope.OverAgeDays);
+          $scope.getOverAgeData(); //Get Past due-Over Age data
+        }
+      });
+    };
 
     $scope.getOverAgeData = function() {
       $scope.PayStatusCountData = [];
@@ -144,8 +158,7 @@ angular.module('ohanaApp')
 
           if (list.email == $scope.useremail && $scope.iseditexist == 'false') {
             $timeout(function() {
-
-              $scope.iseditexist = "true";
+              $scope.iseditexist = 'true';
               $scope.editeventdate = list.eventdate;
 
               //Set the Over Age days message
@@ -166,45 +179,46 @@ angular.module('ohanaApp')
               // console.log("pastdd", pastdue, $scope.daysforoverage, $scope.OverAgeDays);
 
               $scope.editstatus.push({
-                "OverAge": $scope.daysforoverage,
-                "BillId": list.BillId,
-                "EmailID": list.email
+                OverAge: $scope.daysforoverage,
+                BillId: list.BillId,
+                EmailID: list.email,
               });
 
               if ($scope.daysforoverage !== undefined) {
                 if ($scope.daysforoverage > 0) {
-                  swal('Expense waiting for submission! Over Age in ' + $scope.daysforoverage + ' days', '', '');
+                  swal(
+                    'Expense waiting for submission! Over Age in ' +
+                    $scope.daysforoverage +
+                    ' days',
+                    '',
+                    ''
+                  );
                 } else if ($scope.daysforoverage == 0) {
-                  swal('Expense waiting for submission! Over Age TODAY', '', '');
-
+                  swal(
+                    'Expense waiting for submission! Over Age TODAY',
+                    '',
+                    ''
+                  );
                 } else {
                   swal('Expense in EDIT status Over Aged ', '', '');
-
                 }
               }
-
             }, 0);
-
           }
-
         });
       });
-
-
-    }
+    };
 
     //
     $scope.getExpensebyStatus = function() {
-
       var currentdate = new Date();
-      var startdate_p1w = new Date(currentdate - (1000 * 60 * 60 * 24 * 7));
-      var startdate_p30w = new Date(currentdate - (1000 * 60 * 60 * 24 * 30));
-      var startdate_p90w = new Date(currentdate - (1000 * 60 * 60 * 24 * 90));
-      var startdate_p1yr = new Date(currentdate - (1000 * 60 * 60 * 24 * 365));
+      var startdate_p1w = new Date(currentdate - 1000 * 60 * 60 * 24 * 7);
+      var startdate_p30w = new Date(currentdate - 1000 * 60 * 60 * 24 * 30);
+      var startdate_p90w = new Date(currentdate - 1000 * 60 * 60 * 24 * 90);
+      var startdate_p1yr = new Date(currentdate - 1000 * 60 * 60 * 24 * 365);
       var enddate_p1w = currentdate;
       // console.log("Dash List   ", $scope.dashlist, $scope.userName);
       $scope.dashlist.$loaded().then(function() {
-
         $scope.ExpensebyStatusData = [];
         $scope.ExpensebyStatusData.length = 0;
         $scope.PayStatusCountData = [];
@@ -219,14 +233,14 @@ angular.module('ohanaApp')
           if (keys.indexOf(key) === -1) {
             keys.push(key);
             outputexp.push({
-              "OriginatorName": key,
-              "Chapter": keychap,
-              "Region": keyregion,
-              "PastWeek": 0,
-              "PastMonth": 0,
-              "Past3Month": 0,
-              "Past1Year": 0,
-              "ALL": 0
+              OriginatorName: key,
+              Chapter: keychap,
+              Region: keyregion,
+              PastWeek: 0,
+              PastMonth: 0,
+              Past3Month: 0,
+              Past1Year: 0,
+              ALL: 0,
             });
             // outputstat.push({
             //     "Region": keyregion,
@@ -243,163 +257,404 @@ angular.module('ohanaApp')
           if (keys.indexOf(keychap) === -1) {
             keys.push(keychap);
             outputstat.push({
-              "Region": keyregion,
-              "Chapter": keychap,
-              "Edit": 0,
-              "Pending": 0,
-              "Submitted": 0,
-              "Resubmit": 0,
-              "Returned": 0,
-              "Paid": 0,
-              "OverAge": 0
+              Region: keyregion,
+              Chapter: keychap,
+              Edit: 0,
+              Pending: 0,
+              Submitted: 0,
+              Resubmit: 0,
+              Returned: 0,
+              Paid: 0,
+              OverAge: 0,
             });
-
           }
-
-        })
-
+        });
 
         $scope.PayStatusCountData = outputstat;
         $scope.ExpensebyStatusData = outputexp;
-        console.log("Array1 ", $scope.ExpensebyStatusData, $scope.PayStatusCountData);
+        console.log(
+          'Array1 ',
+          $scope.ExpensebyStatusData,
+          $scope.PayStatusCountData
+        );
 
         angular.forEach($scope.dashlist, function(list) {
-
           var mdyy = list.eventdate.toString().split('/');
           var receivedDate = new Date(mdyy[2], mdyy[0] - 1, mdyy[1]);
 
-
           //Pay Expense $$ by Status Type
           for (var i = 0; i < $scope.ExpensebyStatusData.length; i++) {
-            if (($scope.ExpensebyStatusData[i].Chapter === list.Chapter) &&
-              ($scope.ExpensebyStatusData[i].OriginatorName === list.SubmitBy))
-            // {}
-            {
-
+            if (
+              $scope.ExpensebyStatusData[i].Chapter === list.Chapter &&
+              $scope.ExpensebyStatusData[i].OriginatorName === list.SubmitBy
+            ) {
+              // {}
               if ($scope.selectedpaystatus.includes(list.PaymentStatus)) {
                 switch (list.PaymentStatus) {
                   case 'Edit':
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
+                    }
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
+                    }
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
+                    }
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
+                    }
 
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
-                    }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
-                    }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
-                    }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
-                    }
-
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
                   case 'Pending':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
 
                   case 'Resubmit':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
 
                   case 'Submitted':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
 
                   case 'Returned':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
 
                   case 'Paid':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
 
                   case 'Over Age':
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastWeek = Math.round(($scope.ExpensebyStatusData[i].PastWeek + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastWeek =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastWeek +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p30w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].PastMonth = Math.round(($scope.ExpensebyStatusData[i].PastMonth + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p30w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].PastMonth =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].PastMonth +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p90w) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past3Month = Math.round(($scope.ExpensebyStatusData[i].Past3Month + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p90w) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past3Month =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past3Month +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
-                    if (Date.parse(receivedDate) >= Date.parse(startdate_p1yr) && Date.parse(receivedDate) <= Date.parse(enddate_p1w)) {
-                      $scope.ExpensebyStatusData[i].Past1Year = Math.round(($scope.ExpensebyStatusData[i].Past1Year + list.Amount) * 100) / 100;
+                    if (
+                      Date.parse(receivedDate) >= Date.parse(startdate_p1yr) &&
+                      Date.parse(receivedDate) <= Date.parse(enddate_p1w)
+                    ) {
+                      $scope.ExpensebyStatusData[i].Past1Year =
+                        Math.round(
+                          ($scope.ExpensebyStatusData[i].Past1Year +
+                            list.Amount) *
+                          100
+                        ) / 100;
                     }
 
-                    $scope.ExpensebyStatusData[i].ALL = Math.round(($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100) / 100;
+                    $scope.ExpensebyStatusData[i].ALL =
+                      Math.round(
+                        ($scope.ExpensebyStatusData[i].ALL + list.Amount) * 100
+                      ) / 100;
                     break;
-
                 }
               }
-
             }
           }
 
@@ -409,66 +664,68 @@ angular.module('ohanaApp')
             if ($scope.PayStatusCountData[i].Chapter === list.Chapter) {
               switch (list.PaymentStatus) {
                 case 'Edit':
-                  $scope.PayStatusCountData[i].Edit = $scope.PayStatusCountData[i].Edit + 1;
+                  $scope.PayStatusCountData[i].Edit =
+                    $scope.PayStatusCountData[i].Edit + 1;
                   $scope.gettotaldata.Edit = $scope.gettotaldata.Edit + 1;
                   break;
                 case 'Pending':
-                  $scope.PayStatusCountData[i].Pending = $scope.PayStatusCountData[i].Pending + 1;
+                  $scope.PayStatusCountData[i].Pending =
+                    $scope.PayStatusCountData[i].Pending + 1;
                   $scope.gettotaldata.Pending = $scope.gettotaldata.Pending + 1;
                   break;
                 case 'Resubmit':
-                  $scope.PayStatusCountData[i].Resubmit = $scope.PayStatusCountData[i].Resubmit + 1;
-                  $scope.gettotaldata.Resubmit = $scope.gettotaldata.Resubmit + 1;
+                  $scope.PayStatusCountData[i].Resubmit =
+                    $scope.PayStatusCountData[i].Resubmit + 1;
+                  $scope.gettotaldata.Resubmit =
+                    $scope.gettotaldata.Resubmit + 1;
                   break;
                 case 'Submitted':
-                  $scope.PayStatusCountData[i].Submitted = $scope.PayStatusCountData[i].Submitted + 1;
-                  $scope.gettotaldata.Submitted = $scope.gettotaldata.Submitted + 1;
+                  $scope.PayStatusCountData[i].Submitted =
+                    $scope.PayStatusCountData[i].Submitted + 1;
+                  $scope.gettotaldata.Submitted =
+                    $scope.gettotaldata.Submitted + 1;
                   break;
                 case 'Returned':
-                  $scope.PayStatusCountData[i].Returned = $scope.PayStatusCountData[i].Returned + 1;
-                  $scope.gettotaldata.Returned = $scope.gettotaldata.Returned + 1;
+                  $scope.PayStatusCountData[i].Returned =
+                    $scope.PayStatusCountData[i].Returned + 1;
+                  $scope.gettotaldata.Returned =
+                    $scope.gettotaldata.Returned + 1;
                   break;
                 case 'Paid':
-                  $scope.PayStatusCountData[i].Paid = $scope.PayStatusCountData[i].Paid + 1;
+                  $scope.PayStatusCountData[i].Paid =
+                    $scope.PayStatusCountData[i].Paid + 1;
                   $scope.gettotaldata.Paid = $scope.gettotaldata.Paid + 1;
                   break;
                 case 'Over Age':
-                  $scope.PayStatusCountData[i].OverAge = $scope.PayStatusCountData[i].OverAge + 1;
+                  $scope.PayStatusCountData[i].OverAge =
+                    $scope.PayStatusCountData[i].OverAge + 1;
                   $scope.gettotaldata.OverAge = $scope.gettotaldata.OverAge + 1;
                   break;
               }
-
-
             }
           }
         });
 
         // console.log("table - ", $scope.PayStatusCountData);
         if ($scope.PayStatusCountData !== undefined) {
-
           $scope.buildChapterStatusData();
         }
         $scope.buildExpenseData();
         // console.log("Dash List expense ", $scope.ExpensebyStatusData);
-
       });
-
-    }
+    };
 
     //Filter the list on expense in EDIT status
     $scope.Showmeedit = function(BillId) {
       $location.path('/expense/expensedetail/' + BillId);
-    }
+    };
 
     //Go to View Expense list Page
     $scope.ViewExpenseList = function() {
-
       $location.path('/expense/viewexpense');
-    }
-
+    };
 
     $scope.viewexpensedash = function() {
-
       $scope.getSiteData = [];
       $scope.getSiteData.length = 0;
 
@@ -478,7 +735,11 @@ angular.module('ohanaApp')
       $scope.userRole = userService.getRole();
       $scope.userChapter = userService.getChapter();
       $scope.useremail = commonServices.getCurrentUserEmail();
-      $scope.dashlist = expenseservice.getViewExpenseData($scope.useremail, $scope.userRole, $scope.userChapter);
+      $scope.dashlist = expenseservice.getViewExpenseData(
+        $scope.useremail,
+        $scope.userRole,
+        $scope.userChapter
+      );
 
       $scope.expensedash = [];
       $scope.expensedash.length = 0;
@@ -492,24 +753,22 @@ angular.module('ohanaApp')
 
       // var apaid = 0;
       $scope.gettotaldata = {
-        "Edit": 0,
-        "Pending": 0,
-        "Submitted": 0,
-        "Resubmit": 0,
-        "Returned": 0,
-        "Paid": 0,
-        "OverAge": 0
+        Edit: 0,
+        Pending: 0,
+        Submitted: 0,
+        Resubmit: 0,
+        Returned: 0,
+        Paid: 0,
+        OverAge: 0,
       };
 
       var apending = 0;
       var arrpending = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       var arrpendingamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-
       var asubmitted = 0;
       var arrsubmitted = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       var arrsubmittedamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
 
       var aresubmit = 0;
       var arrresubmit = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -523,7 +782,6 @@ angular.module('ohanaApp')
       var arroverage = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       var arroverageamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-
       var apaid = 0;
       var arrpaid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       var arrpaidamt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -536,25 +794,34 @@ angular.module('ohanaApp')
       var editbillid = '';
       var editeventdate = '';
 
-
       var getmonthstr = '';
       var getmonthname = '';
-      var months = ["", "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+      var months = [
+        '',
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
       ];
 
       $scope.resubmitcnt = 0;
 
       // $scope.piedata = [apending, aedit, asubmitted, areturned, aresubmit, apaid, aoverage];
       $scope.dashlist.$loaded().then(function() {
-
-
-        $scope.checkedOverageDays(); //Get Over Age Days 
+        $scope.checkedOverageDays(); //Get Over Age Days
         $scope.getExpensebyStatus();
 
         // console.log("Expense ", $scope.PayStatusCountData, $scope.ExpensebyStatusData, $scope.dashlist);
         angular.forEach($scope.dashlist, function(list) {
-          getmonthstr = list.eventdate.split("/");
+          getmonthstr = list.eventdate.split('/');
           getmonthname = '';
           getmonthname = months[parseInt(getmonthstr[0], 10)];
 
@@ -608,7 +875,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arrpaid[11] = arrpaid[11] + 1;
                 arrpaidamt[11] = arrpaidamt[11] + list.Amount;
-
               }
 
               // console.log("paid - ", list.Amount, arrpaid, arrpaidamt);
@@ -665,7 +931,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arredit[11] = arredit[11] + 1;
                 arreditamt[11] = arreditamt[11] + list.Amount;
-
               }
               // console.log("edit - ", list.Amount, arredit, arreditamt);
               break;
@@ -718,7 +983,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arroverage[11] = arroverage[11] + 1;
                 arroverageamt[11] = arroverageamt[11] + list.Amount;
-
               }
 
               // console. log("overage - ", list.Amount, arroverage, arroverageamt);
@@ -772,7 +1036,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arrpending[11] = arrpending[11] + 1;
                 arrpendingamt[11] = arrpendingamt[11] + list.Amount;
-
               }
 
               //console.log("pending - ", list.Amount, arrpending, arrpendingamt);
@@ -827,7 +1090,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arrreturned[11] = arrreturned[11] + 1;
                 arrreturnedamt[11] = arrreturnedamt[11] + list.Amount;
-
               }
 
               //console.log("returned - ", list.Amount, arrreturned, arrreturnedamt);
@@ -881,7 +1143,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arrresubmit[11] = arrresubmit[11] + 1;
                 arrresubmitamt[11] = arrresubmitamt[11] + list.Amount;
-
               }
               if ($scope.useremail == list.email) {
                 $scope.resubmitcnt = $scope.resubmitcnt + 1;
@@ -937,7 +1198,6 @@ angular.module('ohanaApp')
               if ($scope.labels1[11] == getmonthname) {
                 arrsubmitted[11] = arrsubmitted[11] + 1;
                 arrsubmittedamt[11] = arrsubmittedamt[11] + list.Amount;
-
               }
 
               //console.log("submitted - ", list.Amount, arrsubmitted, arrsubmittedamt);
@@ -947,117 +1207,118 @@ angular.module('ohanaApp')
         // $scope.pielabels = ['Pending', 'Edit', 'Submitted', 'Returned', 'Resubmit', 'Paid', 'Over Age'];
 
         var daysforoverage = 0;
-        $scope.TotalExpenseCount = apending + aedit + asubmitted + areturned + aresubmit + apaid + aoverage;
+        $scope.TotalExpenseCount =
+          apending +
+          aedit +
+          asubmitted +
+          areturned +
+          aresubmit +
+          apaid +
+          aoverage;
         if (apending > 0) {
           $scope.piedata.push(apending);
-          $scope.pielabels.push("Pending");
-          $scope.piecolor.push("#FFA500");
-          $scope.series1.push("Pending");
+          $scope.pielabels.push('Pending');
+          $scope.piecolor.push('#FFA500');
+          $scope.series1.push('Pending');
           $scope.data1.push(arrpending);
           $scope.data2.push(arrpendingamt);
           $scope.expensedash.push({
-            "Label": "Pending",
-            "Data": apending
+            Label: 'Pending',
+            Data: apending,
           });
-
         }
         if (aedit > 0) {
           $scope.piedata.push(aedit);
-          $scope.pielabels.push("Edit");
-          $scope.piecolor.push("#FF6347");
-          $scope.series1.push("Edit");
+          $scope.pielabels.push('Edit');
+          $scope.piecolor.push('#FF6347');
+          $scope.series1.push('Edit');
           $scope.data1.push(arredit);
           $scope.data2.push(arreditamt);
 
           $scope.expensedash.push({
-            "Label": "Edit",
-            "Data": aedit
+            Label: 'Edit',
+            Data: aedit,
           });
           // $scope.PieDisplay = $scope.PieDisplay + "Edit(" + aedit + ") ";
         }
         if (asubmitted > 0) {
           $scope.piedata.push(asubmitted);
-          $scope.pielabels.push("Submitted");
-          $scope.piecolor.push("#0816ff");
-          $scope.series1.push("Submitted");
+          $scope.pielabels.push('Submitted');
+          $scope.piecolor.push('#0816ff');
+          $scope.series1.push('Submitted');
           $scope.data1.push(arrsubmitted);
           $scope.data2.push(arrsubmittedamt);
           $scope.expensedash.push({
-            "Label": "Submitted",
-            "Data": asubmitted
+            Label: 'Submitted',
+            Data: asubmitted,
           });
           // $scope.PieDisplay = $scope.PieDisplay + "Submitted(" + asubmitted + ") ";
         }
         if (areturned > 0) {
           $scope.piedata.push(areturned);
-          $scope.pielabels.push("Returned");
-          $scope.piecolor.push("#08ffff");
-          $scope.series1.push("Returned");
+          $scope.pielabels.push('Returned');
+          $scope.piecolor.push('#08ffff');
+          $scope.series1.push('Returned');
           $scope.data1.push(arrreturned);
           $scope.data2.push(arrreturnedamt);
           $scope.expensedash.push({
-            "Label": "Returned",
-            "Data": areturned
+            Label: 'Returned',
+            Data: areturned,
           });
           // $scope.PieDisplay = $scope.PieDisplay + "Returned(" + areturned + ") ";
         }
 
         if (aresubmit > 0) {
           $scope.piedata.push(aresubmit);
-          $scope.pielabels.push("Resubmit");
-          $scope.piecolor.push("#08ffff");
-          $scope.series1.push("Resubmit");
+          $scope.pielabels.push('Resubmit');
+          $scope.piecolor.push('#08ffff');
+          $scope.series1.push('Resubmit');
           $scope.data1.push(arrresubmit);
           $scope.data2.push(arrresubmitamt);
           $scope.expensedash.push({
-            "Label": "Resubmit",
-            "Data": aresubmit
+            Label: 'Resubmit',
+            Data: aresubmit,
           });
-
 
           // $scope.PieDisplay = $scope.PieDisplay + "Resubmit(" + aresubmit + ") ";
         }
         if (apaid > 0) {
           $scope.piedata.push(apaid);
-          $scope.pielabels.push("Paid");
-          $scope.piecolor.push("#08ff21");
-          $scope.series1.push("Paid");
+          $scope.pielabels.push('Paid');
+          $scope.piecolor.push('#08ff21');
+          $scope.series1.push('Paid');
           $scope.data1.push(arrpaid);
           $scope.data2.push(arrpaidamt);
           $scope.expensedash.push({
-            "Label": "Paid",
-            "Data": apaid
+            Label: 'Paid',
+            Data: apaid,
           });
           // $scope.PieDisplay = $scope.PieDisplay + "Paid(" + apaid + ") ";
-
         }
         if (aoverage > 0) {
           $scope.piedata.push(aoverage);
-          $scope.pielabels.push("Over Age");
-          $scope.piecolor.push("#FF0000");
-          $scope.series1.push("Over Age");
+          $scope.pielabels.push('Over Age');
+          $scope.piecolor.push('#FF0000');
+          $scope.series1.push('Over Age');
           $scope.data1.push(arroverage);
           $scope.data2.push(arroverageamt);
           $scope.expensedash.push({
-            "Label": "Over Age",
-            "Data": aoverage
+            Label: 'Over Age',
+            Data: aoverage,
           });
           // $scope.PieDisplay = $scope.PieDisplay + "Over Age(" + aoverage + ") ";
         }
-
       });
-    }
+    };
 
     //Build Data Table for viewing expense
     $scope.buildChapterStatusData = function() {
-
-
       // console.log("table - ", $scope.PayStatusCountData);
       angular.element(document).ready(function() {
         //toggle `popup` / `inline` mode
         $.fn.editable.defaults.mode = 'popup';
         $.fn.editable.defaults.ajaxOptions = {
-          type: 'PUT'
+          type: 'PUT',
         };
         //if exists, destroy instance of table
         if ($.fn.DataTable.isDataTable($('#ChapterViewTable'))) {
@@ -1068,96 +1329,91 @@ angular.module('ohanaApp')
           responsive: true,
           autoWidth: false,
           data: $scope.PayStatusCountData, // tabledata,
-          scrollY: "200px",
+          scrollY: '200px',
           // scrollX: false,
           scrollCollapse: true,
           paging: false,
           dom: 'Bfrtip',
-          buttons: [
-            'excel', 'pdf', 'print'
-          ],
+          buttons: ['excel', 'pdf', 'print'],
           // fixedColumns: true,
           // "pagingType": "full_numbers",
           columns: [{
-            data: "Region",
-            title: "Region",
-            width: "80px"
-          }, {
-            data: "Chapter",
-            title: "Chapter",
-            width: "120px",
-
-          }, {
-            data: "Edit",
-            title: "Edit",
-            width: "40px"
-          }, {
-            data: "Pending",
-            title: "Pending",
-            width: "40px"
-          }, {
-            data: "Resubmit",
-            title: "Resubmit",
-            width: "40px"
-          }, {
-            data: "Submitted",
-            title: "Submitted",
-            width: "40px",
-
-          }, {
-            data: "Returned",
-            title: "Returned",
-            width: "40px"
-          }, {
-            data: "Paid",
-            title: "Paid",
-            width: "40px"
-          }, {
-            data: "OverAge",
-            title: "Over Age",
-            width: "40px",
-
-          }, ],
-          'columnDefs': [{
+              data: 'Region',
+              title: 'Region',
+              width: '80px',
+            },
+            {
+              data: 'Chapter',
+              title: 'Chapter',
+              width: '120px',
+            },
+            {
+              data: 'Edit',
+              title: 'Edit',
+              width: '40px',
+            },
+            {
+              data: 'Pending',
+              title: 'Pending',
+              width: '40px',
+            },
+            {
+              data: 'Resubmit',
+              title: 'Resubmit',
+              width: '40px',
+            },
+            {
+              data: 'Submitted',
+              title: 'Submitted',
+              width: '40px',
+            },
+            {
+              data: 'Returned',
+              title: 'Returned',
+              width: '40px',
+            },
+            {
+              data: 'Paid',
+              title: 'Paid',
+              width: '40px',
+            },
+            {
+              data: 'OverAge',
+              title: 'Over Age',
+              width: '40px',
+            },
+          ],
+          columnDefs: [{
               targets: 0,
-              width: "25%"
-            }, {
+              width: '25%',
+            },
+            {
               targets: 1,
-              width: "35%"
-
-            }, {
+              width: '35%',
+            },
+            {
               targets: 2,
               // width: "5%"
-
-            }, {
+            },
+            {
               targets: 3,
               // width: "5%"
-
-            }
-
-
+            },
           ],
-          'order': [
+          order: [
             [2, 'desc']
           ],
-
-
-
         });
-
       });
-
-    }
-
+    };
 
     //Build Expense Amount Data Table for viewing expense
     $scope.buildExpenseData = function() {
-
       angular.element(document).ready(function() {
         //toggle `popup` / `inline` mode
         $.fn.editable.defaults.mode = 'popup';
         $.fn.editable.defaults.ajaxOptions = {
-          type: 'PUT'
+          type: 'PUT',
         };
         //if exists, destroy instance of table
         if ($.fn.DataTable.isDataTable($('#ExpenseViewTable'))) {
@@ -1168,101 +1424,85 @@ angular.module('ohanaApp')
           responsive: true,
           autoWidth: false,
           data: $scope.ExpensebyStatusData, // tabledata,
-          scrollY: "200px",
+          scrollY: '200px',
           // scrollX: false,
           scrollCollapse: true,
           paging: false,
           dom: 'Bfrtip',
-          buttons: [
-            'excel', 'pdf', 'print'
-          ],
+          buttons: ['excel', 'pdf', 'print'],
           // fixedColumns: true,
           // "pagingType": "full_numbers",
           columns: [{
-              data: "Region",
-              title: "Region",
-              width: "70px"
-            }, {
-              data: "Chapter",
-              title: "Chapter",
-              width: "90px",
-
-            }, {
-              data: "OriginatorName",
-              title: "Originator Name",
-              width: "120px",
-
-            }, {
-              data: "PastWeek",
-              title: "Past Week",
-              width: "50px",
-              render: $.fn.dataTable.render.number(',', '.', 2, '$')
+              data: 'Region',
+              title: 'Region',
+              width: '70px',
+            },
+            {
+              data: 'Chapter',
+              title: 'Chapter',
+              width: '90px',
+            },
+            {
+              data: 'OriginatorName',
+              title: 'Originator Name',
+              width: '120px',
+            },
+            {
+              data: 'PastWeek',
+              title: 'Past Week',
+              width: '50px',
+              render: $.fn.dataTable.render.number(',', '.', 2, '$'),
             },
 
             {
-              data: "PastMonth",
-              title: "Past Month",
-              width: "50px",
-              render: $.fn.dataTable.render.number(',', '.', 2, '$')
+              data: 'PastMonth',
+              title: 'Past Month',
+              width: '50px',
+              render: $.fn.dataTable.render.number(',', '.', 2, '$'),
             },
 
             {
-              data: "Past3Month",
-              title: "Past 3 Month",
-              width: "50px",
-              render: $.fn.dataTable.render.number(',', '.', 2, '$')
-
-            },
-
-
-            {
-              data: "Past1Year",
-              title: "Past 1 Year",
-              width: "50px",
-              render: $.fn.dataTable.render.number(',', '.', 2, '$')
-
+              data: 'Past3Month',
+              title: 'Past 3 Month',
+              width: '50px',
+              render: $.fn.dataTable.render.number(',', '.', 2, '$'),
             },
 
             {
-              data: "ALL",
-              title: "ALL",
-              width: "40px",
-              render: $.fn.dataTable.render.number(',', '.', 2, '$')
-            }
+              data: 'Past1Year',
+              title: 'Past 1 Year',
+              width: '50px',
+              render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+            },
+
+            {
+              data: 'ALL',
+              title: 'ALL',
+              width: '40px',
+              render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+            },
           ],
-          'columnDefs': [{
+          columnDefs: [{
               targets: 0,
-              width: "25%"
-            }, {
+              width: '25%',
+            },
+            {
               targets: 1,
-              width: "35%"
-
-            }, {
+              width: '35%',
+            },
+            {
               targets: 2,
               // width: "5%"
-
-            }, {
+            },
+            {
               targets: 3,
               // width: "5%"
-
-            }
-
-
+            },
           ],
-          'order': [
+          order: [
             [2, 'desc']
           ],
-
-
-
         });
-
-
-
-
       });
-
-    }
-
-
+    };
   });

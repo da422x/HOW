@@ -8,8 +8,7 @@
  * # WhoweareCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('WhoweareCtrl', function() {
-    'use strict';
-    // empty controller
-  });
+angular.module('ohanaApp').controller('WhoweareCtrl', function() {
+  'use strict';
+  // empty controller
+});

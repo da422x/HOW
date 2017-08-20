@@ -10,33 +10,35 @@
 </div>
 
 <!-- end modal-header -->
-<div class="modal-body" ng-init="buildTable()">
+<div class="modal-body" ng-init="initialize(); buildTable()">
   <table id="participantsTable" class="display table table-bordered" style="width:100%">
     <tfoot>
       <tr>
-        <td>
-          <button ng-click="addParticipant(new_row.email, event.key)" type="button" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-          </button>
-        </td>
-        <td>
-          <input class="form-control" type="text" ng-model="new_row.name.first">
-        </td>
-        <td>
-          <input class="form-control" type="text" ng-model="new_row.name.last">
-        </td>
-        <td>
-          <input class="form-control" type="text" ng-model="new_row.email">
-        </td>
-        <td>
-          <input class="form-control" type="text" ng-model="new_row.phone">
-        </td>
+        <form name="eventForm" novalidate>
+          <td>
+            <button id="addParticipant" type="button" class="btn btn-primary">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+          </td>
+          <td>
+            <input id="firstName" class="form-control" type="text">
+          </td>
+          <td>
+            <input id="lastName" class="form-control" type="text">
+          </td>
+          <td>
+            <input id="email" class="form-control" type="text">
+          </td>
+          <td>
+            <input id="phone" name="phone" class="form-control input-md mask" placeholder="(123)457-6890" ng-minlength="13" ng-maxlength="13" type="text">
+          </td>
+        </form>
       </tr>
     </tfoot>
   </table>
 
   <div style="display:flex">
-    <button type="button" ng-click="deleteParticipants()" class="btn btn-danger">Delete selected participants</button>
+    <button id="deleteParticipants" type="button" ng-click="deleteParticipants()" class="btn btn-danger">Delete selected participants</button>
   </div>
 </div>
 <!-- end modal body -->

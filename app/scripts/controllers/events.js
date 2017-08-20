@@ -8,12 +8,19 @@
  * # EventsCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, Api, selectValues) {
+angular
+  .module('ohanaApp')
+  .controller('EventsCtrl', function(
+    $q,
+    commonServices,
+    $scope,
+    $uibModal,
+    Api,
+    selectValues
+  ) {
     'use strict';
     $scope.newQuery = {};
     var allEvents = [];
-
 
     var loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
@@ -36,13 +43,18 @@ angular.module('ohanaApp')
       if (allEvents.length > 0) {
         $scope.empty = false;
 
-        if ($scope.newQuery.search == '*' || !($scope.newQuery.search)) {
+        if ($scope.newQuery.search == '*' || !$scope.newQuery.search) {
           loadAll();
         } else {
           var eventsFound = [];
           _.each(allEvents, function(event) {
             _.each(event, function(attribute) {
-              if (_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())) {
+              if (
+                _.includes(
+                  attribute.toLowerCase(),
+                  $scope.newQuery.search.toLowerCase()
+                )
+              ) {
                 eventsFound.push(event);
                 return false;
               }
@@ -51,18 +63,17 @@ angular.module('ohanaApp')
           if (eventsFound.length == 0) {
             console.log('no results');
             $scope.empty = true;
-            $scope.noEventsFound = "No results for " + $scope.newQuery.search + " found.";
+            $scope.noEventsFound =
+              'No results for ' + $scope.newQuery.search + ' found.';
           }
           $scope.eventList = eventsFound;
         }
       }
-
     };
-
 
     $scope.isDetailView = false;
     $scope.howEvent = {
-      currentEvent: null
+      currentEvent: null,
     };
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
@@ -88,10 +99,10 @@ angular.module('ohanaApp')
     $scope.add = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/newEventDirectoryForm.html',
-        controller: 'NewEventDirectoryFormCtrl'
+        controller: 'NewEventDirectoryFormCtrl',
       });
       modalInstance.result.then(function() {
-        console.log("Reloading...");
+        console.log('Reloading...');
         loadAll();
       });
     };

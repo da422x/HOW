@@ -1,3 +1,1 @@
-export declare class hai{
-  
-}
+export declare class hai {}

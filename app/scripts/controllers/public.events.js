@@ -8,8 +8,17 @@
  * # EventsCtrl
  * Controller of management console - events
  */
-angular.module('ohanaApp')
-  .controller('PublicEventsCtrl', function($q, commonServices, $scope, $uibModal, Api, userService, $filter) {
+angular
+  .module('ohanaApp')
+  .controller('PublicEventsCtrl', function(
+    $q,
+    commonServices,
+    $scope,
+    $uibModal,
+    Api,
+    userService,
+    $filter
+  ) {
     'use strict';
     $scope.newQuery = {};
     $scope.userService = userService;
@@ -29,11 +38,11 @@ angular.module('ohanaApp')
           _.each(data[0], function(val, idx) {
             $scope.allVolunteerIsDisableds.push({
               key: idx,
-              isDisabled: false
+              isDisabled: false,
             });
             $scope.allParticipantIsDisableds.push({
               key: idx,
-              isDisabled: false
+              isDisabled: false,
             });
             $scope.checkAllVolunteerIsDisableds(idx, count);
             $scope.checkAllParticipantIsDisableds(idx, count);
@@ -51,54 +60,59 @@ angular.module('ohanaApp')
     loadAll();
 
     $scope.checkAllVolunteerIsDisableds = function(key, idx) {
-
-      commonServices.getUserByEmailAtPath($scope.userService.getUserData()["email"], '/events/' + key + '/volunteers')
+      commonServices
+        .getUserByEmailAtPath(
+          $scope.userService.getUserData()['email'],
+          '/events/' + key + '/volunteers'
+        )
         .then(function(vol) {
           if (vol) {
             $scope.allVolunteerIsDisableds.some(function(val, i) {
-
-              if (val["key"] == key) {
-                $scope.allVolunteerIsDisableds[idx]["isDisabled"] = true;
+              if (val['key'] == key) {
+                $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
                 $scope.$apply();
                 return true;
               }
-            })
+            });
           }
         });
-    }
+    };
 
     $scope.testingTester = function() {
       return 5;
-    }
+    };
 
     $scope.testingTester2 = function() {
       //this is a faked method
       //check public_events.ts in the test files to see how this
-      //angular service is spoofed with a fake method for testing purporses. 
+      //angular service is spoofed with a fake method for testing purporses.
       return Api.getme();
-    }
+    };
 
     $scope.checkAllParticipantIsDisableds = function(key, idx) {
-
-      commonServices.getUserByEmailAtPath($scope.userService.getUserData()["email"], '/events/' + key + '/participants')
+      commonServices
+        .getUserByEmailAtPath(
+          $scope.userService.getUserData()['email'],
+          '/events/' + key + '/participants'
+        )
         .then(function(vol) {
           if (vol) {
             $scope.allParticipantIsDisableds.some(function(val, i) {
-              if (val["key"] == key) {
-                $scope.allParticipantIsDisableds[idx]["isDisabled"] = true;
+              if (val['key'] == key) {
+                $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
                 $scope.$apply();
                 return true;
               }
-            })
+            });
           }
         });
-    }
+    };
 
     $scope.popup1 = {
-      opened: false
+      opened: false,
     };
     $scope.popup2 = {
-      opened: false
+      opened: false,
     };
 
     $scope.$watch('dt', function(val) {
@@ -111,43 +125,40 @@ angular.module('ohanaApp')
 
     $scope.filtersRunner = function() {
       $scope.search();
-      if ($scope.dt)
-        $scope.dateMath($scope.dt.getTime(), 'lower');
-      if ($scope.dt2)
-        $scope.dateMath($scope.dt2.getTime(), 'upper');
-    }
+      if ($scope.dt) $scope.dateMath($scope.dt.getTime(), 'lower');
+      if ($scope.dt2) $scope.dateMath($scope.dt2.getTime(), 'upper');
+    };
 
     $scope.dateMath = function(date, bound) {
       switch (bound) {
         case 'lower':
           var lower_res = {};
-          console.log($scope.eventList)
+          console.log($scope.eventList);
           Object.keys($scope.eventList).forEach(function(val, idx) {
             var evtObjToSearch = $scope.eventList[val];
             if (date <= evtObjToSearch['startTime'])
               lower_res[val] = $scope.eventList[val];
-          })
+          });
           $scope.eventList = lower_res;
           break;
         case 'upper':
           var upper_res = {};
-          console.log($scope.eventList)
+          console.log($scope.eventList);
           Object.keys($scope.eventList).forEach(function(val, idx) {
             var evtObjToSearch = $scope.eventList[val];
             if (evtObjToSearch['startTime'] <= date)
               upper_res[val] = $scope.eventList[val];
-          })
+          });
           $scope.eventList = upper_res;
           break;
       }
-
-    }
+    };
 
     $scope.dateOptions = {
       formatYear: 'yy',
       maxDate: new Date(2020, 5, 22),
       minDate: new Date(),
-      startingDay: 1
+      startingDay: 1,
     };
     $scope.open = function() {
       $scope.popup1.opened = true;
@@ -160,7 +171,6 @@ angular.module('ohanaApp')
     $scope.format = $scope.formats[0];
     $scope.altInputFormats = ['M!/d!/yyyy'];
     $scope.search = function() {
-
       if (!$scope.newQuery.search) {
         $scope.eventList = $scope.eventList2;
         return;
@@ -168,34 +178,38 @@ angular.module('ohanaApp')
 
       var res = {};
       Object.keys($scope.eventList2).forEach(function(val, idx) {
-        var evtObjToSearch = $scope.eventList2[val]
+        var evtObjToSearch = $scope.eventList2[val];
         for (var key in evtObjToSearch) {
           if (evtObjToSearch.hasOwnProperty(key)) {
             //string search match
-            if (typeof evtObjToSearch[key] === "string" && evtObjToSearch[key].toLowerCase().includes($scope.newQuery.search)) {
+            if (
+              typeof evtObjToSearch[key] === 'string' &&
+              evtObjToSearch[key].toLowerCase().includes($scope.newQuery.search)
+            ) {
+              res[val] = $scope.eventList2[val];
+            } else if (
+              typeof evtObjToSearch[key] === 'number' &&
+              evtObjToSearch[key]
+              .toString()
+              .toLowerCase()
+              .includes($scope.newQuery.search)
+            ) {
+              //match numbers
               res[val] = $scope.eventList2[val];
             }
-            //match numbers
-            else if (typeof evtObjToSearch[key] === "number" && evtObjToSearch[key].toString().toLowerCase().includes($scope.newQuery.search)) {
-              res[val] = $scope.eventList2[val];
-            }
-
           }
         }
       });
       $scope.eventList = res;
-
     };
-
 
     $scope.showDescription = function(index) {
       $scope.currentEvent = $scope.eventList[index];
       var modalInstance = $uibModal.open({
         scope: $scope,
         templateUrl: '/parts/public.events.description.html',
-        controller: 'PublicEventsDescriptionCtrl'
+        controller: 'PublicEventsDescriptionCtrl',
       });
-
     };
 
     $scope.showDescription = function(index) {
@@ -214,111 +228,128 @@ angular.module('ohanaApp')
         } else {
           $scope.selected = null;
         }
-
       });
       if ($scope.selected != null) {
         var modalInstance = $uibModal.open({
           scope: $scope,
           templateUrl: '/parts/public.events.description.html',
-          controller: 'PublicEventsDescriptionCtrl'
+          controller: 'PublicEventsDescriptionCtrl',
         });
-
       }
     };
 
     $scope.addVolunteer = function(key, idx) {
       //email = email.trim();
       if ($scope.allVolunteerIsDisableds[idx]['isDisabled']) {
-        var email = $scope.userService.getUserData()["email"];
-        //check to see if the volunteer is a user at all. 
-        commonServices.getUserByEmail(email)
-          .then(function(data) {
+        var email = $scope.userService.getUserData()['email'];
+        //check to see if the volunteer is a user at all.
+        commonServices.getUserByEmail(email).then(
+          function(data) {
             if (data) {
               var temp_key;
               _.each(data, function(val, idx) {
                 temp_key = idx;
-                data[idx]["key"] = idx;
+                data[idx]['key'] = idx;
               });
 
-              commonServices.getData('userRoles/' + temp_key)
+              commonServices
+                .getData('userRoles/' + temp_key)
                 .then(function(role) {
-                  if (role["role"] !== "Participant") {
+                  if (role['role'] !== 'Participant') {
                     //check to see if the volunteer exists per this event
-                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                    commonServices
+                      .getUserByEmailAtPath(
+                        email,
+                        '/events/' + key + '/volunteers'
+                      )
                       .then(function(vol) {
                         console.log(vol);
                         if (vol) {
                           var entity_key = Object.keys(vol)[0];
                           //additional check for witness waiver(at account level)
                           // alert("line 182" + JSON.stringify(vol[entity_key]))
-                          commonServices.removeData('/events/' + key + '/volunteers/', entity_key);
-                          $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
+                          commonServices.removeData(
+                            '/events/' + key + '/volunteers/',
+                            entity_key
+                          );
+                          $scope.allVolunteerIsDisableds[idx][
+                            'isDisabled'
+                          ] = false;
                           $scope.$apply();
                         } else {
                           swal(
                             'Oops...',
-                            "That volunteer has already been added",
+                            'That volunteer has already been added',
                             'error'
                           );
                         }
-
-                      })
+                      });
                   } else {
                     swal(
                       'Oops...',
-                      "User not authorized to be added as a volunteer.",
+                      'User not authorized to be added as a volunteer.',
                       'error'
                     );
                   }
-
-                })
-
+                });
             } else {
-              swal(
-                'Oops...',
-                "That user doesn\'t exists",
-                'error'
-              );
+              swal('Oops...', "That user doesn't exists", 'error');
             }
-
-          }, function(err) {
-            swal(
-              'Oops...',
-              "Unknown Error",
-              'error'
-            );
-          });
+          },
+          function(err) {
+            swal('Oops...', 'Unknown Error', 'error');
+          }
+        );
       } else {
-        var email = $scope.userService.getUserData()["email"];
-        //check to see if the volunteer is a user at all. 
-        commonServices.getUserByEmail(email)
-          .then(function(data) {
+        var email = $scope.userService.getUserData()['email'];
+        //check to see if the volunteer is a user at all.
+        commonServices.getUserByEmail(email).then(
+          function(data) {
             if (data) {
               var temp_key;
               _.each(data, function(val, idx) {
                 temp_key = idx;
-                data[idx]["key"] = idx;
+                data[idx]['key'] = idx;
               });
 
-              commonServices.getData('userRoles/' + temp_key)
+              commonServices
+                .getData('userRoles/' + temp_key)
                 .then(function(role) {
-                  if (role["role"] !== "Participant") {
+                  if (role['role'] !== 'Participant') {
                     //check to see if the volunteer exists per this event
-                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
+                    commonServices
+                      .getUserByEmailAtPath(
+                        email,
+                        '/events/' + key + '/volunteers'
+                      )
                       .then(function(vol) {
                         console.log(vol);
                         if (!vol) {
                           //check if the prospective volunteer is already signed up as a participant
-                          commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
+                          commonServices
+                            .getUserByEmailAtPath(
+                              email,
+                              '/events/' + key + '/participants'
+                            )
                             .then(function(part) {
                               if (part) {
                                 //if they are a participant then remove them from the participant table
                                 var entity_key = Object.keys(part)[0];
-                                commonServices.removeData('/events/' + key + '/participants/' + entity_key);
-                                $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
+                                commonServices.removeData(
+                                  '/events/' +
+                                  key +
+                                  '/participants/' +
+                                  entity_key
+                                );
+                                $scope.allParticipantIsDisableds[idx][
+                                  'isDisabled'
+                                ] = false;
                                 $scope.$apply();
                               }
-                              var areWaiversUnsignedObj = $scope.areWaiversUnsigned(data[temp_key], key)
+                              var areWaiversUnsignedObj = $scope.areWaiversUnsigned(
+                                data[temp_key],
+                                key
+                              );
                               if (areWaiversUnsignedObj['witness']) {
                                 //put up fill out form for signing the witness form
                                 var modalInstance = $uibModal.open({
@@ -328,203 +359,204 @@ angular.module('ohanaApp')
                                     // selectedUID: function() {
                                     //     return self.parentElement.parentElement.children[0].firstChild.value;
                                     // }
-                                  }
+                                  },
                                 });
                               }
                               //additional check for witness waiver(at account level)
                               //alert("line 247" + JSON.stringify(data[temp_key]))
-                              commonServices.pushData('/events/' + key + '/volunteers', data[temp_key]);
-                              $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
-                              $scope.$apply();
-                            })
-                        } else {
-                          swal(
-                            'Oops...',
-                            "That volunteer has already been added",
-                            'error'
-                          );
-                        }
-
-                      })
-                  } else {
-                    swal(
-                      'Oops...',
-                      "User not authorized to be added as a volunteer.",
-                      'error'
-                    );
-                  }
-
-                })
-
-            } else {
-              swal(
-                'Oops...',
-                "That user doesn\'t exists",
-                'error'
-              );
-            }
-
-          }, function(err) {
-            swal(
-              'Oops...',
-              "Unknown Error",
-              'error'
-            );
-          });
-      }
-
-
-    }
-
-    $scope.addParticipant = function(key, idx) {
-      //email = email.trim();
-      if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
-        var email = $scope.userService.getUserData()["email"];
-        //check to see if the volunteer is a user at all. 
-        commonServices.getUserByEmail(email)
-          .then(function(data) {
-            if (data) {
-              var temp_key;
-              _.each(data, function(val, idx) {
-                temp_key = idx;
-                data[idx]["key"] = idx;
-              });
-
-              commonServices.getData('userRoles/' + temp_key)
-                .then(function(role) {
-                  // if (role["role"] !== "Participant") {
-                  //check to see if the volunteer exists per this event
-                  commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                    .then(function(vol) {
-                      if (vol) {
-                        var entity_key = Object.keys(vol)[0];
-                        //additional check for witness waiver(at account level)
-                        commonServices.removeData('/events/' + key + '/participants/' + entity_key);
-                        $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
-                        $scope.$apply();
-                      } else {
-                        swal(
-                          'Oops...',
-                          "That participant has already been deleted",
-                          'error'
-                        );
-                      }
-
-                    })
-
-                })
-
-            } else {
-              swal(
-                'Oops...',
-                "That user doesn\'t exists",
-                'error'
-              );
-            }
-
-          }, function(err) {
-            swal(
-              'Oops...',
-              "Unknown Error",
-              'error'
-            );
-          });
-      } else {
-        var email = $scope.userService.getUserData()["email"];
-        //check to see if the volunteer is a user at all. 
-        commonServices.getUserByEmail(email)
-          .then(function(data) {
-              if (data) {
-                var temp_key;
-                _.each(data, function(val, idx) {
-                  temp_key = idx;
-                  data[idx]["key"] = idx;
-                });
-
-                commonServices.getData('userRoles/' + temp_key)
-                  .then(function(role) {
-                    // if (role["role"] !== "Participant") {
-                    //check to see if the volunteer exists per this event
-                    commonServices.getUserByEmailAtPath(email, '/events/' + key + '/participants')
-                      .then(function(part) {
-                        console.log(part);
-                        if (!part) {
-                          //check if the prospective participant is already signed up as a volunteer
-                          commonServices.getUserByEmailAtPath(email, '/events/' + key + '/volunteers')
-                            .then(function(vol) {
-                              if (vol) {
-                                //if they are a volunteer then remove them from the volunteer table
-                                var entity_key = Object.keys(vol)[0];
-                                commonServices.removeData('/events/' + key + '/volunteers/' + entity_key);
-                                $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
-                                $scope.$apply();
-                              }
-
-                              var areWaiversUnsignedObj = $scope.areWaiversUnsigned(data[temp_key], key)
-                              if (areWaiversUnsignedObj['witness']) {
-                                //put up fill out form for signing the witness form
-                                var modalInstance = $uibModal.open({
-                                  templateUrl: '/parts/sign_witness_waiver.html',
-                                  controller: 'SignWitnessWaiverCtrl',
-                                  resolve: {
-                                    // selectedUID: function() {
-                                    //     return self.parentElement.parentElement.children[0].firstChild.value;
-                                    // }
-                                  }
-                                });
-                              }
-                              if (areWaiversUnsignedObj['event']) {
-                                //filling out 
-                                //put up fill out form for signing the witness form
-                                var modalInstance = $uibModal.open({
-                                  templateUrl: '/parts/sign_event_waiver.html',
-                                  controller: 'SignEventWaiver',
-                                  resolve: {
-                                    eventKey: function() {
-                                      return key;
-                                    }
-                                  }
-                                });
-                              }
-                              commonServices.pushData('/events/' + key + '/participants', data[temp_key]);
-                              $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
+                              commonServices.pushData(
+                                '/events/' + key + '/volunteers',
+                                data[temp_key]
+                              );
+                              $scope.allVolunteerIsDisableds[idx][
+                                'isDisabled'
+                              ] = true;
                               $scope.$apply();
                             });
                         } else {
                           swal(
                             'Oops...',
-                            "That participant has already been added",
+                            'That volunteer has already been added',
                             'error'
                           );
                         }
-
-                      })
-
-                  })
-
-              } else {
-                swal(
-                  'Oops...',
-                  "That user doesn\'t exists",
-                  'error'
-                );
-              }
-
-            },
-            function(err) {
-              swal(
-                'Oops...',
-                "Unknown Error",
-                'error'
-              );
-            });
+                      });
+                  } else {
+                    swal(
+                      'Oops...',
+                      'User not authorized to be added as a volunteer.',
+                      'error'
+                    );
+                  }
+                });
+            } else {
+              swal('Oops...', "That user doesn't exists", 'error');
+            }
+          },
+          function(err) {
+            swal('Oops...', 'Unknown Error', 'error');
+          }
+        );
       }
+    };
 
-    }
+    $scope.addParticipant = function(key, idx) {
+      //email = email.trim();
+      if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
+        var email = $scope.userService.getUserData()['email'];
+        //check to see if the volunteer is a user at all.
+        commonServices.getUserByEmail(email).then(
+          function(data) {
+            if (data) {
+              var temp_key;
+              _.each(data, function(val, idx) {
+                temp_key = idx;
+                data[idx]['key'] = idx;
+              });
 
-    //might need to move into 
+              commonServices
+                .getData('userRoles/' + temp_key)
+                .then(function(role) {
+                  // if (role["role"] !== "Participant") {
+                  //check to see if the volunteer exists per this event
+                  commonServices
+                    .getUserByEmailAtPath(
+                      email,
+                      '/events/' + key + '/participants'
+                    )
+                    .then(function(vol) {
+                      if (vol) {
+                        var entity_key = Object.keys(vol)[0];
+                        //additional check for witness waiver(at account level)
+                        commonServices.removeData(
+                          '/events/' + key + '/participants/' + entity_key
+                        );
+                        $scope.allParticipantIsDisableds[idx][
+                          'isDisabled'
+                        ] = false;
+                        $scope.$apply();
+                      } else {
+                        swal(
+                          'Oops...',
+                          'That participant has already been deleted',
+                          'error'
+                        );
+                      }
+                    });
+                });
+            } else {
+              swal('Oops...', "That user doesn't exists", 'error');
+            }
+          },
+          function(err) {
+            swal('Oops...', 'Unknown Error', 'error');
+          }
+        );
+      } else {
+        var email = $scope.userService.getUserData()['email'];
+        //check to see if the volunteer is a user at all.
+        commonServices.getUserByEmail(email).then(
+          function(data) {
+            if (data) {
+              var temp_key;
+              _.each(data, function(val, idx) {
+                temp_key = idx;
+                data[idx]['key'] = idx;
+              });
+
+              commonServices
+                .getData('userRoles/' + temp_key)
+                .then(function(role) {
+                  // if (role["role"] !== "Participant") {
+                  //check to see if the volunteer exists per this event
+                  commonServices
+                    .getUserByEmailAtPath(
+                      email,
+                      '/events/' + key + '/participants'
+                    )
+                    .then(function(part) {
+                      console.log(part);
+                      if (!part) {
+                        //check if the prospective participant is already signed up as a volunteer
+                        commonServices
+                          .getUserByEmailAtPath(
+                            email,
+                            '/events/' + key + '/volunteers'
+                          )
+                          .then(function(vol) {
+                            if (vol) {
+                              //if they are a volunteer then remove them from the volunteer table
+                              var entity_key = Object.keys(vol)[0];
+                              commonServices.removeData(
+                                '/events/' + key + '/volunteers/' + entity_key
+                              );
+                              $scope.allVolunteerIsDisableds[idx][
+                                'isDisabled'
+                              ] = false;
+                              $scope.$apply();
+                            }
+
+                            var areWaiversUnsignedObj = $scope.areWaiversUnsigned(
+                              data[temp_key],
+                              key
+                            );
+                            if (areWaiversUnsignedObj['witness']) {
+                              //put up fill out form for signing the witness form
+                              var modalInstance = $uibModal.open({
+                                templateUrl: '/parts/sign_witness_waiver.html',
+                                controller: 'SignWitnessWaiverCtrl',
+                                resolve: {
+                                  // selectedUID: function() {
+                                  //     return self.parentElement.parentElement.children[0].firstChild.value;
+                                  // }
+                                },
+                              });
+                            }
+                            if (areWaiversUnsignedObj['event']) {
+                              //filling out
+                              //put up fill out form for signing the witness form
+                              var modalInstance = $uibModal.open({
+                                templateUrl: '/parts/sign_event_waiver.html',
+                                controller: 'SignEventWaiver',
+                                resolve: {
+                                  eventKey: function() {
+                                    return key;
+                                  },
+                                },
+                              });
+                            }
+                            commonServices.pushData(
+                              '/events/' + key + '/participants',
+                              data[temp_key]
+                            );
+                            $scope.allParticipantIsDisableds[idx][
+                              'isDisabled'
+                            ] = true;
+                            $scope.$apply();
+                          });
+                      } else {
+                        swal(
+                          'Oops...',
+                          'That participant has already been added',
+                          'error'
+                        );
+                      }
+                    });
+                });
+            } else {
+              swal('Oops...', "That user doesn't exists", 'error');
+            }
+          },
+          function(err) {
+            swal('Oops...', 'Unknown Error', 'error');
+          }
+        );
+      }
+    };
+
+    //might need to move into
     $scope.areWaiversUnsigned = function(person_detail, event_key) {
-      var checker_obj = {}
+      var checker_obj = {};
       if (person_detail['witness']) {
         //perform date substraction to see if witness waiver is still valid
         //first time date was saved
@@ -540,12 +572,14 @@ angular.module('ohanaApp')
           //witness waiver hasn't expired
           checker_obj['witness'] = false;
         }
-
       } else {
         //witness never signed a waiver
         checker_obj['witness'] = true;
       }
-      if (person_detail['events'] && person_detail['events'].hasOwnProperty(event_key)) {
+      if (
+        person_detail['events'] &&
+        person_detail['events'].hasOwnProperty(event_key)
+      ) {
         //no signing needed
         checker_obj['event'] = false;
       } else {
@@ -553,7 +587,7 @@ angular.module('ohanaApp')
         checker_obj['event'] = true;
       }
       return checker_obj;
-    }
+    };
 
     /*waiver object:
       waiver{
@@ -571,7 +605,7 @@ angular.module('ohanaApp')
     // 				timer: 2500
     // 			});
     // 		}
-    // 		
+    //
     // 	},
     // 	function (response) { // on error
     // 		swal({

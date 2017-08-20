@@ -8,18 +8,25 @@
  * # NewuserdirectoryformCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('NewEventFormCtrl', function($q, $scope, $uibModalInstance, commonServices, $rootScope) {
+angular
+  .module('ohanaApp')
+  .controller('NewEventFormCtrl', function(
+    $q,
+    $scope,
+    $uibModalInstance,
+    commonServices,
+    $rootScope
+  ) {
     'use strict';
 
     $scope.initialize = function() {
-      $("#phonenum").mask("(999)999-9999");
-    }
+      $('#phonenum').mask('(999)999-9999');
+    };
 
     // calendar options
     $scope.format = 'MM/dd/yyyy';
     $scope.startpopup = {
-      opened: false
+      opened: false,
     };
     $scope.startopen = function() {
       $scope.startpopup.opened = true;
@@ -28,10 +35,10 @@ angular.module('ohanaApp')
       maxDate: new Date(2020, 5, 22),
       minDate: new Date(),
       startingDay: 1,
-      showWeeks: false
+      showWeeks: false,
     };
     $scope.endpopup = {
-      opened: false
+      opened: false,
     };
     $scope.endopen = function() {
       $scope.endpopup.opened = true;
@@ -40,7 +47,7 @@ angular.module('ohanaApp')
       maxDate: new Date(2020, 5, 22),
       minDate: new Date(),
       startingDay: 1,
-      showWeeks: false
+      showWeeks: false,
     };
     $scope.today = function() {
       //TODO: Check if the event date is actually set
@@ -71,18 +78,22 @@ angular.module('ohanaApp')
 
     // event status radio data
     $scope.states = [{
-      value: "upcoming-open",
-      displayName: "upcoming-open"
-    }, {
-      value: "upcoming-closed",
-      displayName: "upcoming-closed"
-    }, {
-      value: "in-session",
-      displayName: "in-session"
-    }, {
-      value: "past",
-      displayName: "past"
-    }];
+        value: 'upcoming-open',
+        displayName: 'upcoming-open',
+      },
+      {
+        value: 'upcoming-closed',
+        displayName: 'upcoming-closed',
+      },
+      {
+        value: 'in-session',
+        displayName: 'in-session',
+      },
+      {
+        value: 'past',
+        displayName: 'past',
+      },
+    ];
 
     // empty submit object
     $scope.newEvent = {};
@@ -100,21 +111,18 @@ angular.module('ohanaApp')
           console.log(data[0]);
           $uibModalInstance.close();
           swal({
-            text: "Adding Event",
+            text: 'Adding Event',
             type: 'success',
-            timer: 2500
+            timer: 2500,
           });
         } else {
           swal({
-            text: "Something happened....",
+            text: 'Something happened....',
             type: 'error',
-            timer: 2500
+            timer: 2500,
           });
         }
       });
-
-
-
     };
 
     $scope.cancel = function() {

@@ -8,14 +8,20 @@
  * # NewuserdirectoryformCtrl
  * Controller of the ohanaApp
  */
-angular.module('ohanaApp')
-  .controller('EventaddvolunteersCtrl', function($scope, $location, $uibModalInstance, Api) {
+angular
+  .module('ohanaApp')
+  .controller('EventaddvolunteersCtrl', function(
+    $scope,
+    $location,
+    $uibModalInstance,
+    Api
+  ) {
     'use strict';
 
     // calendar options
 
     $scope.popup = {
-      opened: false
+      opened: false,
     };
 
     $scope.open = function() {
@@ -25,5 +31,4 @@ angular.module('ohanaApp')
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
-
   });

@@ -8,25 +8,36 @@
  * # DetailsCtrl
  * Controller of management console - event detail
  */
-angular.module('ohanaApp')
-  .controller('DetailsCtrl', function($http, $scope, $location, DAO, $routeParams, commonServices, $q) {
+angular
+  .module('ohanaApp')
+  .controller('DetailsCtrl', function(
+    $http,
+    $scope,
+    $location,
+    DAO,
+    $routeParams,
+    commonServices,
+    $q
+  ) {
     'use strict';
     $scope.selectedEvent = null;
     // console.log('the route params are', $routeParams);
-    var getEvents = commonServices.getData('/events/' + $routeParams["id"]);
+    var getEvents = commonServices.getData('/events/' + $routeParams['id']);
     //match event to db
-    $q.all([getEvents]).then(function(data) {
-      console.log('hello me', data)
-      if (data[0]) {
-        $scope.selectedEvent = data[0];
-        $scope.apply;
-      } else {
-        console.log(data);
+    $q.all([getEvents]).then(
+      function(data) {
+        console.log('hello me', data);
+        if (data[0]) {
+          $scope.selectedEvent = data[0];
+          $scope.apply;
+        } else {
+          console.log(data);
+        }
+      },
+      function(err) {
+        console.log('the error is', err);
       }
-    }, function(err) {
-      console.log('the error is', err);
-
-    });
+    );
 
     //$scope.selectedEvent = DAO.selectedEvent;
 
@@ -36,7 +47,6 @@ angular.module('ohanaApp')
 
     $(document).ready(function() {
       $('.nav li a').click(function(e) {
-
         $('.nav li').removeClass('active');
 
         var $parent = $(this).parent();

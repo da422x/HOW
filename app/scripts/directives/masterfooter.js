@@ -7,15 +7,12 @@
  * @description
  * # masterFooter
  */
-angular.module('ohanaApp')
-  .directive('masterFooter', function() {
-    'use strict';
-    return {
-      templateUrl: 'views/masterfooter.html',
-      restrict: 'E',
+angular.module('ohanaApp').directive('masterFooter', function() {
+  'use strict';
+  return {
+    templateUrl: 'views/masterfooter.html',
+    restrict: 'E',
 
-      controller: function($scope) {
-
-      }
-    };
-  });
+    controller: function($scope) {},
+  };
+});

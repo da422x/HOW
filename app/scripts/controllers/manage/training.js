@@ -8,8 +8,7 @@
  * # TrainingCtrl
  * Controller of management console - training
  */
-angular.module('ohanaApp')
-  .controller('TrainingCtrl', function() {
-    'use strict';
-    // empty controller
-  });
+angular.module('ohanaApp').controller('TrainingCtrl', function() {
+  'use strict';
+  // empty controller
+});

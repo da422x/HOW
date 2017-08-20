@@ -8,18 +8,26 @@
  * # EventsCtrl
  * Controller of management console - events
  */
-angular.module('ohanaApp')
-  .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, $location, DAO) {
+angular
+  .module('ohanaApp')
+  .controller('EventsCtrl', function(
+    $q,
+    commonServices,
+    $scope,
+    $uibModal,
+    $location,
+    DAO
+  ) {
     'use strict';
 
     $scope.initialize = function() {
       $scope.filter = $scope.filterTypes[0];
-    }
+    };
 
     $scope.newQuery = {};
     var allEvents = [];
 
-    $scope.filterTypes = ["All", "Past", "Upcoming"];
+    $scope.filterTypes = ['All', 'Past', 'Upcoming'];
     $scope.filter = {};
 
     // var canvas = document.getElementById('signatureCanvas');
@@ -34,7 +42,6 @@ angular.module('ohanaApp')
     //     var sigImg = signaturePad.toDataURL();
     //     $scope.signature = sigImg;
     // }
-
 
     var loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
@@ -94,14 +101,22 @@ angular.module('ohanaApp')
       if (allEvents.length > 0) {
         $scope.empty = false;
 
-        if ($scope.newQuery.search == '*' || !($scope.newQuery.search)) {
+        if ($scope.newQuery.search == '*' || !$scope.newQuery.search) {
           loadAll();
         } else {
           var eventsFound = [];
           _.each(allEvents, function(event) {
             _.each(event, function(attribute) {
-              if (angular.isString(attribute) && angular.isString($scope.newQuery.search)) {
-                if (_.includes(attribute.toLowerCase(), $scope.newQuery.search.toLowerCase())) {
+              if (
+                angular.isString(attribute) &&
+                angular.isString($scope.newQuery.search)
+              ) {
+                if (
+                  _.includes(
+                    attribute.toLowerCase(),
+                    $scope.newQuery.search.toLowerCase()
+                  )
+                ) {
                   eventsFound.push(event);
                   return false;
                 }
@@ -114,7 +129,8 @@ angular.module('ohanaApp')
           if (eventsFound.length == 0) {
             console.log('no results');
             $scope.empty = true;
-            $scope.noEventsFound = "No results for " + $scope.newQuery.search + " found.";
+            $scope.noEventsFound =
+              'No results for ' + $scope.newQuery.search + ' found.';
           }
           $scope.eventList = eventsFound;
         }
@@ -124,10 +140,10 @@ angular.module('ohanaApp')
     $scope.add = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
-        controller: 'NewEventFormCtrl'
+        controller: 'NewEventFormCtrl',
       });
       modalInstance.result.then(function() {
-        console.log("Reloading...");
+        console.log('Reloading...');
         loadAll();
       });
     };
@@ -136,8 +152,6 @@ angular.module('ohanaApp')
       var selected = allEvents[index];
       console.log('Index is: ' + index);
       //console.log(selected.key);
-
-
 
       //var getEvents = commonServices.getEvent(selected);
       //console.log('getEvents', getEvents);
@@ -175,10 +189,10 @@ angular.module('ohanaApp')
         resolve: {
           event: function() {
             return allEvents[eventKey];
-          }
-        }
+          },
+        },
       });
-    }
+    };
     $scope.viewVolunteers = function(eventKey) {
       $uibModal.open({
         templateUrl: '/parts/manageVolunteers.html',
@@ -186,21 +200,21 @@ angular.module('ohanaApp')
         resolve: {
           event: function() {
             return allEvents[eventKey];
-          }
-        }
+          },
+        },
       });
-    }
+    };
 
     $scope.addParticipant = function() {
       alert('a participant was added');
-    }
+    };
     $scope.addVolunteer = function() {
       alert('a volunteer was added');
-    }
+    };
 
     $scope.getKeyLength = function(obj) {
-      return (obj) ? Object.keys(obj).length : 0;
-    }
+      return obj ? Object.keys(obj).length : 0;
+    };
 
     $scope.deleteEvent = function(index) {
       var selected = allEvents[index];
@@ -208,21 +222,21 @@ angular.module('ohanaApp')
       console.log(selected.key);
 
       swal({
-        title: "Are you sure?",
-        text: "You will not be able to recover this event!",
-        type: "warning",
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this event!',
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: '#DD6B55',
         confirmButtonText: "Yes, delete '" + selected.name + "'",
-        cancelButtonText: "Cancel"
+        cancelButtonText: 'Cancel',
       }).then(
         function(result) {
           console.log('confirm');
           var result = commonServices.removeData('/events/' + selected.key);
           swal({
-            text: "Deleting " + selected.name,
+            text: 'Deleting ' + selected.name,
             type: 'success',
-            timer: 2500
+            timer: 2500,
           });
           $q.all([result]).then(function(data) {
             loadAll();

@@ -8,8 +8,18 @@
  * # ProfileCtrl
  * 
  */
-angular.module('ohanaApp')
-  .controller('ProfileCtrl', function($scope, $rootScope, $q, commonServices, $uibModal, userService, $filter, $http) {
+angular
+  .module('ohanaApp')
+  .controller('ProfileCtrl', function(
+    $scope,
+    $rootScope,
+    $q,
+    commonServices,
+    $uibModal,
+    userService,
+    $filter,
+    $http
+  ) {
     'use strict';
 
     $scope.$on('updateProfile', function(event, arg) {
@@ -23,17 +33,14 @@ angular.module('ohanaApp')
     });
 
     $scope.update = function() {
-
       $scope.profileData = userService.getUserData();
       $scope.profileData.years = parseInt($scope.profileData.years);
       $scope.profileData.role = userService.getRole();
       $scope.userUID = userService.getId();
 
-
       // Get all rcrs first.
       var userRquests = commonServices.getData('/roleChangeRequests/');
       $q.all([userRquests]).then(function(data) {
-
         // Construct list of rcr's for current user.
         $scope.requests = [];
         _.each(data[0], function(value, key) {
@@ -60,7 +67,6 @@ angular.module('ohanaApp')
       }
     };
 
-
     $scope.deleteRequest = function(key) {
       swal({
         title: 'Are you sure?',
@@ -69,7 +75,7 @@ angular.module('ohanaApp')
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, delete it!',
       }).then(function() {
         swal(
           'Deleted!',
@@ -94,47 +100,47 @@ angular.module('ohanaApp')
     $scope.saveUserData = function(value, typeOfData) {
       var firebaseTable = null;
       switch (typeOfData) {
-        case "name.first":
-          firebaseTable = "/name/first/"
+        case 'name.first':
+          firebaseTable = '/name/first/';
           break;
-        case "name.last":
-          firebaseTable = "/name/last/"
+        case 'name.last':
+          firebaseTable = '/name/last/';
           break;
-        case "address.line1":
-          firebaseTable = "/address/line1/"
+        case 'address.line1':
+          firebaseTable = '/address/line1/';
           break;
-        case "address.line2":
-          firebaseTable = "/address/line2/"
+        case 'address.line2':
+          firebaseTable = '/address/line2/';
           break;
-        case "address.city":
-          firebaseTable = "/address/city/"
+        case 'address.city':
+          firebaseTable = '/address/city/';
           break;
-        case "address.state":
-          firebaseTable = "/address/state/"
+        case 'address.state':
+          firebaseTable = '/address/state/';
           break;
-        case "address.zip":
-          firebaseTable = "/address/zip/"
+        case 'address.zip':
+          firebaseTable = '/address/zip/';
           break;
-        case "phone":
-          firebaseTable = "/phone/";
+        case 'phone':
+          firebaseTable = '/phone/';
           break;
-        case "Region":
-          firebaseTable = "/Region/";
+        case 'Region':
+          firebaseTable = '/Region/';
           break;
-        case "Chapter":
-          firebaseTable = "/Chapter/";
+        case 'Chapter':
+          firebaseTable = '/Chapter/';
           break;
-        case "DOB":
-          firebaseTable = "/DOB/";
+        case 'DOB':
+          firebaseTable = '/DOB/';
           break;
-        case "branch":
-          firebaseTable = "/branch/";
+        case 'branch':
+          firebaseTable = '/branch/';
           break;
-        case "gender":
-          firebaseTable = "/gender/";
+        case 'gender':
+          firebaseTable = '/gender/';
           break;
-        case "years":
-          firebaseTable = "/years/";
+        case 'years':
+          firebaseTable = '/years/';
           break;
       }
 
@@ -146,21 +152,29 @@ angular.module('ohanaApp')
       function tree_traverse(obj_data, path, length_of_arr) {
         var next_length = length_of_arr - 1;
         if (path.includes('.')) {
-          tree_traverse(obj_data[path.split('.')[0]], path.split('.')[1], next_length);
+          tree_traverse(
+            obj_data[path.split('.')[0]],
+            path.split('.')[1],
+            next_length
+          );
         } else {
           obj_data[path] = value;
         }
       }
 
       if (typeOfData.includes('.')) {
-        tree_traverse($rootScope.userData, typeOfData, typeOfData.split('.').length);
+        tree_traverse(
+          $rootScope.userData,
+          typeOfData,
+          typeOfData.split('.').length
+        );
       } else {
         $rootScope.userData[typeOfData] = value;
       }
       userService.setUserData($rootScope.userData);
 
       return true;
-    }
+    };
 
     // Call Modals
     $scope.changeChapter = function() {
@@ -170,8 +184,8 @@ angular.module('ohanaApp')
         resolve: {
           selectedUID: function() {
             return false;
-          }
-        }
+          },
+        },
       });
     };
 
@@ -182,15 +196,15 @@ angular.module('ohanaApp')
         resolve: {
           selectedUID: function() {
             return false;
-          }
-        }
+          },
+        },
       });
     };
 
     $scope.roleChangeRequest = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/rolerequestchangeform.html',
-        controller: 'RoleRequestChangeFormCtrl as rrcf'
+        controller: 'RoleRequestChangeFormCtrl as rrcf',
       });
       if (!modalInstance) {
         $scope.update();
@@ -200,7 +214,7 @@ angular.module('ohanaApp')
     $scope.feedBackRequest = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/giveFeedback.html',
-        controller: 'GiveFeedbackCtrl as feedback'
+        controller: 'GiveFeedbackCtrl as feedback',
       });
     };
 
@@ -217,7 +231,7 @@ angular.module('ohanaApp')
       $('#profile_first_name').editable({
         type: 'text',
         name: 'first',
-        placement: "bottom",
+        placement: 'bottom',
         emptytext: 'null',
         display: false,
         url: function(params) {
@@ -225,7 +239,7 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'name.first');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_last_name').editable({
         type: 'text',
@@ -238,7 +252,7 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'name.last');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_dob').editable({
         type: 'combodate',
@@ -251,7 +265,7 @@ angular.module('ohanaApp')
         combodate: {
           template: 'MMM / DD / YYYY',
           minYear: 1900,
-          maxYear: 2020
+          maxYear: 2020,
         },
         display: false,
         url: function(params) {
@@ -259,13 +273,13 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'DOB');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_gender').editable({
-        type: "select",
-        name: "gender",
-        placement: "bottom",
-        emptytext: "null",
+        type: 'select',
+        name: 'gender',
+        placement: 'bottom',
+        emptytext: 'null',
         showbuttons: false,
         display: false,
         url: function(params) {
@@ -276,7 +290,7 @@ angular.module('ohanaApp')
         },
         source: function() {
           return ['M', 'F', 'N/A'];
-        }
+        },
       });
       $('#profile_addr1').editable({
         type: 'text',
@@ -289,7 +303,7 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'address.line1');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_addr2').editable({
         type: 'text',
@@ -302,7 +316,7 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'address.line2');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_city').editable({
         type: 'text',
@@ -315,13 +329,13 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'address.city');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_state').editable({
-        type: "select",
-        name: "state",
-        placement: "bottom",
-        emptytext: "null",
+        type: 'select',
+        name: 'state',
+        placement: 'bottom',
+        emptytext: 'null',
         showbuttons: false,
         display: false,
         url: function(params) {
@@ -332,10 +346,10 @@ angular.module('ohanaApp')
         },
         source: function() {
           return states_list;
-        }
+        },
       });
       $(document).on('click', '#profile_zip', function() {
-        $("#profile_zip_num").mask("99999");
+        $('#profile_zip_num').mask('99999');
       });
       $('#profile_zip').editable({
         type: 'number',
@@ -349,16 +363,16 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'address.zip');
             $scope.update();
           }
-        }
+        },
       });
       $(document).on('click', '#profile_phone', function() {
-        $("#profile_phone_num").mask("(999)999-9999");
+        $('#profile_phone_num').mask('(999)999-9999');
       });
       $('#profile_phone').editable({
         type: 'number',
         name: 'phone',
-        placement: "bottom",
-        emptytext: "null",
+        placement: 'bottom',
+        emptytext: 'null',
         tpl: '<input id="profile_phone_num">',
         display: false,
         url: function(params) {
@@ -366,26 +380,26 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'phone');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_branch').editable({
         type: 'text',
         name: 'branch',
-        placement: "bottom",
-        emptytext: "null",
+        placement: 'bottom',
+        emptytext: 'null',
         display: false,
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'branch');
             $scope.update();
           }
-        }
+        },
       });
       $('#profile_years').editable({
         type: 'number',
         name: 'years',
-        placement: "bottom",
-        emptytext: "null",
+        placement: 'bottom',
+        emptytext: 'null',
         tpl: '<input>',
         display: false,
         url: function(params) {
@@ -393,7 +407,7 @@ angular.module('ohanaApp')
             $scope.saveUserData(params.value, 'years');
             $scope.update();
           }
-        }
+        },
       });
-    }
+    };
   });
