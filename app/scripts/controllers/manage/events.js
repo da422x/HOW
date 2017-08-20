@@ -12,6 +12,10 @@ angular.module('ohanaApp')
   .controller('EventsCtrl', function($q, commonServices, $scope, $uibModal, $location, DAO) {
     'use strict';
 
+    $scope.initialize = function() {
+      $scope.filter = $scope.filterTypes[0];
+    }
+
     $scope.newQuery = {};
     var allEvents = [];
 
