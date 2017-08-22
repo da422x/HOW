@@ -121,8 +121,7 @@ angular
         Object.keys($scope.event.volunteers).forEach(function(val, idx) {
           // $scope.event.volunteers[val]//["key"] = val;
           dataSet.push($scope.event.volunteers[val]);
-        }) :
-        [];
+        }) : [];
 
       console.log(dataSet);
       //dataGridUtil.buildMembersTableData(results);

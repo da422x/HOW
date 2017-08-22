@@ -121,8 +121,7 @@ angular
             city: $scope.newUserDirectory.address.city,
             line1: $scope.newUserDirectory.address.line1,
             line2: $scope.newUserDirectory.address.line2 ?
-              $scope.newUserDirectory.address.line2 :
-              'none',
+              $scope.newUserDirectory.address.line2 : 'none',
             state: $scope.newUserDirectory.address.state.name,
             zip: $scope.newUserDirectory.address.zip,
           },
