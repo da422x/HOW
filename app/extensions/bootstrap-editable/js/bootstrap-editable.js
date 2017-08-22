@@ -2193,8 +2193,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
               name: editable.options.name || '',
               value: editable.input.value2submit(editable.value),
               pk: typeof editable.options.pk === 'function' ?
-                editable.options.pk.call(editable.options.scope) :
-                editable.options.pk,
+                editable.options.pk.call(editable.options.scope) : editable.options.pk,
             };
 
             //additional params
@@ -4946,8 +4945,7 @@ Editableform based on Twitter Bootstrap 3
 
       //apply bs3 size class also to buttons (to fit size of control)
       var $btn = this.$form.find('.editable-buttons');
-      var classes = emptyInputClass ?
-        [defaultClass] :
+      var classes = emptyInputClass ? [defaultClass] :
         this.input.options.inputclass.split(' ');
       for (var i = 0; i < classes.length; i++) {
         // `btn-sm` is default now

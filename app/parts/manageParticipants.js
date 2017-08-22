@@ -164,8 +164,7 @@ angular
         Object.keys($scope.event.participants).forEach(function(val, idx) {
           $scope.event.participants[val]['key'] = val;
           dataSet.push($scope.event.participants[val]);
-        }) :
-        [];
+        }) : [];
       console.log('the dataset is ', dataSet);
       //dataGridUtil.buildMembersTableData(results);
       $scope.currId = ''; // holds value of the current row's member Id for CRUD ops
