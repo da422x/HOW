@@ -4142,9 +4142,11 @@
                 'GetTextContent', {
                   pageIndex: this.pageNumber - 1,
                   normalizeWhitespace: params && params.normalizeWhitespace === true ?
-                    true : false,
+                    true :
+                    false,
                   combineTextItems: params && params.disableCombineTextItems === true ?
-                    false : true,
+                    false :
+                    true,
                 }
               );
             },

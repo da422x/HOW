@@ -24,7 +24,11 @@
 
     <div class="row" ng-repeat="chapter in chapters">
       <div class="col-sm-12">
-        <h4><a href={{chapter.url}} target="_blank">{{chapter.value}}</a></h5>
+        <!--         <img src = {{chapter.image}} alt="Icon" >
+ -->
+        <h4><a href={{chapter.url}} target="_blank">{{chapter.name}}</a></h4>
+        <h6> Contact Info: {{chapter.email}} </h6>
+        <h6>{{chapter.city}} , {{chapter.state}}</h6>
       </div>
     </div>
   </div>

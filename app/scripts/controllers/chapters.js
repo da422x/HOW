@@ -41,8 +41,20 @@ angular
     $scope.locationUpdate = function(location) {
       var ctrl = this;
       commonServices.zipCompare(location).then(function(result) {
-        $scope.chapters = _.filter($rootScope.siteData.chapters, function(n) {
-          return n.region === result[1].value;
+        var path = '/Regions/' + result[1].value + '/';
+        var dataObject = commonServices.getData(path);
+        $q.all([dataObject]).then(function(data) {
+          var chapterNames = [];
+          if (data[0]) {
+            _.each(data[0], function(state) {
+              _.each(state, function(chapter) {
+                chapterNames.push(chapter);
+              });
+            });
+          } else {
+            console.log('Failed to get Chapters...');
+          }
+          $scope.chapters = chapterNames;
         });
       });
     };
