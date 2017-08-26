@@ -2126,25 +2126,25 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         return result;
 
         /**
-                      Returns current values of editable elements.   
-                      Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
-                      If value of some editable is `null` or `undefined` it is excluded from result object.
-                      When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
-                       
-                      @method getValue()
-                      @param {bool} isSingle whether to return just value of single element
-                      @returns {Object} object of element names and values
-                      @example
-                      $('#username, #fullname').editable('getValue');
-                      //result:
-                      {
-                      username: "superuser",
-                      fullname: "John"
-                      }
-                      //isSingle = true
-                      $('#username').editable('getValue', true);
-                      //result "superuser" 
-                      **/
+                        Returns current values of editable elements.   
+                        Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
+                        If value of some editable is `null` or `undefined` it is excluded from result object.
+                        When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
+                         
+                        @method getValue()
+                        @param {bool} isSingle whether to return just value of single element
+                        @returns {Object} object of element names and values
+                        @example
+                        $('#username, #fullname').editable('getValue');
+                        //result:
+                        {
+                        username: "superuser",
+                        fullname: "John"
+                        }
+                        //isSingle = true
+                        $('#username').editable('getValue', true);
+                        //result "superuser" 
+                        **/
       case 'getValue':
         if (arguments.length === 2 && arguments[1] === true) {
           //isSingle = true
@@ -2161,21 +2161,21 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         return result;
 
         /**
-                              This method collects values from several editable elements and submit them all to server.   
-                              Internally it runs client-side validation for all fields and submits only in case of success.  
-                              See <a href="#newrecord">creating new records</a> for details.  
-                              Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
-                              `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
-                          
-                              @method submit(options)
-                              @param {object} options 
-                              @param {object} options.url url to submit data 
-                              @param {object} options.data additional data to submit
-                              @param {object} options.ajaxOptions additional ajax options
-                              @param {function} options.error(obj) error handler 
-                              @param {function} options.success(obj,config) success handler
-                              @returns {Object} jQuery object
-                              **/
+                                This method collects values from several editable elements and submit them all to server.   
+                                Internally it runs client-side validation for all fields and submits only in case of success.  
+                                See <a href="#newrecord">creating new records</a> for details.  
+                                Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
+                                `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
+                            
+                                @method submit(options)
+                                @param {object} options 
+                                @param {object} options.url url to submit data 
+                                @param {object} options.data additional data to submit
+                                @param {object} options.ajaxOptions additional ajax options
+                                @param {function} options.error(obj) error handler 
+                                @param {function} options.success(obj,config) success handler
+                                @returns {Object} jQuery object
+                                **/
       case 'submit': //collects value, validate and submit to server for creating new record
         var config = arguments[1] || {},
           $elems = this,

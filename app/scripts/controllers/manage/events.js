@@ -16,7 +16,8 @@ angular
     $scope,
     $uibModal,
     $location,
-    DAO
+    DAO,
+    $rootScope
   ) {
     'use strict';
 
@@ -138,12 +139,28 @@ angular
     };
 
     $scope.add = function() {
+      var childScope = $rootScope.$new(false, $scope);
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
         controller: 'NewEventFormCtrl',
+        scope: childScope,
       });
       modalInstance.result.then(function() {
-        console.log('Reloading...');
+        loadAll();
+      });
+    };
+
+    $scope.edit = function(evt) {
+      var childScope = $rootScope.$new(false, $scope);
+      childScope.newEvent = evt;
+      childScope.isEdit = true;
+
+      var modalInstance = $uibModal.open({
+        templateUrl: '/parts/newEventForm.html',
+        controller: 'NewEventFormCtrl',
+        scope: childScope,
+      });
+      modalInstance.result.then(function() {
         loadAll();
       });
     };
