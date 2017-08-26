@@ -19,6 +19,9 @@ angular
   ) {
     'use strict';
 
+    if ($scope.isEdit) {
+      console.log($scope.newEvent);
+    }
     $scope.initialize = function() {
       $('#phonenum').mask('(999)999-9999');
     };
@@ -96,33 +99,45 @@ angular
     ];
 
     // empty submit object
-    $scope.newEvent = {};
+    $scope.newEvent = $scope.newEvent || {};
 
     $scope.postEvent = function() {
+      var result = null;
       // submit form
       $scope.newEvent.startTime = $scope.st.getTime();
       $scope.newEvent.endTime = $scope.et.getTime();
-      $scope.initiator = $rootScope.userId;
+      $scope.newEvent.initiator = $rootScope.userId;
 
-      var result = commonServices.pushData('/events/', $scope.newEvent);
-
-      $q.all([result]).then(function(data) {
-        if (data[0]) {
-          console.log(data[0]);
-          $uibModalInstance.close();
-          swal({
-            text: 'Adding Event',
-            type: 'success',
-            timer: 2500,
-          });
-        } else {
-          swal({
-            text: 'Something happened....',
-            type: 'error',
-            timer: 2500,
-          });
-        }
-      });
+      if (!$scope.isEdit) {
+        result = commonServices.pushData('/events/', $scope.newEvent);
+        $q.all([result]).then(function(data) {
+          if (data[0]) {
+            $uibModalInstance.close();
+            swal({
+              text: 'Adding Event',
+              type: 'success',
+              timer: 2500,
+            });
+          } else {
+            swal({
+              text: 'Something happened....',
+              type: 'error',
+              timer: 2500,
+            });
+          }
+        });
+      } else {
+        var key = $scope.newEvent['key'];
+        delete $scope.newEvent['key'];
+        delete $scope.newEvent['$$hashKey'];
+        result = commonServices.updateData('/events/' + key, $scope.newEvent);
+        $uibModalInstance.close();
+        swal({
+          text: 'Adding Event',
+          type: 'success',
+          timer: 2500,
+        });
+      }
     };
 
     $scope.cancel = function() {
