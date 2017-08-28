@@ -35,7 +35,7 @@ angular
   ])
   .config(function($routeProvider, $httpProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
-    //$httpProvider.interceptors.push('pageAuthInterceptor');
+    $httpProvider.interceptors.push('pageAuthInterceptor');
     $routeProvider
       .when('/home', {
         templateUrl: 'views/home.html',

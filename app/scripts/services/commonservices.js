@@ -62,6 +62,7 @@ angular.module('ohanaApp').service('commonServices', [
         .auth()
         .signInWithEmailAndPassword(user.email, user.password)
         .then(function(data) {
+          $rootScope.sessionState = true;
           console.log(
             'success : ' + firebase.auth().currentUser.email + ' signed In'
           );
