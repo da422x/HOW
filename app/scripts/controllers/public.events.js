@@ -17,7 +17,8 @@ angular
     $uibModal,
     Api,
     userService,
-    $filter
+    $filter,
+    $rootScope
   ) {
     'use strict';
     $scope.newQuery = {};
@@ -25,11 +26,13 @@ angular
     // $scope.volunteerIsDisabled = false;
     $scope.allVolunteerIsDisableds = [];
     $scope.allParticipantIsDisableds = [];
+    $scope.selected = null;
 
     var loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
       // allEvents = [];
       $q.all([getEvents]).then(function(data) {
+        console.log(data);
         if (data[0]) {
           // _.each(data[0], function(event) {
           //     allEvents.push(event);
@@ -50,7 +53,6 @@ angular
           });
           $scope.eventList = data[0];
           $scope.eventList2 = angular.copy($scope.eventList);
-          console.log($scope.eventList, $scope.eventList2);
         } else {
           console.log('Failed to get Events...');
         }
@@ -60,6 +62,7 @@ angular
     loadAll();
 
     $scope.checkAllVolunteerIsDisableds = function(key, idx) {
+      if (!$scope.userService.getUserData()['email']) return;
       commonServices
         .getUserByEmailAtPath(
           $scope.userService.getUserData()['email'],
@@ -78,18 +81,8 @@ angular
         });
     };
 
-    $scope.testingTester = function() {
-      return 5;
-    };
-
-    $scope.testingTester2 = function() {
-      //this is a faked method
-      //check public_events.ts in the test files to see how this
-      //angular service is spoofed with a fake method for testing purporses.
-      return Api.getme();
-    };
-
     $scope.checkAllParticipantIsDisableds = function(key, idx) {
+      if (!$scope.userService.getUserData()['email']) return;
       commonServices
         .getUserByEmailAtPath(
           $scope.userService.getUserData()['email'],
@@ -204,7 +197,7 @@ angular
     };
 
     $scope.showDescription = function(index) {
-      $scope.currentEvent = $scope.eventList[index];
+      $scope.selected = $scope.eventList[index];
       var modalInstance = $uibModal.open({
         scope: $scope,
         templateUrl: '/parts/public.events.description.html',
@@ -212,31 +205,31 @@ angular
       });
     };
 
-    $scope.showDescription = function(index) {
-      $scope.selected = $scope.eventList[index];
-      console.log('Index is: ' + index);
-      var getEvents = commonServices.getEvent($scope.selected);
+    // $scope.showDescription = function(index) {
+    //   $scope.selected = $scope.eventList[index];
+    //   console.log('Index is: ', index);
+    //   var getEvents = commonServices.getEvent(index);
 
-      $q.all([getEvents]).then(function(data) {
-        if (data[0]) {
-          _.each(data[0], function(event) {
-            if ($scope.selected.email === event.email) {
-              console.log('Event: ' + event.name);
-              $scope.selected = event;
-            }
-          });
-        } else {
-          $scope.selected = null;
-        }
-      });
-      if ($scope.selected != null) {
-        var modalInstance = $uibModal.open({
-          scope: $scope,
-          templateUrl: '/parts/public.events.description.html',
-          controller: 'PublicEventsDescriptionCtrl',
-        });
-      }
-    };
+    //   $q.all([getEvents]).then(function(data) {
+    //     if (data[0]) {
+    //       _.each(data[0], function(event) {
+    //         if ($scope.selected.email === event.email) {
+    //           console.log('Event: ' + event.name);
+    //           $scope.selected = event;
+    //         }
+    //       });
+    //     } else {
+    //       $scope.selected = null;
+    //     }
+    //   });
+    //   if ($scope.selected != null) {
+    //     var modalInstance = $uibModal.open({
+    //       scope: $scope,
+    //       templateUrl: '/parts/public.events.description.html',
+    //       controller: 'PublicEventsDescriptionCtrl',
+    //     });
+    //   }
+    // };
 
     $scope.addVolunteer = function(key, idx) {
       //email = email.trim();

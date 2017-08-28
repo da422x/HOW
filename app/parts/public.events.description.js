@@ -21,9 +21,9 @@ angular
     console.log(userService.getUserData(), userService.getRole(), $rootScope);
     // calendar options
 
-    $scope.event = $scope.selected;
+    $scope.event = $scope.$parent.selected;
     console.log('In modal');
-    console.log($scope.selected);
+    console.log($scope);
     $scope.popup = {
       opened: false,
     };
