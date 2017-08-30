@@ -70,12 +70,14 @@ angular
 
     $scope.options1 = {
       scales: {
-        yAxes: [{
-          id: 'y-axis-1',
-          type: 'linear',
-          display: true,
-          position: 'left',
-        }, ],
+        yAxes: [
+          {
+            id: 'y-axis-1',
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+        ],
       },
     };
 
@@ -127,9 +129,9 @@ angular
           for (var x = 0; x < $scope.expenseconfig.length; x++) {
             if (
               Date.parse(currentdate) >=
-              Date.parse($scope.expenseconfig[x].startdate) &&
+                Date.parse($scope.expenseconfig[x].startdate) &&
               Date.parse(currentdate) <=
-              Date.parse($scope.expenseconfig[x].enddate)
+                Date.parse($scope.expenseconfig[x].enddate)
             ) {
               $scope.OverAgeDays = $scope.expenseconfig[x].OverAgeDays;
             }
@@ -188,8 +190,8 @@ angular
                 if ($scope.daysforoverage > 0) {
                   swal(
                     'Expense waiting for submission! Over Age in ' +
-                    $scope.daysforoverage +
-                    ' days',
+                      $scope.daysforoverage +
+                      ' days',
                     '',
                     ''
                   );
@@ -300,7 +302,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -311,7 +313,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -322,7 +324,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -333,7 +335,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -351,7 +353,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -362,7 +364,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -373,7 +375,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -384,7 +386,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -403,7 +405,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -414,7 +416,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -425,7 +427,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -436,7 +438,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -455,7 +457,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -466,7 +468,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -477,7 +479,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -488,7 +490,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -507,7 +509,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -518,7 +520,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -529,7 +531,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -540,7 +542,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -559,7 +561,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -570,7 +572,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -581,7 +583,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -592,7 +594,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -611,7 +613,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastWeek +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -622,7 +624,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].PastMonth +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -633,7 +635,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past3Month +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
                     if (
@@ -644,7 +646,7 @@ angular
                         Math.round(
                           ($scope.ExpensebyStatusData[i].Past1Year +
                             list.Amount) *
-                          100
+                            100
                         ) / 100;
                     }
 
@@ -1337,7 +1339,8 @@ angular
           buttons: ['excel', 'pdf', 'print'],
           // fixedColumns: true,
           // "pagingType": "full_numbers",
-          columns: [{
+          columns: [
+            {
               data: 'Region',
               title: 'Region',
               width: '80px',
@@ -1383,7 +1386,8 @@ angular
               width: '40px',
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 0,
               width: '25%',
             },
@@ -1400,9 +1404,7 @@ angular
               // width: "5%"
             },
           ],
-          order: [
-            [2, 'desc']
-          ],
+          order: [[2, 'desc']],
         });
       });
     };
@@ -1432,7 +1434,8 @@ angular
           buttons: ['excel', 'pdf', 'print'],
           // fixedColumns: true,
           // "pagingType": "full_numbers",
-          columns: [{
+          columns: [
+            {
               data: 'Region',
               title: 'Region',
               width: '70px',
@@ -1482,7 +1485,8 @@ angular
               render: $.fn.dataTable.render.number(',', '.', 2, '$'),
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 0,
               width: '25%',
             },
@@ -1499,9 +1503,7 @@ angular
               // width: "5%"
             },
           ],
-          order: [
-            [2, 'desc']
-          ],
+          order: [[2, 'desc']],
         });
       });
     };

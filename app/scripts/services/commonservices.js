@@ -318,7 +318,8 @@ angular.module('ohanaApp').service('commonServices', [
 
     this.addressLookup = function(zip, outerCallback) {
       var geocoder = new google.maps.Geocoder();
-      geocoder.geocode({
+      geocoder.geocode(
+        {
           address: zip.toString(),
         },
         function(results, status) {
@@ -336,7 +337,7 @@ angular.module('ohanaApp').service('commonServices', [
                 success: false,
                 err: new Error(
                   'Geocode was not successful for the following reason: ' +
-                  status
+                    status
                 ),
                 results: null,
               });

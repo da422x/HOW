@@ -103,7 +103,8 @@ angular
 
         $scope.eventParticipantsTable = $('#eventParticipantsTable').DataTable({
           data: dataSet,
-          columns: [{},
+          columns: [
+            {},
             {
               title: 'ID',
               data: 'DT_RowId',
@@ -122,7 +123,8 @@ angular
               orderable: false,
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 1,
               visible: false,
             },
@@ -149,9 +151,7 @@ angular
               width: '200px',
             },
           ],
-          order: [
-            [3, 'asc']
-          ],
+          order: [[3, 'asc']],
           headerCallback: function(thead) {
             $(thead)
               .find('th')
@@ -215,7 +215,8 @@ angular
             $scope.buildTable(data);
             $scope.dataStack = data;
             swal({
-              text: 'Connection failed. Could not ' +
+              text:
+                'Connection failed. Could not ' +
                 data.config.method +
                 ' from ' +
                 data.config.url,
@@ -229,10 +230,10 @@ angular
     $scope.remove = function() {
       var j, k;
       var rows = $scope.eventParticipantsTable
-        .rows({
-          search: 'applied',
-        })
-        .nodes(),
+          .rows({
+            search: 'applied',
+          })
+          .nodes(),
         checkedRows = [];
       for (j = 0; j < rows.length; j++) {
         if ($('input[type="checkbox"]', rows[j]).prop('checked')) {

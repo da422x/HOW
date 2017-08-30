@@ -114,9 +114,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             var value =
               this.value === null ||
               this.value === undefined ||
-              this.value === '' ?
-              this.options.defaultValue :
-              this.value;
+              this.value === ''
+                ? this.options.defaultValue
+                : this.value;
             this.input.value2input(value);
             //attach submit handler
             this.$form.submit($.proxy(this.submit, this));
@@ -231,7 +231,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
       //if value not changed --> trigger 'nochange' event and return
       /*jslint eqeq: true*/
-      if (!this.options.savenochange &&
+      if (
+        !this.options.savenochange &&
         this.input.value2str(newValue) == this.input.value2str(this.value)
       ) {
         /*jslint eqeq: false*/
@@ -257,13 +258,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
             //run success callback
             var res =
-              typeof this.options.success === 'function' ?
-              this.options.success.call(
-                this.options.scope,
-                response,
-                newValue
-              ) :
-              null;
+              typeof this.options.success === 'function'
+                ? this.options.success.call(
+                    this.options.scope,
+                    response,
+                    newValue
+                  )
+                : null;
 
             //if success callback returns false --> keep form open and do not activate input
             if (res === false) {
@@ -322,9 +323,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
               msg = this.options.error.call(this.options.scope, xhr, newValue);
             } else {
               msg =
-                typeof xhr === 'string' ?
-                xhr :
-                xhr.responseText || xhr.statusText || 'Unknown error!';
+                typeof xhr === 'string'
+                  ? xhr
+                  : xhr.responseText || xhr.statusText || 'Unknown error!';
             }
 
             this.error(msg);
@@ -338,9 +339,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
       this.options.pk = $.fn.editableutils.tryParseJson(this.options.pk, true);
 
       var pk =
-        typeof this.options.pk === 'function' ?
-        this.options.pk.call(this.options.scope) :
-        this.options.pk,
+          typeof this.options.pk === 'function'
+            ? this.options.pk.call(this.options.scope)
+            : this.options.pk,
         /*
           send on server in following cases:
           1. url is function
@@ -385,7 +386,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         } else {
           //send ajax to server and return deferred object
           return $.ajax(
-            $.extend({
+            $.extend(
+              {
                 url: this.options.url,
                 data: params,
                 type: 'POST',
@@ -741,7 +743,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             /*jslint evil: true*/
             s = new Function('return ' + s)();
             /*jslint evil: false*/
-          } catch (e) {} finally {
+          } catch (e) {
+          } finally {
             return s;
           }
         } else {
@@ -756,7 +759,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     /**
      * slice object by specified keys
      */
-    sliceObj: function(obj, keys, caseSensitive /* default: false */ ) {
+    sliceObj: function(obj, keys, caseSensitive /* default: false */) {
       var key,
         keyLower,
         newObj = {};
@@ -1074,7 +1077,7 @@ Applied as jQuery method.
       if (!$.fn[this.containerName]) {
         throw new Error(
           this.containerName +
-          ' not found. Have you included corresponding js file?'
+            ' not found. Have you included corresponding js file?'
         );
       }
 
@@ -1217,7 +1220,8 @@ Applied as jQuery method.
     @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
     **/
     hide: function(reason) {
-      if (!this.tip() ||
+      if (
+        !this.tip() ||
         !this.tip().is(':visible') ||
         !this.$element.hasClass('editable-open')
       ) {
@@ -1504,7 +1508,8 @@ Applied as jQuery method.
   //extend methods
   $.extend(
     $.fn.editableContainer.Inline.prototype,
-    $.fn.editableContainer.Popup.prototype, {
+    $.fn.editableContainer.Popup.prototype,
+    {
       containerName: 'editableform',
       innerCss: '.editable-inline',
       containerClass: 'editable-container editable-inline', //css class applied to container element
@@ -1564,7 +1569,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
   var Editable = function(element, options) {
     this.$element = $(element);
     //data-* has more priority over js options: because dynamically created elements may change data-*
-    this.options = $.extend({},
+    this.options = $.extend(
+      {},
       $.fn.editable.defaults,
       options,
       $.fn.editableutils.getConfigData(this.$element)
@@ -1669,7 +1675,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
           break;
         case 'auto':
           //if element text is empty and value is defined and value not generated by text --> run autotext
-          doAutotext = !$.trim(this.$element.text()).length &&
+          doAutotext =
+            !$.trim(this.$element.text()).length &&
             this.value !== null &&
             this.value !== undefined &&
             !isValueByText;
@@ -1971,7 +1978,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
           sent ||
           (this.options.savenochange &&
             this.input.value2str(this.value) !==
-            this.input.value2str(params.newValue));
+              this.input.value2str(params.newValue));
 
         if (sent) {
           this.$element.removeClass(this.options.unsavedclass);
@@ -2125,7 +2132,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         });
         return result;
 
-        /**
+      /**
                             Returns current values of editable elements.   
                             Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
                             If value of some editable is `null` or `undefined` it is excluded from result object.
@@ -2160,7 +2167,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         }
         return result;
 
-        /**
+      /**
                                     This method collects values from several editable elements and submit them all to server.   
                                     Internally it runs client-side validation for all fields and submits only in case of success.  
                                     See <a href="#newrecord">creating new records</a> for details.  
@@ -2192,9 +2199,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             var params = {
               name: editable.options.name || '',
               value: editable.input.value2submit(editable.value),
-              pk: typeof editable.options.pk === 'function' ?
-                editable.options.pk.call(editable.options.scope) :
-                editable.options.pk,
+              pk:
+                typeof editable.options.pk === 'function'
+                  ? editable.options.pk.call(editable.options.scope)
+                  : editable.options.pk,
             };
 
             //additional params
@@ -2235,19 +2243,19 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
           // ajax success callabck (response 200 OK)
           ajaxOptions.success =
-            typeof config.success === 'function' ?
-            function(response) {
-              config.success.call($elems, response, config);
-            } :
-            $.noop;
+            typeof config.success === 'function'
+              ? function(response) {
+                  config.success.call($elems, response, config);
+                }
+              : $.noop;
 
           // ajax error callabck
           ajaxOptions.error =
-            typeof config.error === 'function' ?
-            function() {
-              config.error.apply($elems, arguments);
-            } :
-            $.noop;
+            typeof config.error === 'function'
+              ? function() {
+                  config.error.apply($elems, arguments);
+                }
+              : $.noop;
 
           // extend ajaxOptions
           if (config.ajaxOptions) {
@@ -2809,7 +2817,8 @@ List - abstract class for inputs that have source option loaded from js array or
         }
 
         //ajaxOptions for source. Can be overwritten bt options.sourceOptions
-        var ajaxOptions = $.extend({
+        var ajaxOptions = $.extend(
+          {
             url: source,
             type: 'get',
             cache: false,
@@ -3461,9 +3470,9 @@ $(function(){
     },
 
     value2str: function(value) {
-      return $.isArray(value) ?
-        value.sort().join($.trim(this.options.separator)) :
-        '';
+      return $.isArray(value)
+        ? value.sort().join($.trim(this.options.separator))
+        : '';
     },
 
     //parse separated string
@@ -3752,7 +3761,8 @@ Range (inherit from number)
     },
   });
   Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {
-    tpl: '<input type="range"><output style="width: 30px; display: inline-block"></output>',
+    tpl:
+      '<input type="range"><output style="width: 30px; display: inline-block"></output>',
     inputclass: 'input-medium',
   });
   $.fn.editabletypes.range = Range;
@@ -3910,7 +3920,8 @@ $(function(){
     }
 
     //overriding objects in config (as by default jQuery extend() is not recursive)
-    this.options.select2 = $.extend({},
+    this.options.select2 = $.extend(
+      {},
       Constructor.defaults.select2,
       options.select2
     );
@@ -4007,9 +4018,9 @@ $(function(){
     },
 
     html2value: function(html) {
-      return this.options.select2.tags ?
-        this.str2value(html, this.options.viewseparator) :
-        null;
+      return this.options.select2.tags
+        ? this.str2value(html, this.options.viewseparator)
+        : null;
     },
 
     value2input: function(value) {
@@ -4116,8 +4127,10 @@ $(function(){
     },
   });
 
-  Constructor.defaults = $.extend({},
-    $.fn.editabletypes.abstractinput.defaults, {
+  Constructor.defaults = $.extend(
+    {},
+    $.fn.editabletypes.abstractinput.defaults,
+    {
       /**
     @property tpl 
     @default <input type="hidden">
@@ -4191,7 +4204,8 @@ $(function(){
       $.error('Combodate should be applied to INPUT element');
       return;
     }
-    this.options = $.extend({},
+    this.options = $.extend(
+      {},
       $.fn.combodate.defaults,
       options,
       this.$element.data()
@@ -4323,9 +4337,9 @@ $(function(){
         //need both to support moment ver < 2 and  >= 2
         relTime = moment.relativeTime || moment.langData()._relativeTime;
         var header =
-          typeof relTime[key] === 'function' ?
-          relTime[key](1, true, key, false) :
-          relTime[key];
+          typeof relTime[key] === 'function'
+            ? relTime[key](1, true, key, false)
+            : relTime[key];
         //take last entry (see momentjs lang files structure)
         header = header.split(' ').reverse()[0];
         values.push(['', header]);
@@ -4467,10 +4481,7 @@ $(function(){
     fillAmpm: function() {
       var ampmL = this.options.template.indexOf('a') !== -1,
         ampmU = this.options.template.indexOf('A') !== -1,
-        items = [
-          ['am', ampmL ? 'am' : 'AM'],
-          ['pm', ampmL ? 'pm' : 'PM']
-        ];
+        items = [['am', ampmL ? 'am' : 'AM'], ['pm', ampmL ? 'pm' : 'PM']];
       return items;
     },
 
@@ -4542,9 +4553,9 @@ $(function(){
       }
 
       var dt =
-        typeof value === 'string' ?
-        moment(value, this.options.format) :
-        moment(value),
+          typeof value === 'string'
+            ? moment(value, this.options.format)
+            : moment(value),
         that = this,
         values = {};
 
@@ -4764,9 +4775,11 @@ $(function(){
     );
 
     //overriding combodate config (as by default jQuery extend() is not recursive)
-    this.options.combodate = $.extend({},
+    this.options.combodate = $.extend(
+      {},
       Constructor.defaults.combodate,
-      options.combodate, {
+      options.combodate,
+      {
         format: this.options.format,
         template: this.options.template,
       }
@@ -4844,8 +4857,10 @@ $(function(){
     autosubmit: function() {},
   });
 
-  Constructor.defaults = $.extend({},
-    $.fn.editabletypes.abstractinput.defaults, {
+  Constructor.defaults = $.extend(
+    {},
+    $.fn.editabletypes.abstractinput.defaults,
+    {
       /**
     @property tpl 
     @default <input type="text">
@@ -4946,9 +4961,9 @@ Editableform based on Twitter Bootstrap 3
 
       //apply bs3 size class also to buttons (to fit size of control)
       var $btn = this.$form.find('.editable-buttons');
-      var classes = emptyInputClass ?
-        [defaultClass] :
-        this.input.options.inputclass.split(' ');
+      var classes = emptyInputClass
+        ? [defaultClass]
+        : this.input.options.inputclass.split(' ');
       for (var i = 0; i < classes.length; i++) {
         // `btn-sm` is default now
         /*
@@ -5156,9 +5171,9 @@ Editableform based on Twitter Bootstrap 3
         var $tip = this.tip();
 
         var placement =
-          typeof this.options.placement == 'function' ?
-          this.options.placement.call(this, $tip[0], this.$element[0]) :
-          this.options.placement;
+          typeof this.options.placement == 'function'
+            ? this.options.placement.call(this, $tip[0], this.$element[0])
+            : this.options.placement;
 
         var autoToken = /\s?auto?\s?/i;
         var autoPlace = autoToken.test(placement);
@@ -5177,27 +5192,27 @@ Editableform based on Twitter Bootstrap 3
           var docScroll =
             document.documentElement.scrollTop || document.body.scrollTop;
           var parentWidth =
-            this.options.container == 'body' ?
-            window.innerWidth :
-            $parent.outerWidth();
+            this.options.container == 'body'
+              ? window.innerWidth
+              : $parent.outerWidth();
           var parentHeight =
-            this.options.container == 'body' ?
-            window.innerHeight :
-            $parent.outerHeight();
+            this.options.container == 'body'
+              ? window.innerHeight
+              : $parent.outerHeight();
           var parentLeft =
             this.options.container == 'body' ? 0 : $parent.offset().left;
 
           placement =
             placement == 'bottom' &&
-            pos.top + pos.height + actualHeight - docScroll > parentHeight ?
-            'top' :
-            placement == 'top' && pos.top - docScroll - actualHeight < 0 ?
-            'bottom' :
-            placement == 'right' && pos.right + actualWidth > parentWidth ?
-            'left' :
-            placement == 'left' && pos.left - actualWidth < parentLeft ?
-            'right' :
-            placement;
+            pos.top + pos.height + actualHeight - docScroll > parentHeight
+              ? 'top'
+              : placement == 'top' && pos.top - docScroll - actualHeight < 0
+                ? 'bottom'
+                : placement == 'right' && pos.right + actualWidth > parentWidth
+                  ? 'left'
+                  : placement == 'left' && pos.left - actualWidth < parentLeft
+                    ? 'right'
+                    : placement;
 
           $tip.removeClass(orgPlacement).addClass(placement);
         }
@@ -5260,9 +5275,9 @@ Editableform based on Twitter Bootstrap 3
     this.element = $(element);
     this.isInline = false;
     this.isInput = this.element.is('input');
-    this.component = this.element.is('.date') ?
-      this.element.find('.add-on, .btn') :
-      false;
+    this.component = this.element.is('.date')
+      ? this.element.find('.add-on, .btn')
+      : false;
     this.hasInput = this.component && this.element.find('input').length;
     if (this.component && this.component.length === 0) this.component = false;
 
@@ -5453,12 +5468,14 @@ Editableform based on Twitter Bootstrap 3
           {
             mousedown: $.proxy(function(e) {
               // Clicked outside the datepicker, hide it
-              if (!(
+              if (
+                !(
                   this.element.is(e.target) ||
                   this.element.find(e.target).size() ||
                   this.picker.is(e.target) ||
                   this.picker.find(e.target).size()
-                )) {
+                )
+              ) {
                 this.hide();
               }
             }, this),
@@ -5499,9 +5516,9 @@ Editableform based on Twitter Bootstrap 3
     show: function(e) {
       if (!this.isInline) this.picker.appendTo('body');
       this.picker.show();
-      this.height = this.component ?
-        this.component.outerHeight() :
-        this.element.outerHeight();
+      this.height = this.component
+        ? this.component.outerHeight()
+        : this.element.outerHeight();
       this.place();
       this._attachSecondaryEvents();
       if (e) {
@@ -5601,19 +5618,19 @@ Editableform based on Twitter Bootstrap 3
       var zIndex =
         parseInt(
           this.element
-          .parents()
-          .filter(function() {
-            return $(this).css('z-index') != 'auto';
-          })
-          .first()
-          .css('z-index')
+            .parents()
+            .filter(function() {
+              return $(this).css('z-index') != 'auto';
+            })
+            .first()
+            .css('z-index')
         ) + 10;
-      var offset = this.component ?
-        this.component.parent().offset() :
-        this.element.offset();
-      var height = this.component ?
-        this.component.outerHeight(true) :
-        this.element.outerHeight(true);
+      var offset = this.component
+        ? this.component.parent().offset()
+        : this.element.offset();
+      var height = this.component
+        ? this.component.outerHeight(true)
+        : this.element.outerHeight(true);
       this.picker.css({
         top: offset.top + height,
         left: offset.left,
@@ -5635,9 +5652,9 @@ Editableform based on Twitter Bootstrap 3
         date = arguments[0];
         fromArgs = true;
       } else {
-        date = this.isInput ?
-          this.element.val() :
-          this.element.data('date') || this.element.find('input').val();
+        date = this.isInput
+          ? this.element.val()
+          : this.element.data('date') || this.element.find('input').val();
         delete this.element.data().date;
       }
 
@@ -5746,19 +5763,19 @@ Editableform based on Twitter Bootstrap 3
         year = d.getUTCFullYear(),
         month = d.getUTCMonth(),
         startYear =
-        this.o.startDate !== -Infinity ?
-        this.o.startDate.getUTCFullYear() :
-        -Infinity,
+          this.o.startDate !== -Infinity
+            ? this.o.startDate.getUTCFullYear()
+            : -Infinity,
         startMonth =
-        this.o.startDate !== -Infinity ?
-        this.o.startDate.getUTCMonth() :
-        -Infinity,
+          this.o.startDate !== -Infinity
+            ? this.o.startDate.getUTCMonth()
+            : -Infinity,
         endYear =
-        this.o.endDate !== Infinity ?
-        this.o.endDate.getUTCFullYear() :
-        Infinity,
+          this.o.endDate !== Infinity
+            ? this.o.endDate.getUTCFullYear()
+            : Infinity,
         endMonth =
-        this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
+          this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
         currentDate = this.date && this.date.valueOf(),
         tooltip;
       this.picker
@@ -5795,14 +5812,16 @@ Editableform based on Twitter Bootstrap 3
             // ISO 8601: First week contains first thursday.
             // ISO also states week starts on Monday, but we can be more abstract here.
             var // Start of current week: based on weekstart/current date
-              ws = new Date(+prevMonth +
-                (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5
+              ws = new Date(
+                +prevMonth +
+                  (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5
               ),
               // Thursday of this week
               th = new Date(+ws + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
               // First Thursday of year, year from thursday
-              yth = new Date(+(yth = UTCDate(th.getUTCFullYear(), 0, 1)) +
-                (7 + 4 - yth.getUTCDay()) % 7 * 864e5
+              yth = new Date(
+                +(yth = UTCDate(th.getUTCFullYear(), 0, 1)) +
+                  (7 + 4 - yth.getUTCDay()) % 7 * 864e5
               ),
               // Calendar week: ms between thursdays, div ms per day, div 7 days
               calWeek = (th - yth) / 864e5 / 7 + 1;
@@ -5830,12 +5849,12 @@ Editableform based on Twitter Bootstrap 3
         clsName = $.unique(clsName);
         html.push(
           '<td class="' +
-          clsName.join(' ') +
-          '"' +
-          (tooltip ? ' title="' + tooltip + '"' : '') +
-          '>' +
-          prevMonth.getUTCDate() +
-          '</td>'
+            clsName.join(' ') +
+            '"' +
+            (tooltip ? ' title="' + tooltip + '"' : '') +
+            '>' +
+            prevMonth.getUTCDate() +
+            '</td>'
         );
         if (prevMonth.getUTCDay() == this.o.weekEnd) {
           html.push('</tr>');
@@ -6090,14 +6109,14 @@ Editableform based on Twitter Bootstrap 3
       if (mag == 1) {
         test =
           dir == -1 // If going back one month, make sure month is not current month
-          ? // (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
-          function() {
-            return new_date.getUTCMonth() == month;
-          } // If going forward one month, make sure month is as expected
-          : // (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
-          function() {
-            return new_date.getUTCMonth() != new_month;
-          };
+            ? // (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
+              function() {
+                return new_date.getUTCMonth() == month;
+              } // If going forward one month, make sure month is as expected
+            : // (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
+              function() {
+                return new_date.getUTCMonth() != new_month;
+              };
         new_month = month + dir;
         new_date.setUTCMonth(new_month);
         // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
@@ -6450,7 +6469,8 @@ Editableform based on Twitter Bootstrap 3
   });
 
   var DPGlobal = {
-    modes: [{
+    modes: [
+      {
         clsName: 'days',
         navFnc: 'Month',
         navStep: 1,
@@ -6646,7 +6666,8 @@ Editableform based on Twitter Bootstrap 3
       }
       return date.join('');
     },
-    headTemplate: '<thead>' +
+    headTemplate:
+      '<thead>' +
       '<tr>' +
       '<th class="prev"><i class="icon-arrow-left"/></th>' +
       '<th colspan="5" class="datepicker-switch"></th>' +
@@ -6654,7 +6675,8 @@ Editableform based on Twitter Bootstrap 3
       '</tr>' +
       '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-    footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>',
+    footTemplate:
+      '<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>',
   };
   DPGlobal.template =
     '<div class="datepicker">' +
@@ -6773,9 +6795,11 @@ $(function(){
 
       //overriding datepicker config (as by default jQuery extend() is not recursive)
       //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
-      this.options.datepicker = $.extend({},
+      this.options.datepicker = $.extend(
+        {},
         defaults.datepicker,
-        options.datepicker, {
+        options.datepicker,
+        {
           format: this.options.viewformat,
         }
       );
@@ -6812,13 +6836,13 @@ $(function(){
     },
 
     value2html: function(value, element) {
-      var text = value ?
-        this.dpg.formatDate(
-          value,
-          this.parsedViewFormat,
-          this.options.datepicker.language
-        ) :
-        '';
+      var text = value
+        ? this.dpg.formatDate(
+            value,
+            this.parsedViewFormat,
+            this.options.datepicker.language
+          )
+        : '';
       Date.superclass.value2html.call(this, text, element);
     },
 
@@ -6827,13 +6851,13 @@ $(function(){
     },
 
     value2str: function(value) {
-      return value ?
-        this.dpg.formatDate(
-          value,
-          this.parsedFormat,
-          this.options.datepicker.language
-        ) :
-        '';
+      return value
+        ? this.dpg.formatDate(
+            value,
+            this.parsedFormat,
+            this.options.datepicker.language
+          )
+        : '';
     },
 
     str2value: function(str) {
@@ -7017,13 +7041,13 @@ Automatically shown in inline mode.
 
     value2input: function(value) {
       this.$input.val(
-        value ?
-        this.dpg.formatDate(
-          value,
-          this.parsedViewFormat,
-          this.options.datepicker.language
-        ) :
-        ''
+        value
+          ? this.dpg.formatDate(
+              value,
+              this.parsedViewFormat,
+              this.options.datepicker.language
+            )
+          : ''
       );
       this.$tpl.bdatepicker('update');
     },
@@ -7045,7 +7069,8 @@ Automatically shown in inline mode.
     /**
     @property tpl 
     **/
-    tpl: '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
+    tpl:
+      '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
     /**
     @property inputclass 
     @default 'input-small'
@@ -7120,9 +7145,11 @@ $(function(){
 
       //overriding datetimepicker config (as by default jQuery extend() is not recursive)
       //since 1.4 datetimepicker internally uses viewformat instead of format. Format is for submit only
-      this.options.datetimepicker = $.extend({},
+      this.options.datetimepicker = $.extend(
+        {},
         defaults.datetimepicker,
-        options.datetimepicker, {
+        options.datetimepicker,
+        {
           format: this.options.viewformat,
         }
       );
@@ -7176,14 +7203,14 @@ $(function(){
 
     value2html: function(value, element) {
       //formatDate works with UTCDate!
-      var text = value ?
-        this.dpg.formatDate(
-          this.toUTC(value),
-          this.parsedViewFormat,
-          this.options.datetimepicker.language,
-          this.options.formatType
-        ) :
-        '';
+      var text = value
+        ? this.dpg.formatDate(
+            this.toUTC(value),
+            this.parsedViewFormat,
+            this.options.datetimepicker.language,
+            this.options.formatType
+          )
+        : '';
       if (element) {
         DateTime.superclass.value2html.call(this, text, element);
       } else {
@@ -7199,14 +7226,14 @@ $(function(){
 
     value2str: function(value) {
       //formatDate works with UTCDate!
-      return value ?
-        this.dpg.formatDate(
-          this.toUTC(value),
-          this.parsedFormat,
-          this.options.datetimepicker.language,
-          this.options.formatType
-        ) :
-        '';
+      return value
+        ? this.dpg.formatDate(
+            this.toUTC(value),
+            this.parsedFormat,
+            this.options.datetimepicker.language,
+            this.options.formatType
+          )
+        : '';
     },
 
     str2value: function(str) {
@@ -7252,16 +7279,16 @@ $(function(){
 
     //convert date from local to utc
     toUTC: function(value) {
-      return value ?
-        new Date(value.valueOf() - value.getTimezoneOffset() * 60000) :
-        value;
+      return value
+        ? new Date(value.valueOf() - value.getTimezoneOffset() * 60000)
+        : value;
     },
 
     //convert date from utc to local
     fromUTC: function(value) {
-      return value ?
-        new Date(value.valueOf() + value.getTimezoneOffset() * 60000) :
-        value;
+      return value
+        ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000)
+        : value;
     },
 
     /*
@@ -7411,7 +7438,8 @@ Automatically shown in inline mode.
     /**
     @property tpl 
     **/
-    tpl: '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
+    tpl:
+      '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
     /**
     @property inputclass 
     @default 'input-medium'

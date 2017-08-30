@@ -175,9 +175,9 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
           arr.state = stateName;
           arr.name = results[i][stateName][chapterName].name;
           arr.description = results[i][stateName][chapterName].description;
-          arr.chadmin = results[i][stateName][chapterName].chadmin ?
-            results[i][stateName][chapterName].chadmin :
-            'none';
+          arr.chadmin = results[i][stateName][chapterName].chadmin
+            ? results[i][stateName][chapterName].chadmin
+            : 'none';
           arr.facebook = results[i][stateName][chapterName].url;
           arr.facebook_link = results[i][stateName][chapterName].url_link;
           arr.email = results[i][stateName][chapterName].email;
@@ -194,9 +194,9 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
             "' target='_blank' class='storelocatorlink'>" +
             arr.googleMaps +
             '</a><br/>';
-          arr.donation = results[i][stateName][chapterName].donation ?
-            results[i][stateName][chapterName].donation :
-            'https://heroesonthewater.org/how-to-help/donate/chapter-donation/';
+          arr.donation = results[i][stateName][chapterName].donation
+            ? results[i][stateName][chapterName].donation
+            : 'https://heroesonthewater.org/how-to-help/donate/chapter-donation/';
           arr.donation_link =
             "<a href='" +
             arr.donation +

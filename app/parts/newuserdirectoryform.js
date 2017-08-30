@@ -107,7 +107,8 @@ angular
     $scope.postUser = function(form) {
       if (form.$invalid) {
         swal({
-          text: 'The form has required fields that are missing data or formatted improperly.',
+          text:
+            'The form has required fields that are missing data or formatted improperly.',
           type: 'error',
           customClass: 'modal-border',
         });
@@ -120,9 +121,9 @@ angular
           address: {
             city: $scope.newUserDirectory.address.city,
             line1: $scope.newUserDirectory.address.line1,
-            line2: $scope.newUserDirectory.address.line2 ?
-              $scope.newUserDirectory.address.line2 :
-              'none',
+            line2: $scope.newUserDirectory.address.line2
+              ? $scope.newUserDirectory.address.line2
+              : 'none',
             state: $scope.newUserDirectory.address.state.name,
             zip: $scope.newUserDirectory.address.zip,
           },
@@ -163,7 +164,8 @@ angular
                 };
                 commonServices.pushData('/roleChangeRequests/', rcr_packet);
                 swal({
-                  text: 'Request to be Volunteer has been submitted! You can view the status of your request on your profile page.',
+                  text:
+                    'Request to be Volunteer has been submitted! You can view the status of your request on your profile page.',
                   type: 'success',
                 });
               }

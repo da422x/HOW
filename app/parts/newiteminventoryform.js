@@ -33,7 +33,8 @@ angular
     };
 
     // category dropdown data
-    $scope.categories = [{
+    $scope.categories = [
+      {
         value: 'kayaks_and_equip',
         displayName: 'Kayaks and Equipment',
       },
@@ -60,7 +61,8 @@ angular
     ];
 
     // condition radio data
-    $scope.conditions = [{
+    $scope.conditions = [
+      {
         value: 'new',
         displayName: 'New',
       },

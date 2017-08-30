@@ -117,12 +117,12 @@ angular
       var packet;
       var dataSet = [];
       console.log;
-      var tmp = $scope.event.volunteers ?
-        Object.keys($scope.event.volunteers).forEach(function(val, idx) {
-          // $scope.event.volunteers[val]//["key"] = val;
-          dataSet.push($scope.event.volunteers[val]);
-        }) :
-        [];
+      var tmp = $scope.event.volunteers
+        ? Object.keys($scope.event.volunteers).forEach(function(val, idx) {
+            // $scope.event.volunteers[val]//["key"] = val;
+            dataSet.push($scope.event.volunteers[val]);
+          })
+        : [];
 
       console.log(dataSet);
       //dataGridUtil.buildMembersTableData(results);
@@ -145,7 +145,8 @@ angular
           // ajax: 'testData/members.json',
           data: dataSet,
           // scrollX: true,
-          columns: [{
+          columns: [
+            {
               title: 'KEY',
               data: 'key',
             },
@@ -172,18 +173,18 @@ angular
               orderable: false,
             },
           ],
-          columnDefs: [{
-            targets: 0,
-            searchable: false,
-            orderable: false,
-            className: 'dt-body-center',
-            render: function() {
-              return '<input type="checkbox" class="volunteersTable-select">';
+          columnDefs: [
+            {
+              targets: 0,
+              searchable: false,
+              orderable: false,
+              className: 'dt-body-center',
+              render: function() {
+                return '<input type="checkbox" class="volunteersTable-select">';
+              },
             },
-          }, ],
-          order: [
-            [1, 'desc']
           ],
+          order: [[1, 'desc']],
           headerCallback: function(thead) {},
           rowCallback: function(row, data, dataIndex) {
             // Get row ID

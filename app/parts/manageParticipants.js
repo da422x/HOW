@@ -160,12 +160,12 @@ angular
       var i;
       var packet;
       var dataSet = [];
-      var tmp = $scope.event.participants ?
-        Object.keys($scope.event.participants).forEach(function(val, idx) {
-          $scope.event.participants[val]['key'] = val;
-          dataSet.push($scope.event.participants[val]);
-        }) :
-        [];
+      var tmp = $scope.event.participants
+        ? Object.keys($scope.event.participants).forEach(function(val, idx) {
+            $scope.event.participants[val]['key'] = val;
+            dataSet.push($scope.event.participants[val]);
+          })
+        : [];
       console.log('the dataset is ', dataSet);
       //dataGridUtil.buildMembersTableData(results);
       $scope.currId = ''; // holds value of the current row's member Id for CRUD ops
@@ -188,7 +188,8 @@ angular
           // ajax: 'testData/members.json',
           data: dataSet,
           // scrollX: true,
-          columns: [{
+          columns: [
+            {
               title: 'KEY',
               data: 'key',
             },
@@ -211,18 +212,18 @@ angular
               orderable: false,
             },
           ],
-          columnDefs: [{
-            targets: 0,
-            searchable: false,
-            orderable: false,
-            className: 'dt-body-center',
-            render: function() {
-              return '<input type="checkbox" class="participantsTable-select">';
+          columnDefs: [
+            {
+              targets: 0,
+              searchable: false,
+              orderable: false,
+              className: 'dt-body-center',
+              render: function() {
+                return '<input type="checkbox" class="participantsTable-select">';
+              },
             },
-          }, ],
-          order: [
-            [1, 'desc']
           ],
+          order: [[1, 'desc']],
           headerCallback: function(thead) {},
           rowCallback: function(row, data, dataIndex) {
             // Get row ID

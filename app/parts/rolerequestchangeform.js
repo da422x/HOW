@@ -62,7 +62,8 @@ angular
             var newTS = Date.now();
             var packet = {
               uid: $scope.currentUID,
-              name: $scope.userData.name.first + ' ' + $scope.userData.name.last,
+              name:
+                $scope.userData.name.first + ' ' + $scope.userData.name.last,
               email: $scope.userData.email,
               current_role: $scope.currentUserRole,
               request_role: $scope.formData.role.value,

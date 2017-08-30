@@ -80,7 +80,8 @@ angular
     //		];
 
     // event status radio data
-    $scope.states = [{
+    $scope.states = [
+      {
         value: 'upcoming-open',
         displayName: 'upcoming-open',
       },

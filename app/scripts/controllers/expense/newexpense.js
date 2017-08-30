@@ -54,9 +54,9 @@ angular
           for (var x = 0; x < $scope.expenseconfig.length; x++) {
             if (
               Date.parse(currentdate) >=
-              Date.parse($scope.expenseconfig[x].startdate) &&
+                Date.parse($scope.expenseconfig[x].startdate) &&
               Date.parse(currentdate) <=
-              Date.parse($scope.expenseconfig[x].enddate)
+                Date.parse($scope.expenseconfig[x].enddate)
             ) {
               $scope.exp.Line[0].Rate = $scope.expenseconfig[x].MileRate;
               $scope.exp.Line[1].Rate = $scope.expenseconfig[x].TrailerRate;
@@ -87,7 +87,7 @@ angular
 
     uploader.filters.push({
       name: 'imageFilter',
-      fn: function(item /*{File|FileLikeObject}*/ , options) {
+      fn: function(item /*{File|FileLikeObject}*/, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
         return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
       },
@@ -151,10 +151,12 @@ angular
       $scope.LineDetails = [];
       $scope.LineDetails.length = 0;
       $scope.LineDetails = expenseservice.LineDetails;
-      $scope.LineDetails = [{
-        Description: '',
-        Amount: 0,
-      }, ];
+      $scope.LineDetails = [
+        {
+          Description: '',
+          Amount: 0,
+        },
+      ];
     }
 
     // --- END ---------
@@ -296,7 +298,8 @@ angular
         title: 'Confirm Save Expense?',
         text: 'Expense will be saved in EDIT status!',
         type: 'info',
-        html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
+        html:
+          '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
           meventdate +
           '</b> </td></tr>' +
           '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' +
@@ -344,7 +347,8 @@ angular
         swal({
           title: 'Required fields Missing',
           type: 'error',
-          html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
+          html:
+            '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
             meventdate +
             '</b> </td></tr>' +
             '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' +
@@ -360,9 +364,11 @@ angular
       } else {
         swal({
           title: 'Please confirm New Expense',
-          text: 'Created Expense will be reviewed by Chapter Lead and National Staff!',
+          text:
+            'Created Expense will be reviewed by Chapter Lead and National Staff!',
           type: 'info',
-          html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
+          html:
+            '<table><tr><td class="swaltdl ">Event Date : </td><td class="swaltdl "><b>' +
             meventdate +
             '</b> </td></tr>' +
             '<tr><td class="swaltdl ">Description : </td><td class="swaltdl "><b>' +
@@ -415,7 +421,7 @@ angular
             Math.round(
               (parseFloat($scope.lineamount) +
                 parseFloat($scope.LineDetails[x].Amount)) *
-              100
+                100
             ) / 100;
           $scope.exp.Line.push({
             ID: i,
@@ -442,7 +448,7 @@ angular
           ($scope.exp.Line[0].Quantity * $scope.exp.Line[0].Rate +
             $scope.exp.Line[1].Quantity * $scope.exp.Line[1].Rate +
             parseFloat($scope.lineamount) * 1) *
-          100
+            100
         ) / 100;
     };
 

@@ -54,7 +54,8 @@ angular.module('ohanaApp').controller('ChangeChapterCtrl', [
         $q.all([getSelectedUser]).then(function(data) {
           swal({
             title: 'Are you sure?',
-            text: 'Changing ' +
+            text:
+              'Changing ' +
               data[0].name.first +
               ' ' +
               data[0].name.last +
@@ -96,7 +97,8 @@ angular.module('ohanaApp').controller('ChangeChapterCtrl', [
       } else {
         swal({
           title: 'Are you sure?',
-          text: 'Your role will be changed to Participant if you change your PRIMARY CHAPTER',
+          text:
+            'Your role will be changed to Participant if you change your PRIMARY CHAPTER',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

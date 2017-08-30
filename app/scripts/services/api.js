@@ -8,9 +8,8 @@ angular.module('ohanaApp').service('Api', function($resource) {
   var l = window.location;
   var extension =
     l.hostname === 'localhost' || l.hostname.indexOf('txcdtl08tm638x') > -1 //				"http://txcdt36an7383.itservices.sbc.com:1337"
-    ?
-    'http://ec2-52-43-72-217.us-west-2.compute.amazonaws.com:1337' :
-    l.protocol + '//' + l.hostname;
+      ? 'http://ec2-52-43-72-217.us-west-2.compute.amazonaws.com:1337'
+      : l.protocol + '//' + l.hostname;
 
   return {
     // region controller -------------------------------------------------------------------
@@ -31,9 +30,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       //so long as it's invokable
     },
     createChapter: $resource(
-      extension + '/region/:region_id/create_chapter', {
+      extension + '/region/:region_id/create_chapter',
+      {
         region_id: '@region_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -41,10 +42,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     regionAddChapter: $resource(
-      extension + '/region/:region_id/add_chapter/:chapter_id', {
+      extension + '/region/:region_id/add_chapter/:chapter_id',
+      {
         region_id: '@region_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
           isArray: false,
@@ -52,10 +55,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     regionDeleteChapter: $resource(
-      extension + '/region/:region_id/delete_chapter/:chapter_id', {
+      extension + '/region/:region_id/delete_chapter/:chapter_id',
+      {
         region_id: '@region_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         remove: {
           method: 'POST',
           isArray: false,
@@ -65,7 +70,9 @@ angular.module('ohanaApp').service('Api', function($resource) {
 
     // chapter controller -------------------------------------------------------------------
     chapter: $resource(
-      extension + '/chapter', {}, {
+      extension + '/chapter',
+      {},
+      {
         //			query: { method: 'GET'} // implied default GET retrieves all
       }
     ),
@@ -78,9 +85,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
     // 		remove: { method: 'DELETE' }
     // 	}),
     chapterCreateMember: $resource(
-      extension + '/chapter/:chapter_id/create_member', {
+      extension + '/chapter/:chapter_id/create_member',
+      {
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -88,10 +97,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterRemoveMember: $resource(
-      extension + '/chapter/:chapter_id/delete_member/:member_id', {
+      extension + '/chapter/:chapter_id/delete_member/:member_id',
+      {
         member_id: '@member_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         remove: {
           method: 'DELETE',
           isArray: false,
@@ -99,10 +110,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterUpdateMember: $resource(
-      extension + '/chapter/:chapter_id/update_member/:member_id', {
+      extension + '/chapter/:chapter_id/update_member/:member_id',
+      {
         member_id: '@member_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'POST',
           isArray: false,
@@ -110,9 +123,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     createEvent: $resource(
-      extension + '/chapter/:chapter_id/create_event', {
+      extension + '/chapter/:chapter_id/create_event',
+      {
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -120,10 +135,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterAddEvent: $resource(
-      extension + '/chapter/:chapter_id/add_event/:event_id', {
+      extension + '/chapter/:chapter_id/add_event/:event_id',
+      {
         event_id: '@event_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
           isArray: false,
@@ -131,10 +148,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterRemoveEvent: $resource(
-      extension + '/chapter/:chapter_id/delete_event/:event_id', {
+      extension + '/chapter/:chapter_id/delete_event/:event_id',
+      {
         event_id: '@event_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         remove: {
           method: 'POST',
           isArray: false,
@@ -142,9 +161,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     createItem: $resource(
-      extension + '/chapter/:chapter_id/create_item', {
+      extension + '/chapter/:chapter_id/create_item',
+      {
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -152,10 +173,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterAddItem: $resource(
-      extension + '/chapter/:chapter_id/add_item/:item_id', {
+      extension + '/chapter/:chapter_id/add_item/:item_id',
+      {
         item_id: '@item_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
           isArray: false,
@@ -163,10 +186,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterRemoveItem: $resource(
-      extension + '/chapter/:chapter_id/delete_item/:item_id', {
+      extension + '/chapter/:chapter_id/delete_item/:item_id',
+      {
         item_id: '@item_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         remove: {
           method: 'POST',
           isArray: false,
@@ -174,10 +199,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     chapterUpdateItem: $resource(
-      extension + '/chapter/:chapter_id/update_item/:member_id', {
+      extension + '/chapter/:chapter_id/update_item/:member_id',
+      {
         item_id: '@item_id',
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'POST',
           isArray: false,
@@ -189,18 +216,22 @@ angular.module('ohanaApp').service('Api', function($resource) {
     // //			query: { method: 'GET'} // implied default GET retrieves all
     // 		}),
     events: $resource(
-      extension + '/events/:event_id', {
+      extension + '/events/:event_id',
+      {
         event_id: '@event_id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
         },
       }
     ),
     getCurrentEvent: $resource(
-      extension + '/events/:event_id', {
+      extension + '/events/:event_id',
+      {
         event_id: '@event_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: false,
@@ -208,9 +239,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     getMembersByEvent: $resource(
-      extension + '/events/:event_id/members', {
+      extension + '/events/:event_id/members',
+      {
         event_id: '@event_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: true,
@@ -218,10 +251,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     addMemberToEvent: $resource(
-      extension + '/events/:event_id/add_member/:member_id', {
+      extension + '/events/:event_id/add_member/:member_id',
+      {
         event_id: '@event_id',
         member_id: '@member_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -229,10 +264,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     dropMemberFromEvent: $resource(
-      extension + '/events/:event_id/drop_member/:member_id', {
+      extension + '/events/:event_id/drop_member/:member_id',
+      {
         event_id: '@event_id',
         member_id: '@member_id',
-      }, {
+      },
+      {
         remove: {
           method: 'POST',
           isArray: false,
@@ -240,10 +277,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     reserveItemToEvent: $resource(
-      extension + '/events/:event_id/reserve_item/:item_id', {
+      extension + '/events/:event_id/reserve_item/:item_id',
+      {
         item_id: '@item_id',
         event_id: '@event_id',
-      }, {
+      },
+      {
         save: {
           method: 'POST',
           isArray: false,
@@ -251,10 +290,12 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     freeItemFromEvent: $resource(
-      extension + '/events/:event_id/free_item/:item_id', {
+      extension + '/events/:event_id/free_item/:item_id',
+      {
         item_id: '@item_id',
         member_id: '@member_id',
-      }, {
+      },
+      {
         remove: {
           method: 'POST',
           isArray: false,
@@ -262,9 +303,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     getVolunteersForEvent: $resource(
-      extension + '/events/get_volunteers/:event_id', {
+      extension + '/events/get_volunteers/:event_id',
+      {
         event_id: '@event_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: true,
@@ -272,9 +315,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     getParticipantsForEvent: $resource(
-      extension + '/events/get_participants/:event_id', {
+      extension + '/events/get_participants/:event_id',
+      {
         event_id: '@event_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: true,
@@ -283,15 +328,19 @@ angular.module('ohanaApp').service('Api', function($resource) {
     ),
     // item controller -------------------------------------------------------------------
     item: $resource(
-      extension + '/item', {}, {
+      extension + '/item',
+      {},
+      {
         //			query: { method: 'GET' } // implied default GET retrieves all
       }
     ),
     //http://txcdt36an7383.itservices.sbc.com:1337/chapter/579a253cc780baa40b4653cf/items
     getChapterItems: $resource(
-      extension + '/chapter/:chapter_id/items', {
+      extension + '/chapter/:chapter_id/items',
+      {
         chapter_id: '@chapter_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: true,
@@ -299,9 +348,11 @@ angular.module('ohanaApp').service('Api', function($resource) {
       }
     ),
     getEventItems: $resource(
-      extension + '/events/:event_id/items', {
+      extension + '/events/:event_id/items',
+      {
         chapter_id: '@event_id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
           isArray: true,
@@ -310,7 +361,9 @@ angular.module('ohanaApp').service('Api', function($resource) {
     ),
     // member controller -------------------------------------------------------------------
     member: $resource(
-      extension + '/member', {}, {
+      extension + '/member',
+      {},
+      {
         //			query: { method: 'GET' }, // implied default GET retrieves all
         //			save: { method: 'POST', isArray: false }
       }
@@ -324,18 +377,22 @@ angular.module('ohanaApp').service('Api', function($resource) {
     //				save: { method: 'POST', isArray: false }
     //			}),
     retrieveLogin: $resource(
-      extension + '/member/get_login/:member_id', {
+      extension + '/member/get_login/:member_id',
+      {
         id: '@id',
-      }, {
+      },
+      {
         query: {
           method: 'GET',
         }, // explicit default GET retrieves single
       }
     ),
     updateLogin: $resource(
-      extension + '/member/login/update/:member_id', {
+      extension + '/member/login/update/:member_id',
+      {
         id: '@id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
         },
@@ -343,11 +400,13 @@ angular.module('ohanaApp').service('Api', function($resource) {
     ),
     memberUpdateChapter: $resource(
       extension +
-      '/member/:member_id/change_chapter/:from_chapter_id/:to_chapter_id', {
+        '/member/:member_id/change_chapter/:from_chapter_id/:to_chapter_id',
+      {
         member_id: '@member_id',
         from_chapter_id: '@from_chapter_id',
         to_chapter_id: '@to_chapter_id',
-      }, {
+      },
+      {
         update: {
           method: 'PUT',
         },
@@ -356,7 +415,9 @@ angular.module('ohanaApp').service('Api', function($resource) {
 
     // session controller
     session: $resource(
-      extension + '/session/login', {}, {
+      extension + '/session/login',
+      {},
+      {
         query: {
           method: 'GET',
         }, // explicit default GET retrieves single

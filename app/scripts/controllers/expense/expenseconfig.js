@@ -302,7 +302,8 @@ angular
           scrollCollapse: true,
           paging: false,
 
-          columns: [{
+          columns: [
+            {
               data: 'StatusDate',
               title: 'Status Date',
               width: '70px',
@@ -313,7 +314,8 @@ angular
               width: '90px',
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 0,
               width: '25%',
             },
@@ -322,9 +324,7 @@ angular
               width: '35%',
             },
           ],
-          order: [
-            [0, 'desc']
-          ],
+          order: [[0, 'desc']],
         });
       });
     };

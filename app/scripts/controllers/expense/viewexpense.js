@@ -50,9 +50,9 @@ angular
             // console.log("Overage config ", currentdate, Date.parse($scope.expenseconfig[x].startdate), $scope.OverAgeWarning, $scope.OverAgeError);
             if (
               Date.parse(currentdate) >=
-              Date.parse($scope.expenseconfig[x].startdate) &&
+                Date.parse($scope.expenseconfig[x].startdate) &&
               Date.parse(currentdate) <=
-              Date.parse($scope.expenseconfig[x].enddate)
+                Date.parse($scope.expenseconfig[x].enddate)
             ) {
               $scope.OverAgeWarning = $scope.expenseconfig[x].OverAgeWarning;
               $scope.OverAgeError = $scope.expenseconfig[x].OverAgeError;
@@ -104,8 +104,8 @@ angular
                     if ($scope.daysforoverage > 0) {
                       swal(
                         'Expense waiting for submission! Over Age in ' +
-                        $scope.daysforoverage +
-                        ' days',
+                          $scope.daysforoverage +
+                          ' days',
                         '',
                         ''
                       );
@@ -213,7 +213,8 @@ angular
 
     $scope.Head = '';
 
-    $scope.DateRangelist = [{
+    $scope.DateRangelist = [
+      {
         name: 'Past Week',
         value: 'Past Week',
       },
@@ -372,7 +373,8 @@ angular
       case 'Volunteer':
       case 'Participant':
         $scope.HeadTitle = ' created by ' + LoggedUser;
-        $scope.paystatuslist = [{
+        $scope.paystatuslist = [
+          {
             name: 'All',
             value: '',
           },
@@ -406,7 +408,8 @@ angular
 
       case 'Chapter Lead':
         $scope.HeadTitle = ' for ' + $scope.userChapter.text;
-        $scope.paystatuslist = [{
+        $scope.paystatuslist = [
+          {
             name: 'All',
             value: '',
           },
@@ -443,7 +446,8 @@ angular
         break;
 
       default:
-        $scope.paystatuslist = [{
+        $scope.paystatuslist = [
+          {
             name: 'All',
             value: '',
           },
@@ -752,7 +756,8 @@ angular
                 }
               },
               pagingType: 'full_numbers',
-              columns: [{
+              columns: [
+                {
                   data: 'eventdate',
                   width: '60px',
                 },
@@ -783,7 +788,8 @@ angular
                   width: '60px',
                 },
               ],
-              columnDefs: [{
+              columnDefs: [
+                {
                   targets: 0,
                 },
                 {
@@ -795,9 +801,7 @@ angular
                   width: '90px',
                 },
               ],
-              order: [
-                [6, 'desc']
-              ],
+              order: [[6, 'desc']],
               headerCallback: function(thead) {
                 if (userRole == 'National Staff') {
                   // $(thead).find('th').eq(0).html('<input type="checkbox" id="expenseTable-select-all">');
@@ -805,7 +809,8 @@ angular
               },
             });
 
-            $('#expenseTable').dataTable().yadcf([{
+            $('#expenseTable').dataTable().yadcf([
+              {
                 column_number: 3,
                 select_type: 'chosen',
                 filter_default_label: 'Expense Originator Name',
@@ -1050,7 +1055,7 @@ angular
             (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) &&
               Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
             (($scope.userRole == 'Participant' ||
-                $scope.userRole == 'Volunteer') &&
+              $scope.userRole == 'Volunteer') &&
               value[i].email == useremail)
           ) {
             var reportdata = {
@@ -1201,27 +1206,31 @@ angular
             (Date.parse(value[i].SubmitDate) >= Date.parse($scope.startdate) &&
               Date.parse(value[i].SubmitDate) <= Date.parse($scope.enddate)) &&
             (($scope.userRole == 'Participant' ||
-                $scope.userRole == 'Volunteer') &&
+              $scope.userRole == 'Volunteer') &&
               value[i].email == useremail)
           ) {
             var reportdata = {
               'Event Date': value[i].eventdate,
               'Business Purpose, Origin & Destination': value[i].Description,
               'Miles Driven': parseInt(value[i].Line[0].Quantity),
-              'Travel @ .25/mile': '$ ' +
+              'Travel @ .25/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100
                 ),
               'Trailer Miles': parseInt(value[i].Line[1].Quantity),
-              'Trailer Hauling @ .40/mile': '$ ' +
+              'Trailer Hauling @ .40/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100
                 ),
-              'Other Expenses': '$ ' +
+              'Other Expenses':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100
                 ),
-              Total: '$ ' +
+              Total:
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Amount) * 100) / 100
                 ),
@@ -1243,20 +1252,24 @@ angular
               'Event Date': value[i].eventdate,
               'Business Purpose, Origin & Destination': value[i].Description,
               'Miles Driven': parseInt(value[i].Line[0].Quantity),
-              'Travel @ .25/mile': '$ ' +
+              'Travel @ .25/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100
                 ),
               'Trailer Miles': parseInt(value[i].Line[1].Quantity),
-              'Trailer Hauling @ .40/mile': '$ ' +
+              'Trailer Hauling @ .40/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100
                 ),
-              'Other Expenses': '$ ' +
+              'Other Expenses':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100
                 ),
-              Total: '$ ' +
+              Total:
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Amount) * 100) / 100
                 ),
@@ -1277,20 +1290,24 @@ angular
               'Event Date': value[i].eventdate,
               'Business Purpose, Origin & Destination': value[i].Description,
               'Miles Driven': parseInt(value[i].Line[0].Quantity),
-              'Travel @ .25/mile': '$ ' +
+              'Travel @ .25/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[0].Amount) * 100) / 100
                 ),
               'Trailer Miles': parseInt(value[i].Line[1].Quantity),
-              'Trailer Hauling @ .40/mile': '$ ' +
+              'Trailer Hauling @ .40/mile':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[1].Amount) * 100) / 100
                 ),
-              'Other Expenses': '$ ' +
+              'Other Expenses':
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Line[2].Amount) * 100) / 100
                 ),
-              Total: '$ ' +
+              Total:
+                '$ ' +
                 numberWithCommas(
                   Math.round(parseFloat(value[i].Amount) * 100) / 100
                 ),

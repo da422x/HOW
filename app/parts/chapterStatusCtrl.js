@@ -58,11 +58,14 @@ angular
     $scope.levelChanged = function(level) {
       $scope.currentLog = [];
       if (level === 'National') {
-        $scope.logType = [{
-          text: 'All Chapter Changes',
-        }, ];
+        $scope.logType = [
+          {
+            text: 'All Chapter Changes',
+          },
+        ];
       } else {
-        $scope.logType = [{
+        $scope.logType = [
+          {
             text: 'Primary Member Changes',
           },
           {
@@ -84,7 +87,7 @@ angular
         case 'Primary Member Changes':
           logData = commonServices.getData(
             '/logs/chapterLogs/memberTraffic/primaryChapter/' +
-            $scope.selectedChapter.text
+              $scope.selectedChapter.text
           );
           $q.all([logData]).then(function(data) {
             $scope.formatPrimaryMemberLogs(data[0]);
@@ -93,7 +96,7 @@ angular
         case 'Secondary Member Changes':
           logData = commonServices.getData(
             '/logs/chapterLogs/memberTraffic/secondaryChapter/' +
-            $scope.selectedChapter.text
+              $scope.selectedChapter.text
           );
           $q.all([logData]).then(function(data) {
             $scope.formatSecondaryMemberLogs(data[0]);

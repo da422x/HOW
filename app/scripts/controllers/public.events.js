@@ -183,9 +183,9 @@ angular
             } else if (
               typeof evtObjToSearch[key] === 'number' &&
               evtObjToSearch[key]
-              .toString()
-              .toLowerCase()
-              .includes($scope.newQuery.search)
+                .toString()
+                .toLowerCase()
+                .includes($scope.newQuery.search)
             ) {
               //match numbers
               res[val] = $scope.eventList2[val];
@@ -330,9 +330,9 @@ angular
                                 var entity_key = Object.keys(part)[0];
                                 commonServices.removeData(
                                   '/events/' +
-                                  key +
-                                  '/participants/' +
-                                  entity_key
+                                    key +
+                                    '/participants/' +
+                                    entity_key
                                 );
                                 $scope.allParticipantIsDisableds[idx][
                                   'isDisabled'
@@ -346,7 +346,8 @@ angular
                               if (areWaiversUnsignedObj['witness']) {
                                 //put up fill out form for signing the witness form
                                 var modalInstance = $uibModal.open({
-                                  templateUrl: '/parts/sign_witness_waiver.html',
+                                  templateUrl:
+                                    '/parts/sign_witness_waiver.html',
                                   controller: 'SignWitnessWaiverCtrl',
                                   resolve: {
                                     // selectedUID: function() {
