@@ -11,8 +11,8 @@ angular
   .module('ohanaApp')
   .service('howLogService', function($rootScope, commonServices) {
     /************************************************************************************
-     *             START - Primary and Scondary Chapter Change calls                    *
-     ************************************************************************************/
+         *             START - Primary and Scondary Chapter Change calls                    *
+         ************************************************************************************/
     this.logPrimaryChapterChange = function(
       userName,
       authUserName,
@@ -139,6 +139,6 @@ angular
       });
     };
     /************************************************************************************
-     *              END - Primary and Scondary Chapter Change calls                     *
-     ************************************************************************************/
+         *              END - Primary and Scondary Chapter Change calls                     *
+         ************************************************************************************/
   });

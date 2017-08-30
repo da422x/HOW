@@ -81,8 +81,8 @@ angular
     };
 
     /******************************************************
-     *  New Expense / Expense Detail - Other Expense Line  *
-     *******************************************************/
+         *  New Expense / Expense Detail - Other Expense Line  *
+         *******************************************************/
     this.LineDetails = [
       {
         Description: '',
@@ -210,8 +210,8 @@ angular
       swal('Payment Status Updated Successfully!', '', 'success');
     };
     /******************************************************
-     *        View Expense                                 *
-     *******************************************************/
+         *        View Expense                                 *
+         *******************************************************/
     this.getViewExpenseData = function(useremail, userRole, Chapter) {
       var expenselist = [];
       switch (userRole) {
@@ -445,8 +445,8 @@ angular
     };
 
     /******************************************************
-     *        Expense Supporting Documents - Images         *
-     *******************************************************/
+         *        Expense Supporting Documents - Images         *
+         *******************************************************/
 
     this.deleteImage = function(Imagename, Imagearray) {
       // Create a reference to the file to delete
@@ -538,8 +538,8 @@ angular
     };
 
     /******************************************************
-     *        REPORT                                *
-     *******************************************************/
+         *        REPORT                                *
+         *******************************************************/
 
     this.buildTableBody = function(data, columns) {
       var body = [];

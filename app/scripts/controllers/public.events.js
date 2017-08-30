@@ -584,11 +584,11 @@ angular
     };
 
     /*waiver object:
-      waiver{
-        date_signed
+              waiver{
+                date_signed
 
-      }
-    */
+              }
+            */
     // Api.events.query().$promise.then(
     // 	function (response) { // on success
     // 		$scope.eventList = response;

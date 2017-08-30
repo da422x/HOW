@@ -94,9 +94,9 @@ angular
       $scope.update();
     };
     /*	Displays the users for a given event
-     *
-     *
-     */
+         *
+         *
+         */
     $scope.buildTable = function(results) {
       var dataSet = dataGridUtil.buildEventPeopleTableData(results);
       $scope.currId = ''; // holds value of the current row's member Id for CRUD ops

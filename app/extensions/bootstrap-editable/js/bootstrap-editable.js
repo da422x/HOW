@@ -48,10 +48,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
       }
     },
     /**
-    Renders editableform
+            Renders editableform
 
-    @method render
-    **/
+            @method render
+            **/
     render: function() {
       //init loader
       this.$loading = $($.fn.editableform.loading);
@@ -73,10 +73,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
       this.isSaving = false;
 
       /**        
-      Fired when rendering starts
-      @event rendering 
-      @param {Object} event event object
-      **/
+                  Fired when rendering starts
+                  @event rendering 
+                  @param {Object} event event object
+                  **/
       this.$div.triggerHandler('rendering');
 
       //init input
@@ -123,10 +123,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
           }
 
           /**        
-          Fired when form is rendered
-          @event rendered
-          @param {Object} event event object
-          **/
+                              Fired when form is rendered
+                              @event rendered
+                              @param {Object} event event object
+                              **/
           this.$div.triggerHandler('rendered');
 
           this.showForm();
@@ -140,10 +140,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
     cancel: function() {
       /**        
-      Fired when form was cancelled by user
-      @event cancel 
-      @param {Object} event event object
-      **/
+                  Fired when form was cancelled by user
+                  @event cancel 
+                  @param {Object} event event object
+                  **/
       this.$div.triggerHandler('cancel');
     },
     showLoading: function() {
@@ -176,10 +176,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         this.input.activate();
       }
       /**        
-      Fired when form is shown
-      @event show 
-      @param {Object} event event object
-      **/
+                  Fired when form is shown
+                  @event show 
+                  @param {Object} event event object
+                  **/
       this.$div.triggerHandler('show');
     },
 
@@ -237,10 +237,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
       ) {
         /*jslint eqeq: false*/
         /**        
-        Fired when value not changed but form is submitted. Requires savenochange = false.
-        @event nochange 
-        @param {Object} event event object
-        **/
+                        Fired when value not changed but form is submitted. Requires savenochange = false.
+                        @event nochange 
+                        @param {Object} event event object
+                        **/
         this.$div.triggerHandler('nochange');
         return;
       }
@@ -343,10 +343,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             ? this.options.pk.call(this.options.scope)
             : this.options.pk,
         /*
-          send on server in following cases:
-          1. url is function
-          2. url is string AND (pk defined OR send option = always) 
-        */
+                          send on server in following cases:
+                          1. url is function
+                          2. url is string AND (pk defined OR send option = always) 
+                        */
         send = !!(
           typeof this.options.url === 'function' ||
           (this.options.url &&
@@ -435,21 +435,21 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
   };
 
   /*
-  Initialize editableform. Applied to jQuery object.
+      Initialize editableform. Applied to jQuery object.
 
-  @method $().editableform(options)
-  @params {Object} options
-  @example
-  var $form = $('&lt;div&gt;').editableform({
-      type: 'text',
-      name: 'username',
-      url: '/post',
-      value: 'vitaliy'
-  });
+      @method $().editableform(options)
+      @params {Object} options
+      @example
+      var $form = $('&lt;div&gt;').editableform({
+          type: 'text',
+          name: 'username',
+          url: '/post',
+          value: 'vitaliy'
+      });
 
-  //to display form you should call 'render' method
-  $form.editableform('render');     
-  */
+      //to display form you should call 'render' method
+      $form.editableform('render');     
+      */
   $.fn.editableform = function(option) {
     var args = arguments;
     return this.each(function() {
@@ -475,200 +475,200 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     /* see also defaults for input */
 
     /**
-    Type of input. Can be <code>text|textarea|select|date|checklist</code>
+            Type of input. Can be <code>text|textarea|select|date|checklist</code>
 
-    @property type 
-    @type string
-    @default 'text'
-    **/
+            @property type 
+            @type string
+            @default 'text'
+            **/
     type: 'text',
     /**
-    Url for submit, e.g. <code>'/post'</code>  
-    If function - it will be called instead of ajax. Function should return deferred object to run fail/done callbacks.
+            Url for submit, e.g. <code>'/post'</code>  
+            If function - it will be called instead of ajax. Function should return deferred object to run fail/done callbacks.
 
-    @property url 
-    @type string|function
-    @default null
-    @example
-    url: function(params) {
-        var d = new $.Deferred;
-        if(params.value === 'abc') {
-            return d.reject('error message'); //returning error via deferred object
-        } else {
-            //async saving data in js model
-            someModel.asyncSaveMethod({
-               ..., 
-               success: function(){
-                  d.resolve();
-               }
-            }); 
-            return d.promise();
-        }
-    } 
-    **/
+            @property url 
+            @type string|function
+            @default null
+            @example
+            url: function(params) {
+                var d = new $.Deferred;
+                if(params.value === 'abc') {
+                    return d.reject('error message'); //returning error via deferred object
+                } else {
+                    //async saving data in js model
+                    someModel.asyncSaveMethod({
+                       ..., 
+                       success: function(){
+                          d.resolve();
+                       }
+                    }); 
+                    return d.promise();
+                }
+            } 
+            **/
     url: null,
     /**
-    Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  
-    If defined as <code>function</code> - returned object **overwrites** original ajax data.
-    @example
-    params: function(params) {
-        //originally params contain pk, name and value
-        params.a = 1;
-        return params;
-    }
+            Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  
+            If defined as <code>function</code> - returned object **overwrites** original ajax data.
+            @example
+            params: function(params) {
+                //originally params contain pk, name and value
+                params.a = 1;
+                return params;
+            }
 
-    @property params 
-    @type object|function
-    @default null
-    **/
+            @property params 
+            @type object|function
+            @default null
+            **/
     params: null,
     /**
-    Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute
+            Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute
 
-    @property name 
-    @type string
-    @default null
-    **/
+            @property name 
+            @type string
+            @default null
+            **/
     name: null,
     /**
-    Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.
-    Can be calculated dynamically via function.
+            Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.
+            Can be calculated dynamically via function.
 
-    @property pk 
-    @type string|object|function
-    @default null
-    **/
+            @property pk 
+            @type string|object|function
+            @default null
+            **/
     pk: null,
     /**
-    Initial value. If not defined - will be taken from element's content.
-    For __select__ type should be defined (as it is ID of shown text).
+            Initial value. If not defined - will be taken from element's content.
+            For __select__ type should be defined (as it is ID of shown text).
 
-    @property value 
-    @type string|object
-    @default null
-    **/
+            @property value 
+            @type string|object
+            @default null
+            **/
     value: null,
     /**
-    Value that will be displayed in input if original field value is empty (`null|undefined|''`).
+            Value that will be displayed in input if original field value is empty (`null|undefined|''`).
 
-    @property defaultValue 
-    @type string|object
-    @default null
-    @since 1.4.6
-    **/
+            @property defaultValue 
+            @type string|object
+            @default null
+            @since 1.4.6
+            **/
     defaultValue: null,
     /**
-    Strategy for sending data on server. Can be `auto|always|never`.
-    When 'auto' data will be sent on server **only if pk and url defined**, otherwise new value will be stored locally.
+            Strategy for sending data on server. Can be `auto|always|never`.
+            When 'auto' data will be sent on server **only if pk and url defined**, otherwise new value will be stored locally.
 
-    @property send 
-    @type string
-    @default 'auto'
-    **/
+            @property send 
+            @type string
+            @default 'auto'
+            **/
     send: 'auto',
     /**
-    Function for client-side validation. If returns string - means validation not passed and string showed as error.
-    Since 1.5.1 you can modify submitted value by returning object from `validate`: 
-    `{newValue: '...'}` or `{newValue: '...', msg: '...'}`
+            Function for client-side validation. If returns string - means validation not passed and string showed as error.
+            Since 1.5.1 you can modify submitted value by returning object from `validate`: 
+            `{newValue: '...'}` or `{newValue: '...', msg: '...'}`
 
-    @property validate 
-    @type function
-    @default null
-    @example
-    validate: function(value) {
-        if($.trim(value) == '') {
-            return 'This field is required';
-        }
-    }
-    **/
+            @property validate 
+            @type function
+            @default null
+            @example
+            validate: function(value) {
+                if($.trim(value) == '') {
+                    return 'This field is required';
+                }
+            }
+            **/
     validate: null,
     /**
-    Success callback. Called when value successfully sent on server and **response status = 200**.  
-    Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
-    or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
-    If it returns **string** - means error occured and string is shown as error message.  
-    If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
-    Otherwise newValue simply rendered into element.
-        
-    @property success 
-    @type function
-    @default null
-    @example
-    success: function(response, newValue) {
-        if(!response.success) return response.msg;
-    }
-    **/
+            Success callback. Called when value successfully sent on server and **response status = 200**.  
+            Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
+            or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
+            If it returns **string** - means error occured and string is shown as error message.  
+            If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
+            Otherwise newValue simply rendered into element.
+                
+            @property success 
+            @type function
+            @default null
+            @example
+            success: function(response, newValue) {
+                if(!response.success) return response.msg;
+            }
+            **/
     success: null,
     /**
-    Error callback. Called when request failed (response status != 200).  
-    Usefull when you want to parse error response and display a custom message.
-    Must return **string** - the message to be displayed in the error block.
-            
-    @property error 
-    @type function
-    @default null
-    @since 1.4.4
-    @example
-    error: function(response, newValue) {
-        if(response.status === 500) {
-            return 'Service unavailable. Please try later.';
-        } else {
-            return response.responseText;
-        }
-    }
-    **/
+            Error callback. Called when request failed (response status != 200).  
+            Usefull when you want to parse error response and display a custom message.
+            Must return **string** - the message to be displayed in the error block.
+                    
+            @property error 
+            @type function
+            @default null
+            @since 1.4.4
+            @example
+            error: function(response, newValue) {
+                if(response.status === 500) {
+                    return 'Service unavailable. Please try later.';
+                } else {
+                    return response.responseText;
+                }
+            }
+            **/
     error: null,
     /**
-    Additional options for submit ajax request.
-    List of values: http://api.jquery.com/jQuery.ajax
-        
-    @property ajaxOptions 
-    @type object
-    @default null
-    @since 1.1.1        
-    @example 
-    ajaxOptions: {
-        type: 'put',
-        dataType: 'json'
-    }        
-    **/
+            Additional options for submit ajax request.
+            List of values: http://api.jquery.com/jQuery.ajax
+                
+            @property ajaxOptions 
+            @type object
+            @default null
+            @since 1.1.1        
+            @example 
+            ajaxOptions: {
+                type: 'put',
+                dataType: 'json'
+            }        
+            **/
     ajaxOptions: null,
     /**
-    Where to show buttons: left(true)|bottom|false  
-    Form without buttons is auto-submitted.
+            Where to show buttons: left(true)|bottom|false  
+            Form without buttons is auto-submitted.
 
-    @property showbuttons 
-    @type boolean|string
-    @default true
-    @since 1.1.1
-    **/
+            @property showbuttons 
+            @type boolean|string
+            @default true
+            @since 1.1.1
+            **/
     showbuttons: true,
     /**
-    Scope for callback methods (success, validate).  
-    If <code>null</code> means editableform instance itself. 
+            Scope for callback methods (success, validate).  
+            If <code>null</code> means editableform instance itself. 
 
-    @property scope 
-    @type DOMElement|object
-    @default null
-    @since 1.2.0
-    @private
-    **/
+            @property scope 
+            @type DOMElement|object
+            @default null
+            @since 1.2.0
+            @private
+            **/
     scope: null,
     /**
-    Whether to save or cancel value when it was not changed but form was submitted
+            Whether to save or cancel value when it was not changed but form was submitted
 
-    @property savenochange 
-    @type boolean
-    @default false
-    @since 1.2.0
-    **/
+            @property savenochange 
+            @type boolean
+            @default false
+            @since 1.2.0
+            **/
     savenochange: false,
   };
 
   /*
-  Note: following params could redefined in engine: bootstrap or jqueryui:
-  Classes 'control-group' and 'editable-error-block' must always present!
-  */
+      Note: following params could redefined in engine: bootstrap or jqueryui:
+      Classes 'control-group' and 'editable-error-block' must always present!
+      */
   $.fn.editableform.template =
     '<form class="form-inline editableform">' +
     '<div class="control-group">' +
@@ -704,8 +704,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
   //utils
   $.fn.editableutils = {
     /**
-     * classic JS inheritance function
-     */
+         * classic JS inheritance function
+         */
     inherit: function(Child, Parent) {
       var F = function() {};
       F.prototype = Parent.prototype;
@@ -715,9 +715,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /**
-     * set caret position in input
-     * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-     */
+         * set caret position in input
+         * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+         */
     setCursorPosition: function(elem, pos) {
       if (elem.setSelectionRange) {
         elem.setSelectionRange(pos, pos);
@@ -731,11 +731,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /**
-     * function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)
-     * That allows such code as: <a data-source="{'a': 'b', 'c': 'd'}">
-     * safe = true --> means no exception will be thrown
-     * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
-     */
+         * function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)
+         * That allows such code as: <a data-source="{'a': 'b', 'c': 'd'}">
+         * safe = true --> means no exception will be thrown
+         * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
+         */
     tryParseJson: function(s, safe) {
       if (typeof s === 'string' && s.length && s.match(/^[\{\[].*[\}\]]$/)) {
         if (safe) {
@@ -757,8 +757,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /**
-     * slice object by specified keys
-     */
+         * slice object by specified keys
+         */
     sliceObj: function(obj, keys, caseSensitive /* default: false */) {
       var key,
         keyLower,
@@ -791,8 +791,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /*
-    exclude complex objects from $.data() before pass to config
-    */
+            exclude complex objects from $.data() before pass to config
+            */
     getConfigData: function($element) {
       var data = {};
       $.each($element.data(), function(k, v) {
@@ -809,8 +809,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /*
-     returns keys of object
-    */
+             returns keys of object
+            */
     objectKeys: function(o) {
       if (Object.keys) {
         return Object.keys(o);
@@ -830,15 +830,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /**
-     method to escape html.
-    **/
+             method to escape html.
+            **/
     escape: function(str) {
       return $('<div>').text(str).html();
     },
 
     /*
-     returns array items from sourceData having value property equal or inArray of 'value'
-    */
+             returns array items from sourceData having value property equal or inArray of 'value'
+            */
     itemsByValue: function(value, sourceData, valueProp) {
       if (!sourceData || value === null) {
         return [];
@@ -884,8 +884,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     },
 
     /*
-    Returns input by options: type, mode. 
-    */
+            Returns input by options: type, mode. 
+            */
     createInput: function(options) {
       var TypeConstructor,
         typeOptions,
@@ -1092,9 +1092,9 @@ Applied as jQuery method.
     },
 
     /*
-    Returns jquery object of container
-    @method tip()
-    */
+            Returns jquery object of container
+            @method tip()
+            */
     tip: function() {
       return this.container() ? this.container().$tip : null;
     },
@@ -1145,20 +1145,20 @@ Applied as jQuery method.
           resize: $.proxy(this.setPosition, this), //this allows to re-position container when form size is changed
           rendered: $.proxy(function() {
             /**        
-                        Fired when container is shown and form is rendered (for select will wait for loading dropdown options).  
-                        **Note:** Bootstrap popover has own `shown` event that now cannot be separated from x-editable's one.
-                        The workaround is to check `arguments.length` that is always `2` for x-editable.                     
-                    
-                        @event shown 
-                        @param {Object} event event object
-                        @example
-                        $('#username').on('shown', function(e, editable) {
-                            editable.input.$input.val('overwriting value of input..');
-                        });                     
-                        **/
+                                                Fired when container is shown and form is rendered (for select will wait for loading dropdown options).  
+                                                **Note:** Bootstrap popover has own `shown` event that now cannot be separated from x-editable's one.
+                                                The workaround is to check `arguments.length` that is always `2` for x-editable.                     
+                                            
+                                                @event shown 
+                                                @param {Object} event event object
+                                                @example
+                                                $('#username').on('shown', function(e, editable) {
+                                                    editable.input.$input.val('overwriting value of input..');
+                                                });                     
+                                                **/
             /*
-             TODO: added second param mainly to distinguish from bootstrap's shown event. It's a hotfix that will be solved in future versions via namespaced events.  
-            */
+                                     TODO: added second param mainly to distinguish from bootstrap's shown event. It's a hotfix that will be solved in future versions via namespaced events.  
+                                    */
             this.$element.triggerHandler(
               'shown',
               $(this.options.scope).data('editable')
@@ -1169,10 +1169,10 @@ Applied as jQuery method.
     },
 
     /**
-    Shows container with form
-    @method show()
-    @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-    **/
+            Shows container with form
+            @method show()
+            @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
+            **/
     /* Note: poshytip owerwrites this method totally! */
     show: function(closeAll) {
       this.$element.addClass('editable-open');
@@ -1186,13 +1186,13 @@ Applied as jQuery method.
       this.tip().addClass(this.containerClass);
 
       /*
-      Currently, form is re-rendered on every show. 
-      The main reason is that we dont know, what will container do with content when closed:
-      remove(), detach() or just hide() - it depends on container.
-            
-      Detaching form itself before hide and re-insert before show is good solution, 
-      but visually it looks ugly --> container changes size before hide.  
-      */
+                  Currently, form is re-rendered on every show. 
+                  The main reason is that we dont know, what will container do with content when closed:
+                  remove(), detach() or just hide() - it depends on container.
+                        
+                  Detaching form itself before hide and re-insert before show is good solution, 
+                  but visually it looks ugly --> container changes size before hide.  
+                  */
 
       //if form already exist - delete previous data
       if (this.$form) {
@@ -1215,10 +1215,10 @@ Applied as jQuery method.
     },
 
     /**
-    Hides container with form
-    @method hide()
-    @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
-    **/
+            Hides container with form
+            @method hide()
+            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
+            **/
     hide: function(reason) {
       if (
         !this.tip() ||
@@ -1242,21 +1242,21 @@ Applied as jQuery method.
       this.innerHide();
 
       /**
-      Fired when container was hidden. It occurs on both save or cancel.  
-      **Note:** Bootstrap popover has own `hidden` event that now cannot be separated from x-editable's one.
-      The workaround is to check `arguments.length` that is always `2` for x-editable. 
+                  Fired when container was hidden. It occurs on both save or cancel.  
+                  **Note:** Bootstrap popover has own `hidden` event that now cannot be separated from x-editable's one.
+                  The workaround is to check `arguments.length` that is always `2` for x-editable. 
 
-      @event hidden 
-      @param {object} event event object
-      @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|manual</code>
-      @example
-      $('#username').on('hidden', function(e, reason) {
-          if(reason === 'save' || reason === 'cancel') {
-              //auto-open next editable
-              $(this).closest('tr').next().find('.editable').editable('show');
-          } 
-      });
-      **/
+                  @event hidden 
+                  @param {object} event event object
+                  @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|manual</code>
+                  @example
+                  $('#username').on('hidden', function(e, reason) {
+                      if(reason === 'save' || reason === 'cancel') {
+                          //auto-open next editable
+                          $(this).closest('tr').next().find('.editable').editable('show');
+                      } 
+                  });
+                  **/
       this.$element.triggerHandler('hidden', reason || 'manual');
     },
 
@@ -1267,10 +1267,10 @@ Applied as jQuery method.
     innerHide: function() {},
 
     /**
-    Toggles container visibility (show / hide)
-    @method toggle()
-    @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-    **/
+            Toggles container visibility (show / hide)
+            @method toggle()
+            @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
+            **/
     toggle: function(closeAll) {
       if (this.container() && this.tip() && this.tip().is(':visible')) {
         this.hide();
@@ -1280,33 +1280,33 @@ Applied as jQuery method.
     },
 
     /*
-    Updates the position of container when content changed.
-    @method setPosition()
-    */
+            Updates the position of container when content changed.
+            @method setPosition()
+            */
     setPosition: function() {
       //tbd in child class
     },
 
     save: function(e, params) {
       /**        
-      Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
-            
-      @event save 
-      @param {Object} event event object
-      @param {Object} params additional params
-      @param {mixed} params.newValue submitted value
-      @param {Object} params.response ajax response
-      @example
-      $('#username').on('save', function(e, params) {
-          //assuming server response: '{success: true}'
-          var pk = $(this).data('editableContainer').options.pk;
-          if(params.response && params.response.success) {
-              alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
-          } else {
-              alert('error!'); 
-          } 
-      });
-      **/
+                  Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
+                        
+                  @event save 
+                  @param {Object} event event object
+                  @param {Object} params additional params
+                  @param {mixed} params.newValue submitted value
+                  @param {Object} params.response ajax response
+                  @example
+                  $('#username').on('save', function(e, params) {
+                      //assuming server response: '{success: true}'
+                      var pk = $(this).data('editableContainer').options.pk;
+                      if(params.response && params.response.success) {
+                          alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
+                      } else {
+                          alert('error!'); 
+                      } 
+                  });
+                  **/
       this.$element.triggerHandler('save', params);
 
       //hide must be after trigger, as saving value may require methods of plugin, applied to input
@@ -1314,12 +1314,12 @@ Applied as jQuery method.
     },
 
     /**
-    Sets new option
-        
-    @method option(key, value)
-    @param {string} key 
-    @param {mixed} value 
-    **/
+            Sets new option
+                
+            @method option(key, value)
+            @param {string} key 
+            @param {mixed} value 
+            **/
     option: function(key, value) {
       this.options[key] = value;
       if (key in this.containerOptions) {
@@ -1338,9 +1338,9 @@ Applied as jQuery method.
     },
 
     /**
-    Destroys the container instance
-    @method destroy()
-    **/
+            Destroys the container instance
+            @method destroy()
+            **/
     destroy: function() {
       this.hide();
       this.innerDestroy();
@@ -1352,9 +1352,9 @@ Applied as jQuery method.
     innerDestroy: function() {},
 
     /*
-    Closes other containers except one related to passed element. 
-    Other containers can be cancelled or submitted (depends on onblur option)
-    */
+            Closes other containers except one related to passed element. 
+            Other containers can be cancelled or submitted (depends on onblur option)
+            */
     closeOthers: function(element) {
       $('.editable-open').each(function(i, el) {
         //do nothing with passed element and it's children
@@ -1379,9 +1379,9 @@ Applied as jQuery method.
     },
 
     /**
-    Activates input of visible container (e.g. set focus)
-    @method activate()
-    **/
+            Activates input of visible container (e.g. set focus)
+            @method activate()
+            **/
     activate: function() {
       if (this.tip && this.tip().is(':visible') && this.$form) {
         this.$form.data('editableform').input.activate();
@@ -1390,18 +1390,18 @@ Applied as jQuery method.
   };
 
   /**
-  jQuery method to initialize editableContainer.
-    
-  @method $().editableContainer(options)
-  @params {Object} options
-  @example
-  $('#edit').editableContainer({
-      type: 'text',
-      url: '/post',
-      pk: 1,
-      value: 'hello'
-  });
-  **/
+      jQuery method to initialize editableContainer.
+        
+      @method $().editableContainer(options)
+      @params {Object} options
+      @example
+      $('#edit').editableContainer({
+          type: 'text',
+          url: '/post',
+          pk: 1,
+          value: 'hello'
+      });
+      **/
   $.fn.editableContainer = function(option) {
     var args = arguments;
     return this.each(function() {
@@ -1429,65 +1429,65 @@ Applied as jQuery method.
   //defaults
   $.fn.editableContainer.defaults = {
     /**
-    Initial value of form input
+            Initial value of form input
 
-    @property value 
-    @type mixed
-    @default null
-    @private
-    **/
+            @property value 
+            @type mixed
+            @default null
+            @private
+            **/
     value: null,
     /**
-    Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.
+            Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.
 
-    @property placement 
-    @type string
-    @default 'top'
-    **/
+            @property placement 
+            @type string
+            @default 'top'
+            **/
     placement: 'top',
     /**
-    Whether to hide container on save/cancel.
+            Whether to hide container on save/cancel.
 
-    @property autohide 
-    @type boolean
-    @default true
-    @private 
-    **/
+            @property autohide 
+            @type boolean
+            @default true
+            @private 
+            **/
     autohide: true,
     /**
-    Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  
-    Setting <code>ignore</code> allows to have several containers open. 
+            Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  
+            Setting <code>ignore</code> allows to have several containers open. 
 
-    @property onblur 
-    @type string
-    @default 'cancel'
-    @since 1.1.1
-    **/
+            @property onblur 
+            @type string
+            @default 'cancel'
+            @since 1.1.1
+            **/
     onblur: 'cancel',
 
     /**
-    Animation speed (inline mode only)
-    @property anim 
-    @type string
-    @default false
-    **/
+            Animation speed (inline mode only)
+            @property anim 
+            @type string
+            @default false
+            **/
     anim: false,
 
     /**
-    Mode of editable, can be `popup` or `inline` 
-        
-    @property mode 
-    @type string         
-    @default 'popup'
-    @since 1.4.0        
-    **/
+            Mode of editable, can be `popup` or `inline` 
+                
+            @property mode 
+            @type string         
+            @default 'popup'
+            @since 1.4.0        
+            **/
     mode: 'popup',
   };
 
   /* 
-   * workaround to have 'destroyed' event to destroy popover when element is destroyed
-   * see http://stackoverflow.com/questions/2200494/jquery-trigger-event-when-an-element-is-removed-from-the-dom
-   */
+     * workaround to have 'destroyed' event to destroy popover when element is destroyed
+     * see http://stackoverflow.com/questions/2200494/jquery-trigger-event-when-an-element-is-removed-from-the-dom
+     */
   jQuery.event.special.destroyed = {
     remove: function(o) {
       if (o.handler) {
@@ -1611,10 +1611,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         isValueByText = true;
       } else {
         /*
-          value can be string when received from 'data-value' attribute
-          for complext objects value can be set as json string in data-value attribute, 
-          e.g. data-value="{city: 'Moscow', street: 'Lenina'}"
-        */
+                          value can be string when received from 'data-value' attribute
+                          for complext objects value can be set as json string in data-value attribute, 
+                          e.g. data-value="{city: 'Moscow', street: 'Lenina'}"
+                        */
         this.options.value = $.fn.editableutils.tryParseJson(
           this.options.value,
           true
@@ -1713,8 +1713,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /*
-     Initializes parent element for live editables 
-    */
+             Initializes parent element for live editables 
+            */
     initLive: function() {
       //store selector
       var selector = this.options.selector;
@@ -1740,12 +1740,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /*
-    Renders value into element's text.
-    Can call custom display method from options.
-    Can return deferred object.
-    @method render()
-    @param {mixed} response server response (if exist) to pass into display function
-    */
+            Renders value into element's text.
+            Can call custom display method from options.
+            Can return deferred object.
+            @method render()
+            @param {mixed} response server response (if exist) to pass into display function
+            */
     render: function(response) {
       //do not display anything
       if (this.options.display === false) {
@@ -1774,9 +1774,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Enables editable
-    @method enable()
-    **/
+            Enables editable
+            @method enable()
+            **/
     enable: function() {
       this.options.disabled = false;
       this.$element.removeClass('editable-disabled');
@@ -1789,9 +1789,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Disables editable
-    @method disable()
-    **/
+            Disables editable
+            @method disable()
+            **/
     disable: function() {
       this.options.disabled = true;
       this.hide();
@@ -1802,9 +1802,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Toggles enabled / disabled state of editable element
-    @method toggleDisabled()
-    **/
+            Toggles enabled / disabled state of editable element
+            @method toggleDisabled()
+            **/
     toggleDisabled: function() {
       if (this.options.disabled) {
         this.enable();
@@ -1814,14 +1814,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Sets new option
-        
-    @method option(key, value)
-    @param {string|object} key option name or object with several options
-    @param {mixed} value option new value
-    @example
-    $('.editable').editable('option', 'pk', 2);
-    **/
+            Sets new option
+                
+            @method option(key, value)
+            @param {string|object} key option name or object with several options
+            @param {mixed} value option new value
+            @example
+            $('.editable').editable('option', 'pk', 2);
+            **/
     option: function(key, value) {
       //set option(s) by object
       if (key && typeof key === 'object') {
@@ -1859,8 +1859,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /*
-     * set emptytext if element is empty
-     */
+         * set emptytext if element is empty
+         */
     handleEmpty: function(isEmpty) {
       //do not handle empty if we do not display anything
       if (this.options.display === false) {
@@ -1868,10 +1868,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
       }
 
       /* 
-      isEmpty may be set directly as param of method.
-      It is required when we enable/disable field and can't rely on content 
-      as node content is text: "Empty" that is not empty %)
-      */
+                  isEmpty may be set directly as param of method.
+                  It is required when we enable/disable field and can't rely on content 
+                  as node content is text: "Empty" that is not empty %)
+                  */
       if (isEmpty !== undefined) {
         this.isEmpty = isEmpty;
       } else {
@@ -1907,10 +1907,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Shows container with form
-    @method show()
-    @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-    **/
+            Shows container with form
+            @method show()
+            @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
+            **/
     show: function(closeAll) {
       if (this.options.disabled) {
         return;
@@ -1935,9 +1935,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Hides container with form
-    @method hide()
-    **/
+            Hides container with form
+            @method hide()
+            **/
     hide: function() {
       if (this.container) {
         this.container.hide();
@@ -1945,10 +1945,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Toggles container visibility (show / hide)
-    @method toggle()
-    @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-    **/
+            Toggles container visibility (show / hide)
+            @method toggle()
+            @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
+            **/
     toggle: function(closeAll) {
       if (this.container && this.container.tip().is(':visible')) {
         this.hide();
@@ -1958,18 +1958,18 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /*
-     * called when form was submitted
-     */
+         * called when form was submitted
+         */
     save: function(e, params) {
       //mark element with unsaved class if needed
       if (this.options.unsavedclass) {
         /*
-         Add unsaved css to element if:
-          - url is not user's function 
-          - value was not sent to server
-          - params.response === undefined, that means data was not sent
-          - value changed 
-        */
+                         Add unsaved css to element if:
+                          - url is not user's function 
+                          - value was not sent to server
+                          - params.response === undefined, that means data was not sent
+                          - value changed 
+                        */
         var sent = false;
         sent = sent || typeof this.options.url === 'function';
         sent = sent || this.options.display === false;
@@ -2009,18 +2009,18 @@ Makes editable any HTML element on the page. Applied as jQuery method.
       this.setValue(params.newValue, false, params.response);
 
       /**        
-      Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
-            
-      @event save 
-      @param {Object} event event object
-      @param {Object} params additional params
-      @param {mixed} params.newValue submitted value
-      @param {Object} params.response ajax response
-      @example
-      $('#username').on('save', function(e, params) {
-          alert('Saved value: ' + params.newValue);
-      });
-      **/
+                  Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
+                        
+                  @event save 
+                  @param {Object} event event object
+                  @param {Object} params additional params
+                  @param {mixed} params.newValue submitted value
+                  @param {Object} params.response ajax response
+                  @example
+                  $('#username').on('save', function(e, params) {
+                      alert('Saved value: ' + params.newValue);
+                  });
+                  **/
       //event itself is triggered by editableContainer. Description here is only for documentation
     },
 
@@ -2031,11 +2031,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Sets new value of editable
-    @method setValue(value, convertStr)
-    @param {mixed} value new value 
-    @param {boolean} convertStr whether to convert value from string to internal format
-    **/
+            Sets new value of editable
+            @method setValue(value, convertStr)
+            @param {mixed} value new value 
+            @param {boolean} convertStr whether to convert value from string to internal format
+            **/
     setValue: function(value, convertStr, response) {
       if (convertStr) {
         this.value = this.input.str2value(value);
@@ -2053,9 +2053,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Activates input of visible container (e.g. set focus)
-    @method activate()
-    **/
+            Activates input of visible container (e.g. set focus)
+            @method activate()
+            **/
     activate: function() {
       if (this.container) {
         this.container.activate();
@@ -2063,9 +2063,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     },
 
     /**
-    Removes editable feature from element
-    @method destroy()
-    **/
+            Removes editable feature from element
+            @method destroy()
+            **/
     destroy: function() {
       this.disable();
 
@@ -2088,20 +2088,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
   };
 
   /* EDITABLE PLUGIN DEFINITION
-   * ======================= */
+     * ======================= */
 
   /**
-  jQuery method to initialize editable element.
-    
-  @method $().editable(options)
-  @params {Object} options
-  @example
-  $('#username').editable({
-      type: 'text',
-      url: '/post',
-      pk: 1
-  });
-  **/
+      jQuery method to initialize editable element.
+        
+      @method $().editable(options)
+      @params {Object} options
+      @example
+      $('#username').editable({
+          type: 'text',
+          url: '/post',
+          pk: 1
+      });
+      **/
   $.fn.editable = function(option) {
     //special API methods returning non-jquery object
     var result = {},
@@ -2109,18 +2109,18 @@ Makes editable any HTML element on the page. Applied as jQuery method.
       datakey = 'editable';
     switch (option) {
       /**
-      Runs client-side validation for all matched editables
-            
-      @method validate()
-      @returns {Object} validation errors map
-      @example
-      $('#username, #fullname').editable('validate');
-      // possible result:
-      {
-        username: "username is required",
-        fullname: "fullname should be minimum 3 letters length"
-      }
-      **/
+                  Runs client-side validation for all matched editables
+                        
+                  @method validate()
+                  @returns {Object} validation errors map
+                  @example
+                  $('#username, #fullname').editable('validate');
+                  // possible result:
+                  {
+                    username: "username is required",
+                    fullname: "fullname should be minimum 3 letters length"
+                  }
+                  **/
       case 'validate':
         this.each(function() {
           var $this = $(this),
@@ -2133,25 +2133,25 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         return result;
 
       /**
-                            Returns current values of editable elements.   
-                            Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
-                            If value of some editable is `null` or `undefined` it is excluded from result object.
-                            When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
-                             
-                            @method getValue()
-                            @param {bool} isSingle whether to return just value of single element
-                            @returns {Object} object of element names and values
-                            @example
-                            $('#username, #fullname').editable('getValue');
-                            //result:
-                            {
-                            username: "superuser",
-                            fullname: "John"
-                            }
-                            //isSingle = true
-                            $('#username').editable('getValue', true);
-                            //result "superuser" 
-                            **/
+                                                      Returns current values of editable elements.   
+                                                      Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
+                                                      If value of some editable is `null` or `undefined` it is excluded from result object.
+                                                      When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
+                                                       
+                                                      @method getValue()
+                                                      @param {bool} isSingle whether to return just value of single element
+                                                      @returns {Object} object of element names and values
+                                                      @example
+                                                      $('#username, #fullname').editable('getValue');
+                                                      //result:
+                                                      {
+                                                      username: "superuser",
+                                                      fullname: "John"
+                                                      }
+                                                      //isSingle = true
+                                                      $('#username').editable('getValue', true);
+                                                      //result "superuser" 
+                                                      **/
       case 'getValue':
         if (arguments.length === 2 && arguments[1] === true) {
           //isSingle = true
@@ -2168,21 +2168,21 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         return result;
 
       /**
-                                    This method collects values from several editable elements and submit them all to server.   
-                                    Internally it runs client-side validation for all fields and submits only in case of success.  
-                                    See <a href="#newrecord">creating new records</a> for details.  
-                                    Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
-                                    `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
-                                
-                                    @method submit(options)
-                                    @param {object} options 
-                                    @param {object} options.url url to submit data 
-                                    @param {object} options.data additional data to submit
-                                    @param {object} options.ajaxOptions additional ajax options
-                                    @param {function} options.error(obj) error handler 
-                                    @param {function} options.success(obj,config) success handler
-                                    @returns {Object} jQuery object
-                                    **/
+                                                              This method collects values from several editable elements and submit them all to server.   
+                                                              Internally it runs client-side validation for all fields and submits only in case of success.  
+                                                              See <a href="#newrecord">creating new records</a> for details.  
+                                                              Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
+                                                              `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
+                                                          
+                                                              @method submit(options)
+                                                              @param {object} options 
+                                                              @param {object} options.url url to submit data 
+                                                              @param {object} options.data additional data to submit
+                                                              @param {object} options.ajaxOptions additional ajax options
+                                                              @param {function} options.error(obj) error handler 
+                                                              @param {function} options.success(obj,config) success handler
+                                                              @returns {Object} jQuery object
+                                                              **/
       case 'submit': //collects value, validate and submit to server for creating new record
         var config = arguments[1] || {},
           $elems = this,
@@ -2305,170 +2305,170 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
   $.fn.editable.defaults = {
     /**
-    Type of input. Can be <code>text|textarea|select|date|checklist</code> and more
+            Type of input. Can be <code>text|textarea|select|date|checklist</code> and more
 
-    @property type 
-    @type string
-    @default 'text'
-    **/
+            @property type 
+            @type string
+            @default 'text'
+            **/
     type: 'text',
     /**
-    Sets disabled state of editable
+            Sets disabled state of editable
 
-    @property disabled 
-    @type boolean
-    @default false
-    **/
+            @property disabled 
+            @type boolean
+            @default false
+            **/
     disabled: false,
     /**
-    How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   
-    When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    
-    **Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, 
-    you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.
-        
-    @example
-    $('#edit-button').click(function(e) {
-        e.stopPropagation();
-        $('#username').editable('toggle');
-    });
+            How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   
+            When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    
+            **Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, 
+            you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.
+                
+            @example
+            $('#edit-button').click(function(e) {
+                e.stopPropagation();
+                $('#username').editable('toggle');
+            });
 
-    @property toggle 
-    @type string
-    @default 'click'
-    **/
+            @property toggle 
+            @type string
+            @default 'click'
+            **/
     toggle: 'click',
     /**
-    Text shown when element is empty.
+            Text shown when element is empty.
 
-    @property emptytext 
-    @type string
-    @default 'Empty'
-    **/
+            @property emptytext 
+            @type string
+            @default 'Empty'
+            **/
     emptytext: 'Empty',
     /**
-    Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Useful for select and date.
-    For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  
-    <code>auto</code> - text will be automatically set only if element is empty.  
-    <code>always|never</code> - always(never) try to set element's text.
+            Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Useful for select and date.
+            For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  
+            <code>auto</code> - text will be automatically set only if element is empty.  
+            <code>always|never</code> - always(never) try to set element's text.
 
-    @property autotext 
-    @type string
-    @default 'auto'
-    **/
+            @property autotext 
+            @type string
+            @default 'auto'
+            **/
     autotext: 'auto',
     /**
-    Initial value of input. If not set, taken from element's text.  
-    Note, that if element's text is empty - text is automatically generated from value and can be customized (see `autotext` option).  
-    For example, to display currency sign:
-    @example
-    <a id="price" data-type="text" data-value="100"></a>
-    <script>
-    $('#price').editable({
-        ...
-        display: function(value) {
-          $(this).text(value + '$');
-        } 
-    }) 
-    </script>
-            
-    @property value 
-    @type mixed
-    @default element's text
-    **/
+            Initial value of input. If not set, taken from element's text.  
+            Note, that if element's text is empty - text is automatically generated from value and can be customized (see `autotext` option).  
+            For example, to display currency sign:
+            @example
+            <a id="price" data-type="text" data-value="100"></a>
+            <script>
+            $('#price').editable({
+                ...
+                display: function(value) {
+                  $(this).text(value + '$');
+                } 
+            }) 
+            </script>
+                    
+            @property value 
+            @type mixed
+            @default element's text
+            **/
     value: null,
     /**
-    Callback to perform custom displaying of value in element's text.  
-    If `null`, default input's display used.  
-    If `false`, no displaying methods will be called, element's text will never change.  
-    Runs under element's scope.  
-    _**Parameters:**_  
-        
-    * `value` current value to be displayed
-    * `response` server response (if display called after ajax submit), since 1.4.0
-     
-    For _inputs with source_ (select, checklist) parameters are different:  
-      
-    * `value` current value to be displayed
-    * `sourceData` array of items for current input (e.g. dropdown items) 
-    * `response` server response (if display called after ajax submit), since 1.4.0
+            Callback to perform custom displaying of value in element's text.  
+            If `null`, default input's display used.  
+            If `false`, no displaying methods will be called, element's text will never change.  
+            Runs under element's scope.  
+            _**Parameters:**_  
+                
+            * `value` current value to be displayed
+            * `response` server response (if display called after ajax submit), since 1.4.0
+             
+            For _inputs with source_ (select, checklist) parameters are different:  
               
-    To get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.
-        
-    @property display 
-    @type function|boolean
-    @default null
-    @since 1.2.0
-    @example
-    display: function(value, sourceData) {
-       //display checklist as comma-separated values
-       var html = [],
-           checked = $.fn.editableutils.itemsByValue(value, sourceData);
-           
-       if(checked.length) {
-           $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
-           $(this).html(html.join(', '));
-       } else {
-           $(this).empty(); 
-       }
-    }
-    **/
+            * `value` current value to be displayed
+            * `sourceData` array of items for current input (e.g. dropdown items) 
+            * `response` server response (if display called after ajax submit), since 1.4.0
+                      
+            To get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.
+                
+            @property display 
+            @type function|boolean
+            @default null
+            @since 1.2.0
+            @example
+            display: function(value, sourceData) {
+               //display checklist as comma-separated values
+               var html = [],
+                   checked = $.fn.editableutils.itemsByValue(value, sourceData);
+                   
+               if(checked.length) {
+                   $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+                   $(this).html(html.join(', '));
+               } else {
+                   $(this).empty(); 
+               }
+            }
+            **/
     display: null,
     /**
-    Css class applied when editable text is empty.
+            Css class applied when editable text is empty.
 
-    @property emptyclass 
-    @type string
-    @since 1.4.1        
-    @default editable-empty
-    **/
+            @property emptyclass 
+            @type string
+            @since 1.4.1        
+            @default editable-empty
+            **/
     emptyclass: 'editable-empty',
     /**
-    Css class applied when value was stored but not sent to server (`pk` is empty or `send = 'never'`).  
-    You may set it to `null` if you work with editables locally and submit them together.  
+            Css class applied when value was stored but not sent to server (`pk` is empty or `send = 'never'`).  
+            You may set it to `null` if you work with editables locally and submit them together.  
 
-    @property unsavedclass 
-    @type string
-    @since 1.4.1        
-    @default editable-unsaved
-    **/
+            @property unsavedclass 
+            @type string
+            @since 1.4.1        
+            @default editable-unsaved
+            **/
     unsavedclass: 'editable-unsaved',
     /**
-    If selector is provided, editable will be delegated to the specified targets.  
-    Usefull for dynamically generated DOM elements.  
-    **Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options, 
-    as they actually become editable only after first click.  
-    You should manually set class `editable-click` to these elements.  
-    Also, if element originally empty you should add class `editable-empty`, set `data-value=""` and write emptytext into element:
+            If selector is provided, editable will be delegated to the specified targets.  
+            Usefull for dynamically generated DOM elements.  
+            **Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options, 
+            as they actually become editable only after first click.  
+            You should manually set class `editable-click` to these elements.  
+            Also, if element originally empty you should add class `editable-empty`, set `data-value=""` and write emptytext into element:
 
-    @property selector 
-    @type string
-    @since 1.4.1        
-    @default null
-    @example
-    <div id="user">
-      <!-- empty -->
-      <a href="#" data-name="username" data-type="text" class="editable-click editable-empty" data-value="" title="Username">Empty</a>
-      <!-- non-empty -->
-      <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" class="editable-click" title="Group">Operator</a>
-    </div>     
-        
-    <script>
-    $('#user').editable({
-        selector: 'a',
-        url: '/post',
-        pk: 1
-    });
-    </script>
-    **/
+            @property selector 
+            @type string
+            @since 1.4.1        
+            @default null
+            @example
+            <div id="user">
+              <!-- empty -->
+              <a href="#" data-name="username" data-type="text" class="editable-click editable-empty" data-value="" title="Username">Empty</a>
+              <!-- non-empty -->
+              <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" class="editable-click" title="Group">Operator</a>
+            </div>     
+                
+            <script>
+            $('#user').editable({
+                selector: 'a',
+                url: '/post',
+                pk: 1
+            });
+            </script>
+            **/
     selector: null,
     /**
-    Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
-        
-    @property highlight 
-    @type string|boolean
-    @since 1.4.5        
-    @default #FFFF80 
-    **/
+            Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
+                
+            @property highlight 
+            @type string|boolean
+            @since 1.4.5        
+            @default #FFFF80 
+            **/
     highlight: '#FFFF80',
   };
 })(window.jQuery);
@@ -2490,18 +2490,18 @@ To create your own input you can inherit from this class.
 
   AbstractInput.prototype = {
     /**
-     Initializes input
+             Initializes input
 
-     @method init() 
-     **/
+             @method init() 
+             **/
     init: function(type, options, defaults) {
       this.type = type;
       this.options = $.extend({}, defaults, options);
     },
 
     /*
-    this method called before render to init $tpl that is inserted in DOM
-    */
+            this method called before render to init $tpl that is inserted in DOM
+            */
     prerender: function() {
       this.$tpl = $(this.options.tpl); //whole tpl as jquery object
       this.$input = this.$tpl; //control itself, can be changed in render method
@@ -2510,92 +2510,92 @@ To create your own input you can inherit from this class.
     },
 
     /**
-     Renders input from tpl. Can return jQuery deferred object.
-     Can be overwritten in child objects
+             Renders input from tpl. Can return jQuery deferred object.
+             Can be overwritten in child objects
 
-     @method render()
-    **/
+             @method render()
+            **/
     render: function() {},
 
     /**
-     Sets element's html by value. 
+             Sets element's html by value. 
 
-     @method value2html(value, element)
-     @param {mixed} value
-     @param {DOMElement} element
-    **/
+             @method value2html(value, element)
+             @param {mixed} value
+             @param {DOMElement} element
+            **/
     value2html: function(value, element) {
       $(element)[this.options.escape ? 'text' : 'html']($.trim(value));
     },
 
     /**
-     Converts element's html to value
+             Converts element's html to value
 
-     @method html2value(html)
-     @param {string} html
-     @returns {mixed}
-    **/
+             @method html2value(html)
+             @param {string} html
+             @returns {mixed}
+            **/
     html2value: function(html) {
       return $('<div>').html(html).text();
     },
 
     /**
-     Converts value to string (for internal compare). For submitting to server used value2submit().
+             Converts value to string (for internal compare). For submitting to server used value2submit().
 
-     @method value2str(value) 
-     @param {mixed} value
-     @returns {string}
-    **/
+             @method value2str(value) 
+             @param {mixed} value
+             @returns {string}
+            **/
     value2str: function(value) {
       return value;
     },
 
     /**
-     Converts string received from server into value. Usually from `data-value` attribute.
+             Converts string received from server into value. Usually from `data-value` attribute.
 
-     @method str2value(str)
-     @param {string} str
-     @returns {mixed}
-    **/
+             @method str2value(str)
+             @param {string} str
+             @returns {mixed}
+            **/
     str2value: function(str) {
       return str;
     },
 
     /**
-     Converts value for submitting to server. Result can be string or object.
+             Converts value for submitting to server. Result can be string or object.
 
-     @method value2submit(value) 
-     @param {mixed} value
-     @returns {mixed}
-    **/
+             @method value2submit(value) 
+             @param {mixed} value
+             @returns {mixed}
+            **/
     value2submit: function(value) {
       return value;
     },
 
     /**
-     Sets value of input.
+             Sets value of input.
 
-     @method value2input(value) 
-     @param {mixed} value
-    **/
+             @method value2input(value) 
+             @param {mixed} value
+            **/
     value2input: function(value) {
       this.$input.val(value);
     },
 
     /**
-     Returns value of input. Value can be object (e.g. datepicker)
+             Returns value of input. Value can be object (e.g. datepicker)
 
-     @method input2value() 
-    **/
+             @method input2value() 
+            **/
     input2value: function() {
       return this.$input.val();
     },
 
     /**
-     Activates input. For text it sets focus.
+             Activates input. For text it sets focus.
 
-     @method activate() 
-    **/
+             @method activate() 
+            **/
     activate: function() {
       if (this.$input.is(':visible')) {
         this.$input.focus();
@@ -2603,29 +2603,29 @@ To create your own input you can inherit from this class.
     },
 
     /**
-     Creates input.
+             Creates input.
 
-     @method clear() 
-    **/
+             @method clear() 
+            **/
     clear: function() {
       this.$input.val(null);
     },
 
     /**
-     method to escape html.
-    **/
+             method to escape html.
+            **/
     escape: function(str) {
       return $('<div>').text(str).html();
     },
 
     /**
-     attach handler to automatically submit form when value changed (useful when buttons not shown)
-    **/
+             attach handler to automatically submit form when value changed (useful when buttons not shown)
+            **/
     autosubmit: function() {},
 
     /**
-    Additional actions when destroying element 
-    **/
+            Additional actions when destroying element 
+            **/
     destroy: function() {},
 
     // -------- helper functions --------
@@ -2648,32 +2648,32 @@ To create your own input you can inherit from this class.
 
   AbstractInput.defaults = {
     /**
-    HTML template of input. Normally you should not change it.
+            HTML template of input. Normally you should not change it.
 
-    @property tpl 
-    @type string
-    @default ''
-    **/
+            @property tpl 
+            @type string
+            @default ''
+            **/
     tpl: '',
     /**
-    CSS class automatically applied to input
-        
-    @property inputclass 
-    @type string
-    @default null
-    **/
+            CSS class automatically applied to input
+                
+            @property inputclass 
+            @type string
+            @default null
+            **/
     inputclass: null,
 
     /**
-    If `true` - html will be escaped in content of element via $.text() method.  
-    If `false` - html will not be escaped, $.html() used.  
-    When you use own `display` function, this option obviosly has no effect.
-        
-    @property escape 
-    @type boolean
-    @since 1.5.0
-    @default true
-    **/
+            If `true` - html will be escaped in content of element via $.text() method.  
+            If `false` - html will not be escaped, $.html() used.  
+            When you use own `display` function, this option obviosly has no effect.
+                
+            @property escape 
+            @type boolean
+            @since 1.5.0
+            @default true
+            **/
     escape: true,
 
     //scope for external methods (e.g. source defined as function)
@@ -2911,22 +2911,22 @@ List - abstract class for inputs that have source option loaded from js array or
     },
 
     /*
-     renders input list
-    */
+             renders input list
+            */
     renderList: function() {
       // this method should be overwritten in child class
     },
 
     /*
-     set element's html by value
-    */
+             set element's html by value
+            */
     value2htmlFinal: function(value, element) {
       // this method should be overwritten in child class
     },
 
     /**
-     * convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]
-     */
+         * convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]
+         */
     makeArray: function(data) {
       var count,
         obj,
@@ -2940,9 +2940,9 @@ List - abstract class for inputs that have source option loaded from js array or
       if ($.isArray(data)) {
         //array
         /* 
-           function to iterate inside item of array if item is object.
-           Caclulates count of keys in item and store in obj. 
-        */
+                           function to iterate inside item of array if item is object.
+                           Caclulates count of keys in item and store in obj. 
+                        */
         iterateItem = function(k, v) {
           obj = {
             value: k,
@@ -3020,40 +3020,40 @@ List - abstract class for inputs that have source option loaded from js array or
         **/
     source: null,
     /**
-    Data automatically prepended to the beginning of dropdown list.
-        
-    @property prepend 
-    @type string | array | object | function
-    @default false
-    **/
+            Data automatically prepended to the beginning of dropdown list.
+                
+            @property prepend 
+            @type string | array | object | function
+            @default false
+            **/
     prepend: false,
     /**
-    Error message when list cannot be loaded (e.g. ajax error)
-        
-    @property sourceError 
-    @type string
-    @default Error when loading list
-    **/
+            Error message when list cannot be loaded (e.g. ajax error)
+                
+            @property sourceError 
+            @type string
+            @default Error when loading list
+            **/
     sourceError: 'Error when loading list',
     /**
-    if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
-    Usefull for editable column in grid to prevent extra requests.
-        
-    @property sourceCache 
-    @type boolean
-    @default true
-    @since 1.2.0
-    **/
+            if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
+            Usefull for editable column in grid to prevent extra requests.
+                
+            @property sourceCache 
+            @type boolean
+            @default true
+            @since 1.2.0
+            **/
     sourceCache: true,
     /**
-    Additional ajax options to be used in $.ajax() when loading list from server.
-    Useful to send extra parameters (`data` key) or change request method (`type` key).
-        
-    @property sourceOptions 
-    @type object|function
-    @default null
-    @since 1.5.0
-    **/
+            Additional ajax options to be used in $.ajax() when loading list from server.
+            Useful to send extra parameters (`data` key) or change request method (`type` key).
+                
+            @property sourceOptions 
+            @type object|function
+            @default null
+            @since 1.5.0
+            **/
     sourceOptions: null,
   });
 
@@ -3174,26 +3174,26 @@ $(function(){
 
   Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
     /**
-    @property tpl 
-    @default <input type="text">
-    **/
+            @property tpl 
+            @default <input type="text">
+            **/
     tpl: '<input type="text">',
     /**
-    Placeholder attribute of input. Shown when input is empty.
+            Placeholder attribute of input. Shown when input is empty.
 
-    @property placeholder 
-    @type string
-    @default null
-    **/
+            @property placeholder 
+            @type string
+            @default null
+            **/
     placeholder: null,
 
     /**
-    Whether to show `clear` button 
-        
-    @property clear 
-    @type boolean
-    @default true        
-    **/
+            Whether to show `clear` button 
+                
+            @property clear 
+            @type boolean
+            @default true        
+            **/
     clear: true,
   });
 
@@ -3243,37 +3243,37 @@ $(function(){
 
     //using `white-space: pre-wrap` solves \n  <--> BR conversion very elegant!
     /* 
-        value2html: function(value, element) {
-             var html = '', lines;
-             if(value) {
-                 lines = value.split("\n");
-                 for (var i = 0; i < lines.length; i++) {
-                     lines[i] = $('<div>').text(lines[i]).html();
-                 }
-                 html = lines.join('<br>');
-             }
-             $(element).html(html);
-         },
-       
-         html2value: function(html) {
-             if(!html) {
-                 return '';
-             }
+                value2html: function(value, element) {
+                     var html = '', lines;
+                     if(value) {
+                         lines = value.split("\n");
+                         for (var i = 0; i < lines.length; i++) {
+                             lines[i] = $('<div>').text(lines[i]).html();
+                         }
+                         html = lines.join('<br>');
+                     }
+                     $(element).html(html);
+                 },
+               
+                 html2value: function(html) {
+                     if(!html) {
+                         return '';
+                     }
 
-             var regex = new RegExp(String.fromCharCode(10), 'g');
-             var lines = html.split(/<br\s*\/?>/i);
-             for (var i = 0; i < lines.length; i++) {
-                 var text = $('<div>').html(lines[i]).text();
+                     var regex = new RegExp(String.fromCharCode(10), 'g');
+                     var lines = html.split(/<br\s*\/?>/i);
+                     for (var i = 0; i < lines.length; i++) {
+                         var text = $('<div>').html(lines[i]).text();
 
-                 // Remove newline characters (\n) to avoid them being converted by value2html() method
-                 // thus adding extra <br> tags
-                 text = text.replace(regex, '');
+                         // Remove newline characters (\n) to avoid them being converted by value2html() method
+                         // thus adding extra <br> tags
+                         text = text.replace(regex, '');
 
-                 lines[i] = text;
-             }
-             return lines.join("\n");
-         },
-          */
+                         lines[i] = text;
+                     }
+                     return lines.join("\n");
+                 },
+                  */
     activate: function() {
       $.fn.editabletypes.text.prototype.activate.call(this);
     },
@@ -3281,30 +3281,30 @@ $(function(){
 
   Textarea.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
     /**
-    @property tpl
-    @default <textarea></textarea>
-    **/
+            @property tpl
+            @default <textarea></textarea>
+            **/
     tpl: '<textarea></textarea>',
     /**
-    @property inputclass
-    @default input-large
-    **/
+            @property inputclass
+            @default input-large
+            **/
     inputclass: 'input-large',
     /**
-    Placeholder attribute of input. Shown when input is empty.
+            Placeholder attribute of input. Shown when input is empty.
 
-    @property placeholder
-    @type string
-    @default null
-    **/
+            @property placeholder
+            @type string
+            @default null
+            **/
     placeholder: null,
     /**
-    Number of rows in textarea
+            Number of rows in textarea
 
-    @property rows
-    @type integer
-    @default 7
-    **/
+            @property rows
+            @type integer
+            @default 7
+            **/
     rows: 7,
   });
 
@@ -3402,9 +3402,9 @@ $(function(){
 
   Select.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
     /**
-    @property tpl 
-    @default <select></select>
-    **/
+            @property tpl 
+            @default <select></select>
+            **/
     tpl: '<select></select>',
   });
 
@@ -3548,25 +3548,25 @@ $(function(){
 
   Checklist.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
     /**
-    @property tpl 
-    @default <div></div>
-    **/
+            @property tpl 
+            @default <div></div>
+            **/
     tpl: '<div class="editable-checklist"></div>',
 
     /**
-    @property inputclass 
-    @type string
-    @default null
-    **/
+            @property inputclass 
+            @type string
+            @default null
+            **/
     inputclass: null,
 
     /**
-    Separator of values when reading from `data-value` attribute
+            Separator of values when reading from `data-value` attribute
 
-    @property separator 
-    @type string
-    @default ','
-    **/
+            @property separator 
+            @type string
+            @default ','
+            **/
     separator: ',',
   });
 
@@ -3713,13 +3713,13 @@ Number
           right: 24,
         });
         /*
-        //can position clear button only here, when form is shown and height can be calculated
-        var h = this.$input.outerHeight(true) || 20,
-            delta = (h - this.$clear.height()) / 2;
-                
-        //add 12px to offset right for up/down arrows    
-        this.$clear.css({top: delta, right: delta + 16});
-        */
+                        //can position clear button only here, when form is shown and height can be calculated
+                        var h = this.$input.outerHeight(true) || 20,
+                            delta = (h - this.$clear.height()) / 2;
+                                
+                        //add 12px to offset right for up/down arrows    
+                        this.$clear.css({top: delta, right: delta + 16});
+                        */
       }
     },
   });
@@ -4105,9 +4105,9 @@ $(function(){
     },
 
     /*
-    Converts source from x-editable format: {value: 1, text: "1"} to
-    select2 format: {id: 1, text: "1"}
-    */
+            Converts source from x-editable format: {value: 1, text: "1"} to
+            select2 format: {id: 1, text: "1"}
+            */
     convertSource: function(source) {
       if ($.isArray(source) && source.length && source[0].value !== undefined) {
         for (var i = 0; i < source.length; i++) {
@@ -4258,8 +4258,8 @@ $(function(){
     },
 
     /*
-     Replace tokens in template with <select> elements 
-    */
+             Replace tokens in template with <select> elements 
+            */
     getTemplate: function() {
       var tpl = this.options.template;
 
@@ -4290,8 +4290,8 @@ $(function(){
     },
 
     /*
-     Initialize combos that presents in template 
-    */
+             Initialize combos that presents in template 
+            */
     initCombos: function() {
       for (var k in this.map) {
         var $c = this.$widget.find('.' + k);
@@ -4303,8 +4303,8 @@ $(function(){
     },
 
     /*
-     Fill combo with items 
-    */
+             Fill combo with items 
+            */
     fillCombo: function(k) {
       var $combo = this['$' + k];
       if (!$combo) {
@@ -4327,8 +4327,8 @@ $(function(){
     },
 
     /*
-     Initialize items of combos. Handles `firstItem` option 
-    */
+             Initialize items of combos. Handles `firstItem` option 
+            */
     fillCommon: function(key) {
       var values = [],
         relTime;
@@ -4350,8 +4350,8 @@ $(function(){
     },
 
     /*
-    fill day
-    */
+            fill day
+            */
     fillDay: function() {
       var items = this.fillCommon('d'),
         name,
@@ -4378,8 +4378,8 @@ $(function(){
     },
 
     /*
-    fill month
-    */
+            fill month
+            */
     fillMonth: function() {
       var items = this.fillCommon('M'),
         name,
@@ -4405,8 +4405,8 @@ $(function(){
     },
 
     /*
-    fill year
-    */
+            fill year
+            */
     fillYear: function() {
       var items = [],
         name,
@@ -4424,8 +4424,8 @@ $(function(){
     },
 
     /*
-    fill hour
-    */
+            fill hour
+            */
     fillHour: function() {
       var items = this.fillCommon('h'),
         name,
@@ -4444,8 +4444,8 @@ $(function(){
     },
 
     /*
-    fill minute
-    */
+            fill minute
+            */
     fillMinute: function() {
       var items = this.fillCommon('m'),
         name,
@@ -4460,8 +4460,8 @@ $(function(){
     },
 
     /*
-    fill second
-    */
+            fill second
+            */
     fillSecond: function() {
       var items = this.fillCommon('s'),
         name,
@@ -4476,8 +4476,8 @@ $(function(){
     },
 
     /*
-    fill ampm
-    */
+            fill ampm
+            */
     fillAmpm: function() {
       var ampmL = this.options.template.indexOf('a') !== -1,
         ampmU = this.options.template.indexOf('A') !== -1,
@@ -4486,10 +4486,10 @@ $(function(){
     },
 
     /*
-     Returns current date value from combos. 
-     If format not specified - `options.format` used.
-     If format = `null` - Moment object returned.
-    */
+             Returns current date value from combos. 
+             If format not specified - `options.format` used.
+             If format = `null` - Moment object returned.
+            */
     getValue: function(format) {
       var dt,
         values = {},
@@ -4638,8 +4638,8 @@ $(function(){
     },
 
     /*
-     highlight combos if date is invalid
-    */
+             highlight combos if date is invalid
+            */
     highlight: function(dt) {
       if (!dt.isValid()) {
         if (this.options.errorClass) {
@@ -4801,16 +4801,16 @@ $(function(){
       }
       //"clear" link
       /*
-      if(this.options.clear) {
-          this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
-              e.preventDefault();
-              e.stopPropagation();
-              this.clear();
-          }, this));
-          
-          this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-      } 
-      */
+                  if(this.options.clear) {
+                      this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
+                          e.preventDefault();
+                          e.stopPropagation();
+                          this.clear();
+                      }, this));
+                      
+                      this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+                  } 
+                  */
     },
 
     value2html: function(value, element) {
@@ -4848,11 +4848,11 @@ $(function(){
     },
 
     /*
-    clear:  function() {
-       this.$input.data('datepicker').date = null;
-       this.$input.find('.active').removeClass('active');
-    },
-    */
+            clear:  function() {
+               this.$input.data('datepicker').date = null;
+               this.$input.find('.active').removeClass('active');
+            },
+            */
 
     autosubmit: function() {},
   });
@@ -4967,10 +4967,10 @@ Editableform based on Twitter Bootstrap 3
       for (var i = 0; i < classes.length; i++) {
         // `btn-sm` is default now
         /*
-        if(classes[i].toLowerCase() === 'input-sm') { 
-            $btn.find('button').addClass('btn-sm');  
-        }
-        */
+                        if(classes[i].toLowerCase() === 'input-sm') { 
+                            $btn.find('button').addClass('btn-sm');  
+                        }
+                        */
         if (classes[i].toLowerCase() === 'input-lg') {
           $btn.find('button').removeClass('btn-sm').addClass('btn-lg');
         }
@@ -5051,122 +5051,122 @@ Editableform based on Twitter Bootstrap 3
     },
 
     /**
-     * move popover to new position. This function mainly copied from bootstrap-popover.
-     */
+         * move popover to new position. This function mainly copied from bootstrap-popover.
+         */
     /*jshint laxcomma: true, eqeqeq: false*/
     setPosition: function() {
       (function() {
         /*    
-                var $tip = this.tip()
-                , inside
-                , pos
-                , actualWidth
-                , actualHeight
-                , placement
-                , tp
-                , tpt
-                , tpb
-                , tpl
-                , tpr;
+                                var $tip = this.tip()
+                                , inside
+                                , pos
+                                , actualWidth
+                                , actualHeight
+                                , placement
+                                , tp
+                                , tpt
+                                , tpb
+                                , tpl
+                                , tpr;
 
-                placement = typeof this.options.placement === 'function' ?
-                this.options.placement.call(this, $tip[0], this.$element[0]) :
-                this.options.placement;
+                                placement = typeof this.options.placement === 'function' ?
+                                this.options.placement.call(this, $tip[0], this.$element[0]) :
+                                this.options.placement;
 
-                inside = /in/.test(placement);
-               
-                $tip
-              //  .detach()
-              //vitalets: remove any placement class because otherwise they dont influence on re-positioning of visible popover
-                .removeClass('top right bottom left')
-                .css({ top: 0, left: 0, display: 'block' });
-              //  .insertAfter(this.$element);
-               
-                pos = this.getPosition(inside);
+                                inside = /in/.test(placement);
+                               
+                                $tip
+                              //  .detach()
+                              //vitalets: remove any placement class because otherwise they dont influence on re-positioning of visible popover
+                                .removeClass('top right bottom left')
+                                .css({ top: 0, left: 0, display: 'block' });
+                              //  .insertAfter(this.$element);
+                               
+                                pos = this.getPosition(inside);
 
-                actualWidth = $tip[0].offsetWidth;
-                actualHeight = $tip[0].offsetHeight;
+                                actualWidth = $tip[0].offsetWidth;
+                                actualHeight = $tip[0].offsetHeight;
 
-                placement = inside ? placement.split(' ')[1] : placement;
+                                placement = inside ? placement.split(' ')[1] : placement;
 
-                tpb = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
-                tpt = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
-                tpl = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
-                tpr = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
+                                tpb = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
+                                tpt = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
+                                tpl = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
+                                tpr = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
 
-                switch (placement) {
-                    case 'bottom':
-                        if ((tpb.top + actualHeight) > ($(window).scrollTop() + $(window).height())) {
-                            if (tpt.top > $(window).scrollTop()) {
-                                placement = 'top';
-                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
-                                placement = 'right';
-                            } else if (tpl.left > $(window).scrollLeft()) {
-                                placement = 'left';
-                            } else {
-                                placement = 'right';
-                            }
-                        }
-                        break;
-                    case 'top':
-                        if (tpt.top < $(window).scrollTop()) {
-                            if ((tpb.top + actualHeight) < ($(window).scrollTop() + $(window).height())) {
-                                placement = 'bottom';
-                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
-                                placement = 'right';
-                            } else if (tpl.left > $(window).scrollLeft()) {
-                                placement = 'left';
-                            } else {
-                                placement = 'right';
-                            }
-                        }
-                        break;
-                    case 'left':
-                        if (tpl.left < $(window).scrollLeft()) {
-                            if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
-                                placement = 'right';
-                            } else if (tpt.top > $(window).scrollTop()) {
-                                placement = 'top';
-                            } else if (tpt.top > $(window).scrollTop()) {
-                                placement = 'bottom';
-                            } else {
-                                placement = 'right';
-                            }
-                        }
-                        break;
-                    case 'right':
-                        if ((tpr.left + actualWidth) > ($(window).scrollLeft() + $(window).width())) {
-                            if (tpl.left > $(window).scrollLeft()) {
-                                placement = 'left';
-                            } else if (tpt.top > $(window).scrollTop()) {
-                                placement = 'top';
-                            } else if (tpt.top > $(window).scrollTop()) {
-                                placement = 'bottom';
-                            }
-                        }
-                        break;
-                }
+                                switch (placement) {
+                                    case 'bottom':
+                                        if ((tpb.top + actualHeight) > ($(window).scrollTop() + $(window).height())) {
+                                            if (tpt.top > $(window).scrollTop()) {
+                                                placement = 'top';
+                                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                                placement = 'right';
+                                            } else if (tpl.left > $(window).scrollLeft()) {
+                                                placement = 'left';
+                                            } else {
+                                                placement = 'right';
+                                            }
+                                        }
+                                        break;
+                                    case 'top':
+                                        if (tpt.top < $(window).scrollTop()) {
+                                            if ((tpb.top + actualHeight) < ($(window).scrollTop() + $(window).height())) {
+                                                placement = 'bottom';
+                                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                                placement = 'right';
+                                            } else if (tpl.left > $(window).scrollLeft()) {
+                                                placement = 'left';
+                                            } else {
+                                                placement = 'right';
+                                            }
+                                        }
+                                        break;
+                                    case 'left':
+                                        if (tpl.left < $(window).scrollLeft()) {
+                                            if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                                placement = 'right';
+                                            } else if (tpt.top > $(window).scrollTop()) {
+                                                placement = 'top';
+                                            } else if (tpt.top > $(window).scrollTop()) {
+                                                placement = 'bottom';
+                                            } else {
+                                                placement = 'right';
+                                            }
+                                        }
+                                        break;
+                                    case 'right':
+                                        if ((tpr.left + actualWidth) > ($(window).scrollLeft() + $(window).width())) {
+                                            if (tpl.left > $(window).scrollLeft()) {
+                                                placement = 'left';
+                                            } else if (tpt.top > $(window).scrollTop()) {
+                                                placement = 'top';
+                                            } else if (tpt.top > $(window).scrollTop()) {
+                                                placement = 'bottom';
+                                            }
+                                        }
+                                        break;
+                                }
 
-                switch (placement) {
-                    case 'bottom':
-                        tp = tpb;
-                        break;
-                    case 'top':
-                        tp = tpt;
-                        break;
-                    case 'left':
-                        tp = tpl;
-                        break;
-                    case 'right':
-                        tp = tpr;
-                        break;
-                }
+                                switch (placement) {
+                                    case 'bottom':
+                                        tp = tpb;
+                                        break;
+                                    case 'top':
+                                        tp = tpt;
+                                        break;
+                                    case 'left':
+                                        tp = tpl;
+                                        break;
+                                    case 'right':
+                                        tp = tpr;
+                                        break;
+                                }
 
-                $tip
-                .offset(tp)
-                .addClass(placement)
-                .addClass('in');
-           */
+                                $tip
+                                .offset(tp)
+                                .addClass(placement)
+                                .addClass('in');
+                           */
 
         var $tip = this.tip();
 
@@ -6249,14 +6249,14 @@ Editableform based on Twitter Bootstrap 3
         );
       }
       /*
-      	vitalets: fixing bug of very special conditions:
-      	jquery 1.7.1 + webkit + show inline datepicker in bootstrap popover.
-      	Method show() does not set display css correctly and datepicker is not shown.
-      	Changed to .css('display', 'block') solve the problem.
-      	See https://github.com/vitalets/x-editable/issues/37
+                  	vitalets: fixing bug of very special conditions:
+                  	jquery 1.7.1 + webkit + show inline datepicker in bootstrap popover.
+                  	Method show() does not set display css correctly and datepicker is not shown.
+                  	Changed to .css('display', 'block') solve the problem.
+                  	See https://github.com/vitalets/x-editable/issues/37
 
-      	In jquery 1.7.2+ everything works fine.
-      */
+                  	In jquery 1.7.2+ everything works fine.
+                  */
       //this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
       this.picker
         .find('>div')
@@ -6706,7 +6706,7 @@ Editableform based on Twitter Bootstrap 3
   $.fn.datepicker.DPGlobal = DPGlobal;
 
   /* DATEPICKER NO CONFLICT
-   * =================== */
+     * =================== */
 
   $.fn.datepicker.noConflict = function() {
     $.fn.datepicker = old;
@@ -6714,7 +6714,7 @@ Editableform based on Twitter Bootstrap 3
   };
 
   /* DATEPICKER DATA-API
-   * ================== */
+     * ================== */
 
   $(
     document
@@ -6898,20 +6898,20 @@ $(function(){
       });
       //changedate is not suitable as it triggered when showing datepicker. see #149
       /*
-      this.$input.on('changeDate', function(e){
-          var $form = $(this).closest('form');
-          setTimeout(function() {
-              $form.submit();
-          }, 200);
-      });
-      */
+                  this.$input.on('changeDate', function(e){
+                      var $form = $(this).closest('form');
+                      setTimeout(function() {
+                          $form.submit();
+                      }, 200);
+                  });
+                  */
     },
 
     /*
-     For incorrect date bootstrap-datepicker returns current date that is not suitable
-     for datefield.
-     This function returns null for incorrect date.  
-    */
+             For incorrect date bootstrap-datepicker returns current date that is not suitable
+             for datefield.
+             This function returns null for incorrect date.  
+            */
     parseDate: function(str, format) {
       var date = null,
         formattedBack;
@@ -6938,46 +6938,46 @@ $(function(){
 
   Date.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
     /**
-    @property tpl 
-    @default <div></div>
-    **/
+            @property tpl 
+            @default <div></div>
+            **/
     tpl: '<div class="editable-date well"></div>',
     /**
-    @property inputclass 
-    @default null
-    **/
+            @property inputclass 
+            @default null
+            **/
     inputclass: null,
     /**
-    Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-    Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
+            Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+            Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
 
-    @property format 
-    @type string
-    @default yyyy-mm-dd
-    **/
+            @property format 
+            @type string
+            @default yyyy-mm-dd
+            **/
     format: 'yyyy-mm-dd',
     /**
-    Format used for displaying date. Also applied when converting date from element's text on init.   
-    If not specified equals to <code>format</code>
+            Format used for displaying date. Also applied when converting date from element's text on init.   
+            If not specified equals to <code>format</code>
 
-    @property viewformat 
-    @type string
-    @default null
-    **/
+            @property viewformat 
+            @type string
+            @default null
+            **/
     viewformat: null,
     /**
-    Configuration of datepicker.
-    Full list of options: http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
+            Configuration of datepicker.
+            Full list of options: http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
 
-    @property datepicker 
-    @type object
-    @default {
-        weekStart: 0,
-        startView: 0,
-        minViewMode: 0,
-        autoclose: false
-    }
-    **/
+            @property datepicker 
+            @type object
+            @default {
+                weekStart: 0,
+                startView: 0,
+                minViewMode: 0,
+                autoclose: false
+            }
+            **/
     datepicker: {
       weekStart: 0,
       startView: 0,
@@ -6985,13 +6985,13 @@ $(function(){
       autoclose: false,
     },
     /**
-    Text shown as clear date button. 
-    If <code>false</code> clear button will not be rendered.
+            Text shown as clear date button. 
+            If <code>false</code> clear button will not be rendered.
 
-    @property clear 
-    @type boolean|string
-    @default 'x clear'
-    **/
+            @property clear 
+            @type boolean|string
+            @default 'x clear'
+            **/
     clear: '&times; clear',
   });
 
@@ -7067,14 +7067,14 @@ Automatically shown in inline mode.
 
   DateField.defaults = $.extend({}, $.fn.editabletypes.date.defaults, {
     /**
-    @property tpl 
-    **/
+            @property tpl 
+            **/
     tpl:
       '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
     /**
-    @property inputclass 
-    @default 'input-small'
-    **/
+            @property inputclass 
+            @default 'input-small'
+            **/
     inputclass: 'input-small',
 
     /* datepicker config */
@@ -7292,10 +7292,10 @@ $(function(){
     },
 
     /*
-     For incorrect date bootstrap-datetimepicker returns current date that is not suitable
-     for datetimefield.
-     This function returns null for incorrect date.  
-    */
+             For incorrect date bootstrap-datetimepicker returns current date that is not suitable
+             for datetimefield.
+             This function returns null for incorrect date.  
+            */
     parseDate: function(str, format) {
       var date = null,
         formattedBack;
@@ -7324,54 +7324,54 @@ $(function(){
 
   DateTime.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
     /**
-    @property tpl 
-    @default <div></div>
-    **/
+            @property tpl 
+            @default <div></div>
+            **/
     tpl: '<div class="editable-date well"></div>',
     /**
-    @property inputclass 
-    @default null
-    **/
+            @property inputclass 
+            @default null
+            **/
     inputclass: null,
     /**
-    Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-    Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>  
-        
-    @property format 
-    @type string
-    @default yyyy-mm-dd hh:ii
-    **/
+            Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+            Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>  
+                
+            @property format 
+            @type string
+            @default yyyy-mm-dd hh:ii
+            **/
     format: 'yyyy-mm-dd hh:ii',
     formatType: 'standard',
     /**
-    Format used for displaying date. Also applied when converting date from element's text on init.   
-    If not specified equals to <code>format</code>
-        
-    @property viewformat 
-    @type string
-    @default null
-    **/
+            Format used for displaying date. Also applied when converting date from element's text on init.   
+            If not specified equals to <code>format</code>
+                
+            @property viewformat 
+            @type string
+            @default null
+            **/
     viewformat: null,
     /**
-    Configuration of datetimepicker.
-    Full list of options: https://github.com/smalot/bootstrap-datetimepicker
+            Configuration of datetimepicker.
+            Full list of options: https://github.com/smalot/bootstrap-datetimepicker
 
-    @property datetimepicker 
-    @type object
-    @default { }
-    **/
+            @property datetimepicker 
+            @type object
+            @default { }
+            **/
     datetimepicker: {
       todayHighlight: false,
       autoclose: false,
     },
     /**
-    Text shown as clear date button. 
-    If <code>false</code> clear button will not be rendered.
+            Text shown as clear date button. 
+            If <code>false</code> clear button will not be rendered.
 
-    @property clear 
-    @type boolean|string
-    @default 'x clear'
-    **/
+            @property clear 
+            @type boolean|string
+            @default 'x clear'
+            **/
     clear: '&times; clear',
   });
 
@@ -7436,14 +7436,14 @@ Automatically shown in inline mode.
 
   DateTimeField.defaults = $.extend({}, $.fn.editabletypes.datetime.defaults, {
     /**
-    @property tpl 
-    **/
+            @property tpl 
+            **/
     tpl:
       '<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
     /**
-    @property inputclass 
-    @default 'input-medium'
-    **/
+            @property inputclass 
+            @default 'input-medium'
+            **/
     inputclass: 'input-medium',
 
     /* datetimepicker config */
