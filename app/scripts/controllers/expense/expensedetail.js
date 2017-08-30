@@ -87,10 +87,12 @@ angular
       // $scope.LineDetails = [];
       $scope.LineDetails.length = 0;
       $scope.LineDetails = expenseservice.LineDetails;
-      $scope.LineDetails = [{
-        Description: '',
-        Amount: 0,
-      }, ];
+      $scope.LineDetails = [
+        {
+          Description: '',
+          Amount: 0,
+        },
+      ];
     }
 
     //------------Addition Line Items--------------//
@@ -340,7 +342,8 @@ angular
                 item.PaymentStatus == 'Pending' ||
                 item.PaymentStatus == 'Submitted'
               ) {
-                $scope.paystatuslist = [{
+                $scope.paystatuslist = [
+                  {
                     name: 'Pending',
                     value: 'Pending',
                   },
@@ -362,7 +365,8 @@ angular
                 item.PaymentStatus == 'Returned' ||
                 item.PaymentStatus == 'Resubmit'
               ) {
-                $scope.paystatuslist = [{
+                $scope.paystatuslist = [
+                  {
                     name: 'Returned',
                     value: 'Returned',
                   },
@@ -418,7 +422,8 @@ angular
                 item.PaymentStatus == 'Submitted' ||
                 item.PaymentStatus == 'Returned'
               ) {
-                $scope.paystatuslist = [{
+                $scope.paystatuslist = [
+                  {
                     name: 'Submitted',
                     value: 'Submitted',
                   },
@@ -724,12 +729,14 @@ angular
         Amount: totalamt,
         PaymentStatus: $scope.paystat,
         PaymentLog: $scope.PayStatusLogList,
-        Line: [{
+        Line: [
+          {
             ID: '0',
             Description: $scope.expense[0].Line[0].Description,
             Quantity: $scope.expense[0].Line[0].Quantity, // this.exp.miles,
             Rate: $scope.expense[0].Line[0].Rate,
-            Amount: $scope.expense[0].Line[0].Quantity *
+            Amount:
+              $scope.expense[0].Line[0].Quantity *
               $scope.expense[0].Line[0].Rate, //(this.exp.miles * .25)
           },
           {
@@ -737,7 +744,8 @@ angular
             Description: $scope.expense[0].Line[1].Description,
             Quantity: $scope.expense[0].Line[1].Quantity, //this.exp.trailermiles,
             Rate: $scope.expense[0].Line[1].Rate,
-            Amount: $scope.expense[0].Line[1].Quantity *
+            Amount:
+              $scope.expense[0].Line[1].Quantity *
               $scope.expense[0].Line[1].Rate, //(this.exp.trailermiles * .4)
           },
         ],
@@ -888,7 +896,8 @@ angular
           swal({
             title: 'Required fields Missing',
             type: 'error',
-            html: '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' +
+            html:
+              '<table><tr><td class="swalgreen ">Event Date : </td><td class="swalgreen "><b>' +
               this.dexedit.eventdate +
               '</b> </td></tr>' +
               descinfo +
@@ -907,7 +916,8 @@ angular
             title: 'Confirm New Expense',
             text: 'Created Expense will be reviewed!',
             type: 'info',
-            html: '<table><tr><td class="swaltdl ">Event Date : </td><td class="swalgreen "><b>' +
+            html:
+              '<table><tr><td class="swaltdl ">Event Date : </td><td class="swalgreen "><b>' +
               this.dexedit.eventdate +
               '</b> </td></tr>' +
               '<tr><td class="swaltdl ">Description : </td><td class="swalgreen "><b>' +
@@ -917,13 +927,13 @@ angular
               Math.round(
                 this.dexedit.Line[0].Quantity * this.dexedit.Line[0].Rate * 100
               ) /
-              100 +
+                100 +
               '</b></td></tr>' +
               '<tr><td class="swaltdl ">Trailer Mileage Amount : </td><td class="swalgreen "><b>$ ' +
               Math.round(
                 this.dexedit.Line[1].Quantity * this.dexedit.Line[1].Rate * 100
               ) /
-              100 +
+                100 +
               '</b></td></tr>' +
               '<tr><td class="swaltdl ">Other Expense Amount : </td><td class="swalgreen "><b>$ ' +
               Math.round(lineamount * 100) / 100 +

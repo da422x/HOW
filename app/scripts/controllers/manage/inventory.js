@@ -36,7 +36,8 @@ angular
         $scope.inventoryTable = $('#inventoryTable').DataTable({
           //					ajax: 'testData/inventory.json',
           data: dataSet,
-          columns: [{},
+          columns: [
+            {},
             {
               title: 'ID',
               data: 'DT_RowId',
@@ -72,7 +73,8 @@ angular
               orderable: false,
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 1,
               visible: false,
             },
@@ -103,9 +105,7 @@ angular
               width: '40px',
             },
           ],
-          order: [
-            [3, 'asc']
-          ],
+          order: [[3, 'asc']],
           headerCallback: function(thead) {
             $(thead)
               .find('th')
@@ -184,7 +184,8 @@ angular
                   }
                 );
               },
-              source: [{
+              source: [
+                {
                   value: 0,
                   text: 'Kayaks and Equipment',
                 },
@@ -232,7 +233,8 @@ angular
                   }
                 );
               },
-              source: [{
+              source: [
+                {
                   value: 0,
                   text: 'New',
                 },
@@ -351,7 +353,8 @@ angular
           $scope.buildTable(data);
           $scope.dataStack = data;
           swal({
-            text: 'Connection failed. Could not ' +
+            text:
+              'Connection failed. Could not ' +
               data.config.method +
               ' from ' +
               data.config.url,
@@ -375,10 +378,10 @@ angular
     $scope.remove = function() {
       var j, k;
       var rows = $scope.inventoryTable
-        .rows({
-          search: 'applied',
-        })
-        .nodes(),
+          .rows({
+            search: 'applied',
+          })
+          .nodes(),
         checkedRows = [];
       for (j = 0; j < rows.length; j++) {
         // console.log($('input[type="checkbox"]', rows[i]).prop('checked'));

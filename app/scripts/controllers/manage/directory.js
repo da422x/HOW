@@ -48,7 +48,8 @@ angular
           // ajax: 'testData/members.json',
           responsive: true,
           data: dataSet,
-          columns: [{},
+          columns: [
+            {},
             {
               title: 'KEY',
               data: 'key',
@@ -90,7 +91,8 @@ angular
               data: 'branch',
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 1,
               visible: false,
             },
@@ -112,9 +114,7 @@ angular
               width: '90px',
             },
           ],
-          order: [
-            [3, 'asc']
-          ],
+          order: [[3, 'asc']],
           headerCallback: function(thead) {
             $(thead)
               .find('th')

@@ -93,7 +93,7 @@ angular.module('ohanaApp').controller('ManageAdditionalChapters', [
         swal(
           'error',
           $scope.newChapter.value +
-          ' has already been added to secondary chapters...',
+            ' has already been added to secondary chapters...',
           'error'
         );
       }
@@ -143,8 +143,8 @@ angular.module('ohanaApp').controller('ManageAdditionalChapters', [
             swal(
               'Error',
               'User already has ' +
-              data[0].Chapter +
-              ' as their PRIMARY CHAPTER, please remove before submitting changes...',
+                data[0].Chapter +
+                ' as their PRIMARY CHAPTER, please remove before submitting changes...',
               'error'
             );
           }
@@ -191,8 +191,8 @@ angular.module('ohanaApp').controller('ManageAdditionalChapters', [
           swal(
             'Error',
             'User already has ' +
-            userService.getChapter() +
-            ' as their PRIMARY CHAPTER, please remove before submitting changes...',
+              userService.getChapter() +
+              ' as their PRIMARY CHAPTER, please remove before submitting changes...',
             'error'
           );
         }

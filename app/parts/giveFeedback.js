@@ -24,7 +24,8 @@ angular
     $scope.userData = userService.getUserData();
     $scope.currentUID = userService.getId();
     $scope.currentUserRole = userService.getRole();
-    $scope.types = [{
+    $scope.types = [
+      {
         text: 'Bug/Defect',
         value: 0,
       },
@@ -65,23 +66,24 @@ angular
         '&desc=' +
         encodeURIComponent(
           $scope.formData.description +
-          '\n\nEmail: ' +
-          $scope.userData.email +
-          '\nUID: ' +
-          $scope.currentUID +
-          '\nName: ' +
-          $scope.userData.name.first +
-          ' ' +
-          $scope.userData.name.last +
-          '\nChapter: ' +
-          $scope.userData.Chapter.text +
-          '\nRole: ' +
-          $scope.currentUserRole
+            '\n\nEmail: ' +
+            $scope.userData.email +
+            '\nUID: ' +
+            $scope.currentUID +
+            '\nName: ' +
+            $scope.userData.name.first +
+            ' ' +
+            $scope.userData.name.last +
+            '\nChapter: ' +
+            $scope.userData.Chapter.text +
+            '\nRole: ' +
+            $scope.currentUserRole
         );
 
       $http({
         method: 'POST',
-        url: 'https://api.trello.com/1/cards?idList=' +
+        url:
+          'https://api.trello.com/1/cards?idList=' +
           encodeURIComponent(cardLists[listIndex]) +
           '&key=' +
           trellokey +

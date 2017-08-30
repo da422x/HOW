@@ -106,7 +106,7 @@ angular.module('ohanaApp').service('pdfService', function() {
       case 12:
         c.fillText(val, 630, 940); //witness date
         break;
-        // c.fillText(val, 95, 997.5); //witness signature
+      // c.fillText(val, 95, 997.5); //witness signature
       case 13:
         c.fillText(val, 95, 1055); //witness email
         break;
@@ -175,7 +175,8 @@ angular.module('ohanaApp').service('pdfService', function() {
     var d = document;
     updateReleaseWaiverTemplate(d.getElementById('author_name'), 1);
     updateReleaseWaiverTemplate(d.getElementById('author_date'), 2);
-    updateReleaseWaiverTemplate({
+    updateReleaseWaiverTemplate(
+      {
         value: "crayon's events",
       },
       3

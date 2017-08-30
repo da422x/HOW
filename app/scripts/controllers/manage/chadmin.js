@@ -49,7 +49,8 @@ angular
         $scope.chaptersTable = $('#chaptersTable').DataTable({
           // ajax: 'testData/members.json',
           data: dataSet,
-          columns: [{},
+          columns: [
+            {},
             {
               title: 'KEY',
               data: 'zip',
@@ -97,7 +98,8 @@ angular
               data: 'donation_link',
             },
           ],
-          columnDefs: [{
+          columnDefs: [
+            {
               targets: 1,
               visible: false,
             },
@@ -119,9 +121,7 @@ angular
               width: '90px',
             },
           ],
-          order: [
-            [3, 'asc']
-          ],
+          order: [[3, 'asc']],
           headerCallback: function(thead) {
             $(thead)
               .find('th')

@@ -14,7 +14,8 @@ angular.module('ohanaApp').factory('pageAuthInterceptor', [
     // Performs an action based on the page request.
     var requestInterceptor = {
       request: function(config) {
-        if (!$rootScope.sessionState &&
+        if (
+          !$rootScope.sessionState &&
           config.url.indexOf('views/manage') !== -1
         ) {
           // console.log($rootScope, config);

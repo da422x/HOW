@@ -83,16 +83,17 @@ angular
         // Post new chapter with key, update map table.
         var result = commonServices.setData(
           '/Regions/' +
-          submitChapter.region +
-          '/' +
-          submitChapter.state +
-          '/' +
-          data[0],
+            submitChapter.region +
+            '/' +
+            submitChapter.state +
+            '/' +
+            data[0],
           submitChapter
         );
         $q.all([result]).then(function(status) {
           var updateMapTable = commonServices.setData(
-            '/siteData/chapters/' + data[0], {
+            '/siteData/chapters/' + data[0],
+            {
               region: submitChapter.region,
               text: submitChapter.name,
               value: submitChapter.name,

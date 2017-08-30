@@ -23,16 +23,19 @@ angular
       PaymentStatus: 'Pending',
       // PaymentStatusBy: "",
       // PaymentStatusDate: "",
-      PaymentLog: [{
-        PayStatus: '',
-        PayStatusBy: '',
-        PayStatusDate: '',
-        PayRole: '',
-        PayStatusDescription: '',
-      }, ],
+      PaymentLog: [
+        {
+          PayStatus: '',
+          PayStatusBy: '',
+          PayStatusDate: '',
+          PayRole: '',
+          PayStatusDescription: '',
+        },
+      ],
       Amount: 0,
       ImageURL: [],
-      Line: [{
+      Line: [
+        {
           ID: 1,
           Description: 'Mileage Rate - Travel @.25/mile',
           Quantity: 0, // this.exp.miles,
@@ -78,12 +81,14 @@ angular
     };
 
     /******************************************************
-     *  New Expense / Expense Detail - Other Expense Line  *
-     *******************************************************/
-    this.LineDetails = [{
-      Description: '',
-      Amount: 0,
-    }, ];
+         *  New Expense / Expense Detail - Other Expense Line  *
+         *******************************************************/
+    this.LineDetails = [
+      {
+        Description: '',
+        Amount: 0,
+      },
+    ];
 
     this.addNew = function(LineDetails) {
       this.LineDetails.push({
@@ -175,7 +180,8 @@ angular
                 PayStatusBy: expensedata.PaymentLog[x].PayStatusBy,
                 PayStatusDate: expensedata.PaymentLog[x].PayStatusDate,
                 PayRole: expensedata.PaymentLog[x].PayRole,
-                PayStatusDescription: expensedata.PaymentLog[x].PayStatusDescription,
+                PayStatusDescription:
+                  expensedata.PaymentLog[x].PayStatusDescription,
               });
             }
           }
@@ -204,8 +210,8 @@ angular
       swal('Payment Status Updated Successfully!', '', 'success');
     };
     /******************************************************
-     *        View Expense                                 *
-     *******************************************************/
+         *        View Expense                                 *
+         *******************************************************/
     this.getViewExpenseData = function(useremail, userRole, Chapter) {
       var expenselist = [];
       switch (userRole) {
@@ -324,7 +330,7 @@ angular
       if (Date.parse(currentdate) > Date.parse(receivedDate)) {
         pastdue = Math.round(
           (Date.parse(currentdate) - Date.parse(receivedDate)) /
-          (1000 * 60 * 60 * 24)
+            (1000 * 60 * 60 * 24)
         );
       }
       if (Date.parse(currentdate) < Date.parse(receivedDate)) {
@@ -439,8 +445,8 @@ angular
     };
 
     /******************************************************
-     *        Expense Supporting Documents - Images         *
-     *******************************************************/
+         *        Expense Supporting Documents - Images         *
+         *******************************************************/
 
     this.deleteImage = function(Imagename, Imagearray) {
       // Create a reference to the file to delete
@@ -485,11 +491,11 @@ angular
 
           if (
             filename
-            .substr(
-              filename.length - sCurExtension.length,
-              sCurExtension.length
-            )
-            .toLowerCase() == sCurExtension.toLowerCase()
+              .substr(
+                filename.length - sCurExtension.length,
+                sCurExtension.length
+              )
+              .toLowerCase() == sCurExtension.toLowerCase()
           ) {
             var storage = firebase.storage();
 
@@ -532,8 +538,8 @@ angular
     };
 
     /******************************************************
-     *        REPORT                                *
-     *******************************************************/
+         *        REPORT                                *
+         *******************************************************/
 
     this.buildTableBody = function(data, columns) {
       var body = [];
@@ -578,13 +584,15 @@ angular
         pageOrientation: 'landscape',
         header: {
           margin: 10,
-          columns: [{
-            margin: [10, 0, 0, 0],
-            text: 'HOW Expense Report',
-            fontSize: 14,
-            bold: true,
-            alignment: 'center',
-          }, ],
+          columns: [
+            {
+              margin: [10, 0, 0, 0],
+              text: 'HOW Expense Report',
+              fontSize: 14,
+              bold: true,
+              alignment: 'center',
+            },
+          ],
         },
         footer: {
           columns: [
@@ -607,21 +615,25 @@ angular
             fontSize: 10,
           },
         },
-        content: [{
-            canvas: [{
-              type: 'line',
-              x1: 0,
-              y1: 5,
-              x2: 750,
-              y2: 5,
-              lineWidth: 0.5,
-            }, ],
+        content: [
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 5,
+                x2: 750,
+                y2: 5,
+                lineWidth: 0.5,
+              },
+            ],
           },
           {
             text: '\n',
           },
           {
-            columns: [{
+            columns: [
+              {
                 stack: [
                   // second column consists of paragraphs
                   'Payable To: ' + name,

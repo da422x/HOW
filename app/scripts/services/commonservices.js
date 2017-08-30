@@ -16,8 +16,8 @@ angular.module('ohanaApp').service('commonServices', [
   '$q',
   function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, $q) {
     /******************************************************
-     *           User Management - start                  *
-     *******************************************************/
+         *           User Management - start                  *
+         *******************************************************/
 
     // Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
@@ -149,12 +149,12 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /******************************************************
-     *             User Management - end                  *
-     *******************************************************/
+         *             User Management - end                  *
+         *******************************************************/
 
     /******************************************************
-     *                 C.R.U.D. - start                    *
-     *******************************************************/
+         *                 C.R.U.D. - start                    *
+         *******************************************************/
 
     // Sets data at given path.
     this.setData = function(path, data) {
@@ -283,12 +283,12 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /******************************************************
-     *                  C.R.U.D. - end                     *
-     *******************************************************/
+         *                  C.R.U.D. - end                     *
+         *******************************************************/
 
     /******************************************************
-     *           DAO object container - start             *
-     *******************************************************/
+         *           DAO object container - start             *
+         *******************************************************/
     this.DAO = DAO;
     this.getEvent = function(event) {
       return firebase
@@ -309,16 +309,17 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /*******************************************************
-     *           DAO object container - end                *
-     *******************************************************/
+         *           DAO object container - end                *
+         *******************************************************/
 
     /*******************************************************
-     *           Other Utility methods - start             *
-     *******************************************************/
+         *           Other Utility methods - start             *
+         *******************************************************/
 
     this.addressLookup = function(zip, outerCallback) {
       var geocoder = new google.maps.Geocoder();
-      geocoder.geocode({
+      geocoder.geocode(
+        {
           address: zip.toString(),
         },
         function(results, status) {
@@ -336,7 +337,7 @@ angular.module('ohanaApp').service('commonServices', [
                 success: false,
                 err: new Error(
                   'Geocode was not successful for the following reason: ' +
-                  status
+                    status
                 ),
                 results: null,
               });
@@ -392,7 +393,7 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /******************************************************
-     *            Other Utility methods - end             *
-     *****************************************************/
+         *            Other Utility methods - end             *
+         *****************************************************/
   },
 ]);

@@ -58,7 +58,8 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
       };
 
       // all nav setups
-      $scope.leftnav = [{
+      $scope.leftnav = [
+        {
           state: '#/whoweare',
           text: 'WHO WE ARE',
         },
@@ -72,19 +73,23 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         },
       ];
 
-      $scope.rightnav = [{
-        state: '#/login',
-        text: 'LOGIN',
-      }, ];
+      $scope.rightnav = [
+        {
+          state: '#/login',
+          text: 'LOGIN',
+        },
+      ];
 
-      $scope.rightnavloggedin = [{
+      $scope.rightnavloggedin = [
+        {
           state: '#/manage/dash',
           text: 'MANAGE',
         },
         {},
       ];
 
-      $scope.participantNav = [{
+      $scope.participantNav = [
+        {
           state: '#/manage/chapterchat',
           text: 'Chapter Chat',
         },
@@ -102,7 +107,8 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         },
       ];
 
-      $scope.volunteerNav = [{
+      $scope.volunteerNav = [
+        {
           state: '#/manage/chapterchat',
           text: 'Chapter Chat',
         },
