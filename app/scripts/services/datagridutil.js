@@ -196,7 +196,7 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
             '</a><br/>';
           arr.donation = results[i][stateName][chapterName].donation ?
             results[i][stateName][chapterName].donation :
-            'https://www.paypal.com/donate/?token=3TyOO6taytT0isxzdLwbDz8GvB6JtWLIzuZy0fjN3K4-PihZMiVhpPbECt0JiW7IkR8mfG';
+            'https://heroesonthewater.org/how-to-help/donate/chapter-donation/';
           arr.donation_link =
             "<a href='" +
             arr.donation +
