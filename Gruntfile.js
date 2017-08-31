@@ -672,7 +672,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'jsbeautifier',
         'injector',
         'clean:dist',
         'wiredep',
