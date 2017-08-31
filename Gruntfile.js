@@ -523,6 +523,19 @@ module.exports = function(grunt) {
                     src: [
                         'fonts/**/*.*'
                     ]
+                }, {
+                    expand: true,
+                    dot: true,
+                    dest: '<%= yeoman.dist %>/styles',
+                    src: [
+                        'bower_components/components-font-awesome/**/*.*',
+                        'bower_components/bootstrap/dist/**/*.*'
+                    ]
+                }, {
+                    expand: true,
+                    dot: true,
+                    dest: '<%= yeoman.dist %>',
+                    src: '.surgeignore'
                 }]
             },
             styles: {
