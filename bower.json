@@ -49,11 +49,12 @@
         "format-as-currency": "3.1.1",
         "angular-xeditable": "0.6.0",
         "angular-chart.js": "1.1.1",
-        "signature_pad": "1.5.3",
         "x-editable": "1.5.1",
         "angular-ui-map": "0.5.0",
         "rxjs": "4.1.0",
-        "components-font-awesome": "^4.7.0"
+        "components-font-awesome": "4.7.0",
+        "signature_pad": "1.6.0",
+        "pdfjs-dist": "1.9.516"
     },
     "resolutions": {
         "angular": "1.6.4"
@@ -76,6 +77,9 @@
                 "less/font-awesome.less",
                 "css/font-awesome.css"
             ]
+        },
+        "signature_pad": {
+            "main": "example/js/signature_pad.js"
         }
     }
 }

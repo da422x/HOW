@@ -484,19 +484,13 @@ module.exports = function(grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         '*.html',
-                        'images/**/*.{webp}',
-                        'styles/fonts/**/*.*'
+                        'images/**/*.{webp}'
                     ]
                 }, {
                     expand: true,
                     cwd: '.tmp/images',
                     dest: '<%= yeoman.dist %>/images',
                     src: ['generated/*']
-                }, {
-                    expand: true,
-                    cwd: 'bower_components/bootstrap/dist',
-                    src: 'fonts/*',
-                    dest: '<%= yeoman.dist %>'
                 }]
             },
             //patch by thad
@@ -514,14 +508,6 @@ module.exports = function(grunt) {
                         'extensions/bootstrap-editable/css/bootstrap-editable.css',
                         'extensions/hamburgers.min.css'
                         // 'parts/**/*.*'
-                    ]
-                }, {
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= yeoman.app %>/assets/fonts/font-awesome',
-                    dest: '<%= yeoman.dist %>',
-                    src: [
-                        'fonts/**/*.*'
                     ]
                 }, {
                     expand: true,
@@ -551,9 +537,9 @@ module.exports = function(grunt) {
                     src: '**/*.css'
                 }, {
                     expand: true,
-                    cwd: '<%= yeoman.app %>/assets',
-                    dest: '.tmp/assets/',
-                    src: '**/*.pdf'
+                    cwd: '<%= yeoman.app %>',
+                    dest: '.tmp/',
+                    src: 'assets/**/*.pdf'
                 }, {
                     expand: true,
                     dot: true,
