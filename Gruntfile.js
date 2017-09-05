@@ -504,6 +504,7 @@ module.exports = function(grunt) {
                         'extensions/bootstrap-editable/js/bootstrap-editable.js',
                         'styles/**/*.css',
                         'assets/**/*.*',
+                        'assets/**/*',
                         'parts/**/*.html',
                         'extensions/bootstrap-editable/css/bootstrap-editable.css',
                         'extensions/hamburgers.min.css'
