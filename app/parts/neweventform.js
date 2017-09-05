@@ -134,7 +134,7 @@ angular
         result = commonServices.updateData('/events/' + key, $scope.newEvent);
         $uibModalInstance.close();
         swal({
-          text: 'Adding Event',
+          text: 'Saving Event Update',
           type: 'success',
           timer: 2500,
         });
