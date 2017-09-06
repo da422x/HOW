@@ -1,18 +1,18 @@
 <div class="container">
   <h3>Events</h3>
-  <div style="display: flex; flex-wrap:wrap">
-    <div class="form-group" style="flex-grow:1; min-width:350px">
+  <div style="display: flex; flex-direction:column">
+    <div class="form-group" style="flex-basis:100%">
       <label class="control-label" for="fname">Search:</label>
       <div>
         <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="filtersRunner()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
       </div>
     </div>
-    <div class="form-group" style="flex-grow:1; min-width:350px;">
+    <div class="form-group">
       <div>
         <label class="control-label">filter between:</label>
       </div>
-      <div>
-        <div style="width:49%; display:inline-block">
+      <div style="display:flex; justify-content:space-between">
+        <div style="flex-basis:45%">
           <label class="control-label">Lower bound:</label>
           <p class="input-group">
             <input type="text" class="form-control" ng-model="dt" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup1.opened">
@@ -22,7 +22,7 @@
             </span>
           </p>
         </div>
-        <div style="width:49%; display:inline-block">
+        <div style="flex-basis:45%">
           <label class="control-label">Upper bound:</label>
           <p class="input-group">
             <input type="text" class="form-control" ng-model="dt2" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup2.opened">
