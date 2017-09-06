@@ -1,0 +1,9 @@
+/node_modules
+/bower_components
+/.tmp
+/.sass-cache
+/app/bower_components
+/app/data/env
+**/*.bowerrc
+**/npm-debug.log
+**/.DS_Store

@@ -1,0 +1,43 @@
+/*jslint browser: true, devel: true, bitwise: true, eqeq: true, plusplus: true, vars: true, indent: 4*/
+/*global angular, $, console, swal*/
+
+/**
+ * @ngdoc function
+ * @name ohanaApp.controller:NewuserdirectoryformCtrl
+ * @description
+ * # NewuserdirectoryformCtrl
+ * Controller of the ohanaApp
+ */
+angular
+  .module('ohanaApp')
+  .controller('PublicEventsDescriptionCtrl', function(
+    $scope,
+    $location,
+    $uibModalInstance,
+    $rootScope,
+    userService
+  ) {
+    'use strict';
+    console.log(userService.getUserData(), userService.getRole(), $rootScope);
+    // calendar options
+
+    $scope.event = $scope.$parent.selected;
+    console.log('In modal');
+    console.log($scope);
+    $scope.popup = {
+      opened: false,
+    };
+
+    $scope.open = function() {
+      $scope.popup.opened = true;
+    };
+
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.postRsvp = function() {
+      //put join event logic here.
+      $uibModalInstance.dismiss('cancel');
+    };
+  });

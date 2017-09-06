@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<!-- start modal-header -->
+<div class="modal-header" ng-init="initialize()">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">Chapter Status</h4>
+</div>
+<!-- end modal-header -->
+
+<!-- start modal body -->
+<div id="chapter-status-modal" class="modal-body">
+
+  <!-- This section is available only too National Staff -->
+  <div class="form-group" ng-show="$root.userRole === 'National Staff'" style="width: 100%;">
+    <div class="row" style="margin-bottom: 10px;">
+      <label class="col-md-3 control-label" for="logLevel">Log level*</label>
+      <div class="col-md-7">
+        <input name="logLevel" type="radio" ng-model="logLevel" ng-click="levelChanged(logLevel)" value="National">National
+        <input name="logLevel" type="radio" ng-model="logLevel" ng-click="levelChanged(logLevel)" value="Chapter" style="margin-left: 5px;">Chapter
+      </div>
+    </div>
+    <div class="row" ng-show="logLevel === 'Chapter'" style="margin-bottom: 10px;">
+      <label class="col-md-3 control-label" for="region">Region*</label>
+      <div class="col-md-7">
+        <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="selectedRegion" ng-change="regionUpdate(selectedRegion)" required>
+        </select>
+      </div>
+    </div>
+    <div class="row" ng-show="logLevel === 'Chapter'" style="margin-bottom: 10px;">
+      <label class="col-md-3 control-label" for="chapter">Chapter*</label>
+      <div class="col-md-7">
+        <select id="chapter" name="chapter" class="form-control" ng-model="selectedChapter" ng-options="chapter as chapter.value for chapter in chapters" ng-change="chapterChanged()" required>
+        </select>
+      </div>
+    </div>
+    <div class="row" ng-show="logLevel === 'National' || selectedChapter" style="margin-bottom: 10px;">
+      <label class="col-md-3 control-label">Log Type*</label>
+      <div class="col-md-7">
+        <select class="form-control" ng-options="type as type.text for type in logType" ng-model="selectedOption" ng-change="selectedLogOption(selectedOption)" required></select>
+      </div>
+    </div>
+  </div>
+  <!-- This section is available only too National Staff -->
+
+  <!-- This section is available only too Chapter Lead -->
+  <div class="form-group" ng-show="$root.userRole === 'Chapter Lead'">
+    <div class="row" style="margin-bottom: 10px;">
+      <label class="col-md-3 control-label">Log Type*</label>
+      <div class="col-md-7">
+        <select class="form-control" ng-options="type as type.text for type in logType" ng-model="selectedOption" ng-change="selectedLogOption(selectedOption)" required></select>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="logContainer" ng-show="selectedOption">
+    <div ng-repeat="log in currentLog ">
+      <label>{{log.ts | date:'medium'}}:</label>
+      <p>{{log.msg}}</p>
+    </div>
+    <p ng-show="!currentLog.length" style="text-align: center;">
+      <b>-- No log data available --</b>
+    </p>
+  </div>
+</div>
+<!-- end modal body -->
