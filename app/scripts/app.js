@@ -194,7 +194,7 @@ angular
     //changing jquery editable to angular editable
     editableOptions.theme = 'bs3';
 
-    // Test 2 (updates for chapter edit feature).
+    // Test 2 (Current test DB).
     var config = {
       apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
       authDomain: 'herosonthewatertest2.firebaseapp.com',
@@ -204,7 +204,7 @@ angular
       messagingSenderId: '569173546476',
     };
 
-    // Test 1 (Standard).
+    // Test 1 (Out dated).
     // var config = {
     //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
     //     authDomain: "herosonthewater-55a79.firebaseapp.com",
@@ -214,7 +214,7 @@ angular
     //     messagingSenderId: "183234806884"
     // };
 
-    // Production DB.
+    // Production 1 (Out dated).
     // var config = {
     //     apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
     //     authDomain: "herosonthewaterprod.firebaseapp.com",
@@ -223,6 +223,16 @@ angular
     //     storageBucket: "herosonthewaterprod.appspot.com",
     //     messagingSenderId: "464567079814"
     // }
+
+    // Production 2 (Current production DB)
+    // var config = {
+    //   apiKey: "AIzaSyDdII6WDs5CRNriyVoNQffMbwDzhdXyxKY",
+    //   authDomain: "heroesonthewaterproduction2.firebaseapp.com",
+    //   databaseURL: "https://heroesonthewaterproduction2.firebaseio.com",
+    //   projectId: "heroesonthewaterproduction2",
+    //   storageBucket: "heroesonthewaterproduction2.appspot.com",
+    //   messagingSenderId: "377099176239"
+    // };
 
     if (firebase.apps.length === 0) {
       firebase.initializeApp(config);
