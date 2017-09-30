@@ -170,6 +170,11 @@ angular
               emptytext: 'none',
               url: function(params) {
 
+                if ($scope.currId === '-KvEej0qnrUczGhOxi5H') {
+                  swal('Error', 'you cannot change this chapter name...', 'warning');
+                  return;
+                }
+
                 var users_on_chapter = commonServices.queryChapterkey($scope.currId);
 
                 $q.all([users_on_chapter]).then(function(data) {
@@ -310,6 +315,11 @@ angular
     };
 
     $scope.removeChapter = function() {
+
+      if ($scope.currId === '-KvEej0qnrUczGhOxi5H') {
+        swal('Error', 'you cannot delete this chapter...', 'warning');
+        return;
+      }
 
       swal({
         title: 'Warning',

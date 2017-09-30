@@ -58,15 +58,16 @@
       <div class="form-group">
         <label class="col-md-4 control-label" for="region">Region*</label>
         <div class="col-md-7">
-          <select id="region" name="region" class="form-control" ng-options="region as region.text for region in regions" ng-model="newChapter.region">
+          <select id="region" name="region" class="form-control" ng-change="loadStates()" ng-options="region as region.text for region in regions" ng-model="newChapter.region" ng-required="true">
           </select>
         </div>
       </div>
       <!-- Select - State -->
       <div class="form-group">
-        <label for="" class="col-md-4 control-label" for="state">State*</label>
+        <label class="col-md-4 control-label" for="state">State*</label>
         <div class="col-md-7">
-          <select ng-options="state as state.name for state in states" class="form-control input-md" ng-model="newChapter.state"></select>
+          <select name="state" ng-options="state as state.name for state in states" class="form-control input-md" ng-model="newChapter.state" ng-required="true"></select>
+          <p ng-show="chapterForm.state.$invalid && !chapterForm.state.$pristine" class="help-block">Please select a state</p>
         </div>
       </div>
       <!-- Text - Zip Code -->
@@ -90,8 +91,9 @@
   <!-- Button - Submit -->
   <div class="form-group">
     <label class="col-md-4 control-label" for="submit"></label>
-    <div class="col-md-7">
-      <button id="submit" name="submit" class="btn btn-primary" ng-disabled="chapterForm.$invalid" ng-click="postChapter(newChapter)">Submit</button>
+    <div class="col-md-7" style="text-align: left;">
+      <button id="submit" name="submit" class="btn btn-primary" ng-disabled="chapterForm.$invalid " ng-click="postChapter(newChapter)">Submit</button>
+      <button type="button" name="cancel" class="btn btn-default" ng-click="cancel()">Cancel</button>
     </div>
   </div>
 </div>
