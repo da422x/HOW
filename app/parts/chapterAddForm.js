@@ -21,7 +21,7 @@ angular
     var submitChapter = {};
     //Form data
     $scope.regions = $rootScope.siteData.regions;
-    $scope.states = $rootScope.siteData.states;
+    $scope.states = [];
 
     // empty submit object
     $scope.newChapter = {};
@@ -108,6 +108,90 @@ angular
           });
         });
       });
+    };
+
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.loadStates = function() {
+      switch ($scope.newChapter.region.value) {
+        case 'Midwest Chapters': 
+          $scope.states = [
+            {id: 'IA', name: 'Iowa'},
+            {id: 'IL', name: 'Illinois'},
+            {id: 'IN', name: 'Indiana'},
+            {id: 'KS', name: 'Kansas'},
+            {id: 'MI', name: 'Michigan'},
+            {id: 'MN', name: 'Minnesota'},
+            {id: 'MO', name: 'Missouri'},
+            {id: 'ND', name: 'North Dakota'},
+            {id: 'NE', name: 'Nebraska'},
+            {id: 'OH', name: 'Ohio'},
+            {id: 'SD', name: 'South Dakota'},
+            {id: 'WI', name: 'Wisconsin'}
+          ];
+          break;
+        case 'Northeast Chapters': 
+          $scope.states = [
+            {id: 'CT', name: 'Connecticut'},
+            {id: 'DE', name: 'Delaware'},
+            {id: 'MA', name: 'Massachusetts'},
+            {id: 'MD', name: 'Maryland'},
+            {id: 'ME', name: 'Maine'},
+            {id: 'NH', name: 'New Hampshire'},
+            {id: 'NJ', name: 'New Jersey'},
+            {id: 'NY', name: 'New York'},
+            {id: 'PA', name: 'Pennsylvania'},
+            {id: 'RI', name: 'Rhode Island'},
+            {id: 'VT', name: 'Vermont'}
+          ];
+          break;
+        case 'Pacific Chapters':
+          $scope.states = [
+            {id: 'AK', name: 'Alaska'},
+            {id: 'CA', name: 'California'},
+            {id: 'HI', name: 'Hawaii'},
+            {id: 'OR', name: 'Oregon'},
+            {id: 'WA', name: 'Washington'}
+          ];
+          break;
+        case 'Rocky Mountain Chapters':
+          $scope.states = [
+            {id: 'CO', name: 'Colorado'},
+            {id: 'ID', name: 'Idaho'},
+            {id: 'MT', name: 'Montana'},
+            {id: 'NV', name: 'Nevada'},
+            {id: 'UT', name: 'Utah'},
+            {id: 'WY', name: 'Wyoming'}
+          ];
+          break;
+        case 'Southeast Chapters': 
+          $scope.states = [
+            {id: 'AL', name: 'Alabama'},
+            {id: 'AR', name: 'Arkansas'},
+            {id: 'FL', name: 'Florida'},
+            {id: 'GA', name: 'Georgia'},
+            {id: 'KY', name: 'Kentucky'},
+            {id: 'LA', name: 'Louisiana'},
+            {id: 'MS', name: 'Mississippi'},
+            {id: 'NC', name: 'North Carolina'},
+            {id: 'SC', name: 'South Carolina'},
+            {id: 'TN', name: 'Tennessee'},
+            {id: 'VA', name: 'Virginia'},
+            {id: 'WV', name: 'West Virginia'},
+          ];
+          break;
+        case 'Southwest Chapters': 
+          $scope.states = [
+            {id: 'AZ', name: 'Arizona'},
+            {id: 'NM', name: 'New Mexico'},
+            {id: 'OK', name: 'Oklahoma'},
+            {id: 'TX', name: 'Texas'},
+          ];
+          break;
+        default: break;
+      }
     };
 
     $scope.cancel = function() {
