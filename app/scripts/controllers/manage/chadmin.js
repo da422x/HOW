@@ -53,7 +53,7 @@ angular
             {},
             {
               title: 'KEY',
-              data: 'zip',
+              data: 'key',
             },
             {
               title: 'Chapter Name',
@@ -109,7 +109,7 @@ angular
               orderable: false,
               className: 'dt-body-center',
               render: function() {
-                return '<input type="checkbox" id="chaptersTable-select">';
+                return '<div id="chapter-row-data">';
               },
             },
             {
@@ -122,14 +122,8 @@ angular
             },
           ],
           order: [[3, 'asc']],
-          headerCallback: function(thead) {
-            $(thead)
-              .find('th')
-              .eq(0)
-              .html('<input type="checkbox" id="chaptersTable-select-all">');
-          },
           rowCallback: function(row, data, index) {
-            $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key);
+            $(row).find('div#chapter-row-data').attr('data-key', data.key);
             $(row).children().eq(1).addClass('tdCName');
             $(row).children().eq(2).addClass('tdDescription');
             $(row).children().eq(3).addClass('tdChapterAdmin');
@@ -137,7 +131,7 @@ angular
             $(row).children().eq(5).addClass('tdSelectState');
             $(row).children().eq(6).addClass('tdSelectZip');
             $(row).children().eq(7).addClass('tdEmail'); // email checking disabled
-            for (i = 2; i < 7; i++) {
+            for (i = 1; i < 7; i++) {
               if (i != 4 && i != 5 && i != 6) {
                 $(row)
                   .children()
@@ -150,150 +144,89 @@ angular
             return row;
           },
           drawCallback: function(settings) {
-            // set currentId to user being edited
-            $('#chaptersTable').off('click', 'tr');
-            $('#chaptersTable').on('click', 'tr', function() {
-              $scope.currId = $(this).find('input[type="checkbox"]').val();
-              $scope.editValue = $(this)[0].cells;
-              if ($(this).find('input[type="checkbox"]').is(':checked')) {
-                $scope.checkedBoxes.push($scope.currId);
-              } else {
-                for (var i = 0; i < $scope.checkedBoxes.length; i++) {
-                  if ($scope.checkedBoxes[i] === $scope.currId) {
-                    $scope.checkedBoxes.splice(i, 1);
-                  }
-                }
-              }
+            // Get the currently selected: state, Region, and chapterId.
+            $('#chaptersTable').off('click', 'tbody tr');
+            $('#chaptersTable').on('click', 'tbody tr', function() {
+              $('tbody').find('tr').css('background-color', '');
+              $(this).css('background-color', '#FFFFC4');
+              $scope.currId = $(this).find('div#chapter-row-data').data('key');
+              $scope.currChapterName =  $(this).find('.tdCName').text();
+              $scope.currRegion = $(this).find('.tdSelectRegion').text();
+              $scope.currState = $(this).find('.tdSelectState').text();
+              $('#chapterDeleteBtn').removeClass('disabled');
             });
-            // editable field definitions and CRUD ops
-            $('#chaptersTable .tdCName  a').editable({
+
+            // Clear selected value when user paginates
+            $('#chaptersTable_paginate').off('click');
+            $('#chaptersTable_paginate').on('click', function() {
+              $('tbody').find('tr').css('background-color', '');
+              $('#chapterDeleteBtn').addClass('disabled');
+            });
+            // Edit Chapter Name
+            $('#chaptersTable .tdCName a').editable({
               type: 'text',
               name: 'Chapter Name',
               placement: 'bottom',
               emptytext: 'none',
               url: function(params) {
-                var packet = params.value;
-                var packet2 = {
-                  region: $scope.editValue[4].textContent,
-                  text: params.value,
-                  value: params.value,
-                };
-                var path =
-                  '/Regions/' +
-                  $scope.editValue[4].textContent +
-                  '/' +
-                  $scope.editValue[5].textContent +
-                  '/' +
-                  $($scope.editValue).find('#chaptersTable-select').val() +
-                  '/name';
-                var path2 =
-                  '/siteData/chapters/' +
-                  $($scope.editValue).find('#chaptersTable-select').val();
-                commonServices.updateData(path, packet);
-                commonServices.updateData(path2, packet2);
-              },
+
+                var users_on_chapter = commonServices.queryChapterkey($scope.currId);
+
+                $q.all([users_on_chapter]).then(function(data) {
+
+                  // Update each user who has this chapter set to primary.
+                  _.each(data[0], function(value, key) {
+                    console.log(key);
+                    console.log(value);
+                    var path = 'userData/' + key + '/Chapter';
+                    var packet = {
+                      key: value.Chapter.key,
+                      region: value.Chapter.region,
+                      text: params.value,
+                      value: params.value
+                    };
+                    commonServices.updateData(path, packet);
+                  });
+
+                  // Update Chapter data in Regions node, and siteData node.
+                  var path1 = 'Regions/' + $scope.currRegion + '/' + $scope.currState + '/' + $scope.currId + '/name';
+                  var path2 = 'siteData/chapters/' + $scope.currId;
+                  var packet1 = params.value;
+                  var packet2 = {
+                    region: $scope.currRegion,
+                    text: params.value,
+                    value: params.value
+                  };
+                  commonServices.updateData(path1, packet1);
+                  commonServices.updateData(path2, packet2);
+                });
+              }
             });
+            // Edit Chapter Description
             $('#chaptersTable .tdDescription a').editable({
               type: 'text',
-              name: 'description',
+              name: 'Chapter Description',
               placement: 'bottom',
               emptytext: 'none',
               url: function(params) {
+                var path = 'Regions/' + $scope.currRegion + '/' + $scope.currState + '/' + $scope.currId + '/description';
                 var packet = params.value;
-                var path =
-                  '/Regions/' +
-                  $scope.editValue[4].textContent +
-                  '/' +
-                  $scope.editValue[5].textContent +
-                  '/' +
-                  $($scope.editValue).find('#chaptersTable-select').val() +
-                  '/description';
                 commonServices.updateData(path, packet);
-              },
+              }
             });
+            // Edit Chapter Admin
             $('#chaptersTable .tdChapterAdmin a').editable({
               type: 'text',
-              name: 'chadmin',
+              name: 'Chapter Admin',
               placement: 'bottom',
               emptytext: 'none',
               url: function(params) {
+                var path = 'Regions/' + $scope.currRegion + '/' + $scope.currState + '/' + $scope.currId + '/lead';
                 var packet = params.value;
-                var path =
-                  '/Regions/' +
-                  $scope.editValue[4].textContent +
-                  '/' +
-                  $scope.editValue[5].textContent +
-                  '/' +
-                  $($scope.editValue).find('#chaptersTable-select').val() +
-                  '/lead';
                 commonServices.updateData(path, packet);
-              },
-            });
-            $('#chaptersTable .tdSelectZip a').editable({
-              type: 'text',
-              name: 'zip',
-              placement: 'bottom',
-              emptytext: 'none',
-              url: function(params) {
-                var packet = params.value;
-                var path =
-                  '/Regions/' +
-                  $scope.editValue[4].textContent +
-                  '/' +
-                  $scope.editValue[5].textContent +
-                  '/' +
-                  $($scope.editValue).find('#chaptersTable-select').val() +
-                  '/zip';
-                commonServices.updateData(path, packet);
-              },
-            });
-            $('#chaptersTable .tdEmail a').editable({
-              type: 'email',
-              name: 'email',
-              placement: 'bottom',
-              emptytext: 'none',
-              url: function(params) {
-                var packet = params.value;
-                var path =
-                  '/Regions/' +
-                  $scope.editValue[4].textContent +
-                  '/' +
-                  $scope.editValue[5].textContent +
-                  '/' +
-                  $($scope.editValue).find('#chaptersTable-select').val() +
-                  '/email';
-                commonServices.updateData(path, packet);
-              },
+              }
             });
           },
-        });
-
-        // Handle click on "Select all" control
-        $('#chaptersTable-select-all').on('click', function() {
-          // Get all rows with search applied
-          var rows = $scope.chaptersTable
-            .rows({
-              search: 'applied',
-            })
-            .nodes();
-          // Check/uncheck checkboxes for all rows in the table
-          $('input[type="checkbox"]', rows).prop('checked', this.checked);
-        });
-
-        // Handle click on checkbox to set state of "Select all" control
-        $(
-          '#chaptersTable tbody'
-        ).on('change', 'input[type="checkbox"]', function() {
-          // If checkbox is not checked
-          if (!this.checked) {
-            var el = $('#chaptersTable-select-all').get(0);
-            // If "Select all" control is checked and has 'indeterminate' property
-            if (el && el.checked && 'indeterminate' in el) {
-              // Set visual state of "Select all" control
-              // as 'indeterminate'
-              el.indeterminate = true;
-            }
-          }
         });
       }); // end document ready
     }; // end $scope.buildTable
@@ -377,27 +310,46 @@ angular
     };
 
     $scope.removeChapter = function() {
-      if ($scope.checkedBoxes.length === 0) {
-        swal('', 'No records selected!', 'warning');
-      } else {
-        swal({
-          title: 'Are you sure?',
-          text: 'Get ready to kiss it goodbye!',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!',
-        }).then(function() {
-          _.each($scope.checkedBoxes, function(userKey) {
-            console.log($scope.checkedBoxes);
 
-            //commonServices.removeData('/userData/' + userKey);
-            //commonServices.removeData('/userRoles/' + userKey);
+      swal({
+        title: 'Warning',
+        text: 'You are about to delete ' + $scope.currChapterName + '! If you wish to continue please type "DELETE" and press submit to continue.',
+        input: 'text',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Submit'
+      }).then(function(userAnwser) {
+        if (userAnwser && userAnwser === 'DELETE') {
+          var users_on_chapter = commonServices.queryChapterkey($scope.currId);
+          $q.all([users_on_chapter]).then(function(data) {
+
+            // Update each user who has this chapter set to primary.
+            _.each(data[0], function(value, key) {
+              var path = 'userData/' + key + '/Chapter';
+              var packet = {
+                // FILLER CHAPTER.
+                key: '-KvEej0qnrUczGhOxi5H',
+                region: 'Southwest Region',
+                text: 'CHAPTER DELETED',
+                value: 'CHAPTER DELETED'
+              };
+              commonServices.updateData(path, packet);
+            });
+
+            // Delete from Regions node
+            commonServices.removeData('Regions/' + $scope.currRegion + '/' + $scope.currState + '/' + $scope.currId);
+
+            // Delete from Chat
+            commonServices.removeData('chat/chapters/' + $scope.currId);
+
+            // Delete from siteData
+            commonServices.removeData('Regions/chapters/' + $scope.currId);
+
+            swal('Success!', 'You have DELETED chapter, ' + $scope.currChapterName, 'success');
+
+            $scope.update();
           });
-          swal('Deleted!', 'Your file has been deleted.', 'success');
-          $scope.update();
-        });
-      } // end else
-    }; // end $scope.remove
+        }
+      });
+    };
   });
