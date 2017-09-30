@@ -316,6 +316,25 @@ angular.module('ohanaApp').service('commonServices', [
          *           Other Utility methods - start             *
          *******************************************************/
 
+    this.queryChapterkey = function(chapterKey) {
+      console.log(chapterKey);
+      return firebase
+        .database()
+        .ref('/userData')
+        .orderByChild('Chapter/key')
+        .equalTo(chapterKey)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
     this.addressLookup = function(zip, outerCallback) {
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode(

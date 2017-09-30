@@ -170,13 +170,13 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
         for (var chapterName in results[i][stateName]) {
           //CHAPTER LEVEL
           var arr = {};
-          arr.key = Object.keys(results[i][stateName])[0];
+          arr.key = chapterName;
           arr.region = regionName;
           arr.state = stateName;
           arr.name = results[i][stateName][chapterName].name;
           arr.description = results[i][stateName][chapterName].description;
-          arr.chadmin = results[i][stateName][chapterName].chadmin
-            ? results[i][stateName][chapterName].chadmin
+          arr.chadmin = results[i][stateName][chapterName].lead
+            ? results[i][stateName][chapterName].lead
             : 'none';
           arr.facebook = results[i][stateName][chapterName].url;
           arr.facebook_link = results[i][stateName][chapterName].url_link;
