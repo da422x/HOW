@@ -46,8 +46,6 @@ angular
         }
 
         $scope.membersTable = $('#membersTable').DataTable({
-          // ajax: 'testData/members.json',
-          responsive: true,
           data: dataSet,
           columns: [
             {},
@@ -96,6 +94,11 @@ angular
               data: 'branch'
             },
           ],
+          responsive: {
+            details: {
+                type: 'column'
+            }
+          },
           columnDefs: [
             {
               targets: 1,
@@ -105,9 +108,9 @@ angular
               targets: 0,
               searchable: false,
               orderable: false,
-              className: 'dt-body-center',
+              className: 'dt-body-center control',
               render: function() {
-                return '<div id="member-row-data">';
+                return '<div id="member-row-data" style="width: 20px;">';
               }
             },
             {
@@ -120,12 +123,7 @@ angular
             },
           ],
           order: [[3, 'asc']],
-          headerCallback: function(thead) {
-            $(thead)
-              .find('th')
-              .eq(0)
-              .html('<input type="hidden" id="membersTable-select-all">');
-          },
+          headerCallback: _.noop,
           rowCallback: function(row, data, index) {
             $(row).find('div#member-row-data').attr('data-key', data.key);
             $(row).find('div#member-row-data').attr('data-row-index', index);
@@ -152,6 +150,12 @@ angular
             return row;
           },
           drawCallback: function(settings) {
+
+            // Reset button and clear selected
+            $('tbody').find('tr').css('background-color', '');
+            $('#enableDisableBtn').addClass('disabled');
+            $scope.currId = '';
+
              // Get the currently selected: state, Region, and chapterId.
             $('#membersTable').off('click', 'tbody tr[role="row"]');
             $('#membersTable').on('click', 'tbody tr[role="row"]', function() {
@@ -666,10 +670,13 @@ angular
     }; // end $scope.buildTable
 
     $scope.update = function() {
+
+      // Initialize Variables.
       var newDataSet = commonServices.getData('/userData/');
       var newRoleData = commonServices.getData('/userRoles/');
       var currentUserRole = userService.getRole();
       var currentUserData = userService.getUserData();
+
       $q.all([newDataSet, newRoleData]).then(function(userData) {
         var users = [],
           roles = [],
