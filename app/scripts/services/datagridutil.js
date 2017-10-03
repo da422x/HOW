@@ -21,6 +21,7 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
     for (var i = 0; i < resultsLen; i++) {
       var arr = {};
       arr.key = results[i].key;
+      arr.active = results[i].active ? 'Active' : 'Disabled';
       arr.row_id = i;
       arr.first = results[i].name.first;
       arr.last = results[i].name.last;

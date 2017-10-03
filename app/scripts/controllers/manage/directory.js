@@ -29,7 +29,8 @@ angular
       var i;
       var packet;
       var dataSet = dataGridUtil.buildMembersTableData(results);
-      $scope.currId = ''; // holds value of the current row's member Id for CRUD ops
+      $scope.userRole = userService.getRole(); // Current Users Role, i.e. you...
+      $scope.currId = ''; // holds value of the current selected row member Id for CRUD ops.
       $scope.checkedBoxes = [];
 
       angular.element(document).ready(function() {
@@ -52,49 +53,53 @@ angular
             {},
             {
               title: 'KEY',
-              data: 'key',
+              data: 'key'
+            },
+            {
+              title: 'Status',
+              data: 'active'
             },
             {
               title: 'First Name',
-              data: 'first',
+              data: 'first'
             },
             {
               title: 'Last Name',
-              data: 'last',
+              data: 'last'
             },
             {
               title: 'DOB',
-              data: 'dob',
+              data: 'dob'
             },
             {
               title: 'Email',
-              data: 'email',
+              data: 'email'
             },
             {
               title: 'Phone',
-              data: 'phone',
+              data: 'phone'
             },
             {
               title: 'Role',
-              data: 'role',
+              data: 'role'
             },
             {
               title: 'Primary Chapter',
-              data: 'primaryChapter',
+              data: 'primaryChapter'
             },
             {
               title: 'Secondary Chapters',
-              data: 'chapters[, ]',
+              data: 'chapters[, ]'
             },
             {
               title: 'Service Branch',
-              data: 'branch',
+              data: 'branch'
             },
           ],
           columnDefs: [
             {
               targets: 1,
-              visible: false,
+              visible: false
             },
             {
               targets: 0,
@@ -102,16 +107,16 @@ angular
               orderable: false,
               className: 'dt-body-center',
               render: function() {
-                return '<input type="checkbox" id="membersTable-select">';
-              },
+                return '<div id="member-row-data">';
+              }
             },
             {
               targets: 3,
-              width: '50px',
+              width: '50px'
             },
             {
               targets: 5,
-              width: '90px',
+              width: '90px'
             },
           ],
           order: [[3, 'asc']],
@@ -119,25 +124,23 @@ angular
             $(thead)
               .find('th')
               .eq(0)
-              .html('<input type="checkbox" id="membersTable-select-all">');
+              .html('<input type="hidden" id="membersTable-select-all">');
           },
           rowCallback: function(row, data, index) {
-            $(row).find('input[type="checkbox"]').eq(0).attr('value', data.key);
-            $(row)
-              .find('input[type="checkbox"]')
-              .eq(0)
-              .attr('data-row-id', data.row_id);
-            $(row).children().eq(1).addClass('tdFname');
-            $(row).children().eq(2).addClass('tdLname');
-            $(row).children().eq(3).addClass('tdDob');
-            $(row).children().eq(4).addClass('tdEmail'); // email checking disabled
-            $(row).children().eq(5).addClass('tdTelly');
-            $(row).children().eq(6).addClass('tdSelectRole');
-            $(row).children().eq(7).addClass('tdPrimaryChapter');
-            $(row).children().eq(8).addClass('tdChapters');
-            $(row).children().eq(9).addClass('tdMil');
-            for (i = 1; i < 10; i++) {
-              if (i !== 4) {
+            $(row).find('div#member-row-data').attr('data-key', data.key);
+            $(row).find('div#member-row-data').attr('data-row-index', index);
+            $(row).children().eq(1).addClass('tdStatus');
+            $(row).children().eq(2).addClass('tdFname');
+            $(row).children().eq(3).addClass('tdLname');
+            $(row).children().eq(4).addClass('tdDob');
+            $(row).children().eq(5).addClass('tdEmail'); // email checking disabled
+            $(row).children().eq(6).addClass('tdTelly');
+            $(row).children().eq(7).addClass('tdSelectRole');
+            $(row).children().eq(8).addClass('tdPrimaryChapter');
+            $(row).children().eq(9).addClass('tdChapters');
+            $(row).children().eq(10).addClass('tdMil');
+            for (i = 2; i < 11; i++) {
+              if (i !== 5) {
                 $(row)
                   .children()
                   .eq(i)
@@ -149,21 +152,35 @@ angular
             return row;
           },
           drawCallback: function(settings) {
-            // set currentId to user being edited
-            $('#membersTable').off('click', 'tr');
-            $('#membersTable').on('click', 'tr', function() {
-              $scope.currId = $(this).find('input[type="checkbox"]').val();
+             // Get the currently selected: state, Region, and chapterId.
+            $('#membersTable').off('click', 'tbody tr[role="row"]');
+            $('#membersTable').on('click', 'tbody tr[role="row"]', function() {
 
-              if ($(this).find('input[type="checkbox"]').is(':checked')) {
-                $scope.checkedBoxes.push($scope.currId);
-              } else {
-                for (var i = 0; i < $scope.checkedBoxes.length; i++) {
-                  if ($scope.checkedBoxes[i] === $scope.currId) {
-                    $scope.checkedBoxes.splice(i, 1);
-                  }
+              // Set currently selected account.
+              $scope.currId = $(this).find('div#member-row-data').data('key');
+
+              // Feature only available for National Staff.
+              if ($scope.userRole === 'National Staff') {
+                $('tbody').find('tr').css('background-color', '');
+                $(this).css('background-color', '#FFFFC4');
+                $scope.currStatus = $(this).find('.tdStatus').text();
+                $('#enableDisableBtn').removeClass('disabled');
+                if ($scope.currStatus === 'Active') {
+                  $('#enableDisableBtn').text('Disable Account');
+                } else {
+                  $('#enableDisableBtn').text('Enable Account');
                 }
               }
+              
             });
+
+            // Clear selected value when user paginates
+            $('#membersTable_paginate').off('click');
+            $('#membersTable_paginate').on('click', function() {
+              $('tbody').find('tr').css('background-color', '');
+              $('#enableDisableBtn').addClass('disabled');
+            });
+
             // editable field definitions and CRUD ops
             $('#membersTable .tdFname a').editable({
               type: 'text',
@@ -305,13 +322,13 @@ angular
             $('#membersTable').off('click', '.tdPrimaryChapter a');
             $('#membersTable').on('click', '.tdPrimaryChapter a', function() {
               var self = this;
+              var selectedUserId = $(this).parent().find('div#member-row-data').data('key');
               var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changeChapter.html',
                 controller: 'ChangeChapterCtrl',
                 resolve: {
                   selectedUID: function() {
-                    return self.parentElement.parentElement.children[0]
-                      .firstChild.value;
+                    return selectedUserId;
                   },
                 },
               });
@@ -319,12 +336,13 @@ angular
             $('#membersTable').off('click', '.tdChapters');
             $('#membersTable').on('click', '.tdChapters', function() {
               var self = this;
+              var selectedUserId = $(this).parent().find('div#member-row-data').data('key');
               var modalInstance = $uibModal.open({
                 templateUrl: '/parts/manageadditionalchapters.html',
                 controller: 'ManageAdditionalChapters',
                 resolve: {
                   selectedUID: function() {
-                    return self.parentElement.children[0].firstChild.value;
+                    return selectedUserId;
                   },
                 },
               });
@@ -367,12 +385,12 @@ angular
           if (showHide) {
             _.each(currentElement, function(n) {
               switch ($(n).data('dt-column')) {
-                case 2:
+                case 3:
                   // First Name
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
-                  $('ul>li[data-dtr-index="2"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="3"]>span.dtr-data').editable({
                     type: 'text',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -397,12 +415,12 @@ angular
                     },
                   });
                   break;
-                case 3:
+                case 4:
                   // Last Name
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
-                  $('ul>li[data-dtr-index="3"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="4"]>span.dtr-data').editable({
                     type: 'text',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -427,12 +445,12 @@ angular
                     },
                   });
                   break;
-                case 4:
+                case 5:
                   // DOB
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
-                  $('ul>li[data-dtr-index="4"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="5"]>span.dtr-data').editable({
                     type: 'combodate',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -461,16 +479,16 @@ angular
                     },
                   });
                   break;
-                case 5:
+                case 6:
                   // email
                   break;
-                case 6:
+                case 7:
                   // Mobile
                   $(
                     document
                   ).on(
                     'click',
-                    'ul>li[data-dtr-index="6"]>span.dtr-data',
+                    'ul>li[data-dtr-index="7"]>span.dtr-data',
                     function() {
                       $('#phonenum').mask('(999)999-9999');
                     }
@@ -478,7 +496,7 @@ angular
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
-                  $('ul>li[data-dtr-index="6"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="7"]>span.dtr-data').editable({
                     type: 'text',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -500,12 +518,12 @@ angular
                     },
                   });
                   break;
-                case 7:
+                case 8:
                   // Role
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
-                  $('ul>li[data-dtr-index="7"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="8"]>span.dtr-data').editable({
                     type: 'select',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -549,45 +567,8 @@ angular
                     },
                   });
                   break;
-                case 8:
-                  // Primary Chapter
-                  $(n)
-                    .find('span.dtr-data')
-                    .addClass('editable editable-click');
-                  $('#membersTable').off(
-                    'click',
-                    'ul>li[data-dtr-index="8"]>span.dtr-data'
-                  );
-                  $(
-                    '#membersTable'
-                  ).on(
-                    'click',
-                    'ul>li[data-dtr-index="8"]>span.dtr-data',
-                    function() {
-                      var self = this;
-                      var modalInstance = $uibModal.open({
-                        templateUrl: '/parts/changeChapter.html',
-                        controller: 'ChangeChapterCtrl',
-                        resolve: {
-                          selectedUID: function() {
-                            var tempRowId = $(self).parent().data('dt-row');
-                            var curKey = $(self)
-                              .parent()
-                              .parent()
-                              .parent()
-                              .parent()
-                              .parent()
-                              .find('input[data-row-id="' + tempRowId + '"]')
-                              .val();
-                            return curKey;
-                          },
-                        },
-                      });
-                    }
-                  );
-                  break;
                 case 9:
-                  // Secondary Chapter
+                  // Primary Chapter
                   $(n)
                     .find('span.dtr-data')
                     .addClass('editable editable-click');
@@ -602,21 +583,16 @@ angular
                     'ul>li[data-dtr-index="9"]>span.dtr-data',
                     function() {
                       var self = this;
+                      var rowIndex = $(this).parent().parent().data('dtr-index');
+                      var selectedUserId = $('table#membersTable>tbody')
+                        .find('tr[role="row"]>td.dt-body-center>div[data-row-index="' + rowIndex + '"]')
+                        .data('key');
                       var modalInstance = $uibModal.open({
-                        templateUrl: '/parts/manageadditionalchapters.html',
-                        controller: 'ManageAdditionalChapters',
+                        templateUrl: '/parts/changeChapter.html',
+                        controller: 'ChangeChapterCtrl',
                         resolve: {
                           selectedUID: function() {
-                            var tempRowId = $(self).parent().data('dt-row');
-                            var curKey = $(self)
-                              .parent()
-                              .parent()
-                              .parent()
-                              .parent()
-                              .parent()
-                              .find('input[data-row-id="' + tempRowId + '"]')
-                              .val();
-                            return curKey;
+                            return selectedUserId;
                           },
                         },
                       });
@@ -624,8 +600,40 @@ angular
                   );
                   break;
                 case 10:
+                  // Secondary Chapter
+                  $(n)
+                    .find('span.dtr-data')
+                    .addClass('editable editable-click');
+                  $('#membersTable').off(
+                    'click',
+                    'ul>li[data-dtr-index="10"]>span.dtr-data'
+                  );
+                  $(
+                    '#membersTable'
+                  ).on(
+                    'click',
+                    'ul>li[data-dtr-index="10"]>span.dtr-data',
+                    function() {
+                      var self = this;
+                      var rowIndex = $(this).parent().parent().data('dtr-index');
+                      var selectedUserId = $('table#membersTable>tbody')
+                        .find('tr[role="row"]>td.dt-body-center>div[data-row-index="' + rowIndex + '"]')
+                        .data('key');
+                      var modalInstance = $uibModal.open({
+                        templateUrl: '/parts/manageadditionalchapters.html',
+                        controller: 'ManageAdditionalChapters',
+                        resolve: {
+                          selectedUID: function() {
+                            return selectedUserId;
+                          },
+                        },
+                      });
+                    }
+                  );
+                  break;
+                case 11:
                   // Mil Affil
-                  $('ul>li[data-dtr-index="10"]>span.dtr-data').editable({
+                  $('ul>li[data-dtr-index="11"]>span.dtr-data').editable({
                     type: 'text',
                     name: $scope.currId,
                     placement: 'bottom',
@@ -654,34 +662,6 @@ angular
             });
           }
         });
-
-        // Handle click on "Select all" control
-        $('#membersTable-select-all').on('click', function() {
-          // Get all rows with search applied
-          var rows = $scope.membersTable
-            .rows({
-              search: 'applied',
-            })
-            .nodes();
-          // Check/uncheck checkboxes for all rows in the table
-          $('input[type="checkbox"]', rows).prop('checked', this.checked);
-        });
-
-        // Handle click on checkbox to set state of "Select all" control
-        $(
-          '#membersTable tbody'
-        ).on('change', 'input[type="checkbox"]', function() {
-          // If checkbox is not checked
-          if (!this.checked) {
-            var el = $('#membersTable-select-all').get(0);
-            // If "Select all" control is checked and has 'indeterminate' property
-            if (el && el.checked && 'indeterminate' in el) {
-              // Set visual state of "Select all" control
-              // as 'indeterminate'
-              el.indeterminate = true;
-            }
-          }
-        });
       }); // end document ready
     }; // end $scope.buildTable
 
@@ -693,6 +673,7 @@ angular
       $q.all([newDataSet, newRoleData]).then(function(userData) {
         var users = [],
           roles = [],
+          active = [],
           keys = [];
         var i = 0;
 
@@ -700,6 +681,7 @@ angular
           switch (currentUserRole) {
             case 'National Staff':
               roles.push(value.role);
+              active.push(value.active);
               keys.push(key);
               break;
             case 'Chapter Lead':
@@ -709,6 +691,7 @@ angular
                 value.role === 'Chapter Lead'
               ) {
                 roles.push(value.role);
+                active.push(value.active);
                 keys.push(key);
               }
               break;
@@ -724,6 +707,7 @@ angular
                 if (keys[i] === key) {
                   value.key = key;
                   value.role = roles[i];
+                  value.active = active[i];
                   users.push(value);
                 }
                 break;
@@ -734,6 +718,7 @@ angular
                 ) {
                   value.key = key;
                   value.role = roles[i];
+                  value.active = active[i];
                   users.push(value);
                 }
                 break;
@@ -761,26 +746,18 @@ angular
       });
     };
 
-    $scope.remove = function() {
-      if ($scope.checkedBoxes.length === 0) {
-        swal('', 'No records selected!', 'warning');
+    $scope.enableDisable = function() {
+      var currentUserUID = userService.getId();
+      if ($scope.currId !== currentUserUID) {
+        var path = '/userRoles/' + $scope.currId + '/active';
+        if ($scope.currStatus === 'Active') {
+          commonServices.updateData(path, false);
+        } else {
+          commonServices.updateData(path, true);
+        }
+        $scope.update();
       } else {
-        swal({
-          title: 'Are you sure?',
-          text: 'Get ready to kiss it goodbye!',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!',
-        }).then(function() {
-          _.each($scope.checkedBoxes, function(userKey) {
-            commonServices.removeData('/userData/' + userKey);
-            commonServices.removeData('/userRoles/' + userKey);
-          });
-          swal('Deleted!', 'Your file has been deleted.', 'success');
-          $scope.update();
-        });
-      } // end else
-    }; // end $scope.remove
+        swal('Alert', 'You cannot edit your own Status!', 'error');
+      }
+    };
   });
