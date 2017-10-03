@@ -53,55 +53,55 @@ angular
             {},
             {
               title: 'KEY',
-              data: 'key',
+              data: 'key'
             },
             {
               title: 'Chapter Name',
-              data: 'name',
+              data: 'name'
             },
             {
               title: 'Description',
-              data: 'description',
+              data: 'description'
             },
             {
               title: 'Chapter Admin',
-              data: 'chadmin',
+              data: 'chadmin'
             },
             {
               title: 'Region',
-              data: 'region',
+              data: 'region'
             },
             {
               title: 'State',
-              data: 'state',
+              data: 'state'
             },
             {
               title: 'Zip',
               data: 'zip',
-              orderable: false,
+              orderable: false
             },
             {
               title: 'Email',
               data: 'email',
-              orderable: false,
+              orderable: false
             },
             {
               title: 'Website',
-              data: 'facebook_link',
+              data: 'facebook_link'
             },
             {
               title: 'Location',
-              data: 'googleMaps_Link',
+              data: 'googleMaps_Link'
             },
             {
               title: 'Donations',
-              data: 'donation_link',
+              data: 'donation_link'
             },
           ],
           columnDefs: [
             {
               targets: 1,
-              visible: false,
+              visible: false
             },
             {
               targets: 0,
@@ -114,11 +114,11 @@ angular
             },
             {
               targets: 3,
-              width: '50px',
+              width: '50px'
             },
             {
               targets: 5,
-              width: '90px',
+              width: '90px'
             },
           ],
           order: [[3, 'asc']],
@@ -162,6 +162,7 @@ angular
               $('tbody').find('tr').css('background-color', '');
               $('#chapterDeleteBtn').addClass('disabled');
             });
+            
             // Edit Chapter Name
             $('#chaptersTable .tdCName a').editable({
               type: 'text',

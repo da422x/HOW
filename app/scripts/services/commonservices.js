@@ -38,6 +38,7 @@ angular.module('ohanaApp').service('commonServices', [
                 role: 'Participant',
                 name: user.name,
                 email: user.email,
+                active: true
               });
               return true;
             })

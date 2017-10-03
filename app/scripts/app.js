@@ -194,45 +194,37 @@ angular
     //changing jquery editable to angular editable
     editableOptions.theme = 'bs3';
 
+    /***********************************
+     *    Firebase DB API's - start    *
+     ***********************************/
+
     // Test 2 (Current test DB).
-    // var config = {
-    //   apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
-    //   authDomain: 'herosonthewatertest2.firebaseapp.com',
-    //   databaseURL: 'https://herosonthewatertest2.firebaseio.com',
-    //   projectId: 'herosonthewatertest2',
-    //   storageBucket: 'herosonthewatertest2.appspot.com',
-    //   messagingSenderId: '569173546476',
-    // };
-
-    // Test 1 (Out dated).
-    // var config = {
-    //     apiKey: "AIzaSyB0ush9ktHEJPW1C6TBmc44ANBcusetpEg",
-    //     authDomain: "herosonthewater-55a79.firebaseapp.com",
-    //     databaseURL: "https://herosonthewater-55a79.firebaseio.com",
-    //     projectId: "herosonthewater-55a79",
-    //     storageBucket: "herosonthewater-55a79.appspot.com",
-    //     messagingSenderId: "183234806884"
-    // };
-
-    // Production 1 (Out dated).
-    // var config = {
-    //     apiKey: "AIzaSyBR4hC7hNOv8mKT4QW-KVcDsmZilr401W0",
-    //     authDomain: "herosonthewaterprod.firebaseapp.com",
-    //     databaseURL: "https://herosonthewaterprod.firebaseio.com",
-    //     projectId: "herosonthewaterprod",
-    //     storageBucket: "herosonthewaterprod.appspot.com",
-    //     messagingSenderId: "464567079814"
-    // }
+    var config = {
+      apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
+      authDomain: 'herosonthewatertest2.firebaseapp.com',
+      databaseURL: 'https://herosonthewatertest2.firebaseio.com',
+      projectId: 'herosonthewatertest2',
+      storageBucket: 'herosonthewatertest2.appspot.com',
+      messagingSenderId: '569173546476',
+    };
 
     // Production 2 (Current production DB)
-    var config = {
-      apiKey: "AIzaSyDdII6WDs5CRNriyVoNQffMbwDzhdXyxKY",
-      authDomain: "heroesonthewaterproduction2.firebaseapp.com",
-      databaseURL: "https://heroesonthewaterproduction2.firebaseio.com",
-      projectId: "heroesonthewaterproduction2",
-      storageBucket: "heroesonthewaterproduction2.appspot.com",
-      messagingSenderId: "377099176239"
-    };
+    // var config = {
+    //   apiKey: "AIzaSyDdII6WDs5CRNriyVoNQffMbwDzhdXyxKY",
+    //   authDomain: "heroesonthewaterproduction2.firebaseapp.com",
+    //   databaseURL: "https://heroesonthewaterproduction2.firebaseio.com",
+    //   projectId: "heroesonthewaterproduction2",
+    //   storageBucket: "heroesonthewaterproduction2.appspot.com",
+    //   messagingSenderId: "377099176239"
+    // };
+
+    /***********************************
+     *    Firebase DB API's - End      *
+     ***********************************/
+
+    /***************************************
+     *   Initializing GLobal Data - Start  *
+     ***************************************/
 
     if (firebase.apps.length === 0) {
       firebase.initializeApp(config);
@@ -284,8 +276,19 @@ angular
       console.log($rootScope.siteData);
     });
 
+    /***************************************
+     *   Initializing GLobal Data - End    *
+     ***************************************/
+
+    /***************************************
+     *     User Authentication  - Start    *
+     ***************************************/
+
     $rootScope.authObj.$onAuthStateChanged(function(user) {
+      
       if (user) {
+
+        // Get Userid and Role.
         var currentUserId = firebase.auth().currentUser.uid;
         var currentUserData = commonServices.getData(
           '/userData/' + currentUserId
@@ -295,6 +298,7 @@ angular
         );
 
         $q.all([currentUserData, currentUserRole]).then(function(data) {
+
           var userData = data[0];
           var userRole = data[1];
 
@@ -320,6 +324,7 @@ angular
           $rootScope.$broadcast('changeSessionState', true);
         });
       } else {
+
         console.log('Logged Out...');
 
         // Set session variables to empty, and false when user logs out
@@ -329,12 +334,18 @@ angular
         userService.setId('');
         userService.setChapter('');
       }
+
     });
+
+    /***************************************
+     *     User Authentication  - End      *
+     ***************************************/
 
     //Firebase Logs
     // if (window.location.href.indexOf("localhost") > -1) {
     //     firebase.database.enableLogging(true, true);
     // }
+    
   })
   .filter('unique', function() {
     // Take in the collection and which field
