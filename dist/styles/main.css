@@ -229,3 +229,17 @@ a:visited {
 .editable-click {
   border-bottom: none !important;
 }
+
+.glyphicon-pencil {
+  color:#428bca;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 15vh;
+}
+
+.request_details_section {
+  margin-left: 5px;
+}
