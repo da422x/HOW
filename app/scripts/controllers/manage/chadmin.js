@@ -145,8 +145,8 @@ angular
           },
           drawCallback: function(settings) {
             // Get the currently selected: state, Region, and chapterId.
-            $('#chaptersTable').off('click', 'tbody tr');
-            $('#chaptersTable').on('click', 'tbody tr', function() {
+            $('#chaptersTable').off('click', 'tbody tr[role="row"]');
+            $('#chaptersTable').on('click', 'tbody tr[role="row"]', function() {
               $('tbody').find('tr').css('background-color', '');
               $(this).css('background-color', '#FFFFC4');
               $scope.currId = $(this).find('div#chapter-row-data').data('key');
@@ -171,6 +171,7 @@ angular
               emptytext: 'none',
               url: function(params) {
 
+                // There always needs to be a default chapter....
                 if ($scope.currId === '-KvEej0qnrUczGhOxi5H') {
                   swal('Error', 'you cannot change this chapter name...', 'warning');
                   return;
@@ -304,14 +305,9 @@ angular
     }; // end $scope.update
 
     $scope.addChapter = function() {
-      console.log($scope.chaptersTable);
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/chapterAdd.html',
         controller: 'ChapterAddCtrl',
-      });
-
-      modalInstance.result.then(function(parameter) {
-        $scope.chaptersTable.row.add(parameter);
       });
     };
 

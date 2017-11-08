@@ -100,7 +100,9 @@ angular
             }
           );
 
-          $uibModalInstance.close(submitChapter);
+          // Close modal
+          $scope.cancel();
+
           swal({
             text: 'Adding Chapter',
             type: 'success',
@@ -112,6 +114,7 @@ angular
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
+      $rootScope.$broadcast('modalClosing');
     };
 
     $scope.loadStates = function() {
@@ -192,9 +195,5 @@ angular
           break;
         default: break;
       }
-    };
-
-    $scope.cancel = function() {
-      $uibModalInstance.dismiss('cancel');
     };
   });

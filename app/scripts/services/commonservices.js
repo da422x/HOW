@@ -412,6 +412,25 @@ angular.module('ohanaApp').service('commonServices', [
       });
     };
 
+    this.getUserRequests = function(userId) {
+      console.log(userId);
+      return firebase
+        .database()
+        .ref('/roleChangeRequests')
+        .orderByChild('uid')
+        .equalTo(userId)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
     /******************************************************
          *            Other Utility methods - end             *
          *****************************************************/
