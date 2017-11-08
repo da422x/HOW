@@ -30,7 +30,7 @@
         <i ng-click="declined(request.key, request)" class="fa fa-minus-square pull-right" aria-hidden="true"></i>
         <i ng-click="approved(request.key, request)" class="fa fa-plus-square pull-right" aria-hidden="true"></i>
       </div>
-      <div ng-show="showForm1b">
+      <div class="request_details_section" ng-show="showForm1b">
         <div>Email: {{request.email}}</div>
         <div>Current Role: {{request.current_role}}</div>
         <div>Request Status: {{request.request_status}}</div>
@@ -54,7 +54,7 @@
         <h3 class="panel-title pull-left">{{request.request_role}}</h3>
         <i ng-click="showForm2b = !showForm2b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
       </div>
-      <div ng-show="showForm2b">
+      <div class="request_details_section" ng-show="showForm2b">
         <div>Email: {{request.email}}</div>
         <div>Current Role: {{request.current_role}}</div>
         <div>Request Status: {{request.request_status}}</div>
@@ -80,7 +80,7 @@
         <h3 class="panel-title pull-left">{{request.request_role}}</h3>
         <i ng-click="showForm3b = !showForm3b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
       </div>
-      <div ng-show="showForm3b">
+      <div class="request_details_section" ng-show="showForm3b">
         <div>Email: {{request.email}}</div>
         <div>Current Role: {{request.current_role}}</div>
         <div>Request Status: {{request.request_status}}</div>

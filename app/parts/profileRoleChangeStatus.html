@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 
 <!-- start modal-header -->
-<div class="modal-header" ng-init="update()">
+<div class="modal-header" ng-init="getUserRequests()">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title">Manage Role Change Requests</h4>
+  <h4 class="modal-title">Request Status</h4>
   <h6><i class="fa fa-chevron-down pull-left" aria-hidden="true"></i>Click this icon for details</h6>
-  <h6><i class="fa fa-minus-square pull-left" aria-hidden="true"></i>Click to decline request</h6>
-  <h6><i class="fa fa-plus-square pull-left" aria-hidden="true"></i>Click to approve request</h6>
 </div>
 <!-- end modal-header -->
 
@@ -17,18 +15,19 @@
   <div class="panel panel-default">
     <div class="panel-heading clearfix" id="pending-requests">
       <h3 class="panel-title pull-left">Pending Requests &nbsp</h3>
-      <span class="badge" ng-show="alertPending">{{pendingCount}}</span>
+      <span class="badge">{{pendingRequests.length}}</span>
       <i ng-click="showForm1a = !showForm1a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
     </div>
   </div>
-  <div ng-repeat="request in pending_requests" ng-show="showForm1a">
+  <div ng-repeat="request in pendingRequests" ng-show="showForm1a">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
         <h3 class="panel-title pull-left">{{request.request_role}}</h3>
-        <i ng-click="showForm1b = !showForm1b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
-        <i ng-click="declined(request.key, request)" class="fa fa-minus-square pull-right" aria-hidden="true"></i>
-        <i ng-click="approved(request.key, request)" class="fa fa-plus-square pull-right" aria-hidden="true"></i>
+        <div class="col-md-4 pull-right">
+          <button type="button" class="btn-xs btn-danger pull-right" ng-click="deleteRequest(request.key)">Delete</button>
+          <button type="button" class="btn-xs btn-primary pull-right" style="margin-right: 5px;" ng-click="showForm1b = !showForm1b">Details</button>
+        </div>
       </div>
       <div class="request_details_section" ng-show="showForm1b">
         <div>Email: {{request.email}}</div>
@@ -43,16 +42,20 @@
   <!-- Approved Requests -->
   <div class="panel panel-default">
     <div class="panel-heading clearfix" id="approved-requests">
-      <h3 class="panel-title pull-left">Approved Requests</h3>
+      <h3 class="panel-title pull-left">Approved Requests &nbsp</h3>
+      <span class="badge">{{approvedRequests.length}}</span>
       <i ng-click="showForm2a = !showForm2a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
     </div>
   </div>
-  <div ng-repeat="request in approved_requests" ng-show="showForm2a">
+  <div ng-repeat="request in approvedRequests" ng-show="showForm2a">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
         <h3 class="panel-title pull-left">{{request.request_role}}</h3>
-        <i ng-click="showForm2b = !showForm2b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+        <div class="col-md-4 pull-right">
+          <button type="button" class="btn-xs btn-danger pull-right" ng-click="deleteRequest(request.key)">Delete</button>
+          <button type="button" class="btn-xs btn-primary pull-right" style="margin-right: 5px;" ng-click="showForm2b = !showForm2b">Details</button>
+        </div>
       </div>
       <div class="request_details_section" ng-show="showForm2b">
         <div>Email: {{request.email}}</div>
@@ -69,16 +72,20 @@
   <!-- Declined Requests -->
   <div class="panel panel-default">
     <div class="panel-heading clearfix" id="declined-requests">
-      <h3 class="panel-title pull-left">Declined Requests</h3>
+      <h3 class="panel-title pull-left">Declined Requests &nbsp</h3>
+      <span class="badge">{{declinedRequests.length}}</span>
       <i ng-click="showForm3a = !showForm3a" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
     </div>
   </div>
-  <div ng-repeat="request in declined_requests" ng-show="showForm3a">
+  <div ng-repeat="request in declinedRequests" ng-show="showForm3a">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <h3 class="panel-title pull-left">{{request.name}} :&nbsp</h3>
         <h3 class="panel-title pull-left">{{request.request_role}}</h3>
-        <i ng-click="showForm3b = !showForm3b" class="fa fa-chevron-down pull-right" aria-hidden="true"></i>
+        <div class="col-md-4 pull-right">
+          <button type="button" class="btn-xs btn-danger pull-right" ng-click="deleteRequest(request.key)">Delete</button>
+          <button type="button" class="btn-xs btn-primary pull-right" style="margin-right: 5px;" ng-click="showForm3b = !showForm3b">Details</button>
+        </div>
       </div>
       <div class="request_details_section" ng-show="showForm3b">
         <div>Email: {{request.email}}</div>

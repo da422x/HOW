@@ -2,30 +2,18 @@
 
 <div class="container" ng-init="update()">
   <h3>Member Directory</h3>
-  <div style="clear: left; width: 100%; overflow: auto; margin-bottom: 5px">
-    <div class="toolbar-left" style="float: left">
+  <div style="clear: left; width: 100%; overflow: auto; margin-bottom: 5px;">
+    <div class="toolbar-left" style="float: left; margin-top: 5px;">
       <button class="btn btn-primary" ng-click="roleChangeRequests()">Role Change Requests</button>
     </div>
-    <div class="toolbar-left" style="float: left; margin-left: 5px;">
+    <div class="toolbar-left" style="float: left; margin-left: 5px; margin-top: 5px">
       <button class="btn btn-primary" ng-click="chapterStatus()">Chapter Status</button>
     </div>
-    <div class="toolbar-left" style="float: left; margin-left: 5px;">
+    <div class="toolbar-left" style="float: left; margin-left: 5px; margin-top: 5px">
       <button id="enableDisableBtn" class="btn btn-primary disabled" ng-click="enableDisable()">Disable Account</button>
     </div>
   </div>
   <div style="margin: auto; display: block; padding-top: 10px" max-width="100%">
     <table id="membersTable" class="display table table-bordered responsive" cellspacing="0" width="100%"></table>
   </div>
-  <div id="newUserForm" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <script type="text/ng-template" id="newUserDirectoryForm.html"></script>
-        <!-- inject from newUserDirectoryForm.html -->
-      </div>
-      <!-- end modal-content -->
-    </div>
-    <!-- end modal-dialog -->
-  </div>
-  <!-- end newUserForm -->
 </div>
-<!-- end container -->

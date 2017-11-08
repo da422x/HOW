@@ -52,12 +52,10 @@
             <label>
         </h4>
         <h4 class="list-group-item-heading">Secondary Chapter(s):
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="editChapters()"></span>
           <h6 class="list-group-item-heading format-chapter-class" ng-repeat="Chapters in profileData.Chapters">
             {{Chapters.chapter.text}}
           </h6>
-          <button type="button" class="btn btn-default btn-sm" ng-click="editChapters()">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-          </button>
         </h4>
       </div>
       <div class="list-group-item">
@@ -70,66 +68,16 @@
         </h4>
       </div>
     </div>
-    <div class="panel-footer" style="height:55px">
-      <a class="btn btn-primary pull-right" ng-click="roleChangeRequest()"><i class="fa fa-pencil" style="padding-right: 5px;"></i>Request Role Change</a>
-      <a class="btn btn-primary pull-right" ng-click="feedBackRequest()" style="margin-right: 10px;"><i class="fa fa-ticket" style="padding-right: 5px;"></i>Give Feedback</a>
+    <div class="panel-footer flex-container">
+      <a class="btn btn-primary pull-right" ng-click="roleChangeRequest()" style="margin-bottom: 10px;">
+        <i class="fa fa-pencil" style="padding-right: 5px;"></i>
+        Request Role Change</a>
+      <a class="btn btn-primary pull-right" ng-click="roleChangeStatus()" style="margin-bottom: 10px; margin-right: 10px; width:100%;">
+        <i class="fa fa-flag" style="padding-right: 5px;"></i>
+        Request Status</a>
+      <a class="btn btn-primary pull-right" ng-click="feedBackRequest()" style="margin-right: 10px; width:100%;">
+        <i class="fa fa-ticket" style="padding-right: 5px;"></i>
+        Give Feedback</a>
     </div>
   </div>
   <!-- end panel -->
-
-  <div class="panel panel-default">
-    <div class="panel-heading clearfix">
-      <h3 class="panel-title pull-left">Role Change Status</h3>
-      <a class="btn btn-primary pull-right" ng-click="rcs_show()"><i style="padding-right: 5px"></i>Show</a>
-    </div>
-    <div class="list-group" ng-show="rcs_status">
-      <div class="list-group-item">
-        <div class="row">
-          <div class="col-md-2">
-            <h4>Last Updated</h4>
-          </div>
-          <div class="col-md-1">
-            <h4>Current Role</h4>
-          </div>
-          <div class="col-md-2">
-            <h4>Requested Role</h4>
-          </div>
-          <div class="col-md-1">
-            <h4>Status</h4>
-          </div>
-          <div class="col-md-2">
-            <h4>User Comment</h4>
-          </div>
-          <div class="col-md-3">
-            <h4>Reviewers Comment</h4>
-          </div>
-        </div>
-      </div>
-      <div class="list-group-item" ng-repeat="request in requests" id="{{request.key}}">
-        <div class="row">
-          <div class="col-md-2">
-            {{request.request_updated | date:'MM/dd/yyyy @ h:mma'}}
-          </div>
-          <div class="col-md-1">
-            {{request.current_role}}
-          </div>
-          <div class="col-md-2">
-            {{request.request_role}}
-          </div>
-          <div class="col-md-1">
-            {{request.request_status}}
-          </div>
-          <div class="col-md-2">
-            {{request.user_comment}}
-          </div>
-          <div class="col-md-3">
-            {{request.reviewers_comment}}
-          </div>
-          <div class="col-md-1">
-            <button type="button" class="btn btn-danger" ng-click="deleteRequest(request.key)">Delete</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

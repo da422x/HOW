@@ -37,58 +37,8 @@ angular
       $scope.profileData.years = parseInt($scope.profileData.years);
       $scope.profileData.role = userService.getRole();
       $scope.userUID = userService.getId();
-
-      // Get all rcrs first.
-      var userRquests = commonServices.getData('/roleChangeRequests/');
-      $q.all([userRquests]).then(function(data) {
-        // Construct list of rcr's for current user.
-        $scope.requests = [];
-        _.each(data[0], function(value, key) {
-          if (value.uid === $scope.userUID) {
-            value.key = key;
-            $scope.requests.push(value);
-          }
-        });
-
-        // Listeners have to be added once the data is loaded to the page.
-        $scope.addEditableListeners();
-      });
+      $scope.addEditableListeners();
     };
-
-    $scope.rcs_status = false;
-
-    $scope.rcs_show = function() {
-      if ($scope.rcs_status) {
-        $scope.rcs_status = false;
-        $scope.update();
-      } else {
-        $scope.rcs_status = true;
-        $scope.update();
-      }
-    };
-
-    $scope.deleteRequest = function(key) {
-      swal({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then(function() {
-        swal(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        ).then(function() {
-          commonServices.removeData('/roleChangeRequests/' + key);
-          $scope.update();
-        });
-      });
-    };
-
-    $scope.opened = {};
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -209,6 +159,13 @@ angular
       if (!modalInstance) {
         $scope.update();
       }
+    };
+
+    $scope.roleChangeStatus = function() {
+      var modalInstance = $uibModal.open({
+        templateUrl: '/parts/profileRoleChangeStatus.html',
+        controller: 'ProfileRoleChangeStatus as rcs',
+      });
     };
 
     $scope.feedBackRequest = function() {
