@@ -191,6 +191,7 @@ angular
         placement: 'bottom',
         emptytext: 'null',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'name.first');
@@ -204,6 +205,7 @@ angular
         placement: 'bottom',
         emptytext: 'null',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'name.last');
@@ -255,6 +257,7 @@ angular
         placement: 'bottom',
         emptytext: 'null',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.line1');
@@ -268,6 +271,7 @@ angular
         placement: 'bottom',
         emptytext: 'none',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.line2');
@@ -281,6 +285,7 @@ angular
         placement: 'bottom',
         emptytext: 'null',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.city');
@@ -345,6 +350,7 @@ angular
         placement: 'bottom',
         emptytext: 'null',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'branch');
@@ -359,6 +365,7 @@ angular
         emptytext: 'null',
         tpl: '<input>',
         display: false,
+        value: '',
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'years');
