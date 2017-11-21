@@ -198,7 +198,7 @@ angular
      *    Firebase DB API's - start    *
      ***********************************/
 
-    // Test 2 (Current test DB).
+    Test 2 (Current test DB).
     var config = {
       apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
       authDomain: 'herosonthewatertest2.firebaseapp.com',
