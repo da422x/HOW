@@ -135,10 +135,10 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         //     state: "#/dash/broadcasts",
         //     text: "Broadcasts"
         // },
-        {
-          state: '#/manage/chadmin',
-          text: 'Chapter Administration',
-        },
+        // {
+        //   state: '#/manage/chadmin',
+        //   text: 'Chapter Administration',
+        // },
         {
           state: '#/manage/chapterchat',
           text: 'Chapter Chat',
@@ -163,7 +163,7 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
           state: '#/manage/profile',
           text: 'My Profile',
         },
-        // , {
+        // ,{
         //     state: "#/manage/training",
         //     text: "My Training"
         // }

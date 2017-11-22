@@ -85,7 +85,6 @@ angular
         $scope.newUserDirectory.address.zip,
         function(callbackResult) {
           if (callbackResult.success == true) {
-            console.log('zip success');
             $scope.locationUpdate(callbackResult.results);
           }
         }
@@ -143,7 +142,6 @@ angular
 
         $q.all([results]).then(function(data) {
           if (data[0]) {
-            // If sign in was successful, send user to events page
             swal({
               text: 'User added!',
               type: 'success',
