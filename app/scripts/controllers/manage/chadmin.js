@@ -350,7 +350,7 @@ angular
             commonServices.removeData('chat/chapters/' + $scope.currId);
 
             // Delete from siteData
-            commonServices.removeData('Regions/chapters/' + $scope.currId);
+            commonServices.removeData('siteData/chapters/' + $scope.currId);
 
             swal('Success!', 'You have DELETED chapter, ' + $scope.currChapterName, 'success');
 

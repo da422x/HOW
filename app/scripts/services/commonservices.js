@@ -36,8 +36,6 @@ angular.module('ohanaApp').service('commonServices', [
               console.log('success : user data added');
               firebase.database().ref('/userRoles/' + userId).set({
                 role: 'Participant',
-                name: user.name,
-                email: user.email,
                 active: true
               });
               return true;
@@ -172,6 +170,7 @@ angular.module('ohanaApp').service('commonServices', [
           console.log('ERROR: ' + error.code + ': ' + error.message);
         });
     };
+
     // Adds a key and sets the data to the key based on where the path is.
     this.pushData = function(path, data) {
       return firebase
@@ -317,6 +316,7 @@ angular.module('ohanaApp').service('commonServices', [
          *           Other Utility methods - start             *
          *******************************************************/
 
+    // Get all users that are associated to a chapter.
     this.queryChapterkey = function(chapterKey) {
       console.log(chapterKey);
       return firebase
@@ -373,7 +373,6 @@ angular.module('ohanaApp').service('commonServices', [
       var c1, r1;
       var serv = this;
       var promises = [];
-      // $rootScope.siteData.regions.forEach(function(entry) {
       _.each($rootScope.siteData.regions, function(entry) {
         var path = '/Regions/' + entry.text + '/';
         var getChapters = serv.getData(path);
@@ -412,6 +411,7 @@ angular.module('ohanaApp').service('commonServices', [
       });
     };
 
+    // Get all rcr's for a specific user.
     this.getUserRequests = function(userId) {
       console.log(userId);
       return firebase

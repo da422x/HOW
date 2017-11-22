@@ -298,15 +298,9 @@ angular
               url: function(params) {
                 if (params.value !== '') {
                   var currentUserUID = userService.getId();
+                  var path = '/userRoles/' + $scope.currId + '/role';
                   if ($scope.currId !== currentUserUID) {
-                    var packet = {
-                      role: params.value,
-                    };
-                    var path = '/userRoles/' + $scope.currId;
-                    commonServices.updateData(path, packet);
-                    if ($scope.currId === userService.getId()) {
-                      userService.setRole(packet);
-                    }
+                    commonServices.updateData(path, params.value);
                     $scope.update();
                   } else {
                     swal('Alert', 'You cannot edit your own role!', 'error');
@@ -326,7 +320,7 @@ angular
             $('#membersTable').off('click', '.tdPrimaryChapter a');
             $('#membersTable').on('click', '.tdPrimaryChapter a', function() {
               var self = this;
-              var selectedUserId = $(this).parent().find('div#member-row-data').data('key');
+              var selectedUserId = $(this).parent().parent().find('div#member-row-data').data('key');
               var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changeChapter.html',
                 controller: 'ChangeChapterCtrl',
@@ -537,15 +531,9 @@ angular
                     url: function(params) {
                       if (params.value !== '') {
                         var currentUserUID = userService.getId();
+                        var path = '/userRoles/' + params.name + '/role';
                         if ($scope.currId !== currentUserUID) {
-                          var packet = {
-                            role: params.value,
-                          };
-                          var path = '/userRoles/' + params.name;
-                          commonServices.updateData(path, packet);
-                          if (params.name === userService.getId()) {
-                            userService.setRole(packet);
-                          }
+                          commonServices.updateData(path, params.value);
                           $scope.update();
                         } else {
                           swal(
@@ -672,10 +660,20 @@ angular
     $scope.update = function() {
 
       // Initialize Variables.
-      var newDataSet = commonServices.getData('/userData/');
-      var newRoleData = commonServices.getData('/userRoles/');
+      var newDataSet, newRoleData;
       var currentUserRole = userService.getRole();
       var currentUserData = userService.getUserData();
+
+      if (currentUserRole === 'Chapter Lead') {
+        newDataSet = commonServices.queryChapterkey(currentUserData.Chapter.key);
+        newRoleData = commonServices.getData('/userRoles/');
+      } else if (currentUserRole === 'National Staff') {
+        newDataSet = commonServices.getData('/userData/');
+        newRoleData = commonServices.getData('/userRoles/');
+      } else {
+        console.error('Access Denied');
+        return;
+      }
 
       $q.all([newDataSet, newRoleData]).then(function(userData) {
         var users = [],
@@ -685,25 +683,10 @@ angular
         var i = 0;
 
         _.each(userData[1], function(value, key) {
-          switch (currentUserRole) {
-            case 'National Staff':
-              roles.push(value.role);
-              active.push(value.active);
-              keys.push(key);
-              break;
-            case 'Chapter Lead':
-              if (
-                value.role === 'Participant' ||
-                value.role === 'Volunteer' ||
-                value.role === 'Chapter Lead'
-              ) {
-                roles.push(value.role);
-                active.push(value.active);
-                keys.push(key);
-              }
-              break;
-            default:
-              console.log('should not be here');
+          if (currentUserRole === 'National Staff' || (currentUserRole === 'Chapter Lead' && value.role !== 'National Staff')) {
+            roles.push(value.role);
+            active.push(value.active);
+            keys.push(key); 
           }
         });
 
@@ -721,7 +704,7 @@ angular
               case 'Chapter Lead':
                 if (
                   keys[i] === key &&
-                  currentUserData.Chapter === value.Chapter
+                  currentUserData.Chapter.key === value.Chapter.key
                 ) {
                   value.key = key;
                   value.role = roles[i];
