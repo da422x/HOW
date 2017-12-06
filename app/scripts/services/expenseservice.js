@@ -229,7 +229,7 @@ angular
           var ref = firebase
             .database()
             .ref('/expense')
-            .orderByChild('Chapter')
+            .orderByChild('Chapter/key')
             .equalTo(Chapter);
           break;
         default:
