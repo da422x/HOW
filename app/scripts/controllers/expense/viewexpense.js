@@ -597,7 +597,7 @@ angular
       $scope.lists = expenseservice.getViewExpenseData(
         $scope.useremail,
         $scope.userRole,
-        $scope.userChapter
+        $scope.userChapter.key
       );
       $scope.$applyAsync();
       // console.log("expense sear", $scope.lists);
