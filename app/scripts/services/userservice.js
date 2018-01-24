@@ -32,6 +32,11 @@ angular
       localStorage.setItem('userRole', data);
     };
 
+    this.setUserEmail = function(data) {
+      $rootScope.userEmail = data;
+      localStorage.setItem('userEmail', data);
+    };
+
     this.setChapter = function(data) {
       $rootScope.userChapter = data;
       localStorage.setItem('userChapter', JSON.stringify(data));
@@ -57,6 +62,11 @@ angular
     this.getRole = function() {
       var userRole = localStorage.getItem('userRole');
       return userRole;
+    };
+
+    this.getUserEmail = function(data) {
+      var userEmail = localStorage.getItem('userEmail');
+      return userEmail;;
     };
 
     this.getChapter = function() {
