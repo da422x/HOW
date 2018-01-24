@@ -308,10 +308,12 @@ angular
           console.log(
             'Name: ' + userData.name.first + ' ' + userData.name.last
           );
+          console.log('Email: ' + userData.email);
           console.log('Chapter: ' + userData.Chapter.text);
           console.log('Role: ' + userRole);
 
           // Setting session variables.
+          userService.setUserEmail(userData.email);
           userService.setRole(userRole);
           userService.setUserData(userData);
           userService.setUserName(userData.name.first, userData.name.last);
