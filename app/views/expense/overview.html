@@ -1,0 +1,252 @@
+<div class="container" ng-init="viewexpensedash()" ng-controller="ExpenseOverviewCtrl">
+  <form id="expense" name="expense" method="post" class="tab-form-demo">
+    <div class="container">
+      <div class="panel-body fixed-panel" style="background:#fff">
+        <div>
+          <input type="button" class="btn btn-primary   " ng-click="ViewExpenseList()" value="View Expense List">
+          <input type="button" class="btn btn-primary " ng-click="neweexpense()" value="New Expense">
+        </div>
+        <!-- <div class="btn btn-primary " ng-repeat="dash in editstatus "> -->
+        <div class="btnalignmore form-group row" ng-repeat="dash in editstatus ">
+          <a class="blinkinfo   btn-danger      " ng-show="useremail == dash.EmailID" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
+        </div>
+        <a class="blinkinfo   btn-danger  btn  btnalignmore   " ng-show="resubmitcnt > 0" ng-click="Showresubmit()">Re-Submit - {{resubmitcnt}}</a>
+        <!-- </div> -->
+      </div>
+      <div class="row" ng-show="editstatus.OverAge > 0 && useremail == editstatus.EmailID">
+        <div class="col-sm-12">
+          <div class="panel panel-danger ">
+            <div class="panel-heading">
+              <h3 class="panel-title">Expense Alert: Need your attention</h3>
+            </div>
+            <div class="panel-body fixed-panel">
+              <div class="form-group row  " ng-repeat="dash in editstatus " ng-show=" userRole!='National Staff'  ">
+                <a class="blinkinfo   btn-danger  btn   btnalignmore   " ng-show="dash.OverAge > 0 && useremail == editstatus.EmailID" ng-click="Showmeedit(dash.BillId)">Submit (Days to Over Age - {{dash.OverAge}}) </a>
+                <a class="blinkinfo   btn-danger " ng-show="dash.OverAge < 1 && useremail != editstatus.EmailID" ng-click="Showmeedit(dash.BillId)">Submit (Currently Over Aged) </a>
+              </div>
+              <div class="form-group row  ">
+                <a class="blinkinfo   btn-danger  btn  btnalignmore   " ng-show="resubmitcnt > 0" ng-click="Showresubmit()">Re-Submit - {{resubmitcnt}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row   ">
+        <!-- ng-hide="(userRole=='Participant' || userRole=='Volunteer' )"> -->
+        <div class=" panel panel-primary ">
+          <div class="panel-heading ">
+            <h3 class="panel-title ">Payment Status Count</h3>
+          </div>
+          <div class="panel-body fixed-panel">
+            <table id="ChapterViewTable" class="display table table-bordered responsive  " cellspacing="0" width="100%">
+            </table>
+          </div>
+        </div>
+        <div class="form-group row ">
+          <div class="panel panel-primary ">
+            <div class="panel-heading">
+              <h3 class="panel-title">Expense By Chapter with Payment Status Filter</h3>
+            </div>
+            <div class="panel-body fixed-panel">
+              <div class="form-group row  ">
+                <label ng-repeat="paystatus in paystatuslist" class="checkboxgroup ">
+                  <input type="checkbox" name="selectedpaystatus" value="{{paystatus}}" ng-checked="selectedpaystatus.indexOf(paystatus) > -1" ng-click="paystatusSelection(paystatus)"> {{paystatus}}
+                </label>
+              </div>
+              <div>
+                <table id="ExpenseViewTable" class="display table table-bordered responsive  " cellspacing="0" width="100%">
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <uib-tabset active="activeJustified" justified="true" width="600px">
+              <uib-tab index="0" heading="Payment Status Summary">
+                <div class="col-md-6">
+                  <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Expense by Payment Status</h3>
+                    </div>
+                    <div class="panel-body fixed-panel">
+                      <canvas id="piechart " class="chart chart-pie chart-xs ng-isolate-scope " chart-data="piedata " chart-labels="pielabels " chart-options="options " height="130 " width="130 " chart-colors="piecolor ">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Expense by Payment Status</h3>
+                    </div>
+                    <div class="panel-body fixed-panel">
+                      <table class="table table-striped table-bordered ">
+                        <thead>
+                          <tr>
+                            <th><b>Payment Status</b></th>
+                            <th><b>Expense Count</b></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="item in expensedash ">
+                            <td>
+                              {{item.Label}}
+                            </td>
+                            <td>
+                              {{item.Data}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <b>Total</b>
+                            </td>
+                            <td>
+                              <span> {{TotalExpenseCount}} </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </uib-tab>
+              <uib-tab index="1" heading="Payment Status By Chapter" ng-hide="(userRole=='Participant' || userRole=='Volunteer' )">
+                <div ng-show="userRole=='National Staff'" class="form-group row-fluid col-lg-12">
+                  <div class="form-group row">
+                    <label for="selectedchapter" class="col-xs-6 col-form-label">Chapter List</label>
+                    <div class="input-group">
+                      <select class="form-control col-md-6" ng-model="listS" id="selectedchapter" name="selectedchapter" title="Select Chapter Name">
+                        <option value="" selected="true">All Chapters</option>
+                        <option ng-repeat="chapter in  PayStatusCountData  " value="{{chapter.Chapter}}">{{chapter.Chapter}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="region" class="col-xs-6 col-form-label">Region List</label>
+                    <div class="input-group">
+                      <select class="form-control col-md-6" ng-model="region" id="selectedregion" name="selectedregion" title="Select Chapter Name">
+                        <option value="" selected="true">All Regions</option>
+                        <option ng-repeat="chapter in  PayStatusCountData  " value="{{chapter.Region}}">{{chapter.Region}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <!--             <div class="panel panel-primary chapter-panel">
+                                <div class="panel-heading chapter-panel">
+                                    <h3 class="panel-title">Expense by Payment Status</h3>
+                                </div>
+                                <div class="panel-body chapter-panel scroll-panel"> -->
+                  <table class="table table-striped table-bordered ">
+                    <thead>
+                      <tr>
+                        <th><b>Region</b></th>
+                        <th><b>Chapter</b></th>
+                        <th><b>Edit</b></th>
+                        <th><b>Pending</b></th>
+                        <th><b>Resubmit</b></th>
+                        <th><b>Submitted</b></th>
+                        <th><b>Returned</b></th>
+                        <th><b>Paid</b></th>
+                        <th><b>Over Age</b></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in PayStatusCountData | filter: {Chapter: listS} | filter: {Region: region}">
+                        <td> {{item.Region}}
+                        </td>
+                        <td> {{item.Chapter}}
+                        </td>
+                        <td>
+                          {{item.Edit}}
+                        </td>
+                        <td>
+                          {{item.Pending}}
+                        </td>
+                        <td>
+                          {{item.Resubmit}}
+                        </td>
+                        <td>
+                          {{item.Submitted}}
+                        </td>
+                        <td>
+                          {{item.Returned}}
+                        </td>
+                        <td>
+                          {{item.Paid}}
+                        </td>
+                        <td>
+                          {{item.OverAge}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        </td>
+                        <td>
+                          <b>Total</b>
+                        </td>
+                        <td>
+                          {{gettotaldata.Edit}}
+                        </td>
+                        <td>
+                          {{gettotaldata.Pending}}
+                        </td>
+                        <td>
+                          {{gettotaldata.Resubmit}}
+                        </td>
+                        <td>
+                          {{gettotaldata.Submitted}}
+                        </td>
+                        <td>
+                          {{gettotaldata.Returned}}
+                        </td>
+                        <td>
+                          {{gettotaldata.Paid}}
+                        </td>
+                        <td>
+                          {{gettotaldata.OverAge}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!--   </div>
+                            </div> -->
+                </div>
+              </uib-tab>
+              <uib-tab index="2 " heading="By Event Month ">
+                <div class="col-sm-12 ">
+                  <div class="panel panel-primary chapter-panel ">
+                    <div class="panel-heading ">
+                      <h3 class="panel-title ">Expense by Event Month</h3>
+                    </div>
+                    <div class="panel-body fixed-panel chapter-panel ">
+                      <canvas id="line " class="chart chart-line " chart-data="data1 " chart-labels="labels2 " chart-series="series1 " chart-options="options1 " width="250px " height="200px ">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+              </uib-tab>
+              <uib-tab index="3 " heading="By Expense Amount ">
+                <div class="col-sm-12 ">
+                  <div class="panel panel-primary chapter-panel ">
+                    <div class="panel-heading ">
+                      <h3 class="panel-title ">Expense Amount by Event Month</h3>
+                    </div>
+                    <div class="panel-body fixed-panel chapter-panel ">
+                      <canvas id="line1 " class="chart chart-line " chart-data="data2 " chart-labels="labels1 " chart-series="series1 " chart-options="options1 " width="250px " height="200px ">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+              </uib-tab>
+            </uib-tabset>
+          </div>
+        </div>
+        <!-- <div class="container ">
+    <div class="row ">
+        <div>
+        </div>
+    </div>
+</div>
+ -->
+  </form>
+  </div>
