@@ -31,18 +31,20 @@ angular
         $scope.isAdmin = true;
       }
 
-      // For non admins default chapter to users chapter
-      $scope.newEvent.chapter = userService.getChapter();
-      $scope.newEvent.eventOwner = {
-        key: userService.getId(),
-        name: userService.getUserName(),
-        email: userService.getUserEmail()
-      };
-      $scope.newEvent.eventManager = {
-        key: userService.getId(),
-        name: userService.getUserName(),
-        email: userService.getUserEmail()
-      };
+      if (!$scope.isEdit) {
+        $scope.newEvent.chapter = userService.getChapter();
+        $scope.newEvent.eventOwner = {
+          key: userService.getId(),
+          name: userService.getUserName(),
+          email: userService.getUserEmail()
+        };
+        $scope.newEvent.eventManager = {
+          key: userService.getId(),
+          name: userService.getUserName(),
+          email: userService.getUserEmail()
+        };
+      }
+      console.log($scope.newEvent.chapter);
       $scope.eventManagerUpdate($scope.newEvent.chapter);
 
     };
@@ -83,9 +85,7 @@ angular
           }
         });
 
-        if (!_.isEmpty($scope.eventOwnerList)) {
-          $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
-        } else {
+        if (_.isEmpty($scope.eventOwnerList)) {
           $scope.eventOwnerList.push({
             key: false,
             name: ' -- CHAPTER OWNER UNAVAILABLE --'
@@ -93,9 +93,7 @@ angular
           $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
         }
 
-        if (!_.isEmpty($scope.eventManagerList)) {
-          $scope.newEvent.eventManager = $scope.eventManagerList[0];
-        } else {
+        if (_.isEmpty($scope.eventManagerList)) {
           $scope.eventManagerList.push({
             key: false,
             name: ' -- CHAPTER MANAGER UNAVAILABLE --'
