@@ -25,6 +25,8 @@ angular
 
     $scope.initialize = function() {
 
+      $scope.searchTypes = ['Name', 'Phone', 'Chapter', 'Email'];
+      $scope.selectedType = 'Name';
     };
 
     $scope.addParticipantToCurrentEvent = function(eventKey, userKey) {
@@ -39,7 +41,9 @@ angular
             var addParticipantPromise = commonServices.pushData('events/' + eventKey + '/participants', paticipantObj);
 
             $q.all([addParticipantPromise]).then(function(data) {
+
                 // TODO: Check for failure. and handle accordingly
+                
             });
 
         } else {

@@ -8,5 +8,43 @@
 <!-- Start modal body -->
 <div class="modal-body" ng-init="initialize()">
 
+  <form name="search_form" class="form-horizontal" novalidate>
+    
+    <!-- Search Type - Dropdown -->
+    <div class="form-group">
+      <label class="col-md-4 control-label " for="search_type">Search Type</label>
+      <div class="col-md-7 ">
+        <select id="search_type " name="search_type " class="form-control " ng-options="type as type for type in searchTypes track by type" ng-model="selectedType"></select>
+      </div>
+    </div>
+
+    <!-- Search by Name -->
+    <div class="form-group" ng-show="selectedType == 'Name'">
+      <label class="col-md-4 control-label " for="search_first_name">First Name*</label>
+      <div class="col-md-7 ">
+        <input type="text" id="search_first_name" class="form-control input-md"  ng-required="true" ng-model="searchFirst"/>
+      </div>
+      <label class="col-md-4 control-label " for="search_last_name">Last Name*</label>
+      <div class="col-md-7 ">
+        <input type="text" id="search_last_name" class="form-control input-md"  ng-required="true" ng-model="searchLast"/>
+        <p ng-show="true" class="help-block">Enter a valid location.</p>
+      </div>
+    </div>
+
+    <!-- Search Submit -->
+    <div class="form-group">
+        <label class="col-md-4 control-label " for="submit_search"></label>
+        <div class="col-md-7">
+          <button id="submit_search" name="submit_search" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="">Search</button>
+        </div>
+    </div>
+
+    <!-- Selected Particpants List, and Submit -->
+    <div class ="form-group" style="margin-top: 10px;">
+      <select name="found_participants" multiple class="form-control" ng-model="" ng-options=""></select>
+      <button id="select_participant" name="select_participant" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="">Add Selected Participants</button>
+    </div>
+
+  </form>
 </div>
 <!-- End modal body -->
