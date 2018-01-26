@@ -44,9 +44,7 @@ angular
           email: userService.getUserEmail()
         };
       }
-      console.log($scope.newEvent.chapter);
       $scope.eventManagerUpdate($scope.newEvent.chapter);
-
     };
 
     // handles getting data for Event Manager and Event Owner Drop downs.

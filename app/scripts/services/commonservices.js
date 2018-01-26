@@ -318,7 +318,6 @@ angular.module('ohanaApp').service('commonServices', [
 
     // Get all users that are associated to a chapter.
     this.queryChapterkey = function(chapterKey) {
-      console.log(chapterKey);
       return firebase
         .database()
         .ref('/userData')
@@ -368,7 +367,6 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     this.zipCompare = function(location) {
-      //console.log($rootScope.siteData.regions);
       var d = null;
       var c1, r1;
       var serv = this;
@@ -413,7 +411,6 @@ angular.module('ohanaApp').service('commonServices', [
 
     // Get all rcr's for a specific user.
     this.getUserRequests = function(userId) {
-      console.log(userId);
       return firebase
         .database()
         .ref('/roleChangeRequests')

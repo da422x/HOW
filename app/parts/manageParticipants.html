@@ -1,44 +1,12 @@
-<style>
-#participantsTable_wrapper>div:nth-child(2)>div {
-  margin-right: 3px;
-  overflow-x: auto;
-}
-</style>
+<!-- Start modal-header -->
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title">{{event.name +"'s Participants"}}</h4>
+  <h4 class="modal-title">Manage Participants for - {{event.name}}</h4>
 </div>
+<!-- End modal-header -->
 
-<!-- end modal-header -->
-<div class="modal-body" ng-init="initialize(); buildTable()">
-  <table id="participantsTable" class="display table table-bordered" style="width:100%">
-    <tfoot>
-      <tr>
-        <form name="eventForm" novalidate>
-          <td>
-            <button id="addParticipant" type="button" class="btn btn-primary">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-          </td>
-          <td>
-            <input id="firstName" class="form-control" type="text">
-          </td>
-          <td>
-            <input id="lastName" class="form-control" type="text">
-          </td>
-          <td>
-            <input id="email" class="form-control" type="text">
-          </td>
-          <td>
-            <input id="phone" name="phone" class="form-control input-md mask" placeholder="(123)457-6890" ng-minlength="13" ng-maxlength="13" type="text">
-          </td>
-        </form>
-      </tr>
-    </tfoot>
-  </table>
-
-  <div style="display:flex">
-    <button id="deleteParticipants" type="button" ng-click="deleteParticipants()" class="btn btn-danger">Delete selected participants</button>
-  </div>
+<!-- Start modal body -->
+<div class="modal-body" ng-init="initialize()">
+  <button ng-click="addParticipantToEvent()">Hello</button>
 </div>
-<!-- end modal body -->
+<!-- End modal body -->
