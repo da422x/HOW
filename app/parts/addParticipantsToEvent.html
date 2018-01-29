@@ -6,43 +6,76 @@
 <!-- End modal-header -->
 
 <!-- Start modal body -->
-<div class="modal-body" ng-init="initialize()">
+<div class="modal-body center_form" ng-init="initialize()">
 
   <form name="search_form" class="form-horizontal" novalidate>
-    
+
     <!-- Search Type - Dropdown -->
     <div class="form-group">
       <label class="col-md-4 control-label " for="search_type">Search Type</label>
       <div class="col-md-7 ">
-        <select id="search_type " name="search_type " class="form-control " ng-options="type as type for type in searchTypes track by type" ng-model="selectedType"></select>
+        <select id="search_type " name="search_type " class="form-control " ng-change="clearSearch()" ng-options="type as type for type in searchTypes track by type" ng-model="searchType"></select>
       </div>
     </div>
 
     <!-- Search by Name -->
-    <div class="form-group" ng-show="selectedType == 'Name'">
+    <div class="form-group" ng-show="searchType == 'Name'">
       <label class="col-md-4 control-label " for="search_first_name">First Name*</label>
-      <div class="col-md-7 ">
-        <input type="text" id="search_first_name" class="form-control input-md"  ng-required="true" ng-model="searchFirst"/>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="search_first_name" class="form-control input-md" ng-required="true" ng-model="searchFirst" />
       </div>
       <label class="col-md-4 control-label " for="search_last_name">Last Name*</label>
       <div class="col-md-7 ">
-        <input type="text" id="search_last_name" class="form-control input-md"  ng-required="true" ng-model="searchLast"/>
-        <p ng-show="true" class="help-block">Enter a valid location.</p>
+        <input type="text" id="search_last_name" class="form-control input-md" ng-required="true" ng-model="searchLast" />
+        <p ng-show="false" class="help-block">Enter a valid location.</p>
       </div>
     </div>
 
-    <!-- Search Submit -->
-    <div class="form-group">
-        <label class="col-md-4 control-label " for="submit_search"></label>
-        <div class="col-md-7">
-          <button id="submit_search" name="submit_search" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="">Search</button>
-        </div>
+    <!-- Search by Email -->
+    <div class="form-group" ng-show="searchType == 'Email'">
+      <label class="col-md-4 control-label " for="search_email">Email</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="search_email" class="form-control input-md" ng-required="true" ng-model="searchEmail" />
+      </div>
     </div>
 
+    <!-- Search by Phone -->
+    <div class="form-group" ng-show="searchType == 'Phone'">
+      <label class="col-md-4 control-label " for="search_phone">Phone Number</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="search_phone" class="form-control input-md" ng-required="true" ng-model="searchPhone" />
+      </div>
+    </div>
+
+    <!-- Search by Chapter -->
+    <div class="form-group" ng-show="searchType == 'Chapter'">
+        <label class="col-md-4 control-label " for="search_chapter">Select Chapter</label>
+        <div class="col-md-7 ">
+          <select id="search_chapter " name="search_type " class="form-control " ng-options="chapter as chapter.text for chapter in chapters track by chapter.text" ng-model="searchChapter"></select>
+        </div>
+      </div>
+
+    <!-- Search Submit -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <button id="submit_search" name="submit_search" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="runSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- Founs Particpants List, and Submit -->
+    <div class="form-group">
+        <div class="col-md-12">
+          <select name="found_participants" multiple class="form-control" ng-model="foundParticipant" ng-options="participant as participant.nameText for participant in foundParticipants"></select>
+          <button id="found_participants" name="select_participant" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="addFoundParticipant()">Add Selected Participants</button>
+        </div>
+      </div>
+
     <!-- Selected Particpants List, and Submit -->
-    <div class ="form-group" style="margin-top: 10px;">
-      <select name="found_participants" multiple class="form-control" ng-model="" ng-options=""></select>
-      <button id="select_participant" name="select_participant" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="">Add Selected Participants</button>
+    <div class="form-group">
+      <div class="col-md-12">
+        <select name="selected_participants_list" multiple class="form-control" ng-model="selectedParticipant" ng-options="participant as participant.nameText for participant in selectedParticipants"></select>
+        <button id="submit_selected_participants" name="submit_selected_participants" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="">Add Particpants to Event</button>
+      </div>
     </div>
 
   </form>
