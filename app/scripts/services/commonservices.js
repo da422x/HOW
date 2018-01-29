@@ -26,6 +26,7 @@ angular.module('ohanaApp').service('commonServices', [
         .createUserWithEmailAndPassword(user.email, user.password)
         .then(function() {
           var userId = firebase.auth().currentUser.uid;
+          user.key = userId;
           console.log('success : user registered');
           delete user.Chapter.$$hashKey;
           return firebase
@@ -323,6 +324,44 @@ angular.module('ohanaApp').service('commonServices', [
         .ref('/userData')
         .orderByChild('Chapter/key')
         .equalTo(chapterKey)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
+    // Query user via first name.
+    this.queryUserFirstName = function(fname) {
+      return firebase
+        .database()
+        .ref('/userData')
+        .orderByChild('name/first')
+        .equalTo(fname)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
+    // Query user via last name.
+    this.queryUserLastName = function(lname) {
+      return firebase
+        .database()
+        .ref('/userData')
+        .orderByChild('name/last')
+        .equalTo(lname)
         .once('value')
         .then(function(snapshot) {
           console.log('Data received');
