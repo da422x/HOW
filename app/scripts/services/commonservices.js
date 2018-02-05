@@ -374,6 +374,44 @@ angular.module('ohanaApp').service('commonServices', [
         });
     };
 
+    // Query user via email.
+    this.queryUserEmail = function(email) {
+      return firebase
+        .database()
+        .ref('/userData')
+        .orderByChild('email')
+        .equalTo(email)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
+    // Query user via email.
+    this.queryUserPhone = function(phone) {
+      return firebase
+        .database()
+        .ref('/userData')
+        .orderByChild('phone')
+        .equalTo(phone)
+        .once('value')
+        .then(function(snapshot) {
+          console.log('Data received');
+          return snapshot.val();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
     this.addressLookup = function(zip, outerCallback) {
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode(

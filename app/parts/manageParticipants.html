@@ -1,12 +1,25 @@
 <!-- Start modal-header -->
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title">Manage Participants for - {{event.name}}</h4>
+  <h4 class="modal-title">Manage Participants</h4>
 </div>
 <!-- End modal-header -->
 
 <!-- Start modal body -->
 <div class="modal-body" ng-init="initialize()">
-  <button ng-click="addParticipantToEvent()">Hello</button>
+
+  <div class="col-sm-12" style="margin-bottom: 10px; text-align: center;">
+    <button ng-click="addParticipantToEvent()" class="btn btn-primary">Edit Participants List</button>
+    <button ng-click="" class="btn btn-primary" ng-disabled="true">Notify Participants</button>
+    <button id="signWaiver" ng-click="participantSignWaiver()" class="btn btn-primary disabled">Sign Waiver</button>
+    <div style="margin-top: 5px; color:red;" ng-show="tableEmpty">
+      <p>No Participants Listed for this Event, to Manually add participants click the "Edit Participants List" button at the top.</p>
+    </div>
+  </div>
+
+  <div style="margin: auto; display: block; padding-top: 10px" max-width="100%">
+    <table id="participantsTable" class="display table table-bordered responsive" cellspacing="0" width="100%"></table>
+  </div>
+
 </div>
 <!-- End modal body -->
