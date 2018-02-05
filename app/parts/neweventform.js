@@ -88,16 +88,17 @@ angular
             key: false,
             name: ' -- CHAPTER OWNER UNAVAILABLE --'
           });
-          $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
         }
-
+        
         if (_.isEmpty($scope.eventManagerList)) {
           $scope.eventManagerList.push({
             key: false,
             name: ' -- CHAPTER MANAGER UNAVAILABLE --'
           });
-          $scope.newEvent.eventManager = $scope.eventManagerList[0];
         }
+
+        $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
+        $scope.newEvent.eventManager = $scope.eventManagerList[0];
 
       });
 

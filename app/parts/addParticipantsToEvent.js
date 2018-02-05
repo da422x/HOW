@@ -23,14 +23,17 @@ angular
 
     $scope.initialize = function() {
 
-      $scope.clearSearch();
       $scope.searchTypes = ['Name', 'Phone', 'Chapter', 'Email'];
       $scope.searchType = 'Chapter';
       $scope.selectedParticipants = [];
 
+      $('#guest_phone').mask('(999)999-9999');
+      $('#search_phone').mask('(999)999-9999');
+
       // Add selected events participants list.
       if (event.participants) {
 
+        // Handle guests in participants list.
         var currentList = [];
         _.each(event.participants, function(current_participant) {
           currentList.push(current_participant);
@@ -38,8 +41,14 @@ angular
 
         // Get id for each participant, and create promise.
         var promiseArray = [];
+        var guestList = [];
         _.each(currentList, function(participant) {
-          promiseArray.push(commonServices.getData('userData/' + participant.key));
+          if (participant.guest) {
+            participant.nameText = participant.name.first + ' ' + participant.name.last;
+            guestList.push(participant);
+          } else {
+            promiseArray.push(commonServices.getData('userData/' + participant.key));
+          }
         });
 
         // Run promise array and handle returned data.
@@ -58,6 +67,7 @@ angular
           } else {
             $scope.selectedParticipants = [];
           }
+          $scope.selectedParticipants = $scope.selectedParticipants.concat(guestList);
         });
       }
 
@@ -74,16 +84,63 @@ angular
       var updateList = [];
       if (!_.isEmpty($scope.selectedParticipants)) {
         _.each($scope.selectedParticipants, function(selected_user) {
-          updateList.push({
-            key: selected_user.key,
-            guest: selected_user.guest
-          });
+
+          // Handle guest accounts.
+          if (selected_user.guest) {
+            updateList.push({
+              key: selected_user.key,
+              guest: selected_user.guest,
+              name: selected_user.name,
+              phone: selected_user.phone,
+              email: selected_user.email,
+              waiver: false
+            });
+          } else {
+            updateList.push({
+              key: selected_user.key,
+              guest: selected_user.guest
+            });
+          }
+
         });
       }
+
+      // Update participants list.
       commonServices.updateData('events/' + event.key + '/participants', updateList);
       swal('Saved', 'Participants List updated!', 'success');
       $scope.cancel();
 
+    };
+
+    $scope.createGuest = function() {
+
+        // Generate key to be used on guest obj.
+        var generateGuestKey = commonServices.getNewKey('events/' + event.key + '/participants');
+        $q.all([generateGuestKey]).then(function(data) {
+          if (data[0]) {
+
+            // Create guest object.
+            var guestObj = {
+              key: data[0],
+              guest: true,
+              nameText: $scope.guestFirst + ' ' + $scope.guestLast,
+              name: {
+                first: $scope.guestFirst,
+                last: $scope.guestLast
+              },
+              phone: $scope.guestPhone,
+              email: $scope.guestEmail
+            };
+
+            // Reset fields.
+            $scope.clearGuestForm();
+
+            // Add guest obj to fount list.
+            $scope.foundParticipants.push(guestObj);
+
+          }
+        });
+        
     };
 
     $scope.runSearch = function() {
@@ -134,8 +191,58 @@ angular
           }
           break;
         case 'Email':
+          if ($scope.searchEmail) {
+
+            // Search for participants via email.
+            $scope.foundParticipants = [];
+            searchPromise.push(commonServices.queryUserEmail($scope.searchEmail));
+            $q.all(searchPromise).then(function(data) {
+              if (data[0]) {
+                _.each(data[0], function(user, key) {
+                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.key = key;
+                  user.guest = false;
+                  $scope.foundParticipants.push(user);
+                });
+              }
+
+              // Show user if no participants are available.
+              if (_.isEmpty($scope.foundParticipants)) {
+                $scope.foundParticipants.push({
+                  key: false,
+                  nameText: '< No participants available in - ' + $scope.searchChapter.text + ' >'
+                });
+              }
+            });
+
+          }
           break;
         case 'Phone':
+          if ($scope.searchPhone) {
+
+            // Search for participants via email.
+            $scope.foundParticipants = [];
+            searchPromise.push(commonServices.queryUserPhone($scope.searchPhone));
+            $q.all(searchPromise).then(function(data) {
+              if (data[0]) {
+                _.each(data[0], function(user, key) {
+                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.key = key;
+                  user.guest = false;
+                  $scope.foundParticipants.push(user);
+                });
+              }
+
+              // Show user if no participants are available.
+              if (_.isEmpty($scope.foundParticipants)) {
+                $scope.foundParticipants.push({
+                  key: false,
+                  nameText: '< No participants available in - ' + $scope.searchChapter.text + ' >'
+                });
+              }
+            });
+
+          }
           break;
         case 'Chapter':
           if ($scope.searchChapter) {
@@ -180,19 +287,42 @@ angular
     
         // Check to see if users have already been added.
         _.each($scope.foundParticipant, function(addUser) {
-          _.each($scope.selectedParticipants, function(currentUser) {
-            if (currentUser.key === addUser.key) {
-              selectedAlready = true;
-            }
-          });
 
-          // Add participant if they havent already, duplicates get added to dup list.
-          if (selectedAlready) {
-            duplicates.push(addUser.nameText);
-            selectedAlready = false;
+          if (addUser.guest) {
+
+            _.each($scope.selectedParticipants, function(currentUser) {
+              if (currentUser.email === addUser.email || currentUser.phone === addUser.phone) {
+                selectedAlready = true;
+                return;
+              }
+            });
+
+            // Add participant if they havent already, duplicates get added to dup list.
+            if (selectedAlready) {
+              duplicates.push(addUser.nameText);
+              selectedAlready = false;
+            } else {
+              $scope.selectedParticipants.push(addUser);
+            }
+
           } else {
-            addUser.guest = false;
-            $scope.selectedParticipants.push(addUser);
+
+            _.each($scope.selectedParticipants, function(currentUser) {
+              if (currentUser.key === addUser.key) {
+                selectedAlready = true;
+                return;
+              }
+            });
+
+            // Add participant if they havent already, duplicates get added to dup list.
+            if (selectedAlready) {
+              duplicates.push(addUser.nameText);
+              selectedAlready = false;
+            } else {
+              addUser.guest = false;
+              $scope.selectedParticipants.push(addUser);
+            }
+
           }
         });
 
@@ -226,12 +356,26 @@ angular
 
     // Clear fields.
     $scope.clearSearch = function() {
-      $scope.searchFirst = '';
-      $scope.searchLast = '';
-      $scope.searchEmail = '';
-      $scope.searchPhone = '';
+      $scope.searchFirst = undefined;
+      $scope.searchLast = undefined;
+      $scope.searchEmail = undefined;
+      $scope.searchPhone = undefined;
       $scope.foundParticipants = [];
       $scope.foundParticipant = false;
+      $scope.search_form.$setValidity();
+      $scope.search_form.$setPristine();
+      $scope.search_form.$setUntouched();
+    };
+
+    // Clear sub form guest.
+    $scope.clearGuestForm = function() {
+      $scope.guestFirst = undefined;
+      $scope.guestLast = undefined;
+      $scope.guestEmail = undefined;
+      $scope.guestPhone = undefined;
+      $scope.search_form.$setValidity();
+      $scope.search_form.$setPristine();
+      $scope.search_form.$setUntouched();
     };
     
     // close Modal.

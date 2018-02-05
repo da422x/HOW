@@ -12,8 +12,35 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
   'use strict';
   var dataGridUtil = this;
 
+  dataGridUtil.buildParticipantsTable = function(results) {
+    var resultsLen = results.length;
+    var gridData = [];
+
+    for (var i = 0; i < resultsLen; i++) {
+      var arr = {};
+      arr.key = results[i].key;
+      arr.name = results[i].name.first + ' ' + results[i].name.last;
+      arr.email = results[i].email;
+      arr.phone = results[i].phone;
+
+      if (results[i].guest) {
+        arr.type = 'Guest';
+      } else {
+        arr.type = 'Member';
+      }
+
+      if (results[i].waiver) {
+        arr.waiver = 'Complete';
+      } {
+        arr.waiver = 'Incomplete';
+      }
+      
+      gridData.push(arr);
+    }
+    return gridData;
+  };
+
   dataGridUtil.buildMembersTableData = function(results) {
-    // console.log(results);
     var resultsLen = results.length;
     var gridData = [];
 
@@ -53,31 +80,6 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
       } else {
         arr.notes = 'none';
       }
-
-      // NOTE FOR IF THE DATA IS STORED IN ARRAYS NOT OBJECTS LIKE ABOVE
-      // var arr = [];
-      // arr.push("");
-      // arr.push(results[i].id);
-      // arr.push(results[i].first_name);
-      // arr.push(results[i].last_name);
-      // var dob = new Date(results[i].DOB);
-      // var endob = dob.toLocaleDateString('en-US', {year:'numeric', month:'2-digit', day:'2-digit'});
-      // arr.push(endob);
-      // arr.push(results[i].email);
-      // arr.push(results[i].mobile_number);
-      // arr.push(results[i].role);
-      // arr.push(results[i].region);
-      // arr.push(results[i].chapter);
-      // if (results[i].military_affiliation) {
-      //   arr.push(results[i].military_affiliation);
-      // } else {
-      //   arr.push("");
-      // }
-      // if (results[i].notes) {
-      //   arr.push(results[i].notes);
-      // } else {
-      //   arr.push("");
-      // }
 
       gridData.push(arr);
     }
