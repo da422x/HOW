@@ -3,7 +3,7 @@
 
 /**
  * @ngdoc function
- * @name ohanaApp.controller:NewuserdirectoryformCtrl
+ * @name ohanaApp.controller:NewEventFormCtrl
  * @description
  * # NewEventFormCtrl
  * Controller of the ohanaApp
@@ -12,8 +12,10 @@ angular
   .module('ohanaApp')
   .controller('NewEventFormCtrl', function(
     $q,
+    eventData,
     $scope,
     $uibModalInstance,
+    $uibModal,
     commonServices,
     userService,
     $rootScope
@@ -21,8 +23,12 @@ angular
     'use strict';
 
     $scope.initialize = function() {
+
+      // Initialize scope values.
       $('#phonenum').mask('(999)999-9999');
-      $scope.newEvent = $scope.newEvent || {};
+      $scope.isEdit = eventData.isEdit;
+      $scope.newEvent = eventData.event || {};
+      $scope.step = eventData.step;
       $scope.chapters = $scope.siteData.chapters;
       $scope.isAdmin = false;
 
@@ -31,6 +37,7 @@ angular
         $scope.isAdmin = true;
       }
 
+      // Load default values for drop downs.
       if (!$scope.isEdit) {
         $scope.newEvent.chapter = userService.getChapter();
         $scope.newEvent.eventOwner = {
@@ -44,11 +51,13 @@ angular
           email: userService.getUserEmail()
         };
       }
-      $scope.eventManagerUpdate($scope.newEvent.chapter);
+
+      // Update user lists.
+      $scope.eventManagerUpdate($scope.newEvent.chapter, false);
     };
 
     // handles getting data for Event Manager and Event Owner Drop downs.
-    $scope.eventManagerUpdate = function(selectedChapter) {
+    $scope.eventManagerUpdate = function(selectedChapter, isChanged) {
 
       // Get User for the selected chapter.
       var newDataSet = commonServices.queryChapterkey(selectedChapter.key);
@@ -83,6 +92,7 @@ angular
           }
         });
 
+        // Load default if no users found
         if (_.isEmpty($scope.eventOwnerList)) {
           $scope.eventOwnerList.push({
             key: false,
@@ -90,6 +100,7 @@ angular
           });
         }
         
+        // Load default if no users found
         if (_.isEmpty($scope.eventManagerList)) {
           $scope.eventManagerList.push({
             key: false,
@@ -97,8 +108,11 @@ angular
           });
         }
 
-        $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
-        $scope.newEvent.eventManager = $scope.eventManagerList[0];
+        // Set defaults.
+        if (!$scope.isEdit || isChanged) {
+          $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
+          $scope.newEvent.eventManager = $scope.eventManagerList[0];
+        }
 
       });
 
@@ -164,40 +178,64 @@ angular
       $scope.newEvent.initiator = $rootScope.userId;
 
       if (!$scope.isEdit) {
+
         $scope.newEvent.status = 'upcoming-open';
         delete $scope.newEvent.chapter['$$hashKey'];
-        result = commonServices.pushData('/events/', $scope.newEvent);
-        $q.all([result]).then(function(data) {
-          if (data[0]) {
-            $uibModalInstance.close();
-            swal({
-              text: 'Adding Event',
-              type: 'success',
-              timer: 2500,
-            });
+        var newEventKey = commonServices.getNewKey('/events/');
+
+        // Generate New Key, and save with event object.
+        $q.all([newEventKey]).then(function(eventKey) {
+
+          if (eventKey[0]) {
+
+            $scope.newEvent.key = eventKey[0];
+            commonServices.updateData('/events/' + eventKey[0], $scope.newEvent);
+            
           } else {
+
             swal({
-              text: 'Something happened....',
+              text: 'Failed to generate event key',
               type: 'error',
               timer: 2500,
             });
+
           }
         });
+
+        $scope.cancel();
+        
       } else {
+
         var key = $scope.newEvent['key'];
-        delete $scope.newEvent['key'];
         delete $scope.newEvent['$$hashKey'];
         result = commonServices.updateData('/events/' + key, $scope.newEvent);
-        $uibModalInstance.close();
+        $scope.cancel();
         swal({
           text: 'Saving Event Update',
           type: 'success',
           timer: 2500,
         });
+
       }
     };
 
     $scope.cancel = function() {
+
       $uibModalInstance.dismiss('cancel');
+      if ($scope.step === 'public') {
+        var modalInstance = $uibModal.open({
+          templateUrl: '/parts/public.events.description.html',
+          controller: 'PublicEventsDescriptionCtrl',
+          resolve: {
+            event: function() {
+              return $scope.newEvent;
+            }
+          }
+        });
+        $rootScope.$broadcast('updateEventDescriptionPublic');
+      } else {
+        $rootScope.$broadcast('updateEventPage');
+      }
+
     };
   });

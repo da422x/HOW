@@ -25,6 +25,11 @@ angular
       $scope.filter = $scope.filterTypes[0];
     };
 
+    $scope.$on('updateEventPage', function() {
+      $scope.initialize();
+      $scope.loadAll();
+    });
+
     $scope.newQuery = {};
     var allEvents = [];
 
@@ -44,7 +49,7 @@ angular
     //     $scope.signature = sigImg;
     // }
 
-    var loadAll = function() {
+    $scope.loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
       allEvents = [];
       $q.all([getEvents]).then(function(data) {
@@ -61,7 +66,7 @@ angular
       });
     };
 
-    loadAll();
+    $scope.loadAll();
 
     $scope.changeFilter = function() {
       var getEvents = commonServices.getPublicEvents();
@@ -103,7 +108,7 @@ angular
         $scope.empty = false;
 
         if ($scope.newQuery.search == '*' || !$scope.newQuery.search) {
-          loadAll();
+          $scope.loadAll();
         } else {
           var eventsFound = [];
           _.each(allEvents, function(event) {
@@ -139,29 +144,34 @@ angular
     };
 
     $scope.add = function() {
-      var childScope = $rootScope.$new(false, $scope);
-      var modalInstance = $uibModal.open({
+      $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
         controller: 'NewEventFormCtrl',
-        scope: childScope,
-      });
-      modalInstance.result.then(function() {
-        loadAll();
+        resolve: {
+          eventData: function() {
+            return {
+              event: false,
+              isEdit: false,
+              step: 'admin'
+            }
+          }
+        }
       });
     };
 
-    $scope.edit = function(evt) {
-      var childScope = $rootScope.$new(false, $scope);
-      childScope.newEvent = evt;
-      childScope.isEdit = true;
-
-      var modalInstance = $uibModal.open({
+    $scope.edit = function(event) {
+      $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
         controller: 'NewEventFormCtrl',
-        scope: childScope,
-      });
-      modalInstance.result.then(function() {
-        loadAll();
+        resolve: {
+          eventData: function() {
+            return {
+              event: event,
+              isEdit: true,
+              step: 'admin'
+            };
+          }
+        }
       });
     };
 
@@ -177,6 +187,9 @@ angular
         resolve: {
           event: function() {
             return allEvents[eventKey];
+          },
+          step: function() {
+            return 'Admin';
           }
         }
       });
@@ -207,8 +220,6 @@ angular
 
     $scope.deleteEvent = function(index) {
       var selected = allEvents[index];
-      console.log('Index is: ' + index);
-      console.log(selected.key);
 
       swal({
         title: 'Are you sure?',
@@ -228,7 +239,7 @@ angular
             timer: 2500,
           });
           $q.all([result]).then(function(data) {
-            loadAll();
+            $scope.loadAll();
             if (data[0]) {
               console.log(result);
             } else {

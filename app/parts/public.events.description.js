@@ -11,19 +11,35 @@
 angular
   .module('ohanaApp')
   .controller('PublicEventsDescriptionCtrl', function(
+    event,
     $scope,
     $location,
     $uibModalInstance,
     $rootScope,
-    userService
+    userService,
+    $uibModal
   ) {
     'use strict';
-    console.log(userService.getUserData(), userService.getRole(), $rootScope);
-    // calendar options
 
-    $scope.event = $scope.$parent.selected;
-    console.log('In modal');
-    console.log($scope);
+    $scope.event = event;
+    $scope.isEventManager = false;
+    $scope.isEventOwner = false;
+
+    $scope.initialize = function() {
+      var userKey = userService.getId();
+      if (userKey === $scope.event.eventManager.key) {
+        $scope.isEventManager = true;
+      }
+
+      if (userKey === $scope.event.eventOwner.key) {
+        $scope.isEventOwner = true;
+      }
+    };
+
+    $scope.$on('updateEventDescriptionPublic', function() {
+      $scope.initialize();
+    });
+
     $scope.popup = {
       opened: false,
     };
@@ -34,10 +50,44 @@ angular
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
+      $rootScope.$broadcast('updatePublicEventsPage');
     };
 
     $scope.postRsvp = function() {
       //put join event logic here.
       $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.viewParticipants = function() {
+      $scope.cancel();
+      $uibModal.open({
+        templateUrl: '/parts/manageParticipants.html',
+        controller: 'ManageParticipantsCtrl',
+        resolve: {
+          event: function() {
+            return $scope.event;
+          },
+          step: function() {
+            return 'public';
+          }
+        }
+      });
+    };
+
+    $scope.editEvent = function() {
+      $uibModalInstance.dismiss('cancel');
+      $uibModal.open({
+        templateUrl: '/parts/newEventForm.html',
+        controller: 'NewEventFormCtrl',
+        resolve: {
+          eventData: function() {
+            return {
+              event: $scope.event,
+              isEdit: true,
+              step: 'public'
+            };
+          }
+        }
+      });
     };
   });

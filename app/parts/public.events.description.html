@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--Modal that displays the specific events informatiom.
 	Allows a volunteer on the public facing website to register for the event  -->
-<div class="modal-header">
+<div class="modal-header" ng-init="initialize()">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
   <h4 class="modal-title">{{event.name}}</h4>
 </div>
@@ -30,7 +30,7 @@
 					</div> -->
     <div class="list-group-item">
       <h6 class="list-group-item-text">Event Manager</h6>
-      <h4 class="list-group-item-heading">{{event.eventManager}}</h4>
+      <h4 class="list-group-item-heading">{{event.eventManager.name}}</h4>
     </div>
     <div class="list-group-item">
       <h6 class="list-group-item-text">Contact Number</h6>
@@ -47,6 +47,12 @@
     <div class="list-group-item">
       <h6 class="list-group-item-text">Description</h6>
       <h4 class="list-group-item-heading">{{event.description}}</h4>
+    </div>
+    <div class="list-group-item" ng-show="isEventManager || isEventOwner">
+      <h6 class="list-group-item-text">Event Management</h6>
+      <button class="btn btn-primary" ng-click="editEvent()">Edit Event</button>
+      <button class="btn btn-primary" ng-click="viewParticipants()">Manage Participants</button>
+      <button class="btn btn-primary" ng-click="">Manage Volunteers</button>
     </div>
     <!--<div style="padding-top: 10px; padding-bottom: 10px;">
             <a class="btn btn-primary pull-right" ng-click="postRsvp()"><i class="glyphicon glyphicon-plus" ></i>  Register for Event</a>

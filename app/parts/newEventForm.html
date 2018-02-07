@@ -20,7 +20,7 @@
       <div class="form-group " ng-hide="!isAdmin">
         <label class="col-md-4 control-label " for="chapter ">Hosting Chapter*</label>
         <div class="col-md-7 ">
-          <select id="chapter " name="chapter " class="form-control " ng-options="chapter as chapter.text for chapter in chapters track by chapter.text" ng-model="newEvent.chapter" ng-change="eventManagerUpdate(newEvent.chapter)"></select>
+          <select id="chapter " name="chapter " class="form-control " ng-options="chapter as chapter.text for chapter in chapters track by chapter.text" ng-model="newEvent.chapter" ng-change="eventManagerUpdate(newEvent.chapter, true)"></select>
           <span ng-show="!newEvent.eventOwner.key" class="help-block ">Chapter has no Chapter Leads</span>
         </div>
       </div>
