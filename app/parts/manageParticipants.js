@@ -12,6 +12,7 @@ angular
   .module('ohanaApp')
   .controller('ManageParticipantsCtrl', function(
     event,
+    step,
     $rootScope,
     $q,
     commonServices,
@@ -22,23 +23,27 @@ angular
   ) {
     'use strict';
 
+    // Get most recent data on participants tied to this event.
     $scope.initialize = function() {
       $scope.tableEmpty = false;
       $scope.getCurrentParticipantsData(event.participants);
     };
 
+    // Opens edit participants modal    
     $scope.addParticipantToEvent = function() {
+      $uibModalInstance.dismiss('cancel');
       $uibModal.open({
         templateUrl: '/parts/addParticipantsToEvent.html',
         controller: 'AddParticipantToEvent',
         resolve: {
           event: function() {
             return event;
+          },
+          step: function() {
+            return step;
           }
         }
       });
-
-      $scope.cancel();
     };
 
     // Daniel Arroyo Add waiver module here :)
@@ -78,10 +83,27 @@ angular
 
     };
     
+    // Close Manage Participants Modal, and refresh events page.
     $scope.cancel = function() {
+
       $uibModalInstance.dismiss('cancel');
+      if (step === 'public') {
+        var modalInstance = $uibModal.open({
+          templateUrl: '/parts/public.events.description.html',
+          controller: 'PublicEventsDescriptionCtrl',
+          resolve: {
+            event: function() {
+              return event;
+            }
+          }
+        });
+      } else {
+        $rootScope.$broadcast('updateEventPage');
+      }
+
     };
 
+    // Builds table to be seen within modal.
     $scope.buildTable = function(results) {
       var dataSet = dataGridUtil.buildParticipantsTable(results);
       $scope.currId = '';
@@ -100,6 +122,8 @@ angular
 
         $scope.membersTable = $('#participantsTable').DataTable({
           data: dataSet,
+          iDisplayLength: 5,
+          aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
           columns: [
             {},
             {

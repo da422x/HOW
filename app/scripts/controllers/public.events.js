@@ -28,7 +28,7 @@ angular
     $scope.allParticipantIsDisableds = [];
     $scope.selected = null;
 
-    var loadAll = function() {
+    $scope.loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
       // allEvents = [];
       $q.all([getEvents]).then(function(data) {
@@ -38,6 +38,7 @@ angular
           //     allEvents.push(event);
           // });
           var count = 0;
+          $scope.eventList = [];
           _.each(data[0], function(val, idx) {
             $scope.allVolunteerIsDisableds.push({
               key: idx,
@@ -47,11 +48,12 @@ angular
               key: idx,
               isDisabled: false,
             });
+            val.key = idx;
+            $scope.eventList.push(val);
             $scope.checkAllVolunteerIsDisableds(idx, count);
             $scope.checkAllParticipantIsDisableds(idx, count);
             count++;
           });
-          $scope.eventList = data[0];
           $scope.eventList2 = angular.copy($scope.eventList);
         } else {
           console.log('Failed to get Events...');
@@ -59,7 +61,11 @@ angular
       });
     };
 
-    loadAll();
+    $scope.$on('updatePublicEventsPage', function() {
+      $scope.loadAll();
+    });
+
+    $scope.loadAll();
 
     $scope.checkAllVolunteerIsDisableds = function(key, idx) {
       if (!$scope.userService.getUserData()['email']) return;
@@ -197,11 +203,14 @@ angular
     };
 
     $scope.showDescription = function(index) {
-      $scope.selected = $scope.eventList[index];
       var modalInstance = $uibModal.open({
-        scope: $scope,
         templateUrl: '/parts/public.events.description.html',
         controller: 'PublicEventsDescriptionCtrl',
+        resolve: {
+          event: function() {
+            return $scope.eventList[index];
+          }
+        }
       });
     };
 

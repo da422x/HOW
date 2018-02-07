@@ -12,6 +12,7 @@ angular
   .module('ohanaApp')
   .controller('AddParticipantToEvent', function(
     event,
+    step,
     $rootScope,
     $q,
     commonServices,
@@ -44,7 +45,7 @@ angular
         var guestList = [];
         _.each(currentList, function(participant) {
           if (participant.guest) {
-            participant.nameText = participant.name.first + ' ' + participant.name.last;
+            participant.nameText = participant.name.first + ' ' + participant.name.last + ' - ' + participant.email;
             guestList.push(participant);
           } else {
             promiseArray.push(commonServices.getData('userData/' + participant.key));
@@ -55,7 +56,7 @@ angular
         $q.all(promiseArray).then(function(data) {
           if (data) {
             _.each(data, function(udata) {
-              udata.nameText = udata.name.first + ' ' + udata.name.last;
+              udata.nameText = udata.name.first + ' ' + udata.name.last + ' - ' + udata.email;
               _.each(currentList, function(current_participant) {
                 if (current_participant.key === udata.key) {
                   udata.guest = current_participant.guest;
@@ -116,28 +117,45 @@ angular
 
         // Generate key to be used on guest obj.
         var generateGuestKey = commonServices.getNewKey('events/' + event.key + '/participants');
+        var existsAlready = false;
+
         $q.all([generateGuestKey]).then(function(data) {
           if (data[0]) {
 
+            _.each($scope.selectedParticipants, function(currentUser) {
+              if (currentUser.email === $scope.guestEmail) {
+                existsAlready = true;
+                return;
+              }
+            });
+
             // Create guest object.
-            var guestObj = {
-              key: data[0],
-              guest: true,
-              nameText: $scope.guestFirst + ' ' + $scope.guestLast,
-              name: {
-                first: $scope.guestFirst,
-                last: $scope.guestLast
-              },
-              phone: $scope.guestPhone,
-              email: $scope.guestEmail
-            };
+            if (existsAlready) {
+              
+              var errorString = 'Guest email matches a participant in the current participants list, please change email.';
+              swal('Duplicate Email', errorString, 'error');
 
-            // Reset fields.
-            $scope.clearGuestForm();
+            } else {
 
-            // Add guest obj to fount list.
-            $scope.foundParticipants.push(guestObj);
+              var guestObj = {
+                key: data[0],
+                guest: true,
+                nameText: $scope.guestFirst + ' ' + $scope.guestLast + ' - ' + $scope.guestEmail,
+                name: {
+                  first: $scope.guestFirst,
+                  last: $scope.guestLast
+                },
+                phone: $scope.guestPhone,
+                email: $scope.guestEmail
+              };
 
+              // Reset fields.
+              $scope.clearGuestForm();
+
+              // Add guest obj to fount list.
+              $scope.foundParticipants.push(guestObj);
+
+            }
           }
         });
         
@@ -165,13 +183,13 @@ angular
             $q.all(searchPromise).then(function(data) {
               if (data[0] || data[1]) {
                 _.each(data[0], function(user, key) {
-                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.nameText = user.name.first + ' ' + user.name.last + ' - ' + user.email;
                   user.key = key;
                   $scope.foundParticipants.push(user);
                 });
 
                 _.each(data[1], function(user, key) {
-                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.nameText = user.name.first + ' ' + user.name.last + ' - ' + user.email;
                   user.key = key;
                   $scope.foundParticipants.push(user);
                 });
@@ -199,7 +217,7 @@ angular
             $q.all(searchPromise).then(function(data) {
               if (data[0]) {
                 _.each(data[0], function(user, key) {
-                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.nameText = user.name.first + ' ' + user.name.last + ' - ' + user.email;
                   user.key = key;
                   user.guest = false;
                   $scope.foundParticipants.push(user);
@@ -226,7 +244,7 @@ angular
             $q.all(searchPromise).then(function(data) {
               if (data[0]) {
                 _.each(data[0], function(user, key) {
-                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.nameText = user.name.first + ' ' + user.name.last + ' - ' + user.email;
                   user.key = key;
                   user.guest = false;
                   $scope.foundParticipants.push(user);
@@ -253,7 +271,7 @@ angular
             $q.all(searchPromise).then(function(data) {
               if (data[0]) {
                 _.each(data[0], function(user, key) {
-                  user.nameText = user.name.first + ' ' + user.name.last;
+                  user.nameText = user.name.first + ' ' + user.name.last + ' - ' + user.email;
                   user.key = key;
                   user.guest = false;
                   $scope.foundParticipants.push(user);
@@ -288,42 +306,33 @@ angular
         // Check to see if users have already been added.
         _.each($scope.foundParticipant, function(addUser) {
 
-          if (addUser.guest) {
+            if (addUser.guest) {
 
-            _.each($scope.selectedParticipants, function(currentUser) {
-              if (currentUser.email === addUser.email || currentUser.phone === addUser.phone) {
-                selectedAlready = true;
-                return;
-              }
-            });
-
-            // Add participant if they havent already, duplicates get added to dup list.
-            if (selectedAlready) {
-              duplicates.push(addUser.nameText);
-              selectedAlready = false;
-            } else {
+              $scope.foundParticipants = [];
+              $scope.foundParticipant = [];
               $scope.selectedParticipants.push(addUser);
+              return;
+
+            } else {
+
+              _.each($scope.selectedParticipants, function(currentUser) {
+                if (currentUser.key === addUser.key) {
+                  selectedAlready = true;
+                  return;
+                }
+              });
+  
+              // Add participant if they havent already, duplicates get added to dup list.
+              if (selectedAlready) {
+                duplicates.push(addUser.nameText);
+                selectedAlready = false;
+              } else {
+                addUser.guest = false;
+                $scope.selectedParticipants.push(addUser);
+              }
+
             }
 
-          } else {
-
-            _.each($scope.selectedParticipants, function(currentUser) {
-              if (currentUser.key === addUser.key) {
-                selectedAlready = true;
-                return;
-              }
-            });
-
-            // Add participant if they havent already, duplicates get added to dup list.
-            if (selectedAlready) {
-              duplicates.push(addUser.nameText);
-              selectedAlready = false;
-            } else {
-              addUser.guest = false;
-              $scope.selectedParticipants.push(addUser);
-            }
-
-          }
         });
 
         // Show users were duplicates in add request.
@@ -376,6 +385,7 @@ angular
       $scope.search_form.$setValidity();
       $scope.search_form.$setPristine();
       $scope.search_form.$setUntouched();
+      $scope.foundParticipants = [];
     };
     
     // close Modal.
@@ -396,6 +406,9 @@ angular
           resolve: {
             event: function() {
               return event;
+            },
+            step: function() {
+              return step;
             }
           }
         });
