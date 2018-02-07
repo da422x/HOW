@@ -51,58 +51,58 @@ angular
             {},
             {
               title: 'KEY',
-              data: 'key'
+              data: 'key',
             },
             {
               title: 'Status',
-              data: 'active'
+              data: 'active',
             },
             {
               title: 'First Name',
-              data: 'first'
+              data: 'first',
             },
             {
               title: 'Last Name',
-              data: 'last'
+              data: 'last',
             },
             {
               title: 'DOB',
-              data: 'dob'
+              data: 'dob',
             },
             {
               title: 'Email',
-              data: 'email'
+              data: 'email',
             },
             {
               title: 'Phone',
-              data: 'phone'
+              data: 'phone',
             },
             {
               title: 'Role',
-              data: 'role'
+              data: 'role',
             },
             {
               title: 'Primary Chapter',
-              data: 'primaryChapter'
+              data: 'primaryChapter',
             },
             {
               title: 'Secondary Chapters',
-              data: 'chapters[, ]'
+              data: 'chapters[, ]',
             },
             {
               title: 'Service Branch',
-              data: 'branch'
+              data: 'branch',
             },
           ],
           responsive: {
             details: {
-                type: 'column'
-            }
+              type: 'column',
+            },
           },
           columnDefs: [
             {
               targets: 1,
-              visible: false
+              visible: false,
             },
             {
               targets: 0,
@@ -111,32 +111,66 @@ angular
               className: 'dt-body-center control',
               render: function() {
                 return '<div id="member-row-data" style="width: 20px;">';
-              }
+              },
             },
             {
               targets: 3,
-              width: '50px'
+              width: '50px',
             },
             {
               targets: 5,
-              width: '90px'
+              width: '90px',
             },
           ],
           order: [[3, 'asc']],
           headerCallback: _.noop,
           rowCallback: function(row, data, index) {
-            $(row).find('div#member-row-data').attr('data-key', data.key);
-            $(row).find('div#member-row-data').attr('data-row-index', index);
-            $(row).children().eq(1).addClass('tdStatus');
-            $(row).children().eq(2).addClass('tdFname');
-            $(row).children().eq(3).addClass('tdLname');
-            $(row).children().eq(4).addClass('tdDob');
-            $(row).children().eq(5).addClass('tdEmail'); // email checking disabled
-            $(row).children().eq(6).addClass('tdTelly');
-            $(row).children().eq(7).addClass('tdSelectRole');
-            $(row).children().eq(8).addClass('tdPrimaryChapter');
-            $(row).children().eq(9).addClass('tdChapters');
-            $(row).children().eq(10).addClass('tdMil');
+            $(row)
+              .find('div#member-row-data')
+              .attr('data-key', data.key);
+            $(row)
+              .find('div#member-row-data')
+              .attr('data-row-index', index);
+            $(row)
+              .children()
+              .eq(1)
+              .addClass('tdStatus');
+            $(row)
+              .children()
+              .eq(2)
+              .addClass('tdFname');
+            $(row)
+              .children()
+              .eq(3)
+              .addClass('tdLname');
+            $(row)
+              .children()
+              .eq(4)
+              .addClass('tdDob');
+            $(row)
+              .children()
+              .eq(5)
+              .addClass('tdEmail'); // email checking disabled
+            $(row)
+              .children()
+              .eq(6)
+              .addClass('tdTelly');
+            $(row)
+              .children()
+              .eq(7)
+              .addClass('tdSelectRole');
+            $(row)
+              .children()
+              .eq(8)
+              .addClass('tdPrimaryChapter');
+            $(row)
+              .children()
+              .eq(9)
+              .addClass('tdChapters');
+            $(row)
+              .children()
+              .eq(10)
+              .addClass('tdMil');
             for (i = 2; i < 11; i++) {
               if (i !== 5) {
                 $(row)
@@ -150,24 +184,30 @@ angular
             return row;
           },
           drawCallback: function(settings) {
-
             // Reset button and clear selected
-            $('tbody').find('tr').css('background-color', '');
+            $('tbody')
+              .find('tr')
+              .css('background-color', '');
             $('#enableDisableBtn').addClass('disabled');
             $scope.currId = '';
 
-             // Get the currently selected: state, Region, and chapterId.
+            // Get the currently selected: state, Region, and chapterId.
             $('#membersTable').off('click', 'tbody tr[role="row"]');
             $('#membersTable').on('click', 'tbody tr[role="row"]', function() {
-
               // Set currently selected account.
-              $scope.currId = $(this).find('div#member-row-data').data('key');
+              $scope.currId = $(this)
+                .find('div#member-row-data')
+                .data('key');
 
               // Feature only available for National Staff.
               if ($scope.userRole === 'National Staff') {
-                $('tbody').find('tr').css('background-color', '');
+                $('tbody')
+                  .find('tr')
+                  .css('background-color', '');
                 $(this).css('background-color', '#FFFFC4');
-                $scope.currStatus = $(this).find('.tdStatus').text();
+                $scope.currStatus = $(this)
+                  .find('.tdStatus')
+                  .text();
                 $('#enableDisableBtn').removeClass('disabled');
                 if ($scope.currStatus === 'Active') {
                   $('#enableDisableBtn').text('Disable Account');
@@ -175,13 +215,14 @@ angular
                   $('#enableDisableBtn').text('Enable Account');
                 }
               }
-              
             });
 
             // Clear selected value when user paginates
             $('#membersTable_paginate').off('click');
             $('#membersTable_paginate').on('click', function() {
-              $('tbody').find('tr').css('background-color', '');
+              $('tbody')
+                .find('tr')
+                .css('background-color', '');
               $('#enableDisableBtn').addClass('disabled');
             });
 
@@ -320,7 +361,11 @@ angular
             $('#membersTable').off('click', '.tdPrimaryChapter a');
             $('#membersTable').on('click', '.tdPrimaryChapter a', function() {
               var self = this;
-              var selectedUserId = $(this).parent().parent().find('div#member-row-data').data('key');
+              var selectedUserId = $(this)
+                .parent()
+                .parent()
+                .find('div#member-row-data')
+                .data('key');
               var modalInstance = $uibModal.open({
                 templateUrl: '/parts/changeChapter.html',
                 controller: 'ChangeChapterCtrl',
@@ -334,7 +379,10 @@ angular
             $('#membersTable').off('click', '.tdChapters');
             $('#membersTable').on('click', '.tdChapters', function() {
               var self = this;
-              var selectedUserId = $(this).parent().find('div#member-row-data').data('key');
+              var selectedUserId = $(this)
+                .parent()
+                .find('div#member-row-data')
+                .data('key');
               var modalInstance = $uibModal.open({
                 templateUrl: '/parts/manageadditionalchapters.html',
                 controller: 'ManageAdditionalChapters',
@@ -482,9 +530,7 @@ angular
                   break;
                 case 7:
                   // Mobile
-                  $(
-                    document
-                  ).on(
+                  $(document).on(
                     'click',
                     'ul>li[data-dtr-index="7"]>span.dtr-data',
                     function() {
@@ -568,16 +614,21 @@ angular
                     'click',
                     'ul>li[data-dtr-index="9"]>span.dtr-data'
                   );
-                  $(
-                    '#membersTable'
-                  ).on(
+                  $('#membersTable').on(
                     'click',
                     'ul>li[data-dtr-index="9"]>span.dtr-data',
                     function() {
                       var self = this;
-                      var rowIndex = $(this).parent().parent().data('dtr-index');
+                      var rowIndex = $(this)
+                        .parent()
+                        .parent()
+                        .data('dtr-index');
                       var selectedUserId = $('table#membersTable>tbody')
-                        .find('tr[role="row"]>td.dt-body-center>div[data-row-index="' + rowIndex + '"]')
+                        .find(
+                          'tr[role="row"]>td.dt-body-center>div[data-row-index="' +
+                            rowIndex +
+                            '"]'
+                        )
                         .data('key');
                       var modalInstance = $uibModal.open({
                         templateUrl: '/parts/changeChapter.html',
@@ -600,16 +651,21 @@ angular
                     'click',
                     'ul>li[data-dtr-index="10"]>span.dtr-data'
                   );
-                  $(
-                    '#membersTable'
-                  ).on(
+                  $('#membersTable').on(
                     'click',
                     'ul>li[data-dtr-index="10"]>span.dtr-data',
                     function() {
                       var self = this;
-                      var rowIndex = $(this).parent().parent().data('dtr-index');
+                      var rowIndex = $(this)
+                        .parent()
+                        .parent()
+                        .data('dtr-index');
                       var selectedUserId = $('table#membersTable>tbody')
-                        .find('tr[role="row"]>td.dt-body-center>div[data-row-index="' + rowIndex + '"]')
+                        .find(
+                          'tr[role="row"]>td.dt-body-center>div[data-row-index="' +
+                            rowIndex +
+                            '"]'
+                        )
                         .data('key');
                       var modalInstance = $uibModal.open({
                         templateUrl: '/parts/manageadditionalchapters.html',
@@ -658,14 +714,15 @@ angular
     }; // end $scope.buildTable
 
     $scope.update = function() {
-
       // Initialize Variables.
       var newDataSet, newRoleData;
       var currentUserRole = userService.getRole();
       var currentUserData = userService.getUserData();
 
       if (currentUserRole === 'Chapter Lead') {
-        newDataSet = commonServices.queryChapterkey(currentUserData.Chapter.key);
+        newDataSet = commonServices.queryChapterkey(
+          currentUserData.Chapter.key
+        );
         newRoleData = commonServices.getData('/userRoles/');
       } else if (currentUserRole === 'National Staff') {
         newDataSet = commonServices.getData('/userData/');
@@ -683,10 +740,14 @@ angular
         var i = 0;
 
         _.each(userData[1], function(value, key) {
-          if (currentUserRole === 'National Staff' || (currentUserRole === 'Chapter Lead' && value.role !== 'National Staff')) {
+          if (
+            currentUserRole === 'National Staff' ||
+            (currentUserRole === 'Chapter Lead' &&
+              value.role !== 'National Staff')
+          ) {
             roles.push(value.role);
             active.push(value.active);
-            keys.push(key); 
+            keys.push(key);
           }
         });
 

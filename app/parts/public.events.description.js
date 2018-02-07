@@ -69,8 +69,8 @@ angular
           },
           step: function() {
             return 'public';
-          }
-        }
+          },
+        },
       });
     };
 
@@ -84,10 +84,10 @@ angular
             return {
               event: $scope.event,
               isEdit: true,
-              step: 'public'
+              step: 'public',
             };
-          }
-        }
+          },
+        },
       });
     };
   });

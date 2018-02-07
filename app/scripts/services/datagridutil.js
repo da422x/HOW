@@ -31,10 +31,11 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
 
       if (results[i].waiver) {
         arr.waiver = 'Complete';
-      } {
+      }
+      {
         arr.waiver = 'Incomplete';
       }
-      
+
       gridData.push(arr);
     }
     return gridData;

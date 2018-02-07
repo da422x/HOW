@@ -127,7 +127,9 @@ angular
               render: function(data) {
                 return (
                   '<input type="checkbox" id="eventVolunteersTable-select" value="' +
-                  $('<div/>').text(data).html() +
+                  $('<div/>')
+                    .text(data)
+                    .html() +
                   '">'
                 );
               },
@@ -174,20 +176,22 @@ angular
         });
 
         // Handle click on checkbox to set state of "Select all" control
-        $(
-          '#eventVolunteersTable tbody'
-        ).on('change', 'input[type="checkbox"]', function() {
-          // If checkbox is not checked
-          if (!this.checked) {
-            var el = $('#eventVolunteersTable-select-all').get(0);
-            // If "Select all" control is checked and has 'indeterminate' property
-            if (el && el.checked && 'indeterminate' in el) {
-              // Set visual state of "Select all" control
-              // as 'indeterminate'
-              el.indeterminate = true;
+        $('#eventVolunteersTable tbody').on(
+          'change',
+          'input[type="checkbox"]',
+          function() {
+            // If checkbox is not checked
+            if (!this.checked) {
+              var el = $('#eventVolunteersTable-select-all').get(0);
+              // If "Select all" control is checked and has 'indeterminate' property
+              if (el && el.checked && 'indeterminate' in el) {
+                // Set visual state of "Select all" control
+                // as 'indeterminate'
+                el.indeterminate = true;
+              }
             }
           }
-        });
+        );
       }); // end document ready
     }; // end $scope.buildTable
 

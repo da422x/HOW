@@ -23,7 +23,6 @@ angular
     'use strict';
 
     $scope.initialize = function() {
-
       // Initialize scope values.
       $('#phonenum').mask('(999)999-9999');
       $scope.isEdit = eventData.isEdit;
@@ -43,12 +42,12 @@ angular
         $scope.newEvent.eventOwner = {
           key: userService.getId(),
           name: userService.getUserName(),
-          email: userService.getUserEmail()
+          email: userService.getUserEmail(),
         };
         $scope.newEvent.eventManager = {
           key: userService.getId(),
           name: userService.getUserName(),
-          email: userService.getUserEmail()
+          email: userService.getUserEmail(),
         };
       }
 
@@ -58,7 +57,6 @@ angular
 
     // handles getting data for Event Manager and Event Owner Drop downs.
     $scope.eventManagerUpdate = function(selectedChapter, isChanged) {
-
       // Get User for the selected chapter.
       var newDataSet = commonServices.queryChapterkey(selectedChapter.key);
       var newRoleData = commonServices.getData('/userRoles/');
@@ -71,12 +69,11 @@ angular
           if (userRole.role !== 'Participant') {
             _.each(userData[0], function(chapterUser, userKey2) {
               if (userKey1 === userKey2) {
-                
                 // Event User Object.
                 var eventUserObj = {
-                    key: userKey2,
-                    name: chapterUser.name.first + ' ' + chapterUser.name.last,
-                    email: chapterUser.email
+                  key: userKey2,
+                  name: chapterUser.name.first + ' ' + chapterUser.name.last,
+                  email: chapterUser.email,
                 };
 
                 // Volunteers cannot be owners.
@@ -86,7 +83,6 @@ angular
                   $scope.eventOwnerList.push(eventUserObj);
                   $scope.eventManagerList.push(eventUserObj);
                 }
-
               }
             });
           }
@@ -96,15 +92,15 @@ angular
         if (_.isEmpty($scope.eventOwnerList)) {
           $scope.eventOwnerList.push({
             key: false,
-            name: ' -- CHAPTER OWNER UNAVAILABLE --'
+            name: ' -- CHAPTER OWNER UNAVAILABLE --',
           });
         }
-        
+
         // Load default if no users found
         if (_.isEmpty($scope.eventManagerList)) {
           $scope.eventManagerList.push({
             key: false,
-            name: ' -- CHAPTER MANAGER UNAVAILABLE --'
+            name: ' -- CHAPTER MANAGER UNAVAILABLE --',
           });
         }
 
@@ -113,9 +109,7 @@ angular
           $scope.newEvent.eventOwner = $scope.eventOwnerList[0];
           $scope.newEvent.eventManager = $scope.eventManagerList[0];
         }
-
       });
-
     };
 
     // calendar options
@@ -160,12 +154,7 @@ angular
     $scope.today();
 
     // event status radio data
-    $scope.states = [
-      'upcoming-open',
-      'upcoming-closed', 
-      'in-session', 
-      'past'
-    ];
+    $scope.states = ['upcoming-open', 'upcoming-closed', 'in-session', 'past'];
 
     // empty submit object
     $scope.newEvent = $scope.newEvent || {};
@@ -178,34 +167,29 @@ angular
       $scope.newEvent.initiator = $rootScope.userId;
 
       if (!$scope.isEdit) {
-
         $scope.newEvent.status = 'upcoming-open';
         delete $scope.newEvent.chapter['$$hashKey'];
         var newEventKey = commonServices.getNewKey('/events/');
 
         // Generate New Key, and save with event object.
         $q.all([newEventKey]).then(function(eventKey) {
-
           if (eventKey[0]) {
-
             $scope.newEvent.key = eventKey[0];
-            commonServices.updateData('/events/' + eventKey[0], $scope.newEvent);
-            
+            commonServices.updateData(
+              '/events/' + eventKey[0],
+              $scope.newEvent
+            );
           } else {
-
             swal({
               text: 'Failed to generate event key',
               type: 'error',
               timer: 2500,
             });
-
           }
         });
 
         $scope.cancel();
-        
       } else {
-
         var key = $scope.newEvent['key'];
         delete $scope.newEvent['$$hashKey'];
         result = commonServices.updateData('/events/' + key, $scope.newEvent);
@@ -215,12 +199,10 @@ angular
           type: 'success',
           timer: 2500,
         });
-
       }
     };
 
     $scope.cancel = function() {
-
       $uibModalInstance.dismiss('cancel');
       if ($scope.step === 'public') {
         var modalInstance = $uibModal.open({
@@ -229,13 +211,12 @@ angular
           resolve: {
             event: function() {
               return $scope.newEvent;
-            }
-          }
+            },
+          },
         });
         $rootScope.$broadcast('updateEventDescriptionPublic');
       } else {
         $rootScope.$broadcast('updateEventPage');
       }
-
     };
   });

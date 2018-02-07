@@ -81,8 +81,8 @@ angular
     };
 
     /******************************************************
-         *  New Expense / Expense Detail - Other Expense Line  *
-         *******************************************************/
+     *  New Expense / Expense Detail - Other Expense Line  *
+     *******************************************************/
     this.LineDetails = [
       {
         Description: '',
@@ -205,13 +205,16 @@ angular
           PaymentLog: paymentstatuslog,
         };
 
-        firebase.database().ref('expense/' + billkey).update(ePaymentLog);
+        firebase
+          .database()
+          .ref('expense/' + billkey)
+          .update(ePaymentLog);
       }
       swal('Payment Status Updated Successfully!', '', 'success');
     };
     /******************************************************
-         *        View Expense                                 *
-         *******************************************************/
+     *        View Expense                                 *
+     *******************************************************/
     this.getViewExpenseData = function(useremail, userRole, Chapter) {
       var expenselist = [];
       switch (userRole) {
@@ -445,8 +448,8 @@ angular
     };
 
     /******************************************************
-         *        Expense Supporting Documents - Images         *
-         *******************************************************/
+     *        Expense Supporting Documents - Images         *
+     *******************************************************/
 
     this.deleteImage = function(Imagename, Imagearray) {
       // Create a reference to the file to delete
@@ -508,18 +511,21 @@ angular
 
             var filelocname = 'images/' + UniqueBillId + '_' + file.name;
 
-            storageRef.child(filelocname).put(file).then(function(snapshot) {
-              if (snapshot !== undefined) {
-                return storageRef
-                  .child(filelocname)
-                  .getDownloadURL()
-                  .then(function(url) {
-                    console.log('Image func - ', url);
-                    return url;
-                  });
-                // console.log('Uploaded a blob or file!');
-              }
-            });
+            storageRef
+              .child(filelocname)
+              .put(file)
+              .then(function(snapshot) {
+                if (snapshot !== undefined) {
+                  return storageRef
+                    .child(filelocname)
+                    .getDownloadURL()
+                    .then(function(url) {
+                      console.log('Image func - ', url);
+                      return url;
+                    });
+                  // console.log('Uploaded a blob or file!');
+                }
+              });
             var storageRef = firebase.storage().ref(filelocname);
             var uploadTask = storageRef.put(file);
             uploadTask.on('state_changed', null, null, function() {
@@ -538,8 +544,8 @@ angular
     };
 
     /******************************************************
-         *        REPORT                                *
-         *******************************************************/
+     *        REPORT                                *
+     *******************************************************/
 
     this.buildTableBody = function(data, columns) {
       var body = [];

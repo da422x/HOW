@@ -87,7 +87,9 @@ angular
               render: function(data) {
                 return (
                   '<input type="checkbox" id="inventoryTable-select" value="' +
-                  $('<div/>').text(data).html() +
+                  $('<div/>')
+                    .text(data)
+                    .html() +
                   '">'
                 );
               },
@@ -113,11 +115,26 @@ angular
               .html('<input type="checkbox" id="inventoryTable-select-all">');
           },
           rowCallback: function(row, data, index) {
-            $(row).children().eq(1).addClass('tdItemName');
-            $(row).children().eq(2).addClass('tdCategory');
-            $(row).children().eq(3).addClass('tdCondition');
-            $(row).children().eq(4).addClass('tdPdate');
-            $(row).children().eq(7).addClass('tdNotes');
+            $(row)
+              .children()
+              .eq(1)
+              .addClass('tdItemName');
+            $(row)
+              .children()
+              .eq(2)
+              .addClass('tdCategory');
+            $(row)
+              .children()
+              .eq(3)
+              .addClass('tdCondition');
+            $(row)
+              .children()
+              .eq(4)
+              .addClass('tdPdate');
+            $(row)
+              .children()
+              .eq(7)
+              .addClass('tdNotes');
             for (i = 1; i < 5; i++) {
               $(row)
                 .children()
@@ -324,20 +341,22 @@ angular
         });
 
         // Handle click on checkbox to set state of "Select all" control
-        $(
-          '#inventoryTable tbody'
-        ).on('change', 'input[type="checkbox"]', function() {
-          // If checkbox is not checked
-          if (!this.checked) {
-            var el = $('#inventoryTable-select-all').get(0);
-            // If "Select all" control is checked and has 'indeterminate' property
-            if (el && el.checked && 'indeterminate' in el) {
-              // Set visual state of "Select all" control
-              // as 'indeterminate'
-              el.indeterminate = true;
+        $('#inventoryTable tbody').on(
+          'change',
+          'input[type="checkbox"]',
+          function() {
+            // If checkbox is not checked
+            if (!this.checked) {
+              var el = $('#inventoryTable-select-all').get(0);
+              // If "Select all" control is checked and has 'indeterminate' property
+              if (el && el.checked && 'indeterminate' in el) {
+                // Set visual state of "Select all" control
+                // as 'indeterminate'
+                el.indeterminate = true;
+              }
             }
           }
-        });
+        );
       }); // end document ready
     }; // end $scope.buildTable
 

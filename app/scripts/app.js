@@ -285,9 +285,7 @@ angular
      ***************************************/
 
     $rootScope.authObj.$onAuthStateChanged(function(user) {
-      
       if (user) {
-
         // Get Userid and Role.
         var currentUserId = firebase.auth().currentUser.uid;
         var currentUserData = commonServices.getData(
@@ -298,7 +296,6 @@ angular
         );
 
         $q.all([currentUserData, currentUserRole]).then(function(data) {
-
           var userData = data[0];
           var userRole = data[1];
 
@@ -326,7 +323,6 @@ angular
           $rootScope.$broadcast('changeSessionState', true);
         });
       } else {
-
         console.log('Logged Out...');
 
         // Set session variables to empty, and false when user logs out
@@ -336,7 +332,6 @@ angular
         userService.setId('');
         userService.setChapter('');
       }
-
     });
 
     /***************************************
@@ -347,7 +342,6 @@ angular
     // if (window.location.href.indexOf("localhost") > -1) {
     //     firebase.database.enableLogging(true, true);
     // }
-    
   })
   .filter('unique', function() {
     // Take in the collection and which field

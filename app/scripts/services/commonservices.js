@@ -16,8 +16,8 @@ angular.module('ohanaApp').service('commonServices', [
   '$q',
   function($rootScope, $firebaseAuth, DAO, expenseservice, $firebaseArray, $q) {
     /******************************************************
-         *           User Management - start                  *
-         *******************************************************/
+     *           User Management - start                  *
+     *******************************************************/
 
     // Registers a new user to the application, requires vaild email and password.
     this.register = function(user) {
@@ -35,10 +35,13 @@ angular.module('ohanaApp').service('commonServices', [
             .set(user)
             .then(function(data) {
               console.log('success : user data added');
-              firebase.database().ref('/userRoles/' + userId).set({
-                role: 'Participant',
-                active: true
-              });
+              firebase
+                .database()
+                .ref('/userRoles/' + userId)
+                .set({
+                  role: 'Participant',
+                  active: true,
+                });
               return true;
             })
             .catch(function(error) {
@@ -149,12 +152,12 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /******************************************************
-         *             User Management - end                  *
-         *******************************************************/
+     *             User Management - end                  *
+     *******************************************************/
 
     /******************************************************
-         *                 C.R.U.D. - start                    *
-         *******************************************************/
+     *                 C.R.U.D. - start                    *
+     *******************************************************/
 
     // Sets data at given path.
     this.setData = function(path, data) {
@@ -192,7 +195,10 @@ angular.module('ohanaApp').service('commonServices', [
 
     // Adds a key to the designated path, then returns the key.
     this.getNewKey = function(path) {
-      return firebase.database().ref(path).push().key;
+      return firebase
+        .database()
+        .ref(path)
+        .push().key;
     };
 
     // Updates data at given path.
@@ -284,12 +290,12 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /******************************************************
-         *                  C.R.U.D. - end                     *
-         *******************************************************/
+     *                  C.R.U.D. - end                     *
+     *******************************************************/
 
     /******************************************************
-         *           DAO object container - start             *
-         *******************************************************/
+     *           DAO object container - start             *
+     *******************************************************/
     this.DAO = DAO;
     this.getEvent = function(event) {
       return firebase
@@ -310,12 +316,12 @@ angular.module('ohanaApp').service('commonServices', [
     };
 
     /*******************************************************
-         *           DAO object container - end                *
-         *******************************************************/
+     *           DAO object container - end                *
+     *******************************************************/
 
     /*******************************************************
-         *           Other Utility methods - start             *
-         *******************************************************/
+     *           Other Utility methods - start             *
+     *******************************************************/
 
     // Get all users that are associated to a chapter.
     this.queryChapterkey = function(chapterKey) {

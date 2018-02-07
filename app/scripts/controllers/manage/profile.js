@@ -6,7 +6,7 @@
  * @name ohanaApp.controller:ProfileCtrl
  * @description
  * # ProfileCtrl
- * 
+ *
  */
 angular
   .module('ohanaApp')
@@ -176,8 +176,8 @@ angular
     };
 
     /*******************************************************
-         *                 Editable functions                   *
-         ********************************************************/
+     *                 Editable functions                   *
+     ********************************************************/
 
     $scope.addEditableListeners = function() {
       var states_list = [];
