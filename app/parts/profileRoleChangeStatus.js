@@ -23,22 +23,22 @@ angular
 
     // Get all current requests for given user.
     $scope.getUserRequests = function() {
-        $scope.pendingRequests = [];
-        $scope.approvedRequests = [];
-        $scope.declinedRequests = [];
-        var servicePromise = commonServices.getUserRequests(userService.getId());
-        $q.all([servicePromise]).then(function(data) {
-            _.each(data[0], function(req, key) {
-                req.key = key;
-                if (req.request_status === 'pending') {
-                    $scope.pendingRequests.push(req);
-                } else if (req.request_status === 'Approved') {
-                    $scope.approvedRequests.push(req);
-                } else {
-                    $scope.declinedRequests.push(req);
-                }
-            });
+      $scope.pendingRequests = [];
+      $scope.approvedRequests = [];
+      $scope.declinedRequests = [];
+      var servicePromise = commonServices.getUserRequests(userService.getId());
+      $q.all([servicePromise]).then(function(data) {
+        _.each(data[0], function(req, key) {
+          req.key = key;
+          if (req.request_status === 'pending') {
+            $scope.pendingRequests.push(req);
+          } else if (req.request_status === 'Approved') {
+            $scope.approvedRequests.push(req);
+          } else {
+            $scope.declinedRequests.push(req);
+          }
         });
+      });
     };
 
     // Close modal
@@ -57,14 +57,12 @@ angular
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!',
       }).then(function() {
-        swal(
-          'Deleted!',
-          'Your request has been deleted.',
-          'success'
-        ).then(function() {
-          commonServices.removeData('/roleChangeRequests/' + key);
-          $scope.getUserRequests(userService.getId());
-        });
+        swal('Deleted!', 'Your request has been deleted.', 'success').then(
+          function() {
+            commonServices.removeData('/roleChangeRequests/' + key);
+            $scope.getUserRequests(userService.getId());
+          }
+        );
       });
     };
   });

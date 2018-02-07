@@ -152,10 +152,10 @@ angular
             return {
               event: false,
               isEdit: false,
-              step: 'admin'
-            }
-          }
-        }
+              step: 'admin',
+            };
+          },
+        },
       });
     };
 
@@ -168,10 +168,10 @@ angular
             return {
               event: event,
               isEdit: true,
-              step: 'admin'
+              step: 'admin',
             };
-          }
-        }
+          },
+        },
       });
     };
 
@@ -190,8 +190,8 @@ angular
           },
           step: function() {
             return 'Admin';
-          }
-        }
+          },
+        },
       });
     };
 
@@ -202,8 +202,8 @@ angular
         resolve: {
           event: function() {
             return allEvents[eventKey];
-          }
-        }
+          },
+        },
       });
     };
 

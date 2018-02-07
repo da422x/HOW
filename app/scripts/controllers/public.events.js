@@ -209,8 +209,8 @@ angular
         resolve: {
           event: function() {
             return $scope.eventList[index];
-          }
-        }
+          },
+        },
       });
     };
 

@@ -29,7 +29,7 @@ angular
       $scope.getCurrentParticipantsData(event.participants);
     };
 
-    // Opens edit participants modal    
+    // Opens edit participants modal
     $scope.addParticipantToEvent = function() {
       $uibModalInstance.dismiss('cancel');
       $uibModal.open({
@@ -41,8 +41,8 @@ angular
           },
           step: function() {
             return step;
-          }
-        }
+          },
+        },
       });
     };
 
@@ -52,24 +52,22 @@ angular
     };
 
     $scope.getCurrentParticipantsData = function(participantsList) {
-
       // Initialze Variables.
       var promiseArray = [];
 
       if (_.isUndefined(participantsList) || _.isEmpty(participantsList)) {
-
         // Display Error.
         $scope.tableEmpty = true;
-
       } else {
-
         // Get id for each participant, and create promise.
         var guestList = [];
         _.each(participantsList, function(participant) {
           if (participant.guest) {
             guestList.push(participant);
           } else {
-            promiseArray.push(commonServices.getData('userData/' + participant.key));
+            promiseArray.push(
+              commonServices.getData('userData/' + participant.key)
+            );
           }
         });
 
@@ -78,14 +76,11 @@ angular
           data = data.concat(guestList);
           $scope.buildTable(data);
         });
-
       }
-
     };
-    
+
     // Close Manage Participants Modal, and refresh events page.
     $scope.cancel = function() {
-
       $uibModalInstance.dismiss('cancel');
       if (step === 'public') {
         var modalInstance = $uibModal.open({
@@ -94,13 +89,12 @@ angular
           resolve: {
             event: function() {
               return event;
-            }
-          }
+            },
+          },
         });
       } else {
         $rootScope.$broadcast('updateEventPage');
       }
-
     };
 
     // Builds table to be seen within modal.
@@ -123,34 +117,34 @@ angular
         $scope.membersTable = $('#participantsTable').DataTable({
           data: dataSet,
           iDisplayLength: 5,
-          aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+          aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'All']],
           columns: [
             {},
             {
               title: 'Name',
-              data: 'name'
+              data: 'name',
             },
             {
               title: 'Email',
-              data: 'email'
+              data: 'email',
             },
             {
               title: 'Phone',
-              data: 'phone'
+              data: 'phone',
             },
             {
               title: 'Type',
-              data: 'type'
+              data: 'type',
             },
             {
               title: 'Waiver',
-              data: 'waiver'
-            }
+              data: 'waiver',
+            },
           ],
           responsive: {
             details: {
-                type: 'column'
-            }
+              type: 'column',
+            },
           },
           columnDefs: [
             {
@@ -160,49 +154,61 @@ angular
               className: 'dt-body-center control',
               render: function() {
                 return '<div id="participants-row-data" style="width: 20px;">';
-              }
-            }
+              },
+            },
           ],
           order: [[2, 'asc']],
           headerCallback: _.noop,
           rowCallback: function(row, data, index) {
-            $(row).find('div#participants-row-data').attr('data-key', data.key);
-            $(row).find('div#participants-row-data').attr('data-row-index', index);
+            $(row)
+              .find('div#participants-row-data')
+              .attr('data-key', data.key);
+            $(row)
+              .find('div#participants-row-data')
+              .attr('data-row-index', index);
             var waiverStatus = $(row).find('td')[5];
             if ($(waiverStatus).text() === 'Complete') {
-              $(waiverStatus).css("color", "green");
+              $(waiverStatus).css('color', 'green');
             } else {
-              $(waiverStatus).css("color", "red");
+              $(waiverStatus).css('color', 'red');
             }
             return row;
           },
           drawCallback: function(settings) {
-
             // Reset button and clear selected
-            $('tbody').find('tr').css('background-color', '');
+            $('tbody')
+              .find('tr')
+              .css('background-color', '');
             $scope.swStatus = true;
             $scope.currId = '';
 
             // Get the currently selected: state, Region, and chapterId.
             $('#participantsTable').off('click', 'tbody tr[role="row"]');
-            $('#participantsTable').on('click', 'tbody tr[role="row"]', function() {
-
-              // Set currently selected account.
-              $scope.currId = $(this).find('div#participants-row-data').data('key');
-              $('tbody').find('tr').css('background-color', '');
-              $(this).css('background-color', '#FFFFC4');
-              $('#signWaiver').removeClass('disabled');
-              
-            });
+            $('#participantsTable').on(
+              'click',
+              'tbody tr[role="row"]',
+              function() {
+                // Set currently selected account.
+                $scope.currId = $(this)
+                  .find('div#participants-row-data')
+                  .data('key');
+                $('tbody')
+                  .find('tr')
+                  .css('background-color', '');
+                $(this).css('background-color', '#FFFFC4');
+                $('#signWaiver').removeClass('disabled');
+              }
+            );
 
             // Clear selected value when user paginates
             $('#participantsTable_paginate').off('click');
             $('#participantsTable_paginate').on('click', function() {
-              $('tbody').find('tr').css('background-color', '');
+              $('tbody')
+                .find('tr')
+                .css('background-color', '');
               $('#signWaiver').addClass('disabled');
             });
-
-          }
+          },
         });
       });
     };

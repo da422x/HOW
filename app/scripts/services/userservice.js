@@ -66,7 +66,7 @@ angular
 
     this.getUserEmail = function(data) {
       var userEmail = localStorage.getItem('userEmail');
-      return userEmail;;
+      return userEmail;
     };
 
     this.getChapter = function() {
