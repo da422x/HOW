@@ -180,29 +180,18 @@ angular
       $location.url('details/' + selected.key);
     };
 
-    $scope.viewParticipants = function(eventKey) {
+    $scope.viewAttendees = function(event, type) {
       $uibModal.open({
         templateUrl: '/parts/manageParticipants.html',
         controller: 'ManageParticipantsCtrl',
         resolve: {
-          event: function() {
-            return allEvents[eventKey];
-          },
-          step: function() {
-            return 'Admin';
-          },
-        },
-      });
-    };
-
-    $scope.viewVolunteers = function(eventKey) {
-      $uibModal.open({
-        templateUrl: '/parts/manageVolunteers.html',
-        controller: 'ManageVolunteersCtrl',
-        resolve: {
-          event: function() {
-            return allEvents[eventKey];
-          },
+          eventData: function() {
+            return {
+              event: event,
+              step: 'admin',
+              type: type
+            };
+          }
         },
       });
     };

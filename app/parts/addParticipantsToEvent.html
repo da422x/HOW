@@ -1,7 +1,8 @@
 <!-- Start modal-header -->
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title">Edit Participants</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'participants'">Edit Participants - {{eventData.event.name}}</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'volunteers'">Edit Volunteers - {{eventData.event.name}}</h4>
 </div>
 <!-- End modal-header -->
 
@@ -11,7 +12,7 @@
   <form name="search_form" class="form-horizontal" novalidate>
 
     <!-- Member or Guest -->
-    <div class="form-group">
+    <div class="form-group" ng-show="eventData.type === 'participants'">
       <label class="col-md-4 control-label" for="member_or_guest">Participant Type</label>
       <div class="col-md-7" style="margin-top:5px;">
         <input name="member_or_guest" type="radio" ng-model="memberOrGuest" value="Member">Member
