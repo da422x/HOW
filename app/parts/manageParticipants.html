@@ -1,7 +1,8 @@
 <!-- Start modal-header -->
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title">Manage Participants</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'participants'">Manage Participants - {{eventData.event.name}}</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'volunteers'">Manage Volunteers - {{eventData.event.name}}</h4>
 </div>
 <!-- End modal-header -->
 
@@ -9,11 +10,14 @@
 <div class="modal-body" ng-init="initialize()">
 
   <div class="col-sm-12" style="margin-bottom: 10px; text-align: center;">
-    <button ng-click="addParticipantToEvent()" class="btn btn-primary">Edit Participants List</button>
-    <button ng-click="" class="btn btn-primary" ng-disabled="true">Notify Participants</button>
+    <button ng-click="addParticipantToEvent()" class="btn btn-primary" ng-show="eventData.type === 'participants'">Edit Participants List</button>
+    <button ng-click="addParticipantToEvent()" class="btn btn-primary" ng-show="eventData.type === 'volunteers'">Edit Volunteers List</button>
+    <button ng-click="" class="btn btn-primary" ng-disabled="true" ng-show="eventData.type === 'participants'">Notify Participants</button>
+    <button ng-click="" class="btn btn-primary" ng-disabled="true" ng-show="eventData.type === 'volunteers'">Notify Volunteers</button>
     <button id="signWaiver" ng-click="participantSignWaiver()" class="btn btn-primary disabled">Sign Waiver</button>
     <div style="margin-top: 5px; color:red;" ng-show="tableEmpty">
-      <p>No Participants Listed for this Event, to Manually add participants click the "Edit Participants List" button at the top.</p>
+      <p ng-show="eventData.type === 'participants'">No Participants Listed for this Event, to Manually add participants click the "Edit Participants List" button at the top.</p>
+      <p ng-show="eventData.type === 'volunteers'">No Volunteers Listed for this Event, to Manually add volunteers click the "Edit Volunteers List" button at the top.</p>
     </div>
   </div>
 

@@ -51,8 +51,8 @@
     <div class="list-group-item" ng-show="isEventManager || isEventOwner">
       <h6 class="list-group-item-text">Event Management</h6>
       <button class="btn btn-primary" ng-click="editEvent()">Edit Event</button>
-      <button class="btn btn-primary" ng-click="viewParticipants()">Manage Participants</button>
-      <button class="btn btn-primary" ng-click="">Manage Volunteers</button>
+      <button class="btn btn-primary" ng-click="viewAttendees('participants')">Manage Participants</button>
+      <button class="btn btn-primary" ng-click="viewAttendees('volunteers')">Manage Volunteers</button>
     </div>
     <!--<div style="padding-top: 10px; padding-bottom: 10px;">
             <a class="btn btn-primary pull-right" ng-click="postRsvp()"><i class="glyphicon glyphicon-plus" ></i>  Register for Event</a>

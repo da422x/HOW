@@ -11,8 +11,7 @@
 angular
   .module('ohanaApp')
   .controller('ManageParticipantsCtrl', function(
-    event,
-    step,
+    eventData,
     $rootScope,
     $q,
     commonServices,
@@ -23,10 +22,18 @@ angular
   ) {
     'use strict';
 
+    $scope.eventData = eventData;
+
     // Get most recent data on participants tied to this event.
     $scope.initialize = function() {
       $scope.tableEmpty = false;
-      $scope.getCurrentParticipantsData(event.participants);
+
+      if ($scope.eventData.type === 'participants') {
+        $scope.getCurrentParticipantsData($scope.eventData.event.participants);
+      } else {
+        $scope.getCurrentParticipantsData($scope.eventData.event.volunteers);
+      }
+
     };
 
     // Opens edit participants modal
@@ -36,13 +43,10 @@ angular
         templateUrl: '/parts/addParticipantsToEvent.html',
         controller: 'AddParticipantToEvent',
         resolve: {
-          event: function() {
-            return event;
-          },
-          step: function() {
-            return step;
-          },
-        },
+          eventData: function() {
+            return $scope.eventData;
+          } 
+        }
       });
     };
 
@@ -82,13 +86,13 @@ angular
     // Close Manage Participants Modal, and refresh events page.
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
-      if (step === 'public') {
+      if ($scope.eventData.step === 'public') {
         var modalInstance = $uibModal.open({
           templateUrl: '/parts/public.events.description.html',
           controller: 'PublicEventsDescriptionCtrl',
           resolve: {
             event: function() {
-              return event;
+              return $scope.eventData.event;
             },
           },
         });

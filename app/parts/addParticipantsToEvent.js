@@ -11,8 +11,7 @@
 angular
   .module('ohanaApp')
   .controller('AddParticipantToEvent', function(
-    event,
-    step,
+    eventData,
     $rootScope,
     $q,
     commonServices,
@@ -21,6 +20,8 @@ angular
     $uibModal
   ) {
     'use strict';
+
+    $scope.eventData = eventData;
 
     $scope.initialize = function() {
       $scope.searchTypes = ['Name', 'Phone', 'Chapter', 'Email'];
@@ -31,10 +32,28 @@ angular
       $('#search_phone').mask('(999)999-9999');
 
       // Add selected events participants list.
-      if (event.participants) {
+
+      if ($scope.eventData.type === 'participants') {
+        $scope.getCurrentParticipantsList();
+      } else {
+        $scope.getCurrentVolunteerList();
+      }
+
+      $scope.chapters = $rootScope.siteData.chapters;
+      $scope.searchChapter = $scope.chapters[0];
+      $scope.foundParticipant = false;
+      $scope.removeParticipants = false;
+      $scope.memberOrGuest = 'Member';
+
+    };
+
+    $scope.getCurrentParticipantsList = function() {
+
+      if ($scope.eventData.event.participants) {
+
         // Handle guests in participants list.
         var currentList = [];
-        _.each(event.participants, function(current_participant) {
+        _.each($scope.eventData.event.participants, function(current_participant) {
           currentList.push(current_participant);
         });
 
@@ -59,6 +78,7 @@ angular
 
         // Run promise array and handle returned data.
         $q.all(promiseArray).then(function(data) {
+
           if (data) {
             _.each(data, function(udata) {
               udata.nameText =
@@ -74,23 +94,66 @@ angular
           } else {
             $scope.selectedParticipants = [];
           }
+
           $scope.selectedParticipants = $scope.selectedParticipants.concat(
             guestList
           );
         });
+
+      } else {
+        
+        $scope.selectedParticipants = [];
+
       }
 
-      $scope.chapters = $rootScope.siteData.chapters;
-      $scope.searchChapter = $scope.chapters[0];
-      $scope.foundParticipant = false;
-      $scope.removeParticipants = false;
-      $scope.memberOrGuest = 'Member';
+    };
+
+    $scope.getCurrentVolunteerList = function() {
+
+        if ($scope.eventData.event.volunteers) {
+
+          // Handle guests in participants list.
+          var currentList = [];
+          _.each($scope.eventData.event.volunteers, function(current_participant) {
+            currentList.push(current_participant);
+          });
+
+          // Get id for each participant, and create promise.
+          var promiseArray = [];
+          var guestList = [];
+          _.each(currentList, function(volunteer) {
+            promiseArray.push(
+              commonServices.getData('userData/' + volunteer.key)
+            );
+          });
+
+          // Handles promises adn their data.
+          $q.all(promiseArray).then(function(data) {
+            if (data) {
+              _.each(data, function(udata) {
+                udata.nameText =
+                  udata.name.first + ' ' + udata.name.last + ' - ' + udata.email;
+                  udata.guest = false;
+                  $scope.selectedParticipants.push(udata);
+              });
+            }
+          });
+
+        } else {
+
+          // Make sure there is a default value set.
+          $scope.selectedParticipants = [];
+
+        }
     };
 
     $scope.addParticipantToCurrentEvent = function() {
+
       var updateList = [];
       if (!_.isEmpty($scope.selectedParticipants)) {
+
         _.each($scope.selectedParticipants, function(selected_user) {
+
           // Handle guest accounts.
           if (selected_user.guest) {
             updateList.push({
@@ -107,27 +170,229 @@ angular
               guest: selected_user.guest,
             });
           }
+
         });
+
       }
 
-      // Update participants list.
-      commonServices.updateData(
-        'events/' + event.key + '/participants',
-        updateList
-      );
-      swal('Saved', 'Participants List updated!', 'success');
-      $scope.cancel();
+      if ($scope.eventData.type === 'participants') {
+
+        // Check to see if potential participant is already in the volunteer list
+        var removeList = [];
+        _.each(updateList, function(saveUser) {
+          _.each($scope.eventData.event.volunteers, function(volunteerUser) {
+            if (saveUser.key === volunteerUser.key) {
+              removeList.push(saveUser);
+            }
+          });
+        });
+
+        if (!_.isEmpty(removeList)) {
+
+          var udataPromiseArray = [];
+
+          // Get names of each user needing to be switched.
+          _.each(removeList, function(ruser) {
+            udataPromiseArray.push(commonServices.getData('userData/' + ruser.key));
+          });
+
+          // Run promise.
+          $q.all(udataPromiseArray).then(function(userData) {
+            if (userData) {
+
+              // Add name for each user being switched
+              _.each(userData, function(ud) {
+                var counter = 0;
+                _.each(removeList, function(rl) {
+                  if (ud.key === rl.key) {
+                    removeList[counter].name = ud.name.first + ' ' + ud.name.last + ' - ' + ud.email;
+                  }
+                  counter++;
+                });
+              });
+              
+              // Create message for warning message.
+              var messageString = 'These users are in the volunteer list for this event:<br><br>';
+              _.each(removeList, function(ruser) {
+                messageString += '&nbsp;&nbsp;&nbsp;' + ruser.name + '<br>';
+              });
+              messageString += '<br>would you like to remove them from the volunteer list and add them to the participants list?<br>';
+
+              swal({
+                title: 'Warning',
+                text: messageString,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, continue please'
+              }).then(function(result) {
+                if (result) {
+
+                  // Filter out new particpants from volunteer list.
+                  var newVolunteerList = [];
+                  _.each(removeList, function(ruser) {
+                    newVolunteerList = _.filter($scope.eventData.event.volunteers, function(currentVolunteer) {
+                      return !(ruser.key === currentVolunteer.key);
+                    });
+                  });
+
+                  // Update volunteers list.
+                  commonServices.updateData('events/' + $scope.eventData.event.key + '/volunteers', newVolunteerList);
+
+                  // Update participants list.
+                  commonServices.updateData(
+                    'events/' + $scope.eventData.event.key + '/participants',
+                    updateList
+                  );
+
+                  // Close modal.
+                  $scope.cancel();
+
+                  swal(
+                    'Success',
+                    'Update Successful!',
+                    'success'
+                  )
+                }
+              });
+
+            }
+          });
+
+        } else {
+
+          // Update participants list.
+          commonServices.updateData(
+            'events/' + $scope.eventData.event.key + '/participants',
+            updateList
+          );
+
+          // Notify user.
+          swal('Saved', 'Participants List updated!', 'success');
+
+          // Close modal.
+          $scope.cancel();
+
+        }
+
+      } else {
+
+        // Check to see if potential volunteer is already in the particpants list
+        var removeList = [];
+        _.each(updateList, function(saveUser) {
+          _.each($scope.eventData.event.participants, function(participantUser) {
+            if (saveUser.key === participantUser.key) {
+              removeList.push(saveUser);
+            }
+          });
+        });
+
+        if (!_.isEmpty(removeList)) {
+
+          var udataPromiseArray = [];
+
+          // Get names of each user needing to be switched.
+          _.each(removeList, function(ruser) {
+            udataPromiseArray.push(commonServices.getData('userData/' + ruser.key));
+          });
+
+          // Run promise.
+          $q.all(udataPromiseArray).then(function(userData) {
+            if (userData) {
+
+              // Add name for each user being switched
+              _.each(userData, function(ud) {
+                var counter = 0;
+                _.each(removeList, function(rl) {
+                  if (ud.key === rl.key) {
+                    removeList[counter].name = ud.name.first + ' ' + ud.name.last + ' - ' + ud.email;
+                  }
+                  counter++;
+                });
+              });
+              
+              // Create message for warning message.
+              var messageString = 'These users are in the participants list for this event:<br><br>';
+              _.each(removeList, function(ruser) {
+                messageString += '&nbsp;&nbsp;&nbsp;' + ruser.name + '<br>';
+              });
+              messageString += '<br>would you like to remove them from the particpants list and add them to the volunteer list?<br>';
+
+              swal({
+                title: 'Warning',
+                text: messageString,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, continue please'
+              }).then(function(result) {
+                if (result) {
+
+                  // Filter out new particpants from volunteer list.
+                  var newParticipantsList = [];
+                  _.each(removeList, function(ruser) {
+                    newParticipantsList = _.filter($scope.eventData.event.participants, function(currentParticipants) {
+                      return !(ruser.key === currentParticipants.key);
+                    });
+                  });
+
+                  // Update participants list.
+                  commonServices.updateData('events/' + $scope.eventData.event.key + '/participants', newParticipantsList);
+
+                  // Update volunteers list.
+                  commonServices.updateData(
+                    'events/' + $scope.eventData.event.key + '/volunteers',
+                    updateList
+                  );
+
+                  // Close modal.
+                  $scope.cancel();
+
+                  swal(
+                    'Success',
+                    'Update Successful!',
+                    'success'
+                  )
+                }
+              });
+
+            }
+          });
+
+        } else {
+
+          // Update participants list.
+          commonServices.updateData(
+            'events/' + $scope.eventData.event.key + '/participants',
+            updateList
+          );
+
+          // Notify user.
+          swal('Saved', 'Participants List updated!', 'success');
+
+          // Close modal.
+          $scope.cancel();
+
+        }
+
+      }
+
     };
 
     $scope.createGuest = function() {
+      
       // Generate key to be used on guest obj.
       var generateGuestKey = commonServices.getNewKey(
-        'events/' + event.key + '/participants'
+        'events/' + $scope.eventData.event.key + '/participants'
       );
       var existsAlready = false;
 
       $q.all([generateGuestKey]).then(function(data) {
         if (data[0]) {
+
+          // Check to see if email is already being used.
           _.each($scope.selectedParticipants, function(currentUser) {
             if (currentUser.email === $scope.guestEmail) {
               existsAlready = true;
@@ -409,11 +674,12 @@ angular
 
     // close Modal.
     $scope.cancel = function() {
-      var getEventData = commonServices.getData('events/' + event.key);
+
+      var getEventData = commonServices.getData('events/' + $scope.eventData.event.key);
       $q.all([getEventData]).then(function(data) {
+
         // Get must recent data for event.
-        data[0].key = event.key;
-        event = data[0];
+        $scope.eventData.event = data[0];
 
         // Move user back to manage event for now (change this when we reuse module)
         $uibModalInstance.dismiss('cancel');
@@ -421,12 +687,9 @@ angular
           templateUrl: '/parts/manageParticipants.html',
           controller: 'ManageParticipantsCtrl',
           resolve: {
-            event: function() {
-              return event;
-            },
-            step: function() {
-              return step;
-            },
+            eventData: function() {
+              return $scope.eventData;
+            }
           },
         });
       });

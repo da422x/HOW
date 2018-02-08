@@ -71,9 +71,9 @@
           <a class="btn btn-primary" style="display:inline-block; margin:2px" ng-click="showDescription(key)">More Details</a>
           <!--<a class="btn btn-primary" style="display:inline-block; margin:2px" ng-click="joinEvent($index)">{{()?:'Attending'?}}</a>-->
           <a ng-if="userService.getRole()" style="display:inline-block; margin:2px" class="btn btn-primary" ng-click="addParticipant(key, $index)">
-            {{(allParticipantIsDisableds[$index]['isDisabled'])?'Registered To attend':'Attending?'}}</a>
+            {{(allParticipantIsDisableds[$index]['isDisabled'])?'Registered To attend':'Attend'}}</a>
           <a ng-if="userService.getRole() && userService.getRole()!=='Participant'" style="display:inline-block; margin:2px" class="btn btn-primary" ng-click="addVolunteer(key, $index)">
-            {{(allVolunteerIsDisableds[$index]['isDisabled'])?'Registered To Volunteer':'Volunteering?'}}</a>
+            {{(allVolunteerIsDisableds[$index]['isDisabled'])?'Registered To Volunteer':'Volunteer'}}</a>
         </div>
       </div>
     </div>

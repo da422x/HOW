@@ -58,19 +58,20 @@ angular
       $uibModalInstance.dismiss('cancel');
     };
 
-    $scope.viewParticipants = function() {
+    $scope.viewAttendees = function(type) {
       $scope.cancel();
       $uibModal.open({
         templateUrl: '/parts/manageParticipants.html',
         controller: 'ManageParticipantsCtrl',
         resolve: {
-          event: function() {
-            return $scope.event;
-          },
-          step: function() {
-            return 'public';
-          },
-        },
+          eventData: function() {
+            return {
+              event: $scope.event,
+              step: 'public',
+              type: type
+            };
+          }
+        }
       });
     };
 
