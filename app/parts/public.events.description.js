@@ -68,10 +68,10 @@ angular
             return {
               event: $scope.event,
               step: 'public',
-              type: type
+              type: type,
             };
-          }
-        }
+          },
+        },
       });
     };
 

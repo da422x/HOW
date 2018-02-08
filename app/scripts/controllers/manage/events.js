@@ -189,9 +189,9 @@ angular
             return {
               event: event,
               step: 'admin',
-              type: type
+              type: type,
             };
-          }
+          },
         },
       });
     };
