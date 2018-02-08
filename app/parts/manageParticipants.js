@@ -33,7 +33,6 @@ angular
       } else {
         $scope.getCurrentParticipantsData($scope.eventData.event.volunteers);
       }
-
     };
 
     // Opens edit participants modal
@@ -45,8 +44,8 @@ angular
         resolve: {
           eventData: function() {
             return $scope.eventData;
-          } 
-        }
+          },
+        },
       });
     };
 
