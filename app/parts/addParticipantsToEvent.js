@@ -217,10 +217,10 @@ angular
               }).then(function(result) {
                 if (result) {
                   // Filter out new particpants from volunteer list.
-                  var newVolunteerList = [];
+                  var newVolunteerList = $scope.eventData.event.volunteers;
                   _.each(removeList, function(ruser) {
                     newVolunteerList = _.filter(
-                      $scope.eventData.event.volunteers,
+                      newVolunteerList,
                       function(currentVolunteer) {
                         return !(ruser.key === currentVolunteer.key);
                       }
@@ -318,10 +318,10 @@ angular
               }).then(function(result) {
                 if (result) {
                   // Filter out new particpants from volunteer list.
-                  var newParticipantsList = [];
+                  var newParticipantsList = $scope.eventData.event.participants;
                   _.each(removeList, function(ruser) {
                     newParticipantsList = _.filter(
-                      $scope.eventData.event.participants,
+                      newParticipantsList,
                       function(currentParticipants) {
                         return !(ruser.key === currentParticipants.key);
                       }
@@ -349,14 +349,14 @@ angular
             }
           });
         } else {
-          // Update participants list.
+          // Update volunteers list.
           commonServices.updateData(
-            'events/' + $scope.eventData.event.key + '/participants',
+            'events/' + $scope.eventData.event.key + '/volunteers',
             updateList
           );
 
           // Notify user.
-          swal('Saved', 'Participants List updated!', 'success');
+          swal('Saved', 'Volunteers List updated!', 'success');
 
           // Close modal.
           $scope.cancel();
