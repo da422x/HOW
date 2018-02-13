@@ -30,29 +30,24 @@ angular
 
     $scope.loadAll = function() {
       var getEvents = commonServices.getPublicEvents();
-      // allEvents = [];
       $q.all([getEvents]).then(function(data) {
-        console.log(data);
         if (data[0]) {
-          // _.each(data[0], function(event) {
-          //     allEvents.push(event);
-          // });
-          var count = 0;
           $scope.eventList = [];
           _.each(data[0], function(val, idx) {
+
+            var isParticipant = $scope.isUserParticipant(val);
+            var isVolunteer = $scope.isUserVolunteer(val);
+
             $scope.allVolunteerIsDisableds.push({
               key: idx,
-              isDisabled: false,
+              isDisabled: isVolunteer,
             });
             $scope.allParticipantIsDisableds.push({
               key: idx,
-              isDisabled: false,
+              isDisabled: isParticipant,
             });
             val.key = idx;
             $scope.eventList.push(val);
-            $scope.checkAllVolunteerIsDisableds(idx, count);
-            $scope.checkAllParticipantIsDisableds(idx, count);
-            count++;
           });
           $scope.eventList2 = angular.copy($scope.eventList);
         } else {
@@ -61,51 +56,35 @@ angular
       });
     };
 
+    $scope.isUserParticipant = function(pList) {
+      var currentId = userService.getId();
+      var checkStatus = false;
+      _.each(pList.participants, function(par) {
+        if (currentId === par.key) {
+          checkStatus = true;
+          return;
+        }
+      });
+      return checkStatus
+    };
+
+    $scope.isUserVolunteer = function(vList) {
+      var currentId = userService.getId();
+      var checkStatus = false;
+      _.each(vList.volunteers, function(vol) {
+        if (currentId === vol.key) {
+          checkStatus = true;
+          return;
+        }
+      });
+      return checkStatus
+    };
+
     $scope.$on('updatePublicEventsPage', function() {
       $scope.loadAll();
     });
 
     $scope.loadAll();
-
-    $scope.checkAllVolunteerIsDisableds = function(key, idx) {
-      if (!$scope.userService.getUserData()['email']) return;
-      commonServices
-        .getUserByEmailAtPath(
-          $scope.userService.getUserData()['email'],
-          '/events/' + key + '/volunteers'
-        )
-        .then(function(vol) {
-          if (vol) {
-            $scope.allVolunteerIsDisableds.some(function(val, i) {
-              if (val['key'] == key) {
-                $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
-                $scope.$apply();
-                return true;
-              }
-            });
-          }
-        });
-    };
-
-    $scope.checkAllParticipantIsDisableds = function(key, idx) {
-      if (!$scope.userService.getUserData()['email']) return;
-      commonServices
-        .getUserByEmailAtPath(
-          $scope.userService.getUserData()['email'],
-          '/events/' + key + '/participants'
-        )
-        .then(function(vol) {
-          if (vol) {
-            $scope.allParticipantIsDisableds.some(function(val, i) {
-              if (val['key'] == key) {
-                $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
-                $scope.$apply();
-                return true;
-              }
-            });
-          }
-        });
-    };
 
     $scope.popup1 = {
       opened: false,
@@ -241,320 +220,115 @@ angular
     // };
 
     $scope.addVolunteer = function(key, idx) {
-      //email = email.trim();
-      if ($scope.allVolunteerIsDisableds[idx]['isDisabled']) {
-        var email = $scope.userService.getUserData()['email'];
-        //check to see if the volunteer is a user at all.
-        commonServices.getUserByEmail(email).then(
-          function(data) {
-            if (data) {
-              var temp_key;
-              _.each(data, function(val, idx) {
-                temp_key = idx;
-                data[idx]['key'] = idx;
-              });
 
-              commonServices
-                .getData('userRoles/' + temp_key)
-                .then(function(role) {
-                  if (role['role'] !== 'Participant') {
-                    //check to see if the volunteer exists per this event
-                    commonServices
-                      .getUserByEmailAtPath(
-                        email,
-                        '/events/' + key + '/volunteers'
-                      )
-                      .then(function(vol) {
-                        console.log(vol);
-                        if (vol) {
-                          var entity_key = Object.keys(vol)[0];
-                          //additional check for witness waiver(at account level)
-                          // alert("line 182" + JSON.stringify(vol[entity_key]))
-                          commonServices.removeData(
-                            '/events/' + key + '/volunteers/',
-                            entity_key
-                          );
-                          $scope.allVolunteerIsDisableds[idx][
-                            'isDisabled'
-                          ] = false;
-                          $scope.$apply();
-                        } else {
-                          swal(
-                            'Oops...',
-                            'That volunteer has already been added',
-                            'error'
-                          );
-                        }
-                      });
-                  } else {
-                    swal(
-                      'Oops...',
-                      'User not authorized to be added as a volunteer.',
-                      'error'
-                    );
-                  }
-                });
-            } else {
-              swal('Oops...', "That user doesn't exists", 'error');
-            }
-          },
-          function(err) {
-            swal('Oops...', 'Unknown Error', 'error');
-          }
+      if ($scope.allVolunteerIsDisableds[idx]['isDisabled'] !== true) {
+
+        // Create volunteer object.
+        var pObj = {
+          key: userService.getId(),
+          guest: false
+        }
+
+        // Check to see if volunteers list exists, and set default if it does not.
+        if (_.isEmpty($scope.eventList[key].volunteers) || _.isUndefined($scope.eventList[key].volunteers)) {
+          $scope.eventList[key].volunteers = [];
+        }
+
+        // Add user to current volunteers, and update list on backend.
+        $scope.eventList[key].volunteers.push(pObj);
+        commonServices.updateData(
+          'events/' + $scope.eventList[key].key + '/volunteers',
+          $scope.eventList[key].volunteers
         );
+
+        // Check if user is already a participant.
+        if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
+          $scope.removeParticipant(key, idx);
+        }
+
+        // Change button.
+        $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
+
       } else {
-        var email = $scope.userService.getUserData()['email'];
-        //check to see if the volunteer is a user at all.
-        commonServices.getUserByEmail(email).then(
-          function(data) {
-            if (data) {
-              var temp_key;
-              _.each(data, function(val, idx) {
-                temp_key = idx;
-                data[idx]['key'] = idx;
-              });
 
-              commonServices
-                .getData('userRoles/' + temp_key)
-                .then(function(role) {
-                  if (role['role'] !== 'Participant') {
-                    //check to see if the volunteer exists per this event
-                    commonServices
-                      .getUserByEmailAtPath(
-                        email,
-                        '/events/' + key + '/volunteers'
-                      )
-                      .then(function(vol) {
-                        console.log(vol);
-                        if (!vol) {
-                          //check if the prospective volunteer is already signed up as a participant
-                          commonServices
-                            .getUserByEmailAtPath(
-                              email,
-                              '/events/' + key + '/participants'
-                            )
-                            .then(function(part) {
-                              if (part) {
-                                //if they are a participant then remove them from the participant table
-                                var entity_key = Object.keys(part)[0];
-                                commonServices.removeData(
-                                  '/events/' +
-                                    key +
-                                    '/participants/' +
-                                    entity_key
-                                );
-                                $scope.allParticipantIsDisableds[idx][
-                                  'isDisabled'
-                                ] = false;
-                                $scope.$apply();
-                              }
-                              var areWaiversUnsignedObj = $scope.areWaiversUnsigned(
-                                data[temp_key],
-                                key
-                              );
-                              if (areWaiversUnsignedObj['witness']) {
-                                //put up fill out form for signing the witness form
-                                var modalInstance = $uibModal.open({
-                                  templateUrl:
-                                    '/parts/sign_witness_waiver.html',
-                                  controller: 'SignWitnessWaiverCtrl',
-                                  resolve: {
-                                    // selectedUID: function() {
-                                    //     return self.parentElement.parentElement.children[0].firstChild.value;
-                                    // }
-                                  },
-                                });
-                              }
-                              //additional check for witness waiver(at account level)
-                              //alert("line 247" + JSON.stringify(data[temp_key]))
-                              commonServices.pushData(
-                                '/events/' + key + '/volunteers',
-                                data[temp_key]
-                              );
-                              $scope.allVolunteerIsDisableds[idx][
-                                'isDisabled'
-                              ] = true;
-                              $scope.$apply();
-                            });
-                        } else {
-                          swal(
-                            'Oops...',
-                            'That volunteer has already been added',
-                            'error'
-                          );
-                        }
-                      });
-                  } else {
-                    swal(
-                      'Oops...',
-                      'User not authorized to be added as a volunteer.',
-                      'error'
-                    );
-                  }
-                });
-            } else {
-              swal('Oops...', "That user doesn't exists", 'error');
-            }
-          },
-          function(err) {
-            swal('Oops...', 'Unknown Error', 'error');
-          }
-        );
+        $scope.removeVolunteer(key, idx);
+
       }
+
+    };
+
+    $scope.removeVolunteer = function(key, idx) {
+      
+      // Update current list.
+      var userId = userService.getId();
+      $scope.eventList[key].volunteers = _.filter($scope.eventList[key].volunteers, function(par) {
+        return par.key !== userId;
+      });
+        
+      commonServices.updateData(
+        'events/' + $scope.eventList[key].key + '/volunteers',
+        $scope.eventList[key].volunteers
+      );
+
+      // Update button.
+      $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
+
     };
 
     $scope.addParticipant = function(key, idx) {
-      //email = email.trim();
-      if ($scope.allParticipantIsDisableds[idx]['isDisabled']) {
-        var email = $scope.userService.getUserData()['email'];
-        //check to see if the volunteer is a user at all.
-        commonServices.getUserByEmail(email).then(
-          function(data) {
-            if (data) {
-              var temp_key;
-              _.each(data, function(val, idx) {
-                temp_key = idx;
-                data[idx]['key'] = idx;
-              });
 
-              commonServices
-                .getData('userRoles/' + temp_key)
-                .then(function(role) {
-                  // if (role["role"] !== "Participant") {
-                  //check to see if the volunteer exists per this event
-                  commonServices
-                    .getUserByEmailAtPath(
-                      email,
-                      '/events/' + key + '/participants'
-                    )
-                    .then(function(vol) {
-                      if (vol) {
-                        var entity_key = Object.keys(vol)[0];
-                        //additional check for witness waiver(at account level)
-                        commonServices.removeData(
-                          '/events/' + key + '/participants/' + entity_key
-                        );
-                        $scope.allParticipantIsDisableds[idx][
-                          'isDisabled'
-                        ] = false;
-                        $scope.$apply();
-                      } else {
-                        swal(
-                          'Oops...',
-                          'That participant has already been deleted',
-                          'error'
-                        );
-                      }
-                    });
-                });
-            } else {
-              swal('Oops...', "That user doesn't exists", 'error');
-            }
-          },
-          function(err) {
-            swal('Oops...', 'Unknown Error', 'error');
-          }
+      if ($scope.allParticipantIsDisableds[idx]['isDisabled'] !== true) {
+
+        // Create participant object.
+        var pObj = {
+          key: userService.getId(),
+          guest: false
+        }
+
+        // Check to see if participant list exists, and set default if it does not.
+        if (_.isEmpty($scope.eventList[key].participants) || _.isUndefined($scope.eventList[key].participants)) {
+          $scope.eventList[key].participants = [];
+        }
+
+        // Add user to current participant, and update list on backend.
+        $scope.eventList[key].participants.push(pObj);
+        commonServices.updateData(
+          'events/' + $scope.eventList[key].key + '/participants',
+          $scope.eventList[key].participants
         );
+
+        // Check if user is already a volunteer.
+        if ($scope.allVolunteerIsDisableds[idx]['isDisabled']) {
+          $scope.removeVolunteer(key, idx);
+        }
+
+        // Update button.
+        $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
+
       } else {
-        var email = $scope.userService.getUserData()['email'];
-        //check to see if the volunteer is a user at all.
-        commonServices.getUserByEmail(email).then(
-          function(data) {
-            if (data) {
-              var temp_key;
-              _.each(data, function(val, idx) {
-                temp_key = idx;
-                data[idx]['key'] = idx;
-              });
 
-              commonServices
-                .getData('userRoles/' + temp_key)
-                .then(function(role) {
-                  // if (role["role"] !== "Participant") {
-                  //check to see if the volunteer exists per this event
-                  commonServices
-                    .getUserByEmailAtPath(
-                      email,
-                      '/events/' + key + '/participants'
-                    )
-                    .then(function(part) {
-                      console.log(part);
-                      if (!part) {
-                        //check if the prospective participant is already signed up as a volunteer
-                        commonServices
-                          .getUserByEmailAtPath(
-                            email,
-                            '/events/' + key + '/volunteers'
-                          )
-                          .then(function(vol) {
-                            if (vol) {
-                              //if they are a volunteer then remove them from the volunteer table
-                              var entity_key = Object.keys(vol)[0];
-                              commonServices.removeData(
-                                '/events/' + key + '/volunteers/' + entity_key
-                              );
-                              $scope.allVolunteerIsDisableds[idx][
-                                'isDisabled'
-                              ] = false;
-                              $scope.$apply();
-                            }
+        $scope.removeParticipant(key, idx);
 
-                            var areWaiversUnsignedObj = $scope.areWaiversUnsigned(
-                              data[temp_key],
-                              key
-                            );
-                            if (areWaiversUnsignedObj['witness']) {
-                              //put up fill out form for signing the witness form
-                              var modalInstance = $uibModal.open({
-                                templateUrl: '/parts/sign_witness_waiver.html',
-                                controller: 'SignWitnessWaiverCtrl',
-                                resolve: {
-                                  // selectedUID: function() {
-                                  //     return self.parentElement.parentElement.children[0].firstChild.value;
-                                  // }
-                                },
-                              });
-                            }
-                            if (areWaiversUnsignedObj['event']) {
-                              //filling out
-                              //put up fill out form for signing the witness form
-                              var modalInstance = $uibModal.open({
-                                templateUrl: '/parts/sign_event_waiver.html',
-                                controller: 'SignEventWaiver',
-                                resolve: {
-                                  eventKey: function() {
-                                    return key;
-                                  },
-                                },
-                              });
-                            }
-                            commonServices.pushData(
-                              '/events/' + key + '/participants',
-                              data[temp_key]
-                            );
-                            $scope.allParticipantIsDisableds[idx][
-                              'isDisabled'
-                            ] = true;
-                            $scope.$apply();
-                          });
-                      } else {
-                        swal(
-                          'Oops...',
-                          'That participant has already been added',
-                          'error'
-                        );
-                      }
-                    });
-                });
-            } else {
-              swal('Oops...', "That user doesn't exists", 'error');
-            }
-          },
-          function(err) {
-            swal('Oops...', 'Unknown Error', 'error');
-          }
-        );
       }
+
+    };
+
+    $scope.removeParticipant = function(key, idx) {
+
+      // Update current list.
+      var userId = userService.getId();
+      $scope.eventList[key].participants = _.filter($scope.eventList[key].participants, function(par) {
+        return par.key !== userId;
+      });
+        
+      commonServices.updateData(
+        'events/' + $scope.eventList[key].key + '/participants',
+        $scope.eventList[key].participants
+      );
+
+      // Update button.
+      $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
+
     };
 
     //might need to move into
