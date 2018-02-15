@@ -51,12 +51,11 @@ angular
           email: userService.getUserEmail(),
         };
       } else {
-
         $scope.st = new Date($scope.newEvent.startTime);
         $scope.et = new Date($scope.newEvent.endTime);
       }
 
-      $scope.stateIds =  $scope.siteData.states;
+      $scope.stateIds = $scope.siteData.states;
 
       // Update user lists.
       $scope.eventManagerUpdate($scope.newEvent.chapter, false);
@@ -148,7 +147,7 @@ angular
       $scope.newEvent.startTime = $scope.st.getTime();
       $scope.newEvent.endTime = $scope.et.getTime();
       $scope.newEvent.initiator = $rootScope.userId;
-      $scope.newEvent.address.state = $scope.newEvent.address.state.id
+      $scope.newEvent.address.state = $scope.newEvent.address.state.id;
 
       if (!$scope.isEdit) {
         $scope.newEvent.status = 'upcoming-open';

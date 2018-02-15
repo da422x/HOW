@@ -219,12 +219,11 @@ angular
                   // Filter out new particpants from volunteer list.
                   var newVolunteerList = $scope.eventData.event.volunteers;
                   _.each(removeList, function(ruser) {
-                    newVolunteerList = _.filter(
-                      newVolunteerList,
-                      function(currentVolunteer) {
-                        return !(ruser.key === currentVolunteer.key);
-                      }
-                    );
+                    newVolunteerList = _.filter(newVolunteerList, function(
+                      currentVolunteer
+                    ) {
+                      return !(ruser.key === currentVolunteer.key);
+                    });
                   });
 
                   // Update volunteers list.
