@@ -98,6 +98,10 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         //     text: "Events"
         // },
         {
+          state: '#/publicEvents',
+          text: 'Events',
+        },
+        {
           state: '#/expense/viewexpense',
           text: 'Expense',
         },
@@ -116,6 +120,10 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         //     state: "#/manage/events",
         //     text: "Events"
         // },
+        {
+          state: '#/publicEvents',
+          text: 'Events',
+        },
         {
           state: '#/expense/viewexpense',
           text: 'Expense',
@@ -144,8 +152,12 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
           text: 'Chapter Chat',
         },
         {
-          state: '#/manage/events',
+          state: '#/publicEvents',
           text: 'Events',
+        },
+        {
+          state: '#/manage/events',
+          text: 'Event Administration',
         },
         {
           state: '#/expense/viewexpense',
@@ -191,8 +203,12 @@ angular.module('ohanaApp').directive('masterNavigation', function() {
         //     text: "Donor Management"
         // },
         {
-          state: '#/manage/events',
+          state: '#/publicEvents',
           text: 'Events',
+        },
+        {
+          state: '#/manage/events',
+          text: 'Event Administration',
         },
         {
           state: '#/expense/viewexpense',

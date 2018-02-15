@@ -25,6 +25,7 @@ angular
     $scope.initialize = function() {
       // Initialize scope values.
       $('#phonenum').mask('(999)999-9999');
+      $('#zip').mask('99999');
       $scope.isEdit = eventData.isEdit;
       $scope.newEvent = eventData.event || {};
       $scope.step = eventData.step;
@@ -49,7 +50,13 @@ angular
           name: userService.getUserName(),
           email: userService.getUserEmail(),
         };
+      } else {
+
+        $scope.st = new Date($scope.newEvent.startTime);
+        $scope.et = new Date($scope.newEvent.endTime);
       }
+
+      $scope.stateIds =  $scope.siteData.states;
 
       // Update user lists.
       $scope.eventManagerUpdate($scope.newEvent.chapter, false);
@@ -112,46 +119,22 @@ angular
       });
     };
 
-    // calendar options
-    $scope.format = 'MM/dd/yyyy';
-    $scope.startpopup = {
+    // Date time picker options
+    $scope.stPopup = {
       opened: false,
     };
 
-    $scope.startopen = function() {
-      $scope.startpopup.opened = true;
+    $scope.open = function() {
+      $scope.stPopup.opened = true;
     };
 
-    $scope.startDateOptions = {
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date(),
-      startingDay: 1,
-      showWeeks: false,
-    };
-
-    $scope.endpopup = {
+    $scope.etPopup = {
       opened: false,
     };
 
-    $scope.endopen = function() {
-      $scope.endpopup.opened = true;
+    $scope.open2 = function() {
+      $scope.etPopup.opened = true;
     };
-
-    $scope.endDateOptions = {
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date(),
-      startingDay: 1,
-      showWeeks: false,
-    };
-
-    $scope.today = function() {
-      //TODO: Check if the event date is actually set
-      var dateToday = new Date();
-      $scope.st = dateToday;
-      $scope.et = dateToday;
-    };
-
-    $scope.today();
 
     // event status radio data
     $scope.states = ['upcoming-open', 'upcoming-closed', 'in-session', 'past'];
@@ -165,6 +148,7 @@ angular
       $scope.newEvent.startTime = $scope.st.getTime();
       $scope.newEvent.endTime = $scope.et.getTime();
       $scope.newEvent.initiator = $rootScope.userId;
+      $scope.newEvent.address.state = $scope.newEvent.address.state.id
 
       if (!$scope.isEdit) {
         $scope.newEvent.status = 'upcoming-open';

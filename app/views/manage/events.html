@@ -8,7 +8,7 @@
   <h3>Manage Events</h3>
   <div style="clear: left; width: 100%; overflow: auto; margin-bottom:10px">
     <div class="toolbar-left" style="float: left">
-      <button class="btn btn-primary" ng-click="add()">Add New Event</button>
+      <button class="btn btn-primary btn-lg" ng-click="add()">Add New Event</button>
     </div>
     <div class="toolbar-right" style="float: right">
       Filter by:
@@ -17,7 +17,7 @@
 
   </div>
   <form class="form-horizontal">
-    <div class="form-group">
+    <div class="form-group" style="margin-left: 0px; margin-right: 0px;">
       <label class="control-label" for="fname">Search:</label>
       <div>
         <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="search()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 100 }'>
@@ -33,39 +33,31 @@
         </div>
         <div class="list-group">
           <div class="list-group-item">
-            <h6 class="list-group-item-text">Start Time</h6>
-            <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
+            <h6 class="list-group-item-text">Start Date</h6>
+            <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy h:mm a'}}</h4>
           </div>
           <div class="list-group-item">
-            <h6 class="list-group-item-text">End Time</h6>
-            <h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
+            <h6 class="list-group-item-text">End Date</h6>
+            <h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy h:mm a'}}</h4>
           </div>
           <div class="list-group-item">
             <h6 class="list-group-item-text">Location</h6>
-            <h4 class="list-group-item-heading">{{event.location}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.line1}}</h4>
+            <h4 class="list-group-item-heading" ng-show="event.address.line2">{{event.address.line2}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state}} {{event.address.zip}}</h4>
+            <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
           </div>
         </div>
         <div class="panel-footer">
-          <a class="btn btn-primary link_padding" ng-if="$root.userId === event.initiator" ng-click="edit(event)" style="margin-left: 8px;display:inline-block"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
-          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
-          <!--Object.keys(event.participants).length-->
-          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'volunteers')" style="margin-left: 8px;display:inline-block"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
-          <a class="btn btn-danger link_padding" ng-click="deleteEvent($index)" style="margin-left: 8px;display:inline-block">Delete</a>
+          <a class="btn btn-success link_padding" ng-if="$root.userId === event.initiator" ng-click="edit(event)" style="display:inline-block; width: 30%;"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
+          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
+          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'volunteers')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
+          <a class="btn btn-danger link_padding" ng-click="deleteEvent($index)" style="display:inline-block; width: 30%;">Delete</a>
         </div>
       </div>
       <!-- end panel -->
     </div>
     <!-- end event list -->
-
-    <!--<canvas id='signatureCanvas' width='300' height='180' style='border: 1px solid black;'></canvas>
-        <div class='button-bar'>
-            <a class='button button-energized' ng-click='clearCanvas()'>Clear</a>
-            <a class='button button-balanced' ng-click='saveCanvas()'>Sign</a>
-        </div>
-        <br>
-        <h3>{{msg}}</h3>-->
-    <!--<br>
-        <img ng-src='{{signature}}' /> {{id}}-->
   </div>
   <!-- end row -->
 </div>

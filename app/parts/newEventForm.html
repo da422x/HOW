@@ -26,14 +26,14 @@
       </div>
       <!-- Dropdown - Owner Name -->
       <div class="form-group" ng-hide="!isAdmin || !newEvent.eventOwner.key">
-        <label class="col-md-4 control-label" for="lname">Assigned Event Owner*</label>
+        <label class="col-md-4 control-label" for="lname">Event Owner*</label>
         <div class="col-md-7">
           <select id="owner" name="owner" class="form-control" ng-options="lead as lead.name for lead in eventOwnerList track by lead.name" ng-model="newEvent.eventOwner" ng-required="true"></select>
         </div>
       </div>
       <!-- Dropdown - Manager Name -->
       <div class="form-group" ng-hide="!newEvent.eventManager.key">
-        <label class="col-md-4 control-label" for="lname">Assigned Event Manager*</label>
+        <label class="col-md-4 control-label" for="lname">Event Manager*</label>
         <div class="col-md-7">
           <select id="manager" name="manager" class="form-control" ng-options="lead as lead.name for lead in eventManagerList track by lead.name" ng-model="newEvent.eventManager" ng-required="true"></select>
         </div>
@@ -42,31 +42,47 @@
       <div class="form-group">
         <label class="col-md-4 control-label" for="sdate">Start Date*</label>
         <div class="col-md-7">
-          <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="st" is-open="startpopup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="st" datetime-picker="MM/dd/yyyy h:mm a" is-open="stPopup.opened" ng-required="true">
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="startopen()"><i class="glyphicon glyphicon-calendar"></i></button>
+              <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
-          </p>
+          </div>
         </div>
       </div>
       <!-- Datepicker - End date/time -->
       <div class="form-group">
         <label class="col-md-4 control-label" for="edate">End Date*</label>
         <div class="col-md-7">
-          <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="et" is-open="endpopup.opened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="et" datetime-picker="MM/dd/yyyy h:mm a" is-open="etPopup.opened" ng-required="true">
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="endopen()"><i class="glyphicon glyphicon-calendar"></i></button>
+              <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
-          </p>
+          </div>
         </div>
       </div>
+      <!-- Location -->
       <div class="form-group">
-        <label class="col-md-4 control-label" for="location">Location*</label>
+        <label class="col-md-4 control-label" for="address">Location*</label>
         <div class="col-md-7">
-          <input id="location" name="location" type="text" class="form-control input-md" ng-model="newEvent.location" ng-required="true" placeholder="211 S Akard St, Dallas, Texas">
-          <p ng-show="eventForm.location.$invalid && !eventForm.location.$pristine" class="help-block">Enter a valid location.</p>
+          <input id="line1" name="line1" type="text" class="form-control" ng-model="newEvent.address.line1" ng-required="true" placeholder="Street 1" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block">Enter a valid Address.</p>
+          <input id="line2" name="line2" type="text" class="form-control" ng-model="newEvent.address.line2" ng-required="false" placeholder="Street 2" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block">Enter a valid Address.</p>
+        </div>
+        <label class="col-md-4 control-label" for="address"></label>
+        <div class="col-md-3" style="padding-right: 3px">
+          <input id="city" name="city" type="text" class="form-control" ng-model="newEvent.address.city" ng-required="true" placeholder="City">
+          <p ng-show="false" class="help-block"></p>
+        </div>
+        <div class="col-md-2" style="padding-right: 2px; padding-left: 2px;">
+          <select id="state" name="state" ng-options="state as state.id for state in stateIds" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state"></select>
+          <p ng-show="false" class="help-block"></p>
+        </div>
+        <div class="col-md-2" style="padding-left: 3px;">
+          <input id="zip" name="zip" type="text" class="form-control" ng-model="newEvent.address.zip" ng-required="true" placeholder="zip">
+          <p ng-show="false" class="help-block"></p>
         </div>
       </div>
       <!-- Text - Email -->
