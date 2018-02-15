@@ -34,7 +34,6 @@ angular
         if (data[0]) {
           $scope.eventList = [];
           _.each(data[0], function(val, idx) {
-
             var isParticipant = $scope.isUserParticipant(val);
             var isVolunteer = $scope.isUserVolunteer(val);
 
@@ -65,7 +64,7 @@ angular
           return;
         }
       });
-      return checkStatus
+      return checkStatus;
     };
 
     $scope.isUserVolunteer = function(vList) {
@@ -77,7 +76,7 @@ angular
           return;
         }
       });
-      return checkStatus
+      return checkStatus;
     };
 
     $scope.$on('updatePublicEventsPage', function() {
@@ -220,17 +219,18 @@ angular
     // };
 
     $scope.addVolunteer = function(key, idx) {
-
       if ($scope.allVolunteerIsDisableds[idx]['isDisabled'] !== true) {
-
         // Create volunteer object.
         var pObj = {
           key: userService.getId(),
-          guest: false
-        }
+          guest: false,
+        };
 
         // Check to see if volunteers list exists, and set default if it does not.
-        if (_.isEmpty($scope.eventList[key].volunteers) || _.isUndefined($scope.eventList[key].volunteers)) {
+        if (
+          _.isEmpty($scope.eventList[key].volunteers) ||
+          _.isUndefined($scope.eventList[key].volunteers)
+        ) {
           $scope.eventList[key].volunteers = [];
         }
 
@@ -248,23 +248,21 @@ angular
 
         // Change button.
         $scope.allVolunteerIsDisableds[idx]['isDisabled'] = true;
-
       } else {
-
         $scope.removeVolunteer(key, idx);
-
       }
-
     };
 
     $scope.removeVolunteer = function(key, idx) {
-      
       // Update current list.
       var userId = userService.getId();
-      $scope.eventList[key].volunteers = _.filter($scope.eventList[key].volunteers, function(par) {
-        return par.key !== userId;
-      });
-        
+      $scope.eventList[key].volunteers = _.filter(
+        $scope.eventList[key].volunteers,
+        function(par) {
+          return par.key !== userId;
+        }
+      );
+
       commonServices.updateData(
         'events/' + $scope.eventList[key].key + '/volunteers',
         $scope.eventList[key].volunteers
@@ -272,21 +270,21 @@ angular
 
       // Update button.
       $scope.allVolunteerIsDisableds[idx]['isDisabled'] = false;
-
     };
 
     $scope.addParticipant = function(key, idx) {
-
       if ($scope.allParticipantIsDisableds[idx]['isDisabled'] !== true) {
-
         // Create participant object.
         var pObj = {
           key: userService.getId(),
-          guest: false
-        }
+          guest: false,
+        };
 
         // Check to see if participant list exists, and set default if it does not.
-        if (_.isEmpty($scope.eventList[key].participants) || _.isUndefined($scope.eventList[key].participants)) {
+        if (
+          _.isEmpty($scope.eventList[key].participants) ||
+          _.isUndefined($scope.eventList[key].participants)
+        ) {
           $scope.eventList[key].participants = [];
         }
 
@@ -304,23 +302,21 @@ angular
 
         // Update button.
         $scope.allParticipantIsDisableds[idx]['isDisabled'] = true;
-
       } else {
-
         $scope.removeParticipant(key, idx);
-
       }
-
     };
 
     $scope.removeParticipant = function(key, idx) {
-
       // Update current list.
       var userId = userService.getId();
-      $scope.eventList[key].participants = _.filter($scope.eventList[key].participants, function(par) {
-        return par.key !== userId;
-      });
-        
+      $scope.eventList[key].participants = _.filter(
+        $scope.eventList[key].participants,
+        function(par) {
+          return par.key !== userId;
+        }
+      );
+
       commonServices.updateData(
         'events/' + $scope.eventList[key].key + '/participants',
         $scope.eventList[key].participants
@@ -328,7 +324,6 @@ angular
 
       // Update button.
       $scope.allParticipantIsDisableds[idx]['isDisabled'] = false;
-
     };
 
     //might need to move into
