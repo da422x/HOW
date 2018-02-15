@@ -40,7 +40,7 @@
         "ngmap": "1.17.8",
         "lodash": "4.17.4",
         "ng-pickadate": "0.3.1",
-        "bootstrap-ui-datetime-picker": "2.4.3",
+        "bootstrap-ui-datetime-picker": "2.6.0",
         "pdfmake": "0.1.20",
         "yadcf": "0.9.1",
         "chosen": "1.6.2",

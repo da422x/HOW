@@ -15,8 +15,7 @@
         <div style="flex-basis:45%">
           <label class="control-label">Lower bound:</label>
           <p class="input-group">
-            <input type="text" class="form-control" ng-model="dt" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup1.opened">
-            <!--uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />-->
+            <input type="text" class="form-control" ng-model="dt" datetime-picker="MM/dd/yyyy h:mm a" is-open="popup1.opened">
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
@@ -25,8 +24,7 @@
         <div style="flex-basis:45%">
           <label class="control-label">Upper bound:</label>
           <p class="input-group">
-            <input type="text" class="form-control" ng-model="dt2" datetime-picker="MM/dd/yyyy HH:mm" is-open="popup2.opened">
-            <!--uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />-->
+            <input type="text" class="form-control" ng-model="dt2" datetime-picker="MM/dd/yyyy h:mm a" is-open="popup2.opened">
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
@@ -51,15 +49,18 @@
         <div class="list-group">
           <div class="list-group-item">
             <h6 class="list-group-item-text">Start Time</h6>
-            <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
+            <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy hh:mm a'}}</h4>
           </div>
           <div class="list-group-item">
             <h6 class="list-group-item-text">End Time</h6>
-            <h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy HH:mm a'}}</h4>
+            <h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy hh:mm a'}}</h4>
           </div>
           <div class="list-group-item">
             <h6 class="list-group-item-text">Location</h6>
-            <h4 class="list-group-item-heading">{{event.location}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.line1}}</h4>
+            <h4 class="list-group-item-heading" ng-show="event.address.line2">{{event.address.line2}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state}} {{event.address.zip}}</h4>
+            <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
           </div>
         </div>
         <!--<div ng-if="userService.getRole()" class="panel-footer" style="height:55px">
