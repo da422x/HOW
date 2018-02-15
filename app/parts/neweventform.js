@@ -57,6 +57,14 @@ angular
 
       $scope.stateIds = $scope.siteData.states;
 
+      if (_.isUndefined($scope.newEvent.address) || _.isEmpty($scope.newEvent.address)) {
+        _.each($scope.stateIds, function(stateObj) {
+          if (stateObj.id === $scope.newEvent.address.state) {
+            $scope.newEvent.address.state = stateObj;
+          }
+        });
+      }
+
       // Update user lists.
       $scope.eventManagerUpdate($scope.newEvent.chapter, false);
     };
