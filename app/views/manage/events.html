@@ -44,7 +44,7 @@
             <h6 class="list-group-item-text">Location</h6>
             <h4 class="list-group-item-heading">{{event.address.line1}}</h4>
             <h4 class="list-group-item-heading" ng-show="event.address.line2">{{event.address.line2}}</h4>
-            <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state}} {{event.address.zip}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state.id}} {{event.address.zip}}</h4>
             <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
           </div>
         </div>

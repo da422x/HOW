@@ -57,14 +57,6 @@ angular
 
       $scope.stateIds = $scope.siteData.states;
 
-      if (_.isUndefined($scope.newEvent.address) || _.isEmpty($scope.newEvent.address)) {
-        _.each($scope.stateIds, function(stateObj) {
-          if (stateObj.id === $scope.newEvent.address.state) {
-            $scope.newEvent.address.state = stateObj;
-          }
-        });
-      }
-
       // Update user lists.
       $scope.eventManagerUpdate($scope.newEvent.chapter, false);
     };
@@ -155,7 +147,6 @@ angular
       $scope.newEvent.startTime = $scope.st.getTime();
       $scope.newEvent.endTime = $scope.et.getTime();
       $scope.newEvent.initiator = $rootScope.userId;
-      $scope.newEvent.address.state = $scope.newEvent.address.state.id;
 
       if (!$scope.isEdit) {
         $scope.newEvent.status = 'upcoming-open';
