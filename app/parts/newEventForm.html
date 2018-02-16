@@ -77,7 +77,7 @@
           <p ng-show="false" class="help-block"></p>
         </div>
         <div class="col-md-2" style="padding-right: 2px; padding-left: 2px;">
-          <select id="state" name="state" ng-options="state as state.id for state in stateIds" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state"></select>
+          <select id="state" name="state" ng-options="state as state.id for state in stateIds track by state.id" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state"></select>
           <p ng-show="false" class="help-block"></p>
         </div>
         <div class="col-md-2" style="padding-left: 3px;">

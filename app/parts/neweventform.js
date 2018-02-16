@@ -147,7 +147,6 @@ angular
       $scope.newEvent.startTime = $scope.st.getTime();
       $scope.newEvent.endTime = $scope.et.getTime();
       $scope.newEvent.initiator = $rootScope.userId;
-      $scope.newEvent.address.state = $scope.newEvent.address.state.id;
 
       if (!$scope.isEdit) {
         $scope.newEvent.status = 'upcoming-open';
