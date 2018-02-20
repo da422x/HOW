@@ -66,22 +66,15 @@
       <div class="form-group">
         <label class="col-md-4 control-label" for="address">Location*</label>
         <div class="col-md-7">
-          <input id="line1" name="line1" type="text" class="form-control" ng-model="newEvent.address.line1" ng-required="true" placeholder="Street 1" style="margin-bottom: 13px;">
+          <input id="line1" name="line1" type="text" class="form-control" ng-model="newEvent.address.line1" ng-required="true" placeholder="Street" style="margin-bottom: 13px;">
           <p ng-show="false" class="help-block">Enter a valid Address.</p>
-          <input id="line2" name="line2" type="text" class="form-control" ng-model="newEvent.address.line2" ng-required="false" placeholder="Street 2" style="margin-bottom: 13px;">
+          <input id="line2" name="line2" type="text" class="form-control" ng-model="newEvent.address.line2" ng-required="false" placeholder="APT / SUITE (Optional)" style="margin-bottom: 13px;">
           <p ng-show="false" class="help-block">Enter a valid Address.</p>
-        </div>
-        <label class="col-md-4 control-label" for="address"></label>
-        <div class="col-md-3" style="padding-right: 3px">
-          <input id="city" name="city" type="text" class="form-control" ng-model="newEvent.address.city" ng-required="true" placeholder="City">
+          <input id="city" name="city" type="text" class="form-control" ng-model="newEvent.address.city" ng-required="true" placeholder="City" style="margin-bottom: 13px;">
           <p ng-show="false" class="help-block"></p>
-        </div>
-        <div class="col-md-2" style="padding-right: 2px; padding-left: 2px;">
-          <select id="state" name="state" ng-options="state as state.id for state in stateIds track by state.id" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state"></select>
+          <select id="state" name="state" ng-options="state as state.id for state in stateIds track by state.id" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state" style="margin-bottom: 13px;"></select>
           <p ng-show="false" class="help-block"></p>
-        </div>
-        <div class="col-md-2" style="padding-left: 3px;">
-          <input id="zip" name="zip" type="text" class="form-control" ng-model="newEvent.address.zip" ng-required="true" placeholder="zip">
+          <input id="zip" name="zip" type="text" class="form-control" ng-model="newEvent.address.zip" ng-required="true" placeholder="Zip" style="margin-bottom: 13px;">
           <p ng-show="false" class="help-block"></p>
         </div>
       </div>
