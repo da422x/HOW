@@ -55,13 +55,19 @@
             <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state.id}} {{event.address.zip}}</h4>
             <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
           </div>
+          <div class="list-group-item">
+            <h6>Your Status:</h6>
+            <h4 ng-show="!allVolunteerIsDisableds[$index]['isDisabled'] && !allParticipantIsDisableds[$index]['isDisabled']">Not registered</h4>
+            <h4 ng-show="allParticipantIsDisableds[$index]['isDisabled']" style="color: green;">Registered Participant</h4>
+            <h4 ng-show="allVolunteerIsDisableds[$index]['isDisabled']" style="color: green;">Registered Volunteer</h4>
+          </div>
         </div>
         <div class="panel-footer">
-          <a class="btn btn-primary" style="display:inline-block; margin:2px" ng-click="showDescription(key)">More Details</a>
-          <a ng-if="userService.getRole()" style="display:inline-block; margin:2px" class="btn btn-primary" ng-click="addParticipant(key, $index)">
-            {{(allParticipantIsDisableds[$index]['isDisabled'])?'Registered To attend':'Attend'}}</a>
-          <a ng-if="userService.getRole() && userService.getRole()!=='Participant'" style="display:inline-block; margin:2px" class="btn btn-primary" ng-click="addVolunteer(key, $index)">
-            {{(allVolunteerIsDisableds[$index]['isDisabled'])?'Registered To Volunteer':'Volunteer'}}</a>
+          <a class="btn btn-primary" style="display:inline-block; margin:2px; width: 100%;" ng-click="showDescription(key)">More Details</a>
+          <a ng-if="userService.getRole() && !allParticipantIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-success" ng-click="addParticipant(key, $index)">Participate</a>
+          <a ng-if="userService.getRole() && allParticipantIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-danger" ng-click="addParticipant(key, $index)">Un-participate</a>
+          <a ng-if="userService.getRole() && userService.getRole()!=='Participant' && !allVolunteerIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-warning" ng-click="addVolunteer(key, $index)">Volunteer</a>
+          <a ng-if="userService.getRole() && userService.getRole()!=='Participant' && allVolunteerIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-danger" ng-click="addVolunteer(key, $index)">Un-volunteer</a>
         </div>
       </div>
     </div>
