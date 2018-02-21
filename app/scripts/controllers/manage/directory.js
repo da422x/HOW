@@ -233,6 +233,11 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               display: false,
+              validate: function(value) {
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 if (params.value !== '') {
                   var packet = params.value;
@@ -257,6 +262,11 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               display: false,
+              validate: function(value) {
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 if (params.value !== '') {
                   var packet = params.value;
@@ -399,6 +409,11 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               display: false,
+              validate: function(value) {
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 if (params.value !== '') {
                   var packet = params.value;
@@ -442,6 +457,11 @@ angular
                     placement: 'bottom',
                     emptytext: 'none',
                     display: false,
+                    validate: function(value) {
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
+                      }
+                    },
                     url: function(params) {
                       if (params.value !== '') {
                         var packet = params.value;
@@ -472,6 +492,11 @@ angular
                     placement: 'bottom',
                     emptytext: 'none',
                     display: false,
+                    validate: function(value) {
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
+                      }
+                    },
                     url: function(params) {
                       if (params.value !== '') {
                         var packet = params.value;
@@ -687,6 +712,11 @@ angular
                     placement: 'bottom',
                     emptytext: 'none',
                     display: false,
+                    validate: function(value) {
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
+                      }
+                    },
                     url: function(params) {
                       if (params.value !== '') {
                         var packet = params.value;
