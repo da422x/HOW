@@ -204,6 +204,11 @@ angular
               name: 'Chapter Name',
               placement: 'bottom',
               emptytext: 'none',
+              validate: function(value) {
+                if($.trim(value) == '') {
+                    return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 // There always needs to be a default chapter....
                 if ($scope.currId === '-KvEej0qnrUczGhOxi5H') {
@@ -261,6 +266,11 @@ angular
               name: 'Chapter Description',
               placement: 'bottom',
               emptytext: 'none',
+              validate: function(value) {
+                if($.trim(value) == '') {
+                    return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 var path =
                   'Regions/' +
@@ -280,6 +290,11 @@ angular
               name: 'Chapter Admin',
               placement: 'bottom',
               emptytext: 'none',
+              validate: function(value) {
+                if($.trim(value) == '') {
+                    return 'Invalid Entry';
+                }
+              },
               url: function(params) {
                 var path =
                   'Regions/' +

@@ -22,22 +22,27 @@ angular
   ) {
     'use strict';
 
+    $scope.profileData = {};
+
     $scope.$on('updateProfile', function(event, arg) {
       if (arg) {
-        $scope.update();
+        $scope.update(false);
       }
     });
 
     $scope.$on('modalClosing', function() {
-      $scope.update();
+      $scope.update(false);
     });
 
-    $scope.update = function() {
+    $scope.update = function(canApply) {
       $scope.profileData = userService.getUserData();
       $scope.profileData.years = parseInt($scope.profileData.years);
       $scope.profileData.role = userService.getRole();
       $scope.userUID = userService.getId();
       $scope.addEditableListeners();
+      if (canApply) {
+        $scope.$apply();
+      }
     };
 
     $scope.open = function($event, elementOpened) {
@@ -157,7 +162,7 @@ angular
         controller: 'RoleRequestChangeFormCtrl as rrcf',
       });
       if (!modalInstance) {
-        $scope.update();
+        $scope.update(true);
       }
     };
 
@@ -192,10 +197,15 @@ angular
         emptytext: 'null',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'name.first');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -206,10 +216,15 @@ angular
         emptytext: 'null',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'name.last');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -230,7 +245,7 @@ angular
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'DOB');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -244,7 +259,7 @@ angular
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'gender');
-            $scope.update();
+            $scope.update(true);
           }
         },
         source: function() {
@@ -258,10 +273,15 @@ angular
         emptytext: 'null',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.line1');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -272,10 +292,15 @@ angular
         emptytext: 'none',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.line2');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -286,10 +311,15 @@ angular
         emptytext: 'null',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.city');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -303,7 +333,7 @@ angular
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.state');
-            $scope.update();
+            $scope.update(true);
           }
         },
         source: function() {
@@ -323,7 +353,7 @@ angular
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'address.zip');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -340,7 +370,7 @@ angular
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'phone');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -351,10 +381,15 @@ angular
         emptytext: 'null',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'branch');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
@@ -366,10 +401,15 @@ angular
         tpl: '<input>',
         display: false,
         value: '',
+        validate: function(value) {
+          if($.trim(value) == '') {
+              return 'Invalid Entry';
+          }
+        },
         url: function(params) {
           if (params.value !== '') {
             $scope.saveUserData(params.value, 'years');
-            $scope.update();
+            $scope.update(true);
           }
         },
       });
