@@ -198,8 +198,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -217,8 +217,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -274,8 +274,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -293,8 +293,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -312,8 +312,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -382,8 +382,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {
@@ -402,8 +402,8 @@ angular
         display: false,
         value: '',
         validate: function(value) {
-          if($.trim(value) == '') {
-              return 'Invalid Entry';
+          if ($.trim(value) == '') {
+            return 'Invalid Entry';
           }
         },
         url: function(params) {

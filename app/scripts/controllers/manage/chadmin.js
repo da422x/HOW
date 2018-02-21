@@ -205,8 +205,8 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {
@@ -267,8 +267,8 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {
@@ -291,8 +291,8 @@ angular
               placement: 'bottom',
               emptytext: 'none',
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {

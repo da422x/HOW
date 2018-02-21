@@ -234,8 +234,8 @@ angular
               emptytext: 'none',
               display: false,
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {
@@ -263,8 +263,8 @@ angular
               emptytext: 'none',
               display: false,
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {
@@ -410,8 +410,8 @@ angular
               emptytext: 'none',
               display: false,
               validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Invalid Entry';
+                if ($.trim(value) == '') {
+                  return 'Invalid Entry';
                 }
               },
               url: function(params) {
@@ -458,8 +458,8 @@ angular
                     emptytext: 'none',
                     display: false,
                     validate: function(value) {
-                      if($.trim(value) == '') {
-                          return 'Invalid Entry';
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
                       }
                     },
                     url: function(params) {
@@ -493,8 +493,8 @@ angular
                     emptytext: 'none',
                     display: false,
                     validate: function(value) {
-                      if($.trim(value) == '') {
-                          return 'Invalid Entry';
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
                       }
                     },
                     url: function(params) {
@@ -713,8 +713,8 @@ angular
                     emptytext: 'none',
                     display: false,
                     validate: function(value) {
-                      if($.trim(value) == '') {
-                          return 'Invalid Entry';
+                      if ($.trim(value) == '') {
+                        return 'Invalid Entry';
                       }
                     },
                     url: function(params) {
