@@ -81,6 +81,15 @@ angular.module('ohanaApp').service('commonServices', [
         });
     };
 
+    this.sendEmailVerificationRequest = function() {
+      var user = firebase.auth().currentUser;
+      user
+        .sendEmailVerification()
+        .catch(function(error) {
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
     // Signs out current user.
     this.signout = function() {
       firebase

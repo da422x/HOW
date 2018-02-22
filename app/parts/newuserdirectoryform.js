@@ -143,7 +143,8 @@ angular
         $q.all([results]).then(function(data) {
           if (data[0]) {
             swal({
-              text: 'User added!',
+              title: 'Email Verification Needed',
+              text: 'Account creation was succesful, to proceed to the Heroes On the Water Website please check your email (' + packet.email + ') and follow the email verification steps.',
               type: 'success',
             }).then(function() {
               if ($scope.newUserDirectory.volunteer) {
@@ -171,7 +172,12 @@ angular
 
             //howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
             $uibModalInstance.close();
-            window.location.replace('#/home');
+            window.location.replace('#/login');
+
+            // Sign user out and send email Verification request.
+            commonServices.sendEmailVerificationRequest();
+            commonServices.signout();
+
           } else {
             // Do something here when sign in unsuccessful....
             swal({
