@@ -52,6 +52,13 @@ angular
       $scope.opened[elementOpened] = !$scope.opened[elementOpened];
     };
 
+    $scope.changePassword = function() {
+      var modalInstance = $uibModal.open({
+        templateUrl: '/parts/changePassword.html',
+        controller: 'changePassword'
+      });
+    };
+
     $scope.saveUserData = function(value, typeOfData) {
       var firebaseTable = null;
       switch (typeOfData) {
