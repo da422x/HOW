@@ -144,7 +144,10 @@ angular
           if (data[0]) {
             swal({
               title: 'Email Verification Needed',
-              text: 'Account creation was succesful, to proceed to the Heroes On the Water Website please check your email (' + packet.email + ') and follow the email verification steps.',
+              text:
+                'Account creation was succesful, to proceed to the Heroes On the Water Website please check your email (' +
+                packet.email +
+                ') and follow the email verification steps.',
               type: 'success',
             }).then(function() {
               if ($scope.newUserDirectory.volunteer) {
@@ -177,7 +180,6 @@ angular
             // Sign user out and send email Verification request.
             commonServices.sendEmailVerificationRequest();
             commonServices.signout();
-
           } else {
             // Do something here when sign in unsuccessful....
             swal({

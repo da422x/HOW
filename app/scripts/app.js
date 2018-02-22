@@ -199,24 +199,24 @@ angular
      ***********************************/
 
     // Test 2 (Current test DB).
-    // var config = {
-    //   apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
-    //   authDomain: 'herosonthewatertest2.firebaseapp.com',
-    //   databaseURL: 'https://herosonthewatertest2.firebaseio.com',
-    //   projectId: 'herosonthewatertest2',
-    //   storageBucket: 'herosonthewatertest2.appspot.com',
-    //   messagingSenderId: '569173546476',
-    // };
+    var config = {
+      apiKey: 'AIzaSyCCBKaq_W1XMDeAi0A7IjqjbTl0Svr7u78',
+      authDomain: 'herosonthewatertest2.firebaseapp.com',
+      databaseURL: 'https://herosonthewatertest2.firebaseio.com',
+      projectId: 'herosonthewatertest2',
+      storageBucket: 'herosonthewatertest2.appspot.com',
+      messagingSenderId: '569173546476',
+    };
 
     // Production 2 (Current production DB)
-    var config = {
-      apiKey: "AIzaSyDdII6WDs5CRNriyVoNQffMbwDzhdXyxKY",
-      authDomain: "heroesonthewaterproduction2.firebaseapp.com",
-      databaseURL: "https://heroesonthewaterproduction2.firebaseio.com",
-      projectId: "heroesonthewaterproduction2",
-      storageBucket: "heroesonthewaterproduction2.appspot.com",
-      messagingSenderId: "377099176239"
-    };
+    // var config = {
+    //   apiKey: "AIzaSyDdII6WDs5CRNriyVoNQffMbwDzhdXyxKY",
+    //   authDomain: "heroesonthewaterproduction2.firebaseapp.com",
+    //   databaseURL: "https://heroesonthewaterproduction2.firebaseio.com",
+    //   projectId: "heroesonthewaterproduction2",
+    //   storageBucket: "heroesonthewaterproduction2.appspot.com",
+    //   messagingSenderId: "377099176239"
+    // };
 
     /***********************************
      *    Firebase DB API's - End      *
@@ -295,6 +295,7 @@ angular
         );
 
         $q.all([currentUserData, currentUserRole]).then(function(data) {
+          // Initialize Variables.
           var userData = data[0];
           var userSecData = data[1];
 
@@ -342,15 +343,18 @@ angular
           }
         });
       } else if (user) {
-
         // User needs to verify email before accessing application.
-        swal('Email Verification Needed', 'Email Verification still pending, please check your email (' + user.email  + ') for a notification and follow the instructions provided to verify your email.');
+        swal(
+          'Email Verification Needed',
+          'Email Verification still pending, please check your email (' +
+            user.email +
+            ') for a notification and follow the instructions provided to verify your email.'
+        );
         commonServices.sendEmailVerificationRequest();
         $rootScope.sessionState = false;
         window.location.replace('#/login');
         commonServices.signout();
-
-      }else {
+      } else {
         // Set session variables to empty, and false when user logs out
         userService.setRole('');
         userService.setUserData('');
