@@ -273,7 +273,6 @@ angular
         });
       });
 
-      console.log($rootScope.siteData);
     });
 
     /***************************************
@@ -285,45 +284,68 @@ angular
      ***************************************/
 
     $rootScope.authObj.$onAuthStateChanged(function(user) {
+
       if (user) {
+
         // Get Userid and Role.
         var currentUserId = firebase.auth().currentUser.uid;
         var currentUserData = commonServices.getData(
           '/userData/' + currentUserId
         );
+
         var currentUserRole = commonServices.getData(
-          '/userRoles/' + currentUserId + '/role/'
+          '/userRoles/' + currentUserId
         );
 
         $q.all([currentUserData, currentUserRole]).then(function(data) {
+
           var userData = data[0];
-          var userRole = data[1];
+          var userSecData = data[1];
 
-          // temporary for debugging displays user logged in.
-          console.log('Logged in!');
-          console.log('UID: ' + currentUserId);
-          console.log(
-            'Name: ' + userData.name.first + ' ' + userData.name.last
-          );
-          console.log('Email: ' + userData.email);
-          console.log('Chapter: ' + userData.Chapter.text);
-          console.log('Role: ' + userRole);
+          if (!_.isNull(userSecData) && userSecData.active) {
 
-          // Setting session variables.
-          userService.setUserEmail(userData.email);
-          userService.setRole(userRole);
-          userService.setUserData(userData);
-          userService.setUserName(userData.name.first, userData.name.last);
-          userService.setId(currentUserId);
-          userService.setChapter(userData.Chapter);
-          $rootScope.sessionState = true;
+            // Setting session variables.
+            userService.setUserEmail(userData.email);
+            userService.setRole(userSecData.role);
+            userService.setUserData(userData);
+            userService.setUserName(userData.name.first, userData.name.last);
+            userService.setId(currentUserId);
+            userService.setChapter(userData.Chapter);
+            $rootScope.sessionState = true;
 
-          // Signals role change to nav.
-          $rootScope.$broadcast('changeSessionUserRole', userRole);
-          $rootScope.$broadcast('changeSessionState', true);
+            // Signals role change to nav.
+            $rootScope.$broadcast('changeSessionUserRole', userSecData.role);
+            $rootScope.$broadcast('changeSessionState', true);
+
+          } else {
+
+            var statusMessage = '';
+
+            if (data[0]) {
+              statusMessage += 'Account associated with email: ' + userData.email + ', is currently inactive. Please contact administrator via email to have account activated.';
+            } else {
+              statusMessage += 'Account associated with email: ' + firebase.auth().currentUser.email + ', does not have any User Data, Please contact administrator to fix.'
+            }
+
+            swal('Account Suspended', statusMessage, 'error');
+
+            // Set session variables to empty, and false when user logs out
+            userService.setRole('');
+            userService.setUserData('');
+            userService.setUserName('', '');
+            userService.setId('');
+            userService.setChapter('');
+
+            // Log user out of application.
+            $rootScope.sessionState = false;
+            window.location.replace('#/login');
+            commonServices.signout();
+
+          }
+
         });
+
       } else {
-        console.log('Logged Out...');
 
         // Set session variables to empty, and false when user logs out
         userService.setRole('');
@@ -331,7 +353,9 @@ angular
         userService.setUserName('', '');
         userService.setId('');
         userService.setChapter('');
+
       }
+
     });
 
     /***************************************
