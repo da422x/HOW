@@ -272,7 +272,6 @@ angular
           chapters: chaptersByRegion,
         });
       });
-
     });
 
     /***************************************
@@ -284,9 +283,7 @@ angular
      ***************************************/
 
     $rootScope.authObj.$onAuthStateChanged(function(user) {
-
       if (user) {
-
         // Get Userid and Role.
         var currentUserId = firebase.auth().currentUser.uid;
         var currentUserData = commonServices.getData(
@@ -298,12 +295,10 @@ angular
         );
 
         $q.all([currentUserData, currentUserRole]).then(function(data) {
-
           var userData = data[0];
           var userSecData = data[1];
 
           if (!_.isNull(userSecData) && userSecData.active) {
-
             // Setting session variables.
             userService.setUserEmail(userData.email);
             userService.setRole(userSecData.role);
@@ -316,15 +311,19 @@ angular
             // Signals role change to nav.
             $rootScope.$broadcast('changeSessionUserRole', userSecData.role);
             $rootScope.$broadcast('changeSessionState', true);
-
           } else {
-
             var statusMessage = '';
 
             if (data[0]) {
-              statusMessage += 'Account associated with email: ' + userData.email + ', is currently inactive. Please contact administrator via email to have account activated.';
+              statusMessage +=
+                'Account associated with email: ' +
+                userData.email +
+                ', is currently inactive. Please contact administrator via email to have account activated.';
             } else {
-              statusMessage += 'Account associated with email: ' + firebase.auth().currentUser.email + ', does not have any User Data, Please contact administrator to fix.'
+              statusMessage +=
+                'Account associated with email: ' +
+                firebase.auth().currentUser.email +
+                ', does not have any User Data, Please contact administrator to fix.';
             }
 
             swal('Account Suspended', statusMessage, 'error');
@@ -340,22 +339,16 @@ angular
             $rootScope.sessionState = false;
             window.location.replace('#/login');
             commonServices.signout();
-
           }
-
         });
-
       } else {
-
         // Set session variables to empty, and false when user logs out
         userService.setRole('');
         userService.setUserData('');
         userService.setUserName('', '');
         userService.setId('');
         userService.setChapter('');
-
       }
-
     });
 
     /***************************************
