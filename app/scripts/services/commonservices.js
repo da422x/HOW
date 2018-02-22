@@ -27,14 +27,13 @@ angular.module('ohanaApp').service('commonServices', [
         .then(function() {
           var userId = firebase.auth().currentUser.uid;
           user.key = userId;
-          console.log('success : user registered');
           delete user.Chapter.$$hashKey;
+          delete user.password;
           return firebase
             .database()
             .ref('/userData/' + userId)
             .set(user)
             .then(function(data) {
-              console.log('success : user data added');
               firebase
                 .database()
                 .ref('/userRoles/' + userId)
@@ -66,9 +65,6 @@ angular.module('ohanaApp').service('commonServices', [
         .signInWithEmailAndPassword(user.email, user.password)
         .then(function(data) {
           $rootScope.sessionState = true;
-          console.log(
-            'success : ' + firebase.auth().currentUser.email + ' signed In'
-          );
           return {
             type: 'SUCCESS',
           };
@@ -85,13 +81,19 @@ angular.module('ohanaApp').service('commonServices', [
         });
     };
 
+    this.sendEmailVerificationRequest = function() {
+      var user = firebase.auth().currentUser;
+      user.sendEmailVerification().catch(function(error) {
+        console.log('ERROR: ' + error.code + ': ' + error.message);
+      });
+    };
+
     // Signs out current user.
     this.signout = function() {
       firebase
         .auth()
         .signOut()
         .then(function(data) {
-          console.log('success : Signed out');
           $rootScope.userData = {};
           $rootScope.userRole = {};
         })
@@ -108,7 +110,6 @@ angular.module('ohanaApp').service('commonServices', [
         .auth()
         .sendPasswordResetEmail(user.email)
         .then(function(data) {
-          console.log('success : password reset sent');
           return true;
         })
         .catch(function(error) {
@@ -166,7 +167,7 @@ angular.module('ohanaApp').service('commonServices', [
         .ref(path)
         .set(data)
         .then(function(data) {
-          console.log('success : data set');
+          // Do nothing.
         })
         .catch(function(error) {
           var errorCode = error.code;
@@ -183,7 +184,6 @@ angular.module('ohanaApp').service('commonServices', [
         .push(data)
         .once('value')
         .then(function(snapshot) {
-          console.log('success : data pushed');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -210,7 +210,7 @@ angular.module('ohanaApp').service('commonServices', [
         .ref()
         .update(updates)
         .then(function(data) {
-          console.log('success : data updated');
+          // Do nothing.
         })
         .catch(function(error) {
           var errorCode = error.code;
@@ -226,7 +226,7 @@ angular.module('ohanaApp').service('commonServices', [
         .ref(path)
         .remove()
         .then(function(data) {
-          console.log('success : data Deleted');
+          // Do nothing.
         })
         .catch(function(error) {
           var errorCode = error.code;
@@ -279,7 +279,6 @@ angular.module('ohanaApp').service('commonServices', [
         .ref('events')
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -305,7 +304,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(event.name)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -332,7 +330,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(chapterKey)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -351,7 +348,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(fname)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -370,7 +366,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(lname)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -389,7 +384,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(email)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -408,7 +402,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(phone)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
@@ -501,7 +494,6 @@ angular.module('ohanaApp').service('commonServices', [
         .equalTo(userId)
         .once('value')
         .then(function(snapshot) {
-          console.log('Data received');
           return snapshot.val();
         })
         .catch(function(error) {
