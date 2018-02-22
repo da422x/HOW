@@ -55,7 +55,7 @@ angular
     $scope.changePassword = function() {
       var modalInstance = $uibModal.open({
         templateUrl: '/parts/changePassword.html',
-        controller: 'changePassword'
+        controller: 'changePassword',
       });
     };
 

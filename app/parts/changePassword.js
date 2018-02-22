@@ -24,13 +24,10 @@ angular
     };
 
     $scope.changePassword = function(userPass) {
+      // Change password request.
+      commonServices.changeUserPassword(userPass);
 
-        // Change password request.
-        commonServices.changeUserPassword(userPass);
-        
-        // Close modal.
-        $scope.cancel()
-
+      // Close modal.
+      $scope.cancel();
     };
-
   });

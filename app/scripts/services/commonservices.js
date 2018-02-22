@@ -108,14 +108,19 @@ angular.module('ohanaApp').service('commonServices', [
     // Update users password in firebase.
     this.changeUserPassword = function(userPass) {
       var user = firebase.auth().currentUser;
-      return user.updatePassword(userPass)
-      .then(function() {
-        swal('Success', 'Password Updated!', 'success');
-      })
-      .catch(function(error) {
-        console.log('ERROR: ' + error.code + ': ' + error.message);
-        swal('Error', 'Password change unsuccessful, please sign out and back in again, then change password', 'error');
-      });
+      return user
+        .updatePassword(userPass)
+        .then(function() {
+          swal('Success', 'Password Updated!', 'success');
+        })
+        .catch(function(error) {
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+          swal(
+            'Error',
+            'Password change unsuccessful, please sign out and back in again, then change password',
+            'error'
+          );
+        });
     };
 
     // Sends code needed for password reset to users email.
