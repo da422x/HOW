@@ -81,6 +81,7 @@ angular.module('ohanaApp').service('commonServices', [
         });
     };
 
+    // Send email verification to user.
     this.sendEmailVerificationRequest = function() {
       var user = firebase.auth().currentUser;
       user.sendEmailVerification().catch(function(error) {
@@ -101,6 +102,24 @@ angular.module('ohanaApp').service('commonServices', [
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
+    // Update users password in firebase.
+    this.changeUserPassword = function(userPass) {
+      var user = firebase.auth().currentUser;
+      return user
+        .updatePassword(userPass)
+        .then(function() {
+          swal('Success', 'Password Updated!', 'success');
+        })
+        .catch(function(error) {
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+          swal(
+            'Error',
+            'Password change unsuccessful, please sign out and back in again, then change password',
+            'error'
+          );
         });
     };
 
