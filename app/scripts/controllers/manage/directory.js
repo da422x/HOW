@@ -47,6 +47,8 @@ angular
 
         $scope.membersTable = $('#membersTable').DataTable({
           data: dataSet,
+          iDisplayLength: 5,
+          aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'All']],
           columns: [
             {},
             {
