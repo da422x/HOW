@@ -243,3 +243,7 @@ a:visited {
 .request_details_section {
   margin-left: 5px;
 }
+
+.child {
+  word-break: break-all;
+}

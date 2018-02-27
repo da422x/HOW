@@ -98,37 +98,49 @@
   <div id="menu" ng-show="menuActive" class="fadein fadeout">
     <div class="menulinks">
       <a ng-href="#/home" ng-click="dismissMenu()">
-        <h3>HOME</h3>
+        <h2>HOME</h2>
       </a>
+      <hr />
       <div ng-switch="sessionUserRole">
         <div ng-switch-when="National Staff">
           <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-            <h3>{{nav.text}}</h3>
+            <h4>{{nav.text}}</h4>
           </a>
+          <hr />
         </div>
         <div ng-switch-when="Chapter Lead">
           <a ng-repeat="nav in ltmNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-            <h3>{{nav.text}}</h3>
+            <h4>{{nav.text}}</h4>
           </a>
+          <hr />
         </div>
         <div ng-switch-when="Volunteer">
           <a ng-repeat="nav in volunteerNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-            <h3>{{nav.text}}</h3>
+            <h4>{{nav.text}}</h4>
           </a>
+          <hr />
         </div>
         <div ng-switch-when="Participant">
           <a ng-repeat="nav in participantNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
-            <h3>{{nav.text}}</h3>
+            <h4>{{nav.text}}</h4>
+          </a>
+          <hr />
+        </div>
+        <div>
+          <a href="#/whoweare" ng-click="dismissMenu()">
+            <h4>Who We Are</h4>
+          </a>
+          <a href="#/getinvolved" ng-click="dismissMenu()">
+            <h4>Get Involved</h4>
           </a>
         </div>
+        <hr />
       </div>
       <div ng-show="sessionUserRole">
-        <hr />
         <a href="#" ng-click="logout()">
-          <h3>Sign Out</h3>
+          <h2>Log Out</h2>
         </a>
       </div>
-      <hr />
       <div class="loggedout" ng-hide="sessionState">
         <a ng-href="{{rightnav[0].state}}" ng-click="dismissMenu()">
           <h2>{{rightnav[0].text}}</h2>
