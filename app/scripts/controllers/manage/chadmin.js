@@ -49,6 +49,8 @@ angular
         $scope.chaptersTable = $('#chaptersTable').DataTable({
           // ajax: 'testData/members.json',
           data: dataSet,
+          iDisplayLength: 5,
+          aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'All']],
           columns: [
             {},
             {
