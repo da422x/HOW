@@ -141,6 +141,7 @@ angular
         var results = commonServices.register(packet);
 
         $q.all([results]).then(function(data) {
+
           if (data[0]) {
             swal({
               title: 'Email Verification Needed',
@@ -177,16 +178,15 @@ angular
             $uibModalInstance.close();
             window.location.replace('#/login');
 
-            // Sign user out and send email Verification request.
-            commonServices.sendEmailVerificationRequest();
-            commonServices.signout();
           } else {
+
             // Do something here when sign in unsuccessful....
             swal({
               text: 'Error submitting data. Please try again',
               type: 'error',
               timer: 2500,
             });
+            
           }
         });
       }

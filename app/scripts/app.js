@@ -312,9 +312,26 @@ angular
             // Signals role change to nav.
             $rootScope.$broadcast('changeSessionUserRole', userSecData.role);
             $rootScope.$broadcast('changeSessionState', true);
-          } else {
-            var statusMessage = '';
+          } else if (_.isNull(userSecData)) {
+            // Set users base role data
+            commonServices.addBaseUserRole();
 
+            // Setting session variables.
+            userService.setUserEmail(userData.email);
+            userService.setRole('Participant');
+            userService.setUserData(userData);
+            userService.setUserName(userData.name.first, userData.name.last);
+            userService.setId(currentUserId);
+            userService.setChapter(userData.Chapter);
+            $rootScope.sessionState = true;
+
+            // Signals role change to nav.
+            $rootScope.$broadcast('changeSessionUserRole', userService.getRole);
+            $rootScope.$broadcast('changeSessionState', true);
+          } else {
+
+            // Alert user that there account as been disabled.
+            var statusMessage = '';
             if (data[0]) {
               statusMessage +=
                 'Account associated with email: ' +
