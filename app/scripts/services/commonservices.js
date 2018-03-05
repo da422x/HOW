@@ -72,7 +72,6 @@ angular.module('ohanaApp').service('commonServices', [
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log('ERROR: ' + error.code + ': ' + error.message);
-          return false;
         });
     };
 

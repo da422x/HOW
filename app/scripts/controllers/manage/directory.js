@@ -154,7 +154,7 @@ angular
             $(row)
               .children()
               .eq(5)
-              .addClass('tdEmail')
+              .addClass('tdEmail');
             $(row)
               .children()
               .eq(6)

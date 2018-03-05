@@ -329,7 +329,6 @@ angular
             $rootScope.$broadcast('changeSessionUserRole', userService.getRole);
             $rootScope.$broadcast('changeSessionState', true);
           } else {
-
             // Alert user that there account as been disabled.
             var statusMessage = '';
             if (data[0]) {
