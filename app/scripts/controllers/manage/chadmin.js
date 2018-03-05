@@ -131,15 +131,18 @@ angular
             $(row)
               .children()
               .eq(1)
-              .addClass('tdCName');
+              .addClass('tdCName')
+              .css('word-break', 'break-word');
             $(row)
               .children()
               .eq(2)
-              .addClass('tdDescription');
+              .addClass('tdDescription')
+              .css('word-break', 'break-word');
             $(row)
               .children()
               .eq(3)
-              .addClass('tdChapterAdmin');
+              .addClass('tdChapterAdmin')
+              .css('word-break', 'break-word');
             $(row)
               .children()
               .eq(4)
@@ -155,7 +158,7 @@ angular
             $(row)
               .children()
               .eq(7)
-              .addClass('tdEmail'); // email checking disabled
+              .addClass('tdEmail');
             for (i = 1; i < 7; i++) {
               if (i != 4 && i != 5 && i != 6) {
                 $(row)

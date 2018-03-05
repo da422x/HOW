@@ -58,6 +58,23 @@ angular.module('ohanaApp').service('commonServices', [
         });
     };
 
+    // Sets what ever user is logged in as to participant.
+    this.addBaseUserRole = function() {
+      var userId = firebase.auth().currentUser.uid;
+      firebase
+        .database()
+        .ref('/userRoles/' + userId)
+        .set({
+          role: 'Participant',
+          active: true,
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('ERROR: ' + error.code + ': ' + error.message);
+        });
+    };
+
     // Signs in existing user into the application, requires valid email and password.
     this.signin = function(user) {
       return firebase

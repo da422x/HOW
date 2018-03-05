@@ -176,10 +176,6 @@ angular
             //howLogService.logPrimaryChapterChange(packet.name.first + ' ' + packet.name.last, false, false, packet.Chapter);
             $uibModalInstance.close();
             window.location.replace('#/login');
-
-            // Sign user out and send email Verification request.
-            commonServices.sendEmailVerificationRequest();
-            commonServices.signout();
           } else {
             // Do something here when sign in unsuccessful....
             swal({
