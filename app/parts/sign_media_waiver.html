@@ -1,0 +1,95 @@
+<!-- start modal-header -->
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title"> Media Release Waiver</h4>
+</div>
+<!-- end modal-header -->
+
+<!-- start modal body -->
+<div class="modal-body">
+
+  I hereby authorize and give my <b>full consent</b> to Heroes on the Water to copyright and/or publish any and all photographs, videotapes, film, web casts/podcasts, and any other form of visual/audio communications in which I appear while attending any Heroes on the Water event. I further agree that Heroes on the Water may transfer, use or cause to be used, these above mentioned communications for any exhibitions, public displays, publications, and television programs <b> without limitations or reservations.</b>
+
+
+
+  <form name="userForm" class="form-horizontal" ng-submit="submitData(userForm)" novalidate style="overflow-y: auto; overflow-x: hidden;">
+    <fieldset>
+      <div>
+        <input ng-class="{'highlight_field': submitted && userForm.terms.$invalid}" type="checkbox" id="terms" name="terms" value="terms" ng-model="waiverForm.terms" required>
+        <label for="terms">I have read all terms and agreements.</label>
+        <p ng-show="submitted && userForm.terms.$error.required" class="help-block">You must agree to all terms and conditions.</p>
+      </div>
+
+      <div class="col-md-12">
+        <legend>Participant/Volunteer</legend>
+        <div class="form-group">
+
+          <label for="author_name">Name</label>
+
+          <input ng-class="{'highlight_field': submitted && userForm.author_name.$invalid}" class="form-control" type="text" id="author_name" name="author_name" ng-model="waiverForm.name" required>
+          <p ng-show="submitted && userForm.author_name.$error.required" class="help-block">Full name required.</p>
+
+
+        </div>
+        <div class="form-group">
+          <label for="author_date">Date</label>
+          <input type="text" class="form-control" name="author_date" ng-model="waiverForm.date" datetime-picker="MM/dd/yyyy h:mm a" is-open="datePopup.opened" ng-required="true">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+          <p ng-show="submitted && userForm.author_date.$error.required" class="help-block">Date is required.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" ng-class="{'highlight_field': submitted && userForm.email.$invalid}" class="form-control input-md" ng-model="waiverForm.email" required>
+          <p ng-show="submitted && userForm.email.$error.required" class="help-block">Email address is required.</p>
+          <p ng-show="userForm.email.$error.email" class="help-block">Valid email format required. (test@test.com)</p>
+        </div>
+        <!-- Phone # -->
+        <div class="form-group">
+          <label class="control-label" for="phonenum">Phone #</label>
+          <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" ng-class="{'highlight_field': submitted && userForm.phonenum.$invalid}" class="form-control input-md mask" ng-model="waiverForm.phone" ng-minlength="13" ng-maxlength="13" required>
+          <p ng-show="submitted && userForm.phonenum.$error.required" class="help-block">Phone number is required.</p>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-12">
+        <legend>Witness</legend>
+        <div class="form-group">
+          <label for="witness_name">Name</label>
+          <input ng-class="{'highlight_field': submitted && userForm.witness_name.$invalid}" class="form-control" type="text" id="witness_name" name="witness_name" ng-model="waiverForm.witnessName" required>
+          <p ng-show="submitted && userForm.witness_name.$error.required" class="help-block">Witness name is required.</p>
+        </div>
+        <div class="form-group">
+          <label for="witness_date">Date</label>
+          <input type="text" class="form-control" name="witness_date" ng-model="waiverForm.witnessDate" datetime-picker="MM/dd/yyyy h:mm a" is-open="witnessDate.opened" ng-required="true">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openWitnessDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+          <p ng-show="submitted && userForm.witness_date.$error.required" class="help-block">Date is required.</p>
+
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="email">Email</label>
+          <input id="witnessEmail" name="witnessEmail" type="email" placeholder="johndoe@heroesonthewater.org" ng-class="{'highlight_field': submitted && userForm.witnessEmail.$invalid}" class="form-control input-md" ng-model="waiverForm.witnessEmail" required>
+          <p ng-show="submitted && userForm.witnessEmail.$error.required" class="help-block">Email address is required.</p>
+          <p ng-show="userForm.witnessEmail.$error.email" class="help-block">Valid email format required. (test@test.com)</p>
+        </div>
+        <!-- Phone # -->
+        <div class="form-group">
+          <label class="control-label" for="phonenum">Phone #</label>
+          <input id="witnessPhonenum" name="witnessPhonenum" type="text" placeholder="(123)457-6890" ng-class="{'highlight_field': submitted && userForm.witnessPhonenum.$invalid}" class="form-control input-md mask" ng-model="waiverForm.witnessPhonenum" ng-minlength="13" ng-maxlength="13" required>
+          <p ng-show="submitted && userForm.witnessPhonenum.$error.required" class="help-block">Phone number is required.</p>
+        </div>
+
+      </div>
+      <div class="row" style="text-align: center; margin: auto; width:100%">
+        <button id="submit" name="submit" class="btn btn-primary" ng-click="submitted=true">Submit</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<!-- end modal body -->
