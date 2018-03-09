@@ -51,7 +51,30 @@ angular
 
     // Daniel Arroyo Add waiver module here :)
     $scope.participantSignWaiver = function() {
-      console.log($scope.currId);
+      $uibModalInstance.dismiss('cancel');
+      $uibModal.open({
+        templateUrl: '/parts/sign_event_waiver.html',
+        controller: 'SignEventWaiver',
+        resolve: {
+          eventData: function() {
+            return $scope.eventData;
+          },
+        },
+      });
+    };
+
+    // Daniel Arroyo Add waiver module here :)
+    $scope.participantSignMediaWaiver = function() {
+      $uibModalInstance.dismiss('cancel');
+      $uibModal.open({
+        templateUrl: '/parts/sign_media_waiver.html',
+        controller: 'SignMediaWaiver',
+        resolve: {
+          eventData: function() {
+            return $scope.eventData;
+          },
+        },
+      });
     };
 
     $scope.getCurrentParticipantsData = function(participantsList) {
@@ -200,6 +223,7 @@ angular
                   .css('background-color', '');
                 $(this).css('background-color', '#FFFFC4');
                 $('#signWaiver').removeClass('disabled');
+                $('#signMediaWaiver').removeClass('disabled');
               }
             );
 
