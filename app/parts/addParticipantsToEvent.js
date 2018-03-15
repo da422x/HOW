@@ -62,10 +62,7 @@ angular
         _.each(currentList, function(participant) {
           if (participant.guest && participant.minor) {
             participant.nameText =
-              participant.name.first +
-              ' ' +
-              participant.name.last +
-              ' - Minor';
+              participant.name.first + ' ' + participant.name.last + ' - Minor';
             guestList.push(participant);
           } else if (participant.guest) {
             participant.nameText =
@@ -394,31 +391,24 @@ angular
               'Guest email matches a participant in the current participants list, please change email.';
             swal('Duplicate Email', errorString, 'error');
           } else {
-
             var guestObj = {};
 
             // Handle obj if guest is minor.
             if ($scope.guestMinor) {
-
               guestObj = {
                 key: data[0],
                 guest: true,
                 minor: true,
                 nameText:
-                  $scope.guestFirst +
-                  ' ' +
-                  $scope.guestLast +
-                  ' - Minor',
+                  $scope.guestFirst + ' ' + $scope.guestLast + ' - Minor',
                 name: {
                   first: $scope.guestFirst,
                   last: $scope.guestLast,
                 },
                 phone: false,
-                email: false
+                email: false,
               };
-
             } else {
-
               guestObj = {
                 key: data[0],
                 guest: true,
@@ -434,9 +424,8 @@ angular
                   last: $scope.guestLast,
                 },
                 phone: $scope.guestPhone,
-                email: $scope.guestEmail
+                email: $scope.guestEmail,
               };
-
             }
 
             // Reset fields.
