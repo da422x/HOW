@@ -389,6 +389,7 @@ angular
             var guestObj = {
               key: data[0],
               guest: true,
+              minor: $scope.guestMinor ? true : false,
               nameText:
                 $scope.guestFirst +
                 ' ' +
@@ -646,6 +647,7 @@ angular
       $scope.guestLast = undefined;
       $scope.guestEmail = undefined;
       $scope.guestPhone = undefined;
+      $scope.guestMinor = undefined;
       $scope.search_form.$setValidity();
       $scope.search_form.$setPristine();
       $scope.search_form.$setUntouched();

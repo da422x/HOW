@@ -1,5 +1,6 @@
 /* whoweare styling */
 
+
 /* hero image and text */
 
 #heroquote {
@@ -37,6 +38,7 @@
   margin-left: -90px;
   width: 180px;
 }
+
 
 /* body */
 
@@ -81,6 +83,7 @@
   width: 640px;
   height: 360px;
 }
+
 
 /* secondary page navigation */
 
@@ -148,6 +151,7 @@
   transition: all 0.3s;
 }
 
+
 /* blogbanner */
 
 .blogbanner {
@@ -204,6 +208,7 @@
   -o-transition: all 0.3s;
   transition: all 0.3s;
 }
+
 
 /* MEDIA QUERIES */
 

@@ -33,6 +33,10 @@
         </div>
         <div class="list-group">
           <div class="list-group-item">
+            <h6 class="list-group-item-text">Hosting Chapter</h6>
+            <h4 class="list-group-item-heading">{{event.chapter.text}}</h4>
+          </div>
+          <div class="list-group-item">
             <h6 class="list-group-item-text">Start Date</h6>
             <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy h:mm a'}}</h4>
           </div>
@@ -48,11 +52,15 @@
             <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
           </div>
         </div>
-        <div class="panel-footer">
-          <a class="btn btn-success link_padding" ng-if="$root.userId === event.initiator" ng-click="edit(event)" style="display:inline-block; width: 30%;"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
+        <div class="panel-footer" ng-if="checkCredentials(event)">
+          <a class="btn btn-success link_padding" ng-click="edit(event)" style="display:inline-block; width: 30%;"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
           <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
           <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'volunteers')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
-          <a class="btn btn-danger link_padding" ng-click="deleteEvent($index)" style="display:inline-block; width: 30%;">Delete</a>
+          <a class="btn btn-danger link_padding"  ng-click="delete(event)" style="display:inline-block; width: 30%;">Delete</a>
+        </div>
+        <div class="panel-footer" ng-if="!checkCredentials(event)">
+          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="display: inline-block; width: 100%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
+          <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'volunteers')" style="display: inline-block; width: 100%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
         </div>
       </div>
       <!-- end panel -->

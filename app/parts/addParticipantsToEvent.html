@@ -32,15 +32,20 @@
         <input type="text" id="guest_search_last" name="guest_search_last" class="form-control input-md" ng-required="true" ng-model="guestLast" />
         <spa ng-show="!search_form.guest_search_last.$valid && search_form.guest_search_last.$touched" class="help-block">Valid Last Name required</span>
       </div>
-      <label class="col-md-4 control-label" for="guest_email">Contact Email*</label>
-      <div class="col-md-7" style="margin-bottom: 12px;">
-        <input id="guest_email" name="guest_email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="guestEmail" ng-required="true">
+      <label class="col-md-4 control-label" for="guest_email" ng-hide="guestMinor">Contact Email*</label>
+      <div class="col-md-7" style="margin-bottom: 12px;" ng-hide="guestMinor">
+        <input id="guest_email" name="guest_email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="guestEmail" ng-required="!(guestMinor)">
         <span ng-show="!search_form.guest_email.$valid && search_form.guest_email.$touched" class="help-block">Valid Email Required</span>
       </div>
-      <label class="col-md-4 control-label" for="guest_phone">Contact Number*</label>
-      <div class="col-md-7" style="margin-bottom: 12px;">
-        <input id="guest_phone" name="guest_phone" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="guestPhone" ng-minlength="9" ng-required="true ">
+      <label class="col-md-4 control-label" for="guest_phone" ng-hide="guestMinor">Contact Number*</label>
+      <div class="col-md-7" style="margin-bottom: 12px;" ng-hide="guestMinor">
+        <input id="guest_phone" name="guest_phone" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="guestPhone" ng-minlength="9" ng-required="!(guestMinor)">
         <span ng-show="!search_form.guest_phone.$valid && search_form.guest_phone.$touched" class="help-block ">Phone Number Required</span>
+      </div>
+      <label class="col-md-4 control-label" for="minor_check_box"></label>
+      <div class="col-md-7">
+        <input type="checkbox" class="form-check-input" id="minor_check_box" ng-model="guestMinor" style="display:inline-block">
+        <p style="display:inline-block">Guest is a Minor</p>
       </div>
       <div class="col-md-12">
         <button id="guest_submit" name="guest_submit" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="!(search_form.guest_phone.$valid && search_form.guest_email.$valid && search_form.guest_search_last.$valid && search_form.guest_search_first.$valid)" ng-click="createGuest()">Create Guest</button>
