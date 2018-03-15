@@ -105,12 +105,11 @@ angular
     };
 
     $scope.checkCredentials = function(eventObj) {
-
       var currentUserRole = userService.getRole();
       var resultStatus = false;
 
-      switch(currentUserRole) {
-        case 'National Staff': 
+      switch (currentUserRole) {
+        case 'National Staff':
           resultStatus = true;
           break;
         case 'Chapter Lead':
@@ -129,13 +128,12 @@ angular
             resultStatus = false;
           }
           break;
-        default: 
+        default:
           resultStatus = false;
           break;
-      };
+      }
 
       return resultStatus;
-
     };
 
     $scope.search = function() {
