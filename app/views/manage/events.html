@@ -56,7 +56,7 @@
           <a class="btn btn-success link_padding" ng-click="edit(event)" style="display:inline-block; width: 30%;"><i class="fa fa-pencil" style="padding-right: 5px"></i>Edit</a>
           <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
           <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'volunteers')" style="display: inline-block; width: 68%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.volunteers)}}</span> Volunteers</a>
-          <a class="btn btn-danger link_padding"  ng-click="delete(event)" style="display:inline-block; width: 30%;">Delete</a>
+          <a class="btn btn-danger link_padding" ng-click="delete(event)" style="display:inline-block; width: 30%;">Delete</a>
         </div>
         <div class="panel-footer" ng-if="!checkCredentials(event)">
           <a class="btn btn-primary link_padding" ng-click="viewAttendees(event, 'participants')" style="display: inline-block; width: 100%;"><i class="glyphicon glyphicon-user" style="padding-right: 5px"></i><span class="badge">{{getKeyLength(event.participants)}}</span> Participants</a>
