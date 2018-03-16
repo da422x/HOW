@@ -1,5 +1,6 @@
 /* master navigation styling */
 
+
 /* apply all */
 
 .header {
@@ -15,6 +16,7 @@
   width: 98%;
   max-width: 1400px;
 }
+
 
 /* logo and mobile nav */
 
@@ -122,6 +124,7 @@
   margin-top: 10px;
 }
 
+
 /* collapsibles */
 
 .nav {
@@ -149,7 +152,9 @@
   color: dimgray;
 }
 
+
 /* active class not working */
+
 
 /* left nav */
 
@@ -162,6 +167,7 @@
   display: inline;
   font-size: 17px;
 }
+
 
 /* right nav */
 
@@ -223,6 +229,7 @@
   -o-transition: all 0.3s;
   transition: all 0.3s;
 }
+
 
 /* dropdown */
 

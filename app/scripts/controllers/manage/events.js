@@ -13,6 +13,7 @@ angular
   .controller('EventsCtrl', function(
     $q,
     commonServices,
+    userService,
     $scope,
     $uibModal,
     $location,
@@ -103,6 +104,38 @@ angular
       });
     };
 
+    $scope.checkCredentials = function(eventObj) {
+      var currentUserRole = userService.getRole();
+      var resultStatus = false;
+
+      switch (currentUserRole) {
+        case 'National Staff':
+          resultStatus = true;
+          break;
+        case 'Chapter Lead':
+          var currentUserChapter = userService.getChapter();
+          if (eventObj.chapter.key === currentUserChapter.key) {
+            resultStatus = true;
+          } else {
+            resultStatus = false;
+          }
+          break;
+        case 'Volunteer':
+          var currentUserId = userService.getId();
+          if (eventObj.eventManager.key === currentUserId) {
+            resultStatus = true;
+          } else {
+            resultStatus = false;
+          }
+          break;
+        default:
+          resultStatus = false;
+          break;
+      }
+
+      return resultStatus;
+    };
+
     $scope.search = function() {
       if (allEvents.length > 0) {
         $scope.empty = false;
@@ -175,11 +208,6 @@ angular
       });
     };
 
-    $scope.manageEvent = function(index) {
-      var selected = allEvents[index];
-      $location.url('details/' + selected.key);
-    };
-
     $scope.viewAttendees = function(event, type) {
       $uibModal.open({
         templateUrl: '/parts/manageParticipants.html',
@@ -194,13 +222,6 @@ angular
           },
         },
       });
-    };
-
-    $scope.addParticipant = function() {
-      alert('a participant was added');
-    };
-    $scope.addVolunteer = function() {
-      alert('a volunteer was added');
     };
 
     $scope.getKeyLength = function(obj) {

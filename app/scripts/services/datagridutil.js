@@ -20,10 +20,12 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
       var arr = {};
       arr.key = results[i].key;
       arr.name = results[i].name.first + ' ' + results[i].name.last;
-      arr.email = results[i].email;
-      arr.phone = results[i].phone;
+      arr.email = results[i].email ? results[i].email : 'N/A';
+      arr.phone = results[i].phone ? results[i].phone : 'N/A';
 
-      if (results[i].guest) {
+      if (results[i].guest && results[i].minor) {
+        arr.type = 'Guest - Minor';
+      } else if (results[i].guest) {
         arr.type = 'Guest';
       } else {
         arr.type = 'Member';
@@ -31,8 +33,7 @@ angular.module('ohanaApp').service('dataGridUtil', function() {
 
       if (results[i].waiver) {
         arr.waiver = 'Complete';
-      }
-      {
+      } else {
         arr.waiver = 'Incomplete';
       }
 

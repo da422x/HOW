@@ -60,7 +60,11 @@ angular
         var promiseArray = [];
         var guestList = [];
         _.each(currentList, function(participant) {
-          if (participant.guest) {
+          if (participant.guest && participant.minor) {
+            participant.nameText =
+              participant.name.first + ' ' + participant.name.last + ' - Minor';
+            guestList.push(participant);
+          } else if (participant.guest) {
             participant.nameText =
               participant.name.first +
               ' ' +
@@ -147,6 +151,7 @@ angular
             updateList.push({
               key: selected_user.key,
               guest: selected_user.guest,
+              minor: selected_user.minor,
               name: selected_user.name,
               phone: selected_user.phone,
               email: selected_user.email,
@@ -386,22 +391,42 @@ angular
               'Guest email matches a participant in the current participants list, please change email.';
             swal('Duplicate Email', errorString, 'error');
           } else {
-            var guestObj = {
-              key: data[0],
-              guest: true,
-              nameText:
-                $scope.guestFirst +
-                ' ' +
-                $scope.guestLast +
-                ' - ' +
-                $scope.guestEmail,
-              name: {
-                first: $scope.guestFirst,
-                last: $scope.guestLast,
-              },
-              phone: $scope.guestPhone,
-              email: $scope.guestEmail,
-            };
+            var guestObj = {};
+
+            // Handle obj if guest is minor.
+            if ($scope.guestMinor) {
+              guestObj = {
+                key: data[0],
+                guest: true,
+                minor: true,
+                nameText:
+                  $scope.guestFirst + ' ' + $scope.guestLast + ' - Minor',
+                name: {
+                  first: $scope.guestFirst,
+                  last: $scope.guestLast,
+                },
+                phone: false,
+                email: false,
+              };
+            } else {
+              guestObj = {
+                key: data[0],
+                guest: true,
+                minor: false,
+                nameText:
+                  $scope.guestFirst +
+                  ' ' +
+                  $scope.guestLast +
+                  ' - ' +
+                  $scope.guestEmail,
+                name: {
+                  first: $scope.guestFirst,
+                  last: $scope.guestLast,
+                },
+                phone: $scope.guestPhone,
+                email: $scope.guestEmail,
+              };
+            }
 
             // Reset fields.
             $scope.clearGuestForm();
@@ -646,6 +671,7 @@ angular
       $scope.guestLast = undefined;
       $scope.guestEmail = undefined;
       $scope.guestPhone = undefined;
+      $scope.guestMinor = undefined;
       $scope.search_form.$setValidity();
       $scope.search_form.$setPristine();
       $scope.search_form.$setUntouched();
