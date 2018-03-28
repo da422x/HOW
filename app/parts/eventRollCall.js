@@ -24,8 +24,44 @@ angular
     $scope.eventData = eventData;
 
     $scope.initialize = function() {
-      $scope.userList = $scope.eventData.event.participants;
-      $scope.getUserData($scope.eventData.event.participants);
+      
+      if (!_.isUndefined($scope.eventData.type) && $scope.eventData.type === 'participants') {
+        $scope.selectedOption = {
+          value: 'participants',
+          text: 'Participants'
+        };
+      } else if (!_.isUndefined($scope.eventData.type) && $scope.eventData.type === 'volunteers') {
+        $scope.selectedOption = {
+          value: 'volunteers',
+          text: 'Volunteers'
+        };
+      } else {
+        $scope.selectedOption = {
+          value: 'all',
+          text: 'All'
+        };
+      }
+
+      $scope.listOptions = [
+        {
+          value: 'participants',
+          text: 'Participants'
+        },
+        {
+          value: 'volunteers',
+          text: 'Volunteers'
+        },
+        {
+          value: 'guest',
+          text: 'Guests'
+        },
+        {
+          value: 'all',
+          text: 'All'
+        }
+      ];
+
+      $scope.createUserList($scope.selectedOption.value);
     };
 
     $scope.cancel = function() {
@@ -73,24 +109,25 @@ angular
 
           _.each(data, function(userData) {
             var counter = 0;
-            _.each($scope.userList, function(currentUser) {
+            _.each(userList, function(currentUser) {
               if (userData.key === currentUser.key) {
-                $scope.userList[counter].name = userData.name;
-                $scope.userList[counter].email = userData.email;
+                userList[counter].name = userData.name;
+                userList[counter].email = userData.email;
                 return false;
               }
               counter++;
             });
           });
 
+          $scope.userList = userList;
           $scope.setColor();
-        
           console.log($scope.userList);
         });
       }
     };
 
     $scope.isAttending = function(userData) {
+
       var counter = 0;
       var status = true;
       if (userData.attended) {
@@ -100,9 +137,14 @@ angular
       _.each($scope.userList, function(ul) {
         if (ul.key === userData.key) {
           $scope.userList[counter].attended = status;
-          $scope.userList[counter].color = (status ? '#68C65E' : '#FD858B');
-          commonServices.updateData('events/' + $scope.eventData.event.key + '/participants/' + counter + '/attended', status);
-          return;
+          $scope.userList[counter].color = (status ? '#d4edda' : '#f8d7da');
+          if ($scope.userList.type === 'participant') {
+            commonServices.updateData('events/' + $scope.eventData.event.key + '/participants/' + ul.index + '/attended', status);
+          } else {
+            commonServices.updateData('events/' + $scope.eventData.event.key + '/volunteers/' + ul.index + '/attended', status);
+          }
+          
+          return false;
         }
         counter++;
       });
@@ -111,9 +153,55 @@ angular
     $scope.setColor = function() {
       var counter = 0;
       _.each($scope.userList, function(currentUser) {
-        $scope.userList[counter].color = (currentUser.attended ? '#68C65E' : '#FD858B');
+        $scope.userList[counter].color = (currentUser.attended ? '#d4edda' : '#f8d7da');
         counter++;
       });
+    };
+
+    $scope.createUserList = function(listType) {
+      var userList = [];
+      var counter = 0;
+      if (listType === 'participants') {
+        _.each($scope.eventData.event.participants, function(partObj) {
+          partObj.index = counter;
+          partObj.type = 'participant';
+          userList.push(partObj);
+          counter++;
+        });
+      } else if (listType === 'volunteers') {
+        _.each($scope.eventData.event.volunteers, function(volObj) {
+          volObj.index = counter;
+          volObj.type = 'volunteer';
+          userList.push(volObj);
+          counter++;
+        });
+      } else if (listType === 'guest') {
+        _.each($scope.eventData.event.participants, function(guestObj) {
+          if (guestObj.guest) {
+            guestObj.index = counter;
+            guestObj.type = 'participant';
+            userList.push(guestObj);
+          }
+          counter++;
+        });
+      } else {
+        _.each($scope.eventData.event.participants, function(partObj) {
+          partObj.index = counter;
+          partObj.type = 'participant';
+          userList.push(partObj);
+          counter++;
+        });
+        counter = 0;
+        _.each($scope.eventData.event.volunteers, function(volObj) {
+          volObj.index = counter;
+          volObj.type = 'volunteer';
+          userList.push(volObj);
+          counter++;
+        });
+      }
+
+      $scope.getUserData(userList);
+
     };
 
     
