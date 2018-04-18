@@ -123,7 +123,6 @@ angular
 
           $scope.userList = userList;
           $scope.setColor();
-          console.log($scope.userList);
         });
       }
     };
@@ -139,7 +138,7 @@ angular
         if (ul.key === userData.key) {
           $scope.userList[counter].attended = status;
           $scope.userList[counter].color = status ? '#d4edda' : '#f8d7da';
-          if ($scope.userList.type === 'participant') {
+          if (ul.type === 'participant') {
             commonServices.updateData(
               'events/' +
                 $scope.eventData.event.key +

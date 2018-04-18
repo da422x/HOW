@@ -59,7 +59,6 @@ angular
             event.key = key;
             allEvents.push(event);
           });
-          console.log(allEvents);
           $scope.eventList = allEvents;
         } else {
           console.log('Failed to get Events...');
@@ -180,12 +179,13 @@ angular
       $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
         controller: 'NewEventFormCtrl',
+        backdrop: 'static',
         resolve: {
           eventData: function() {
             return {
               event: false,
               isEdit: false,
-              step: 'admin',
+              step: 'admin'
             };
           },
         },
@@ -196,12 +196,13 @@ angular
       $uibModal.open({
         templateUrl: '/parts/newEventForm.html',
         controller: 'NewEventFormCtrl',
+        backdrop: 'static',
         resolve: {
           eventData: function() {
             return {
               event: event,
               isEdit: true,
-              step: 'admin',
+              step: 'admin'
             };
           },
         },
@@ -212,12 +213,13 @@ angular
       $uibModal.open({
         templateUrl: '/parts/manageParticipants.html',
         controller: 'ManageParticipantsCtrl',
+        backdrop: 'static',
         resolve: {
           eventData: function() {
             return {
               event: event,
               step: 'admin',
-              type: type,
+              type: type
             };
           },
         },
@@ -238,7 +240,7 @@ angular
         showCancelButton: true,
         confirmButtonColor: '#DD6B55',
         confirmButtonText: "Yes, delete '" + selected.name + "'",
-        cancelButtonText: 'Cancel',
+        cancelButtonText: 'Cancel'
       }).then(
         function(result) {
           console.log('confirm');
@@ -246,15 +248,10 @@ angular
           swal({
             text: 'Deleting ' + selected.name,
             type: 'success',
-            timer: 2500,
+            timer: 2500
           });
           $q.all([result]).then(function(data) {
             $scope.loadAll();
-            if (data[0]) {
-              console.log(result);
-            } else {
-              console.log('Log: Error on deletion');
-            }
           });
         },
         function(dismiss) {
