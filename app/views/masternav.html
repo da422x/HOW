@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<header>
+  <div class="container-fluid" id="navbar-master">
+    <!-- logo and toggle -->
+    <div class="logo">
+      <a ng-href="#/home">
+        <img src="assets/images/logos/bannerlogo.png" width="240px">
+      </a>
+    </div>
+    <div class="mobilenavtoggle">
+      <button class="hamburger hamburger--slider" type="button" ng-click="toggleMenu()">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Collapsible portion -->
+    <!-- navbar left -->
+    <div class="nav navbar-left">
+      <!-- thad removed ui-sref-active="current" until fix is implemented-->
+      <a ng-repeat="nav in leftnav" ng-href="{{nav.state}}">
+        <h2>{{nav.text}}</h2>
+      </a>
+    </div>
+    <!-- navbar right show if sessionState is FALSE -->
+    <div class="nav navbar-right" ng-hide="sessionState">
+      <!-- <a href="http://visitor.r20.constantcontact.com/d.jsp?&#10;&#10;llr=t5yuarcab&amp;p=oi&amp;m=1102230217683&amp;sit=oimdo5qdb&amp;f=612&#10;&#10;b8958-893d-420d-99b7-0d5e512a9507" target="_blank">
+                <button id="subscribe"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>
+                    <h2>SUBSCRIBE</h2>
+                </button>
+            </a> -->
+      <button ng-click="showDonate()" id="donate" style="margin-top:15px">
+        <h2>DONATE</h2>
+      </button>
+      <a ng-href="{{rightnav[0].state}}">
+        <h2>{{rightnav[0].text}}</h2>
+      </a>
+    </div>
+    <!-- navbar right show if sessionState is TRUE -->
+    <div class="nav navbar-right" ng-show="sessionState">
+      <!-- <button id="subscribe"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>
+                <h2>SUBSCRIBE</h2>
+            </button> -->
+      <button ng-click="showDonate()" id="donate" style="margin-top:15px">
+        <h2>DONATE</h2>
+      </button>
+      <li class="dropdown">
+        <a class="toggle-dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#/manage/dash">
+          <span style="margin-right:5px"><i class="fa fa-user fa-lg" aria-hidden="true"></i></span>
+          <h2>{{rightnavloggedin[0].text}}</h2>
+          <span class="caret"></span>
+        </a>
+        <ul ng-switch="sessionUserRole" class="managelinks dropdown-menu">
+          <!-- ui-sref-opts was removed thad-->
+          <li ng-switch-when="National Staff">
+            <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}">
+              <h3>{{nav.text}}</h3>
+            </a>
+          </li>
+          <li ng-switch-when="Chapter Lead">
+            <a ng-repeat="nav in ltmNav" ng-href="{{nav.state}}">
+              <h3>{{nav.text}}</h3>
+            </a>
+          </li>
+          <li ng-switch-when="Volunteer">
+            <a ng-repeat="nav in volunteerNav" ng-href="{{nav.state}}">
+              <h3>{{nav.text}}</h3>
+            </a>
+          </li>
+          <li ng-switch-when="Participant">
+            <a ng-repeat="nav in participantNav" ng-href="{{nav.state}}">
+              <h3>{{nav.text}}</h3>
+            </a>
+          </li>
+          <li ng-switch-default>
+            <a ng-repeat="nav in participantNav" ng-href="{{nav.state}}">
+              <h3>{{nav.text}}</h3>
+            </a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li>
+            <a ng-href="{{rightnavloggedin[0].state}}">
+              <h3>Management Dashboard</h3>
+            </a>
+          </li>
+          <li>
+            <a href="#" ng-click="logout()">
+              <h3>Sign Out</h3>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </div>
+    <!-- end navbar-right -->
+  </div>
+  <!-- end container-fluid -->
+  <div id="menu" ng-show="menuActive" class="fadein fadeout">
+    <div class="menulinks">
+      <a ng-href="#/home" ng-click="dismissMenu()">
+        <h2>HOME</h2>
+      </a>
+      <hr />
+      <div ng-switch="sessionUserRole">
+        <div ng-switch-when="National Staff">
+          <a ng-repeat="nav in nationalNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+            <h4>{{nav.text}}</h4>
+          </a>
+          <hr />
+        </div>
+        <div ng-switch-when="Chapter Lead">
+          <a ng-repeat="nav in ltmNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+            <h4>{{nav.text}}</h4>
+          </a>
+          <hr />
+        </div>
+        <div ng-switch-when="Volunteer">
+          <a ng-repeat="nav in volunteerNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+            <h4>{{nav.text}}</h4>
+          </a>
+          <hr />
+        </div>
+        <div ng-switch-when="Participant">
+          <a ng-repeat="nav in participantNav" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+            <h4>{{nav.text}}</h4>
+          </a>
+          <hr />
+        </div>
+        <div>
+          <a href="#/whoweare" ng-click="dismissMenu()">
+            <h4>Who We Are</h4>
+          </a>
+          <a href="#/getinvolved" ng-click="dismissMenu()">
+            <h4>Get Involved</h4>
+          </a>
+        </div>
+        <hr />
+      </div>
+      <div ng-show="sessionUserRole">
+        <a href="#" ng-click="logout()">
+          <h2>Log Out</h2>
+        </a>
+      </div>
+      <div class="loggedout" ng-hide="sessionState">
+        <a ng-href="{{rightnav[0].state}}" ng-click="dismissMenu()">
+          <h2>{{rightnav[0].text}}</h2>
+        </a>
+      </div>
+      <div class="loggedin" ng-show="sessionState">
+        <div ng-switch="root.userRole">
+          <div ng-switch-when="National Staff">
+            <a ng-href="dash" ng-click="dismissMenu()">
+              <h4>{{rightnavloggedin[0].text}}</h4>
+            </a>
+            <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+              <h4>{{nav.text}}</h4>
+            </a>
+          </div>
+          <div ng-switch-when="Chapter Lead">
+            <a ng-href="dash" ng-click="dismissMenu()">
+              <h4>{{rightnavloggedin[0].text}}</h4>
+            </a>
+            <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+              <h4>{{nav.text}}</h4>
+            </a>
+          </div>
+          <div ng-switch-when="Volunteer">
+            <a ng-href="dash" ng-click="dismissMenu()">
+              <h4>{{rightnavloggedin[0].text}}</h4>
+            </a>
+            <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+              <h4>{{nav.text}}</h4>
+            </a>
+          </div>
+          <div ng-switch-when="Participant">
+            <a ng-href="dash" ng-click="dismissMenu()">
+              <h4>{{rightnavloggedin[0].text}}</h4>
+            </a>
+            <a ng-repeat="nav in volunteerNavs" ng-href="{{nav.state}}" ng-click="dismissMenu()">
+              <h4>{{nav.text}}</h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

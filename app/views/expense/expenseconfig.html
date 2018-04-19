@@ -1,0 +1,77 @@
+<div class="container" ng-init="loadexpenseconfig()">
+  <div class=" panel panel-primary ">
+    <div class="panel-heading clearfix ">
+      <h3 class="panel-title pull-left ">HOW Expense Configuration</h3>
+    </div>
+    <div>
+      <table class="table table-striped table-bordered ">
+        <thead>
+          <tr>
+            <th>Valid From</th>
+            <th>Valid To</th>
+            <th>Mile Rate ($)</th>
+            <th>Trailer Mile Rate ($)</th>
+            <th class="redwarning ">Over Age Warning (days)</th>
+            <th class="rederror "><b>Over Age Need Attention (days)</b></th>
+            <th class="rederror "><b>Over Age Days</b></th>
+            <th class="col-xs-2 ">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in expenseconfig ">
+            <td>
+              <a e-style="width: 90px " href="# " editable-bsdate="item.startdate " e-is-open="opened.$data " e-ng-click="open($event, '$data') " e-datepicker-popup="dd-MMMM-yyyy ">    {{ (item.startdate | date:"MM/dd/yyyy ") || 'empty' }}  </a>
+            </td>
+            <td>
+              <a e-style="width: 90px " href="# " editable-bsdate="item.enddate " e-is-open="opened.$data " e-ng-click="open($event, '$data') " e-datepicker-popup="dd-MMMM-yyyy ">    {{ (item.enddate | date:"MM/dd/yyyy ") || 'empty' }}  </a>
+            </td>
+            <td>
+              <input id=MileRate name=MileRate class="textboxsize " ng-model="item.MileRate " type="text " format-as-currency>
+            </td>
+            <td>
+              <input id=TrailerRate name=TrailerRate class="textboxsize " ng-model="item.TrailerRate " type="text " format-as-currency>
+            </td>
+            <td>
+              <input ng-model="item.OverAgeWarning " name="OverAgeWarning " class="textboxsize " placeholder="30 " ng-pattern="/^[0-9]{1,7}$/ " type="number ">
+            </td>
+            <td>
+              <input ng-model="item.OverAgeError " name="OverAgeError " class="textboxsize " placeholder="45 " ng-pattern="/^[0-9]{1,7}$/ " type="number ">
+              <p ng-if="item.OverAgeWarning> item.OverAgeError" class="field-feedback"> Should be greater than Over Age Warning (days)
+              </p>
+            </td>
+            <td>
+              <input ng-model="item.OverAgeDays " name="OverAgeDays " class="textboxsize " placeholder="60 " ng-pattern="/^[0-9]{1,7}$/ " type="number ">
+              <p ng-if="item.item.OverAgeError> item.OverAgeDays" class="field-feedback"> Should be greater than Over Age Attention (days)
+              </p>
+            </td>
+            <td class="col-xs-2">
+              <!-- form -->
+              <form editable-form name="rowform" onbeforesave="saveConfig($data,item.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == item">
+                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                  save
+                </button>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel(); cancel(item)" class="btn btn-default">
+                  cancel
+                </button>
+              </form>
+              <div ng-show="!rowform.$visible">
+                <input type="button" class="btn btn-primary" ng-click="rowform.$show()" value="Edit">
+                <input type="button" class="btn btn-danger" ng-click="removeConfig($index)" value="Delete">
+              </div>
+            </td>
+          </tr>
+      </table>
+      <input type="button" class="btn btn-primary" ng-click="addConfig()" value="Add Row">
+      <input type="button" class="btn btn-primary" ng-click="GoBack()" value="Go Back to View Expense List ">
+    </div>
+  </div>
+  <div class=" panel panel-primary ">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title pull-left">Expense Configuration Change Log</h3>
+    </div>
+    <div class="panel-body fixed-panel">
+      <table id="ConfigStatusTable" class="display table table-bordered responsive  " cellspacing="0" width="100%">
+      </table>
+    </div>
+  </div>
+</div>

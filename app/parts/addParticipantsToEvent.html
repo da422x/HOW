@@ -1,0 +1,134 @@
+<!-- Start modal-header -->
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" ng-show="eventData.type === 'participants'">Edit Participants - {{eventData.event.name}}</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'volunteers'">Edit Volunteers - {{eventData.event.name}}</h4>
+</div>
+<!-- End modal-header -->
+
+<!-- Start modal body -->
+<div class="modal-body center_form" ng-init="initialize()">
+
+  <form name="search_form" class="form-horizontal" novalidate>
+
+    <!-- Member or Guest -->
+    <div class="form-group" ng-show="eventData.type === 'participants'">
+      <label class="col-md-4 control-label" for="member_or_guest">Participant Type</label>
+      <div class="col-md-7" style="margin-top:5px;">
+        <input name="member_or_guest" type="radio" ng-model="memberOrGuest" value="Member">Member
+        <input name="member_or_guest" type="radio" ng-model="memberOrGuest" ng-click="clearGuestForm()" value="Guest" style="margin-left: 5px;">Guest
+      </div>
+    </div>
+
+    <!-- Guest Data -->
+    <div class="form-group" ng-show="memberOrGuest === 'Guest'">
+      <label class="col-md-4 control-label " for="guest_search_first">First Name*</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="guest_search_first" name="guest_search_first" class="form-control input-md" ng-required="true" ng-model="guestFirst" />
+        <span ng-show="!search_form.guest_search_first.$valid && search_form.guest_search_first.$touched" class="help-block">Valid First Name Required</span>
+      </div>
+      <label class="col-md-4 control-label " for="guest_search_last">Last Name*</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="guest_search_last" name="guest_search_last" class="form-control input-md" ng-required="true" ng-model="guestLast" />
+        <spa ng-show="!search_form.guest_search_last.$valid && search_form.guest_search_last.$touched" class="help-block">Valid Last Name required</span>
+      </div>
+      <label class="col-md-4 control-label" for="guest_email" ng-hide="guestMinor">Contact Email*</label>
+      <div class="col-md-7" style="margin-bottom: 12px;" ng-hide="guestMinor">
+        <input id="guest_email" name="guest_email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="guestEmail" ng-required="!(guestMinor)">
+        <span ng-show="!search_form.guest_email.$valid && search_form.guest_email.$touched" class="help-block">Valid Email Required</span>
+      </div>
+      <label class="col-md-4 control-label" for="guest_phone" ng-hide="guestMinor">Contact Number*</label>
+      <div class="col-md-7" style="margin-bottom: 12px;" ng-hide="guestMinor">
+        <input id="guest_phone" name="guest_phone" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="guestPhone" ng-minlength="9" ng-required="!(guestMinor)">
+        <span ng-show="!search_form.guest_phone.$valid && search_form.guest_phone.$touched" class="help-block ">Phone Number Required</span>
+      </div>
+      <label class="col-md-4 control-label" for="minor_check_box"></label>
+      <div class="col-md-7">
+        <input type="checkbox" class="form-check-input" id="minor_check_box" ng-model="guestMinor" style="display:inline-block">
+        <p style="display:inline-block">Guest is a Minor</p>
+      </div>
+      <div class="col-md-12">
+        <button id="guest_submit" name="guest_submit" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="!(search_form.guest_phone.$valid && search_form.guest_email.$valid && search_form.guest_search_last.$valid && search_form.guest_search_first.$valid)" ng-click="createGuest()">Create Guest</button>
+      </div>
+    </div>
+
+    <!-- Search Type - Dropdown -->
+    <div class="form-group" ng-show="memberOrGuest == 'Member'">
+      <label class="col-md-4 control-label " for="search_type">Search By</label>
+      <div class="col-md-7 ">
+        <select id="search_type " name="search_type " class="form-control " ng-change="clearSearch()" ng-options="type as type for type in searchTypes track by type" ng-model="searchType"></select>
+      </div>
+    </div>
+
+    <!-- Search by Name -->
+    <div class="form-group" ng-show="searchType == 'Name' && memberOrGuest == 'Member'">
+      <label class="col-md-4 control-label " for="search_first_name">First Name*</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="search_first_name" name="search_first_name" class="form-control input-md" ng-required="true" ng-model="searchFirst" />
+        <span ng-show="!search_form.search_first_name.$valid && search_form.search_first_name.$touched" class="help-block">Valid First Name Required</span>
+      </div>
+      <label class="col-md-4 control-label " for="search_last_name">Last Name*</label>
+      <div class="col-md-7 ">
+        <input type="text" id="search_last_name" name="search_last_name" class="form-control input-md" ng-required="true" ng-model="searchLast" />
+        <span ng-show="!search_form.search_last_name.$valid && search_form.search_last_name.$touched" class="help-block">Valid Last Name Required</span>
+      </div>
+      <div class="col-md-12">
+        <button id="submit_search_name" name="submit_search_name" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="!(search_form.search_last_name.$valid && search_form.search_first_name.$valid)" ng-click="runSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- Search by Email -->
+    <div class="form-group" ng-show="searchType == 'Email' && memberOrGuest == 'Member'">
+      <label class="col-md-4 control-label " for="search_email">Email</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="email" id="search_email" name="search_email" class="form-control input-md" ng-required="true" ng-model="searchEmail" />
+        <span ng-show="!search_form.search_email.$valid && search_form.search_email.$touched" class="help-block">Valid Email Required</span>
+      </div>
+      <div class="col-md-12">
+        <button id="submit_search_email" name="submit_search_email" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="!(search_form.search_email.$valid)" ng-click="runSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- Search by Phone -->
+    <div class="form-group" ng-show="searchType == 'Phone' && memberOrGuest == 'Member'">
+      <label class="col-md-4 control-label " for="search_phone">Phone Number</label>
+      <div class="col-md-7 " style="margin-bottom: 12px;">
+        <input type="text" id="search_phone" name="search_phone" class="form-control input-md" ng-required="true" ng-model="searchPhone" />
+        <span ng-show="!search_form.search_phone.$valid && search_form.search_phone.$touched" class="help-block ">Phone Number Required</span>
+      </div>
+      <div class="col-md-12">
+        <button id="submit_search_phone" name="submit_search_phone" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="!(search_form.search_phone.$valid)" ng-click="runSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- Search by Chapter -->
+    <div class="form-group" ng-show="searchType == 'Chapter' && memberOrGuest == 'Member'">
+      <label class="col-md-4 control-label " for="search_chapter">Select Chapter</label>
+      <div class="col-md-7 ">
+        <select id="search_chapter " name="search_type " class="form-control " ng-options="chapter as chapter.text for chapter in chapters track by chapter.text" ng-model="searchChapter"></select>
+      </div>
+      <div class="col-md-12">
+        <button id="submit_search_chapter" name="submit_search_chapter" class="btn btn-primary additonal-chapter-btn-blue" ng-disabled="false" ng-click="runSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- Founs Particpants List, and Submit -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <select name="found_participants" multiple class="form-control" ng-model="foundParticipant" ng-options="participant as participant.nameText for participant in foundParticipants"></select>
+        <button id="found_participants" name="select_participant" class="btn btn-primary additonal-chapter-btn-green" ng-disabled="!foundParticipant || !foundParticipant[0].key" ng-click="addFoundParticipant()">Add Selected Participant</button>
+      </div>
+    </div>
+
+    <!-- Selected Particpants List, and Submit -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <select name="selected_participants_list" multiple class="form-control" ng-model="removeParticipants" ng-options="participant as participant.nameText for participant in selectedParticipants"></select>
+        <button id="remove_selected_participant" name="remove_selected_participant" class="btn btn-primary additonal-chapter-btn-red" ng-disabled="!removeParticipants" ng-click="removeSelectedParticipants()">Remove Participants from Event</button>
+        <button id="submit_selected_participants" name="submit_selected_participants" class="btn btn-primary additonal-chapter-btn-blue" ng-click="addParticipantToCurrentEvent()">Save Participants List</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+<!-- End modal body -->

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ohanaApp">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <!-- base_href -->
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/datatables-autofill-bootstrap/css/autoFill.bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/datatables.net-buttons-bs/css/buttons.bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/datatables.net-responsive-bs/css/responsive.bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/datatables.net-scroller-bs/css/scroller.bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css" />
+  <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.css" />
+  <link rel="stylesheet" href="bower_components/jt.timepicker/jquery.timepicker.css" />
+  <link rel="stylesheet" href="bower_components/jquery-timepicker-jt/jquery.timepicker.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+  <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css" />
+  <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css" />
+  <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
+  <link rel="stylesheet" href="bower_components/yadcf/jquery.dataTables.yadcf.css" />
+  <link rel="stylesheet" href="bower_components/chosen/chosen.css" />
+  <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- injector:css -->
+  <link rel="stylesheet" href="styles/masternav.css">
+  <link rel="stylesheet" href="styles/masterfooter.css">
+  <link rel="stylesheet" href="styles/homepage.css">
+  <link rel="stylesheet" href="styles/whoweare.css">
+  <link rel="stylesheet" href="styles/getinvolved.css">
+  <link rel="stylesheet" href="styles/chapters.css">
+  <link rel="stylesheet" href="styles/columns.css">
+  <link rel="stylesheet" href="styles/chat.css">
+  <link rel="stylesheet" href="extensions/bootstrap-editable/css/bootstrap-editable.css">
+  <link rel="stylesheet" href="extensions/hamburgers.min.css">
+  <link rel="stylesheet" href="styles/expense.css">
+  <link rel="stylesheet" href="styles/events.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
+</head>
+
+<body>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCK9lQ8uE8dcnCOod7nGeaRy1PetMeuOoY&language=en&region=US&libraries=geometry"></script>
+  <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <!-- Add your site or application content here -->
+  <master-navigation></master-navigation>
+  <div class="master">
+    <div ng-view=""></div>
+    <!--<div ui-view=""></div>-->
+  </div>
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+  ! function(A, n, g, u, l, a, r) {
+    A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+        (A[l].q = A[l].q || []).push(arguments)
+      }, A[l].l = +new Date, a = n.createElement(g),
+      r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+  }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+  </script>
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/es6-promise/es6-promise.js"></script>
+  <script src="bower_components/js-polyfills/polyfill.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+  <script src="bower_components/datatables.net-autofill/js/dataTables.autoFill.js"></script>
+  <script src="bower_components/datatables-autofill-bootstrap/js/dataTables.autoFill.js"></script>
+  <script src="bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
+  <script src="bower_components/datatables.net-buttons/js/buttons.colVis.js"></script>
+  <script src="bower_components/datatables.net-buttons/js/buttons.flash.js"></script>
+  <script src="bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
+  <script src="bower_components/datatables.net-buttons/js/buttons.print.js"></script>
+  <script src="bower_components/datatables.net-buttons-bs/js/buttons.bootstrap.js"></script>
+  <script src="bower_components/datatables.net-responsive/js/dataTables.responsive.js"></script>
+  <script src="bower_components/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="bower_components/datatables.net-scroller/js/dataTables.scroller.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/summernote/dist/summernote.js"></script>
+  <script src="bower_components/angular-summernote/dist/angular-summernote.js"></script>
+  <script src="bower_components/sweetalert2/dist/sweetalert2.js"></script>
+  <script src="bower_components/jquery.maskedinput/dist/jquery.maskedinput.js"></script>
+  <script src="bower_components/jt.timepicker/jquery.timepicker.js"></script>
+  <script src="bower_components/jquery-timepicker-jt/jquery.timepicker.js"></script>
+  <script src="bower_components/angular-jquery-timepicker/src/timepickerdirective.js"></script>
+  <script src="bower_components/angular-ui-select/dist/select.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+  <script src="bower_components/firebase/firebase.js"></script>
+  <script src="bower_components/angularfire/dist/angularfire.js"></script>
+  <script src="bower_components/mockfirebase/browser/mockfirebase.js"></script>
+  <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/pickadate/lib/picker.js"></script>
+  <script src="bower_components/pickadate/lib/picker.date.js"></script>
+  <script src="bower_components/pickadate/lib/picker.time.js"></script>
+  <script src="bower_components/ng-pickadate/ng-pickadate.js"></script>
+  <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+  <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+  <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+  <script src="bower_components/yadcf/jquery.dataTables.yadcf.js"></script>
+  <script src="bower_components/chosen/chosen.jquery.js"></script>
+  <script src="bower_components/flow.js/dist/flow.js"></script>
+  <script src="bower_components/ng-flow/dist/ng-flow.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script src="bower_components/format-as-currency/dist/format-as-currency.js"></script>
+  <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+  <script src="bower_components/chart.js/dist/Chart.js"></script>
+  <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+  <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+  <script src="bower_components/angular-ui-map/ui-map.js"></script>
+  <script src="bower_components/rxjs/dist/rx.all.js"></script>
+  <script src="bower_components/signature_pad/example/js/signature_pad.js"></script>
+  <script src="bower_components/pdfjs-dist/build/pdf.js"></script>
+  <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/services/api.js"></script>
+  <script src="scripts/services/datagridutil.js"></script>
+  <script src="scripts/directives/masternav.js"></script>
+  <script src="scripts/directives/masterfooter.js"></script>
+  <script src="scripts/controllers/home.js"></script>
+  <script src="scripts/controllers/login.js"></script>
+  <script src="scripts/controllers/chapters.js"></script>
+  <script src="scripts/controllers/whoweare.js"></script>
+  <script src="scripts/controllers/getinvolved.js"></script>
+  <script src="scripts/controllers/public.events.js"></script>
+  <script src="scripts/controllers/manage/dash.js"></script>
+  <script src="scripts/controllers/manage/dash.upcomingEvents.js"></script>
+  <script src="scripts/controllers/manage/dash.broadcasts.js"></script>
+  <script src="scripts/controllers/manage/events.js"></script>
+  <script src="scripts/controllers/manage/broadcasts.js"></script>
+  <script src="scripts/controllers/manage/inventory.js"></script>
+  <script src="scripts/controllers/manage/training.js"></script>
+  <script src="scripts/controllers/manage/hours.js"></script>
+  <script src="scripts/controllers/manage/directory.js"></script>
+  <script src="scripts/controllers/manage/eventdetail.js"></script>
+  <script src="scripts/controllers/manage/eventdetaildescription.js"></script>
+  <script src="scripts/controllers/manage/eventdetailvolunteers.js"></script>
+  <script src="scripts/controllers/manage/eventdetailparticipants.js"></script>
+  <script src="scripts/controllers/manage/eventdetailequipment.js"></script>
+  <script src="scripts/controllers/manage/eventdetailnotification.js"></script>
+  <script src="scripts/controllers/manage/chadmin.js"></script>
+  <script src="scripts/controllers/manage/profile.js"></script>
+  <script src="scripts/controllers/manage/regadmin.js"></script>
+  <script src="scripts/controllers/manage/superadmin.js"></script>
+  <script src="scripts/services/commonservices.js"></script>
+  <script src="scripts/services/dao.js"></script>
+  <script src="scripts/services/pageauthinterceptor.js"></script>
+  <script src="scripts/services/pdf_service.js"></script>
+  <!-- injector:js -->
+  <script src="extensions/bootstrap-editable/js/bootstrap-editable.js"></script>
+  <script src="assets/compatibility.js"></script>
+  <script src="assets/pdf.js"></script>
+  <script src="parts/addParticipantsToEvent.js"></script>
+  <script src="parts/changeChapterCtrl.js"></script>
+  <script src="parts/changePassword.js"></script>
+  <script src="parts/chapterAddForm.js"></script>
+  <script src="parts/chapterStatusCtrl.js"></script>
+  <script src="parts/donors.js"></script>
+  <script src="parts/eventRollCall.js"></script>
+  <script src="parts/events.add.inventory.js"></script>
+  <script src="parts/events.add.participants.js"></script>
+  <script src="parts/events.add.volunteers.js"></script>
+  <script src="parts/filloutMedia.js"></script>
+  <script src="parts/giveFeedback.js"></script>
+  <script src="parts/manageParticipants.js"></script>
+  <script src="parts/manageVolunteers.js"></script>
+  <script src="parts/manageadditionalchapters.js"></script>
+  <script src="parts/managerolechangerequest.js"></script>
+  <script src="parts/neweventform.js"></script>
+  <script src="parts/newiteminventoryform.js"></script>
+  <script src="parts/newuserdirectoryform.js"></script>
+  <script src="parts/passwordReset.js"></script>
+  <script src="parts/profileRoleChangeStatus.js"></script>
+  <script src="parts/public.events.description.js"></script>
+  <script src="parts/rolerequestchangeform.js"></script>
+  <script src="parts/sign_event_waiver.js"></script>
+  <script src="parts/sign_media_waiver.js"></script>
+  <script src="parts/sign_witness_waiver.js"></script>
+  <!-- endinjector -->
+  <!-- injector:pdf -->
+  <!-- endinjector -->
+  <script src="scripts/controllers/expense/expensedetail.js"></script>
+  <script src="scripts/controllers/expense/newexpense.js"></script>
+  <script src="scripts/controllers/expense/viewexpense.js"></script>
+  <script src="scripts/directives/directive.js"></script>
+  <script src="scripts/services/expenseservice.js"></script>
+  <script src="scripts/controllers/manage/chapterchat.js"></script>
+  <script src="scripts/services/userservice.js"></script>
+  <script src="scripts/directives/angfileupload.js"></script>
+  <script src="scripts/controllers/expense/overview.js"></script>
+  <script src="scripts/services/howlogservice.js"></script>
+  <script src="scripts/controllers/expense/expenseconfig.js"></script>
+  <script src="scripts/services/waiverservice.js"></script>
+  <!-- endbuild -->
+</body>
+
+</html>

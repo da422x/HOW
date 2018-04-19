@@ -1,0 +1,34 @@
+<!-- Start modal-header -->
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" ng-show="eventData.type === 'participants'">Manage Participants - {{eventData.event.name}}</h4>
+  <h4 class="modal-title" ng-show="eventData.type === 'volunteers'">Manage Volunteers - {{eventData.event.name}}</h4>
+</div>
+<!-- End modal-header -->
+
+<!-- Start modal body -->
+<div class="modal-body" ng-init="initialize()">
+
+  <div class="col-sm-12" style="text-align: center;">
+    <button id="signWaiver" ng-click="participantSignWaiver()" class="btn btn-primary disabled" style="margin-bottom: 5px;">Sign Liability Waiver</button>
+    <button id="signMediaWaiver" ng-click="participantSignMediaWaiver()" class="btn btn-primary disabled" style="margin-bottom: 5px;">Sign Media Release Form</button>
+    <button id="rollCall" ng-click="rollCall()" ng-disabled="false" class="btn btn-primary" style="margin-bottom: 5px;">Roll Call</button>
+
+  </div>
+  <div class="col-sm-12" style="text-align: center;">
+    <button ng-click="addParticipantToEvent()" class="btn btn-primary" ng-show="eventData.type === 'participants'" style="margin-bottom: 5px;">Edit Participants List</button>
+    <button ng-click="addParticipantToEvent()" class="btn btn-primary" ng-show="eventData.type === 'volunteers'" style="margin-bottom: 5px;">Edit Volunteers List</button>
+    <button ng-click="" class="btn btn-primary" ng-disabled="true" ng-show="eventData.type === 'participants'" style="margin-bottom: 5px;">Notify Participants</button>
+    <button ng-click="" class="btn btn-primary" ng-disabled="true" ng-show="eventData.type === 'volunteers'" style="margin-bottom: 5px;">Notify Volunteers</button>
+    <div style="margin-top: 5px; color:red;" ng-show="tableEmpty">
+      <p ng-show="eventData.type === 'participants'">No Participants Listed for this Event, to Manually add participants click the "Edit Participants List" button at the top.</p>
+      <p ng-show="eventData.type === 'volunteers'">No Volunteers Listed for this Event, to Manually add volunteers click the "Edit Volunteers List" button at the top.</p>
+    </div>
+  </div>
+
+  <div style="margin: auto; display: block; padding-top: 10px" max-width="100%">
+    <table id="participantsTable" class="display table table-bordered responsive" cellspacing="0" width="100%"></table>
+  </div>
+
+</div>
+<!-- End modal body -->

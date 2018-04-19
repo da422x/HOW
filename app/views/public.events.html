@@ -1,0 +1,76 @@
+<div class="container">
+  <h3>Events</h3>
+  <div style="display: flex; flex-direction:column">
+    <div class="form-group" style="flex-basis:100%">
+      <label class="control-label" for="fname">Search:</label>
+      <div>
+        <input id="fname" name="newQuery.search" type="text" placeholder="Enter query here" class="form-control input-md pull-left" ng-change="filtersRunner()" ng-model="newQuery.search" ng-required="true" ng-model-options='{ debounce: 1000 }'>
+      </div>
+    </div>
+    <div class="form-group">
+      <div style="display:flex; justify-content:space-between">
+        <div style="flex-basis:45%">
+          <label class="control-label">Start Date:</label>
+          <p class="input-group">
+            <input type="text" class="form-control" ng-model="dt" datetime-picker="MM/dd/yyyy h:mm a" is-open="popup1.opened">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+        <div style="flex-basis:45%">
+          <label class="control-label">End Date:</label>
+          <p class="input-group">
+            <input type="text" class="form-control" ng-model="dt2" datetime-picker="MM/dd/yyyy h:mm a" is-open="popup2.opened">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row event-row">
+    <div class="col-md-4" ng-repeat="(key, event) in eventList">
+      <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+          <h3 class="panel-title pull-left">{{event.name}}</h3>
+        </div>
+        <div>
+          <img src="/assets/images/logos/logo-md.png" class="img-responsive" width="100%">
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            <h6 class="list-group-item-text">Start Time</h6>
+            <h4 class="list-group-item-heading">{{event.startTime | date:'MM-dd-yyyy hh:mm a'}}</h4>
+          </div>
+          <div class="list-group-item">
+            <h6 class="list-group-item-text">End Time</h6>
+            <h4 class="list-group-item-heading">{{event.endTime | date:'MM-dd-yyyy hh:mm a'}}</h4>
+          </div>
+          <div class="list-group-item">
+            <h6 class="list-group-item-text">Location</h6>
+            <h4 class="list-group-item-heading">{{event.address.line1}}</h4>
+            <h4 class="list-group-item-heading" ng-show="event.address.line2">{{event.address.line2}}</h4>
+            <h4 class="list-group-item-heading">{{event.address.city}}, {{event.address.state.id}} {{event.address.zip}}</h4>
+            <h4 class="list-group-item-heading" ng-show="!event.address.line2">&nbsp</h4>
+          </div>
+          <div class="list-group-item">
+            <h6>Your Status:</h6>
+            <h4 ng-show="!allVolunteerIsDisableds[$index]['isDisabled'] && !allParticipantIsDisableds[$index]['isDisabled']">Not registered</h4>
+            <h4 ng-show="allParticipantIsDisableds[$index]['isDisabled']" style="color: green;">Registered Participant</h4>
+            <h4 ng-show="allVolunteerIsDisableds[$index]['isDisabled']" style="color: green;">Registered Volunteer</h4>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <a class="btn btn-primary" style="display:inline-block; margin:2px; width: 100%;" ng-click="showDescription(key)">More Details</a>
+          <a ng-if="userService.getRole() && !allParticipantIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-success" ng-click="addParticipant(key, $index)">Participate</a>
+          <a ng-if="userService.getRole() && allParticipantIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-danger" ng-click="addParticipant(key, $index)">Un-participate</a>
+          <a ng-if="userService.getRole() && userService.getRole()!=='Participant' && !allVolunteerIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-warning" ng-click="addVolunteer(key, $index)">Volunteer</a>
+          <a ng-if="userService.getRole() && userService.getRole()!=='Participant' && allVolunteerIsDisableds[$index]['isDisabled']" style="display:inline-block; margin:2px; width: 100%;" class="btn btn-danger" ng-click="addVolunteer(key, $index)">Un-volunteer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<master-footer></master-footer>

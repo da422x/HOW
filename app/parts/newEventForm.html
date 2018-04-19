@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" ng-show="!isEdit">Add New Event</h4>
+  <h4 class="modal-title" ng-show="isEdit">Edit Event - {{newEvent.name}}</h4>
+</div>
+<!-- end modal-header -->
+<div class="modal-body" ng-init="initialize()">
+  <form name="eventForm" ng-submit="postEvent()" class="form-horizontal" novalidate>
+    <fieldset>
+      <!-- Text - Event Name -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Event Name*</label>
+        <div class="col-md-7">
+          <input id="name" name="name" type="text" class="form-control input-md" ng-model="newEvent.name" ng-required="true">
+          <p ng-show="eventForm.name.$invalid && !eventForm.name.$pristine" class="help-block">Enter a valid event name.</p>
+        </div>
+      </div>
+      <!-- Dropdown - Chapter -->
+      <div class="form-group " ng-hide="!isAdmin">
+        <label class="col-md-4 control-label " for="chapter ">Hosting Chapter*</label>
+        <div class="col-md-7 ">
+          <select id="chapter " name="chapter " class="form-control " ng-options="chapter as chapter.text for chapter in chapters track by chapter.text" ng-model="newEvent.chapter" ng-change="eventManagerUpdate(newEvent.chapter, true)"></select>
+          <span ng-show="!newEvent.eventOwner.key" class="help-block ">Chapter has no Chapter Leads</span>
+        </div>
+      </div>
+      <!-- Dropdown - Owner Name -->
+      <div class="form-group" ng-hide="!isAdmin || !newEvent.eventOwner.key">
+        <label class="col-md-4 control-label" for="lname">Event Owner*</label>
+        <div class="col-md-7">
+          <select id="owner" name="owner" class="form-control" ng-options="lead as lead.name for lead in eventOwnerList track by lead.name" ng-model="newEvent.eventOwner" ng-required="true"></select>
+        </div>
+      </div>
+      <!-- Dropdown - Manager Name -->
+      <div class="form-group" ng-hide="!newEvent.eventManager.key">
+        <label class="col-md-4 control-label" for="lname">Event Manager*</label>
+        <div class="col-md-7">
+          <select id="manager" name="manager" class="form-control" ng-options="lead as lead.name for lead in eventManagerList track by lead.name" ng-model="newEvent.eventManager" ng-required="true"></select>
+        </div>
+      </div>
+      <!-- Datepicker - Start date/time -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="sdate">Start Date*</label>
+        <div class="col-md-7">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="st" datetime-picker="MM/dd/yyyy h:mm a" is-open="stPopup.opened" ng-required="true">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Datepicker - End date/time -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="edate">End Date*</label>
+        <div class="col-md-7">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="et" datetime-picker="MM/dd/yyyy h:mm a" is-open="etPopup.opened" ng-required="true">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Location -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="address">Location*</label>
+        <div class="col-md-7">
+          <input id="line1" name="line1" type="text" class="form-control" ng-model="newEvent.address.line1" ng-required="true" placeholder="Street" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block">Enter a valid Address.</p>
+          <input id="line2" name="line2" type="text" class="form-control" ng-model="newEvent.address.line2" ng-required="false" placeholder="APT / SUITE (Optional)" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block">Enter a valid Address.</p>
+          <input id="city" name="city" type="text" class="form-control" ng-model="newEvent.address.city" ng-required="true" placeholder="City" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block"></p>
+          <select id="state" name="state" ng-options="state as state.id for state in stateIds track by state.id" class="form-control" ng-model="newEvent.address.state" ng-required="true" placeholder="state" style="margin-bottom: 13px;"></select>
+          <p ng-show="false" class="help-block"></p>
+          <input id="zip" name="zip" type="text" class="form-control" ng-model="newEvent.address.zip" ng-required="true" placeholder="Zip" style="margin-bottom: 13px;">
+          <p ng-show="false" class="help-block"></p>
+        </div>
+      </div>
+      <!-- Text - Email -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="email">Contact Email*</label>
+        <div class="col-md-7">
+          <input id="email" name="email" type="email" placeholder="johndoe@heroesonthewater.org" class="form-control input-md" ng-model="newEvent.email" ng-required="true">
+          <p ng-show="eventForm.email.$invalid && !eventForm.email.$pristine" class="help-block">Enter a valid email address.</p>
+        </div>
+      </div>
+      <!-- Text - Phone # -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="phonenum">Contact Number*</label>
+        <div class="col-md-7">
+          <input id="phonenum" name="phonenum" type="text" placeholder="(123)457-6890" class="form-control input-md mask" ng-model="newEvent.mobileNumber" ng-minlength="9" ng-required="true ">
+          <span ng-show="eventForm.phonenum.$invalid && !eventForm.phonenum.$pristine" class="help-block ">10 digits only; no formatting, prefixes or extensions.</span>
+          <!--<p ng-show="eventForm.phonenum.$error.required" class="help-block ">Enter a valid phone number.</p>-->
+        </div>
+      </div>
+      <!-- Select - Status -->
+      <div class="form-group " ng-hide="!isEdit">
+        <label class="col-md-4 control-label " for="status ">status*</label>
+        <div class="col-md-7 ">
+          <select id="status" name="status " class="form-control " ng-options="status as status for status in states " ng-model="newEvent.status ">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <!-- Textarea - Description -->
+      <div class="form-group ">
+        <label class="col-md-4 control-label " for="description ">Description</label>
+        <div class="col-md-7 ">
+          <textarea class="form-control " id="description " name="description " ng-model="newEvent.description "></textarea>
+        </div>
+      </div>
+      <div class="form-group ">
+        <div class="col-md-4 "></div>
+        <p class="col-md-7 ">* indicates required field.</p>
+      </div>
+      <!-- Button - Submit -->
+      <div class="form-group ">
+        <label class="col-md-4 control-label " for="submit "></label>
+        <div class="col-md-7 ">
+          <button id="submit " name="submit " class="btn btn-primary " ng-disabled="eventForm.$invalid || !newEvent.eventOwner.key ||  !newEvent.eventOwner.key">Submit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<!-- end modal body -->
